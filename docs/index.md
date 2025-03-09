@@ -1,6 +1,6 @@
 # Stacklet Provider
 
-The Stacklet provider is used to interact with Stacklet's cloud governance platform. The provider allows you to manage various resources such as repositories, accounts, account discoveries, and SSO group configurations.
+The Stacklet provider is used to interact with Stacklet's cloud governance platform. The provider allows you to manage various resources such as repositories, accounts, account discoveries, SSO groups, and policy collections.
 
 ## Example Usage
 
@@ -49,6 +49,7 @@ export STACKLET_API_KEY="your-api-key"
 
 - [`stacklet_account`](./resources/account.md) - Manages a cloud account in Stacklet.
 - [`stacklet_account_discovery`](./resources/account_discovery.md) - Manages account discovery configurations for cloud providers.
+- [`stacklet_policy_collection`](./resources/policy_collection.md) - Manages policy collections for cloud providers.
 - [`stacklet_repository`](./resources/repository.md) - Manages a Git repository in Stacklet.
 - [`stacklet_sso_group`](./resources/sso_group.md) - Manages SSO group configurations.
 
@@ -56,5 +57,6 @@ export STACKLET_API_KEY="your-api-key"
 
 - [`stacklet_account`](./data-sources/account.md) - Retrieves information about a cloud account.
 - [`stacklet_account_discovery`](./data-sources/account_discovery.md) - Retrieves information about an account discovery configuration.
+- [`stacklet_policy_collection`](./data-sources/policy_collection.md) - Retrieves information about a policy collection.
 - [`stacklet_repository`](./data-sources/repository.md) - Retrieves information about a Git repository.
 - [`stacklet_sso_group`](./data-sources/sso_group.md) - Retrieves information about an SSO group configuration. 
