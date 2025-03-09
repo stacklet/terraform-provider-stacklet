@@ -165,6 +165,7 @@ func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.Da
 	return []func() datasource.DataSource{
 		NewRepositoryDataSource,
 		NewAccountDataSource,
+		NewAccountDiscoveryDataSource,
 	}
 }
 
@@ -173,6 +174,7 @@ func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resour
 	return []func() resource.Resource{
 		NewRepositoryResource,
 		NewAccountResource,
+		NewAccountDiscoveryResource,
 	}
 }
 
