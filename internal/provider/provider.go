@@ -166,6 +166,7 @@ func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.Da
 		NewRepositoryDataSource,
 		NewAccountDataSource,
 		NewAccountDiscoveryDataSource,
+		NewSSOGroupDataSource,
 	}
 }
 
@@ -175,6 +176,7 @@ func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resour
 		NewRepositoryResource,
 		NewAccountResource,
 		NewAccountDiscoveryResource,
+		NewSSOGroupResource,
 	}
 }
 
