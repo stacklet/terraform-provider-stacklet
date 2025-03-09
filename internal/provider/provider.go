@@ -164,8 +164,7 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewRepositoryDataSource,
-		NewPolicyCollectionDataSource,
-		NewAccountGroupDataSource,
+		NewAccountDataSource,
 	}
 }
 
@@ -173,8 +172,7 @@ func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.Da
 func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewRepositoryResource,
-		NewPolicyCollectionResource,
-		NewAccountGroupResource,
+		NewAccountResource,
 	}
 }
 
