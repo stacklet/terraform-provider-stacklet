@@ -31,7 +31,6 @@ type stackletProvider struct {
 // stackletProviderModel maps provider schema data to a Go type.
 type stackletProviderModel struct {
 	Endpoint types.String `tfsdk:"endpoint"`
-	Username types.String `tfsdk:"username"`
 	ApiKey   types.String `tfsdk:"api_key"`
 }
 
@@ -57,10 +56,6 @@ func (p *stackletProvider) Schema(_ context.Context, _ provider.SchemaRequest, r
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
 				Description: "The endpoint URL of the Stacklet GraphQL API. May also be provided via STACKLET_ENDPOINT environment variable.",
-				Optional:    true,
-			},
-			"username": schema.StringAttribute{
-				Description: "The username for Stacklet authentication. May also be provided via STACKLET_USERNAME environment variable.",
 				Optional:    true,
 			},
 			"api_key": schema.StringAttribute{
@@ -94,15 +89,6 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 		)
 	}
 
-	if config.Username.IsUnknown() {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("username"),
-			"Unknown Stacklet Username",
-			"The provider cannot create the Stacklet API client as there is an unknown configuration value for the Stacklet username. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_USERNAME environment variable.",
-		)
-	}
-
 	if config.ApiKey.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("api_key"),
@@ -119,15 +105,10 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 	// Default values to environment variables, but override
 	// with Terraform configuration value if set.
 	endpoint := os.Getenv("STACKLET_ENDPOINT")
-	username := os.Getenv("STACKLET_USERNAME")
 	apiKey := os.Getenv("STACKLET_API_KEY")
 
 	if !config.Endpoint.IsNull() {
 		endpoint = config.Endpoint.ValueString()
-	}
-
-	if !config.Username.IsNull() {
-		username = config.Username.ValueString()
 	}
 
 	if !config.ApiKey.IsNull() {
@@ -142,16 +123,6 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 			"Missing Stacklet API Endpoint",
 			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet API endpoint. "+
 				"Set the endpoint value in the configuration or use the STACKLET_ENDPOINT environment variable. "+
-				"If either is already set, ensure the value is not empty.",
-		)
-	}
-
-	if username == "" {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("username"),
-			"Missing Stacklet Username",
-			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet username. "+
-				"Set the username value in the configuration or use the STACKLET_USERNAME environment variable. "+
 				"If either is already set, ensure the value is not empty.",
 		)
 	}
@@ -173,9 +144,8 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 	// Create an HTTP client with the authorization header
 	httpClient := &http.Client{
 		Transport: &authTransport{
-			username: username,
-			apiKey:   apiKey,
-			base:     http.DefaultTransport,
+			apiKey: apiKey,
+			base:   http.DefaultTransport,
 		},
 	}
 
@@ -194,6 +164,8 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewRepositoryDataSource,
+		NewPolicyCollectionDataSource,
+		NewAccountGroupDataSource,
 	}
 }
 
@@ -201,14 +173,15 @@ func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.Da
 func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewRepositoryResource,
+		NewPolicyCollectionResource,
+		NewAccountGroupResource,
 	}
 }
 
 // authTransport is an http.RoundTripper that adds authentication headers
 type authTransport struct {
-	username string
-	apiKey   string
-	base     http.RoundTripper
+	apiKey string
+	base   http.RoundTripper
 }
 
 // RoundTrip implements the http.RoundTripper interface
