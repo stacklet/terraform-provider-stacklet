@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -125,7 +126,7 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			Name            string
 			ShortName       string
 			Description     string
-			Provider        string
+			Provider        CloudProvider
 			Path            string
 			Email           string
 			SecurityContext string
@@ -134,8 +135,15 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		} `graphql:"account(provider: $provider, key: $key)"`
 	}
 
+	// Convert provider string to CloudProvider type
+	provider := CloudProvider(strings.ToUpper(data.CloudProvider.ValueString()))
+	if err := provider.Validate(); err != nil {
+		resp.Diagnostics.AddError("Invalid Provider", err.Error())
+		return
+	}
+
 	variables := map[string]interface{}{
-		"provider": graphql.String(data.CloudProvider.ValueString()),
+		"provider": provider,
 		"key":      graphql.String(data.Key.ValueString()),
 	}
 
@@ -155,7 +163,7 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.Name = types.StringValue(query.Account.Name)
 	data.ShortName = types.StringValue(query.Account.ShortName)
 	data.Description = types.StringValue(query.Account.Description)
-	data.CloudProvider = types.StringValue(query.Account.Provider)
+	data.CloudProvider = types.StringValue(string(query.Account.Provider))
 	data.Path = types.StringValue(query.Account.Path)
 	data.Email = types.StringValue(query.Account.Email)
 	data.SecurityContext = types.StringValue(query.Account.SecurityContext)

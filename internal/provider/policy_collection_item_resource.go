@@ -80,18 +80,22 @@ func (r *policyCollectionItemResource) Create(ctx context.Context, req resource.
 	var mutation struct {
 		AddPolicyCollectionItems struct {
 			Collection struct {
-				UUID     string
-				Policies []struct {
-					UUID string
+				UUID           string
+				PolicyMappings struct {
+					Edges []struct {
+						Node struct {
+							ID string
+						}
+					}
 				}
 			}
 		} `graphql:"addPolicyCollectionItems(input: $input)"`
 	}
 
 	variables := map[string]interface{}{
-		"input": AddPolicyCollectionItemsInput{
-			CollectionUUID: plan.CollectionUUID.ValueString(),
-			Items: []PolicyCollectionItemInput{
+		"input": PolicyCollectionItemsInput{
+			UUID: plan.CollectionUUID.ValueString(),
+			Items: []PolicyCollectionElement{
 				{
 					PolicyUUID: plan.PolicyUUID.ValueString(),
 				},
@@ -107,8 +111,8 @@ func (r *policyCollectionItemResource) Create(ctx context.Context, req resource.
 
 	// Find the added policy in the response
 	var addedPolicy bool
-	for _, policy := range mutation.AddPolicyCollectionItems.Collection.Policies {
-		if policy.UUID == plan.PolicyUUID.ValueString() {
+	for _, edge := range mutation.AddPolicyCollectionItems.Collection.PolicyMappings.Edges {
+		if edge.Node.ID != "" {
 			addedPolicy = true
 			break
 		}
@@ -135,8 +139,14 @@ func (r *policyCollectionItemResource) Read(ctx context.Context, req resource.Re
 	// GraphQL query
 	var query struct {
 		PolicyCollection struct {
-			Policies []struct {
-				UUID string
+			Policies struct {
+				Edges []struct {
+					Node struct {
+						Policy struct {
+							UUID string
+						}
+					}
+				}
 			}
 		} `graphql:"policyCollection(uuid: $uuid)"`
 	}
@@ -153,8 +163,8 @@ func (r *policyCollectionItemResource) Read(ctx context.Context, req resource.Re
 
 	// Find the policy in the collection
 	var foundPolicy bool
-	for _, policy := range query.PolicyCollection.Policies {
-		if policy.UUID == state.PolicyUUID.ValueString() {
+	for _, edge := range query.PolicyCollection.Policies.Edges {
+		if edge.Node.Policy.UUID == state.PolicyUUID.ValueString() {
 			foundPolicy = true
 			break
 		}
@@ -188,17 +198,16 @@ func (r *policyCollectionItemResource) Delete(ctx context.Context, req resource.
 
 	// GraphQL mutation
 	var mutation struct {
-		RemovePolicyCollectionItems struct {
-			Collection struct {
-				UUID string
+		RemovePolicyCollectionMappings struct {
+			Removed []struct {
+				ID string
 			}
-		} `graphql:"removePolicyCollectionItems(input: $input)"`
+		} `graphql:"removePolicyCollectionMappings(input: $input)"`
 	}
 
 	variables := map[string]interface{}{
-		"input": RemovePolicyCollectionItemsInput{
-			CollectionUUID: state.CollectionUUID.ValueString(),
-			PolicyUUIDs:    []string{state.PolicyUUID.ValueString()},
+		"input": RemovePolicyCollectionMappingsInput{
+			IDs: []graphql.ID{wrapNodeID([]string{"policy-collection-mapping", state.CollectionUUID.ValueString(), state.PolicyUUID.ValueString()})},
 		},
 	}
 
@@ -210,16 +219,15 @@ func (r *policyCollectionItemResource) Delete(ctx context.Context, req resource.
 }
 
 // Input types for GraphQL mutations
-type PolicyCollectionItemInput struct {
-	PolicyUUID string `json:"policyUuid"`
+type PolicyCollectionElement struct {
+	PolicyUUID string `json:"policyUUID"`
 }
 
-type AddPolicyCollectionItemsInput struct {
-	CollectionUUID string                      `json:"collectionUuid"`
-	Items          []PolicyCollectionItemInput `json:"items"`
+type PolicyCollectionItemsInput struct {
+	UUID  string                    `json:"uuid"`
+	Items []PolicyCollectionElement `json:"items"`
 }
 
-type RemovePolicyCollectionItemsInput struct {
-	CollectionUUID string   `json:"collectionUuid"`
-	PolicyUUIDs    []string `json:"policyUuids"`
+type RemovePolicyCollectionMappingsInput struct {
+	IDs []graphql.ID `json:"ids"`
 }

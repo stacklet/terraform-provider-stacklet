@@ -139,7 +139,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 				Name            string
 				ShortName       string
 				Description     string
-				Provider        string
+				Provider        CloudProvider
 				Path            string
 				Email           string
 				SecurityContext string
@@ -149,10 +149,17 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		} `graphql:"addAccount(input: $input)"`
 	}
 
+	// Convert provider string to CloudProvider type
+	provider := CloudProvider(strings.ToUpper(plan.CloudProvider.ValueString()))
+	if err := provider.Validate(); err != nil {
+		resp.Diagnostics.AddError("Invalid Provider", err.Error())
+		return
+	}
+
 	input := map[string]interface{}{
 		"key":      graphql.String(plan.Key.ValueString()),
 		"name":     graphql.String(plan.Name.ValueString()),
-		"provider": graphql.String(plan.CloudProvider.ValueString()),
+		"provider": provider,
 	}
 
 	if !plan.ShortName.IsNull() {
@@ -192,7 +199,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 	plan.Name = types.StringValue(mutation.AddAccount.Account.Name)
 	plan.ShortName = types.StringValue(mutation.AddAccount.Account.ShortName)
 	plan.Description = types.StringValue(mutation.AddAccount.Account.Description)
-	plan.CloudProvider = types.StringValue(mutation.AddAccount.Account.Provider)
+	plan.CloudProvider = types.StringValue(string(mutation.AddAccount.Account.Provider))
 	plan.Path = types.StringValue(mutation.AddAccount.Account.Path)
 	plan.Email = types.StringValue(mutation.AddAccount.Account.Email)
 	plan.SecurityContext = types.StringValue(mutation.AddAccount.Account.SecurityContext)
@@ -216,7 +223,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 			Name            string
 			ShortName       string
 			Description     string
-			Provider        string
+			Provider        CloudProvider
 			Path            string
 			Email           string
 			SecurityContext string
@@ -225,8 +232,15 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 		} `graphql:"account(provider: $provider, key: $key)"`
 	}
 
+	// Convert provider string to CloudProvider type
+	provider := CloudProvider(strings.ToUpper(state.CloudProvider.ValueString()))
+	if err := provider.Validate(); err != nil {
+		resp.Diagnostics.AddError("Invalid Provider", err.Error())
+		return
+	}
+
 	variables := map[string]interface{}{
-		"provider": graphql.String(state.CloudProvider.ValueString()),
+		"provider": provider,
 		"key":      graphql.String(state.Key.ValueString()),
 	}
 
@@ -246,7 +260,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 	state.Name = types.StringValue(query.Account.Name)
 	state.ShortName = types.StringValue(query.Account.ShortName)
 	state.Description = types.StringValue(query.Account.Description)
-	state.CloudProvider = types.StringValue(query.Account.Provider)
+	state.CloudProvider = types.StringValue(string(query.Account.Provider))
 	state.Path = types.StringValue(query.Account.Path)
 	state.Email = types.StringValue(query.Account.Email)
 	state.SecurityContext = types.StringValue(query.Account.SecurityContext)
@@ -271,7 +285,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 				Name            string
 				ShortName       string
 				Description     string
-				Provider        string
+				Provider        CloudProvider
 				Path            string
 				Email           string
 				SecurityContext string
@@ -281,10 +295,17 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		} `graphql:"updateAccount(input: $input)"`
 	}
 
+	// Convert provider string to CloudProvider type
+	provider := CloudProvider(strings.ToUpper(plan.CloudProvider.ValueString()))
+	if err := provider.Validate(); err != nil {
+		resp.Diagnostics.AddError("Invalid Provider", err.Error())
+		return
+	}
+
 	input := map[string]interface{}{
 		"key":      graphql.String(plan.Key.ValueString()),
 		"name":     graphql.String(plan.Name.ValueString()),
-		"provider": graphql.String(plan.CloudProvider.ValueString()),
+		"provider": provider,
 	}
 
 	if !plan.ShortName.IsNull() {
@@ -324,7 +345,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 	plan.Name = types.StringValue(mutation.UpdateAccount.Account.Name)
 	plan.ShortName = types.StringValue(mutation.UpdateAccount.Account.ShortName)
 	plan.Description = types.StringValue(mutation.UpdateAccount.Account.Description)
-	plan.CloudProvider = types.StringValue(mutation.UpdateAccount.Account.Provider)
+	plan.CloudProvider = types.StringValue(string(mutation.UpdateAccount.Account.Provider))
 	plan.Path = types.StringValue(mutation.UpdateAccount.Account.Path)
 	plan.Email = types.StringValue(mutation.UpdateAccount.Account.Email)
 	plan.SecurityContext = types.StringValue(mutation.UpdateAccount.Account.SecurityContext)
@@ -349,10 +370,17 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 		} `graphql:"removeAccount(input: $input)"`
 	}
 
+	// Convert provider string to CloudProvider type
+	provider := CloudProvider(strings.ToUpper(state.CloudProvider.ValueString()))
+	if err := provider.Validate(); err != nil {
+		resp.Diagnostics.AddError("Invalid Provider", err.Error())
+		return
+	}
+
 	variables := map[string]interface{}{
 		"input": map[string]interface{}{
 			"key":      graphql.String(state.Key.ValueString()),
-			"provider": graphql.String(state.CloudProvider.ValueString()),
+			"provider": provider,
 		},
 	}
 

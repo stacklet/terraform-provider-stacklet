@@ -23,9 +23,10 @@ type accountGroupItemResource struct {
 }
 
 type accountGroupItemResourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	GroupUUID   types.String `tfsdk:"group_uuid"`
-	AccountUUID types.String `tfsdk:"account_uuid"`
+	ID            types.String `tfsdk:"id"`
+	GroupUUID     types.String `tfsdk:"group_uuid"`
+	AccountKey    types.String `tfsdk:"account_key"`
+	CloudProvider types.String `tfsdk:"cloud_provider"`
 }
 
 func (r *accountGroupItemResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -44,8 +45,12 @@ func (r *accountGroupItemResource) Schema(_ context.Context, _ resource.SchemaRe
 				Description: "The UUID of the account group.",
 				Required:    true,
 			},
-			"account_uuid": schema.StringAttribute{
-				Description: "The UUID of the account to add to the group.",
+			"account_key": schema.StringAttribute{
+				Description: "The Key of the account to add to the group.",
+				Required:    true,
+			},
+			"cloud_provider": schema.StringAttribute{
+				Description: "The cloud provider for the account (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Required:    true,
 			},
 		},
@@ -78,19 +83,32 @@ func (r *accountGroupItemResource) Create(ctx context.Context, req resource.Crea
 
 	// GraphQL mutation
 	var mutation struct {
-		AddAccountToGroup struct {
+		AddAccountGroupItems struct {
 			Group struct {
-				UUID     string
-				Accounts []struct {
-					UUID string
+				ID       string
+				Accounts struct {
+					Edges []struct {
+						Node struct {
+							Account struct {
+								Key string
+							}
+						}
+					}
 				}
 			}
-		} `graphql:"addAccountToGroup(groupUuid: $groupUuid, accountUuid: $accountUuid)"`
+		} `graphql:"addAccountGroupItems(input: $input)"`
 	}
 
 	variables := map[string]interface{}{
-		"groupUuid":   graphql.String(plan.GroupUUID.ValueString()),
-		"accountUuid": graphql.String(plan.AccountUUID.ValueString()),
+		"input": AccountGroupItemsInput{
+			UUID: plan.GroupUUID.ValueString(),
+			Items: []AccountGroupElement{
+				{
+					Key:      plan.AccountKey.ValueString(),
+					Provider: plan.CloudProvider.ValueString(),
+				},
+			},
+		},
 	}
 
 	err := r.client.Mutate(ctx, &mutation, variables)
@@ -101,8 +119,8 @@ func (r *accountGroupItemResource) Create(ctx context.Context, req resource.Crea
 
 	// Find the added account in the response
 	var addedAccount bool
-	for _, account := range mutation.AddAccountToGroup.Group.Accounts {
-		if account.UUID == plan.AccountUUID.ValueString() {
+	for _, edge := range mutation.AddAccountGroupItems.Group.Accounts.Edges {
+		if edge.Node.Account.Key == plan.AccountKey.ValueString() {
 			addedAccount = true
 			break
 		}
@@ -114,7 +132,7 @@ func (r *accountGroupItemResource) Create(ctx context.Context, req resource.Crea
 	}
 
 	// Generate a stable ID for the account group item
-	plan.ID = types.StringValue(fmt.Sprintf("%s:%s", plan.GroupUUID.ValueString(), plan.AccountUUID.ValueString()))
+	plan.ID = types.StringValue(fmt.Sprintf("%s:%s", plan.GroupUUID.ValueString(), plan.AccountKey.ValueString()))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -129,8 +147,14 @@ func (r *accountGroupItemResource) Read(ctx context.Context, req resource.ReadRe
 	// GraphQL query
 	var query struct {
 		AccountGroup struct {
-			Accounts []struct {
-				UUID string
+			Accounts struct {
+				Edges []struct {
+					Node struct {
+						Account struct {
+							Key string
+						}
+					}
+				}
 			}
 		} `graphql:"accountGroup(uuid: $uuid)"`
 	}
@@ -147,8 +171,8 @@ func (r *accountGroupItemResource) Read(ctx context.Context, req resource.ReadRe
 
 	// Find the account in the group
 	var foundAccount bool
-	for _, account := range query.AccountGroup.Accounts {
-		if account.UUID == state.AccountUUID.ValueString() {
+	for _, edge := range query.AccountGroup.Accounts.Edges {
+		if edge.Node.Account.Key == state.AccountKey.ValueString() {
 			foundAccount = true
 			break
 		}
@@ -182,16 +206,24 @@ func (r *accountGroupItemResource) Delete(ctx context.Context, req resource.Dele
 
 	// GraphQL mutation
 	var mutation struct {
-		RemoveAccountFromGroup struct {
-			Group struct {
-				UUID string
+		RemoveAccountGroupMappings struct {
+			Removed []struct {
+				ID graphql.ID
 			}
-		} `graphql:"removeAccountFromGroup(groupUuid: $groupUuid, accountUuid: $accountUuid)"`
+		} `graphql:"removeAccountGroupMappings(input: $input)"`
 	}
 
+	// Construct the node ID using the proper format
+	nodeID := wrapNodeID([]string{
+		"account-group-mapping",
+		state.GroupUUID.ValueString(),
+		state.AccountKey.ValueString(),
+	})
+
 	variables := map[string]interface{}{
-		"groupUuid":   graphql.String(state.GroupUUID.ValueString()),
-		"accountUuid": graphql.String(state.AccountUUID.ValueString()),
+		"input": RemoveAccountGroupMappingsInput{
+			IDs: []graphql.ID{nodeID},
+		},
 	}
 
 	err := r.client.Mutate(ctx, &mutation, variables)
@@ -199,4 +231,19 @@ func (r *accountGroupItemResource) Delete(ctx context.Context, req resource.Dele
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to remove account from group, got error: %s", err))
 		return
 	}
+}
+
+type AccountGroupElement struct {
+	Key      string   `json:"key"`
+	Provider string   `json:"provider"`
+	Regions  []string `json:"regions,omitempty"`
+}
+
+type AccountGroupItemsInput struct {
+	UUID  string                `json:"uuid"`
+	Items []AccountGroupElement `json:"items"`
+}
+
+type RemoveAccountGroupMappingsInput struct {
+	IDs []graphql.ID `json:"ids"`
 }

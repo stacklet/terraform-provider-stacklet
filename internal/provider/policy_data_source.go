@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -28,9 +29,7 @@ type policyDataSourceModel struct {
 	Name          types.String `tfsdk:"name"`
 	Description   types.String `tfsdk:"description"`
 	CloudProvider types.String `tfsdk:"cloud_provider"`
-	Version       types.String `tfsdk:"version"`
-	CollectionID  types.String `tfsdk:"collection_id"`
-	Enabled       types.Bool   `tfsdk:"enabled"`
+	Version       types.Number `tfsdk:"version"`
 }
 
 func (d *policyDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -61,16 +60,8 @@ func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 				Description: "The cloud provider for the policy (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Computed:    true,
 			},
-			"version": schema.StringAttribute{
+			"version": schema.NumberAttribute{
 				Description: "The version of the policy.",
-				Computed:    true,
-			},
-			"collection_id": schema.StringAttribute{
-				Description: "The ID of the policy collection this policy belongs to.",
-				Computed:    true,
-			},
-			"enabled": schema.BoolAttribute{
-				Description: "Whether the policy is enabled.",
 				Computed:    true,
 			},
 		},
@@ -104,14 +95,12 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	// GraphQL query
 	var query struct {
 		Policy struct {
-			ID           string
-			UUID         string
-			Name         string
-			Description  string
-			Provider     string
-			Version      string
-			CollectionID string
-			Enabled      bool
+			ID          string
+			UUID        string
+			Name        string
+			Description string
+			Provider    string
+			Version     float64
 		} `graphql:"policy(uuid: $uuid, name: $name)"`
 	}
 
@@ -144,9 +133,7 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	data.Name = types.StringValue(query.Policy.Name)
 	data.Description = types.StringValue(query.Policy.Description)
 	data.CloudProvider = types.StringValue(query.Policy.Provider)
-	data.Version = types.StringValue(query.Policy.Version)
-	data.CollectionID = types.StringValue(query.Policy.CollectionID)
-	data.Enabled = types.BoolValue(query.Policy.Enabled)
+	data.Version = types.NumberValue(big.NewFloat(query.Policy.Version))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

@@ -23,13 +23,15 @@ type accountDiscoveryDataSource struct {
 }
 
 type accountDiscoveryDataSourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	Description types.String `tfsdk:"description"`
-	Provider    types.String `tfsdk:"provider"`
-	Config      types.String `tfsdk:"config"`
-	Schedule    types.String `tfsdk:"schedule"`
-	Validity    types.String `tfsdk:"validity"`
+	ID            types.String `tfsdk:"id"`
+	UUID          types.String `tfsdk:"uuid"`
+	Name          types.String `tfsdk:"name"`
+	Description   types.String `tfsdk:"description"`
+	CloudProvider types.String `tfsdk:"cloud_provider"`
+	Enabled       types.Bool   `tfsdk:"enabled"`
+	Config        types.String `tfsdk:"config"`
+	Schedule      types.String `tfsdk:"schedule"`
+	Validity      types.String `tfsdk:"validity"`
 }
 
 func (d *accountDiscoveryDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -44,6 +46,10 @@ func (d *accountDiscoveryDataSource) Schema(_ context.Context, _ datasource.Sche
 				Description: "The GraphQL Node ID of the account discovery configuration.",
 				Computed:    true,
 			},
+			"uuid": schema.StringAttribute{
+				Description: "The UUID of the account discovery configuration.",
+				Computed:    true,
+			},
 			"name": schema.StringAttribute{
 				Description: "The unique name of the account discovery configuration.",
 				Required:    true,
@@ -52,8 +58,12 @@ func (d *accountDiscoveryDataSource) Schema(_ context.Context, _ datasource.Sche
 				Description: "Human-readable notes about the account discovery configuration.",
 				Computed:    true,
 			},
-			"provider": schema.StringAttribute{
-				Description: "The cloud provider to discover accounts from (aws, azure, or gcp).",
+			"cloud_provider": schema.StringAttribute{
+				Computed:    true,
+				Description: "The cloud provider for the account discovery (aws, azure, gcp, kubernetes, or tencentcloud).",
+			},
+			"enabled": schema.BoolAttribute{
+				Description: "Whether the account discovery configuration is enabled.",
 				Computed:    true,
 			},
 			"config": schema.StringAttribute{
@@ -179,7 +189,7 @@ func (d *accountDiscoveryDataSource) Read(ctx context.Context, req datasource.Re
 	data.ID = types.StringValue(query.AccountDiscovery.ID)
 	data.Name = types.StringValue(query.AccountDiscovery.Name)
 	data.Description = types.StringValue(query.AccountDiscovery.Description)
-	data.Provider = types.StringValue(query.AccountDiscovery.Provider)
+	data.CloudProvider = types.StringValue(query.AccountDiscovery.Provider)
 	data.Config = types.StringValue(configJSON)
 	data.Schedule = types.StringValue(fmt.Sprintf(`{"suspended": %t}`, query.AccountDiscovery.Schedule.Suspended))
 	data.Validity = types.StringValue(fmt.Sprintf(`{"valid": %t, "message": %q}`,

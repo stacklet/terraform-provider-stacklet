@@ -2,6 +2,8 @@ package provider
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"net/http"
 	"os"
 
@@ -168,6 +170,8 @@ func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.Da
 		NewAccountDiscoveryDataSource,
 		NewSSOGroupDataSource,
 		NewPolicyDataSource,
+		NewPolicyCollectionDataSource,
+		NewAccountGroupDataSource,
 	}
 }
 
@@ -180,6 +184,8 @@ func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resour
 		NewSSOGroupResource,
 		NewPolicyCollectionItemResource,
 		NewAccountGroupItemResource,
+		NewPolicyCollectionResource,
+		NewAccountGroupResource,
 	}
 }
 
@@ -193,4 +199,14 @@ type authTransport struct {
 func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.Header.Set("Authorization", t.apiKey)
 	return t.base.RoundTrip(req)
+}
+
+func wrapNodeID(parts []string) graphql.ID {
+	jsonBytes, err := json.Marshal(parts)
+	if err != nil {
+		// This should never happen with a simple string array
+		return graphql.ID("")
+	}
+	encoded := base64.StdEncoding.EncodeToString(jsonBytes)
+	return graphql.ID(encoded)
 }

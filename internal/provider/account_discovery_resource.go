@@ -29,10 +29,12 @@ type accountDiscoveryResource struct {
 }
 
 type accountDiscoveryResourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	Description types.String `tfsdk:"description"`
-	Provider    types.String `tfsdk:"provider"`
+	ID            types.String `tfsdk:"id"`
+	UUID          types.String `tfsdk:"uuid"`
+	Name          types.String `tfsdk:"name"`
+	Description   types.String `tfsdk:"description"`
+	CloudProvider types.String `tfsdk:"cloud_provider"`
+	Enabled       types.Bool   `tfsdk:"enabled"`
 
 	// AWS-specific fields
 	OrgReadRole   types.String `tfsdk:"org_read_role"`
@@ -78,12 +80,9 @@ func (r *accountDiscoveryResource) Schema(_ context.Context, _ resource.SchemaRe
 				Description: "Human-readable notes about the account discovery configuration.",
 				Optional:    true,
 			},
-			"provider": schema.StringAttribute{
-				Description: "The cloud provider to discover accounts from (aws, azure, or gcp).",
+			"cloud_provider": schema.StringAttribute{
 				Required:    true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
+				Description: "The cloud provider for the account discovery (aws, azure, gcp, kubernetes, or tencentcloud).",
 			},
 			// AWS-specific fields
 			"org_read_role": schema.StringAttribute{
@@ -259,7 +258,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 		}
 	}
 
-	switch strings.ToLower(plan.Provider.ValueString()) {
+	switch strings.ToLower(plan.CloudProvider.ValueString()) {
 	case "aws":
 		input := map[string]interface{}{
 			"name":        graphql.String(plan.Name.ValueString()),
@@ -342,7 +341,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 	default:
 		resp.Diagnostics.AddError(
 			"Invalid Provider",
-			fmt.Sprintf("Provider must be one of: aws, azure, gcp. Got: %s", plan.Provider.ValueString()),
+			fmt.Sprintf("Provider must be one of: aws, azure, gcp. Got: %s", plan.CloudProvider.ValueString()),
 		)
 		return
 	}
@@ -383,7 +382,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 	plan.ID = types.StringValue(result.ID)
 	plan.Name = types.StringValue(result.Name)
 	plan.Description = types.StringValue(result.Description)
-	plan.Provider = types.StringValue(result.Provider)
+	plan.CloudProvider = types.StringValue(result.Provider)
 	plan.Suspended = types.BoolValue(result.Schedule.Suspended)
 
 	validityObj, diags := types.ObjectValue(
@@ -462,7 +461,7 @@ func (r *accountDiscoveryResource) Read(ctx context.Context, req resource.ReadRe
 	state.ID = types.StringValue(query.AccountDiscovery.ID)
 	state.Name = types.StringValue(query.AccountDiscovery.Name)
 	state.Description = types.StringValue(query.AccountDiscovery.Description)
-	state.Provider = types.StringValue(query.AccountDiscovery.Provider)
+	state.CloudProvider = types.StringValue(query.AccountDiscovery.Provider)
 	state.Suspended = types.BoolValue(query.AccountDiscovery.Schedule.Suspended)
 
 	// Set provider-specific fields

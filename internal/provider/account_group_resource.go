@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -30,6 +31,7 @@ type accountGroupResourceModel struct {
 	Name          types.String `tfsdk:"name"`
 	Description   types.String `tfsdk:"description"`
 	CloudProvider types.String `tfsdk:"cloud_provider"`
+	Regions       types.List   `tfsdk:"regions"`
 }
 
 func (r *accountGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,6 +68,11 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 				Description: "The cloud provider for the account group (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Required:    true,
 			},
+			"regions": schema.ListAttribute{
+				Description: "The list of regions for the account group (e.g., us-east-1, eu-west-2).",
+				ElementType: types.StringType,
+				Required:    true,
+			},
 		},
 	}
 }
@@ -96,22 +103,24 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 
 	// GraphQL mutation
 	var mutation struct {
-		AddAccountGroup struct {
+		UpsertAccountGroupMappings struct {
 			Group struct {
 				ID          string
 				UUID        string
 				Name        string
 				Description string
 				Provider    string
+				Regions     []string
 			}
-		} `graphql:"addAccountGroup(input: $input)"`
+		} `graphql:"upsertAccountGroupMappings(input: $input)"`
 	}
 
 	variables := map[string]interface{}{
-		"input": AddAccountGroupInput{
+		"input": UpsertAccountGroupMappingsInput{
 			Name:        plan.Name.ValueString(),
 			Provider:    plan.CloudProvider.ValueString(),
 			Description: graphql.String(plan.Description.ValueString()),
+			Regions:     convertRegionsList(plan.Regions),
 		},
 	}
 
@@ -121,11 +130,18 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	plan.ID = types.StringValue(mutation.AddAccountGroup.Group.ID)
-	plan.UUID = types.StringValue(mutation.AddAccountGroup.Group.UUID)
-	plan.Name = types.StringValue(mutation.AddAccountGroup.Group.Name)
-	plan.Description = types.StringValue(mutation.AddAccountGroup.Group.Description)
-	plan.CloudProvider = types.StringValue(mutation.AddAccountGroup.Group.Provider)
+	plan.ID = types.StringValue(mutation.UpsertAccountGroupMappings.Group.ID)
+	plan.UUID = types.StringValue(mutation.UpsertAccountGroupMappings.Group.UUID)
+	plan.Name = types.StringValue(mutation.UpsertAccountGroupMappings.Group.Name)
+	plan.Description = types.StringValue(mutation.UpsertAccountGroupMappings.Group.Description)
+	plan.CloudProvider = types.StringValue(mutation.UpsertAccountGroupMappings.Group.Provider)
+
+	// Convert regions to list
+	regions := make([]attr.Value, len(mutation.UpsertAccountGroupMappings.Group.Regions))
+	for i, region := range mutation.UpsertAccountGroupMappings.Group.Regions {
+		regions[i] = types.StringValue(region)
+	}
+	plan.Regions, _ = types.ListValue(types.StringType, regions)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -145,6 +161,7 @@ func (r *accountGroupResource) Read(ctx context.Context, req resource.ReadReques
 			Name        string
 			Description string
 			Provider    string
+			Regions     []string
 		} `graphql:"accountGroup(uuid: $uuid)"`
 	}
 
@@ -169,6 +186,13 @@ func (r *accountGroupResource) Read(ctx context.Context, req resource.ReadReques
 	state.Description = types.StringValue(query.AccountGroup.Description)
 	state.CloudProvider = types.StringValue(query.AccountGroup.Provider)
 
+	// Convert regions to list
+	regions := make([]attr.Value, len(query.AccountGroup.Regions))
+	for i, region := range query.AccountGroup.Regions {
+		regions[i] = types.StringValue(region)
+	}
+	state.Regions, _ = types.ListValue(types.StringType, regions)
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -181,23 +205,25 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 
 	// GraphQL mutation
 	var mutation struct {
-		UpdateAccountGroup struct {
+		UpsertAccountGroupMappings struct {
 			Group struct {
 				ID          string
 				UUID        string
 				Name        string
 				Description string
 				Provider    string
+				Regions     []string
 			}
-		} `graphql:"updateAccountGroup(input: $input)"`
+		} `graphql:"upsertAccountGroupMappings(input: $input)"`
 	}
 
 	variables := map[string]interface{}{
-		"input": UpdateAccountGroupInput{
+		"input": UpsertAccountGroupMappingsInput{
 			UUID:        plan.UUID.ValueString(),
-			Name:        graphql.String(plan.Name.ValueString()),
-			Provider:    graphql.String(plan.CloudProvider.ValueString()),
+			Name:        plan.Name.ValueString(),
+			Provider:    plan.CloudProvider.ValueString(),
 			Description: graphql.String(plan.Description.ValueString()),
+			Regions:     convertRegionsList(plan.Regions),
 		},
 	}
 
@@ -207,11 +233,18 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	plan.ID = types.StringValue(mutation.UpdateAccountGroup.Group.ID)
-	plan.UUID = types.StringValue(mutation.UpdateAccountGroup.Group.UUID)
-	plan.Name = types.StringValue(mutation.UpdateAccountGroup.Group.Name)
-	plan.Description = types.StringValue(mutation.UpdateAccountGroup.Group.Description)
-	plan.CloudProvider = types.StringValue(mutation.UpdateAccountGroup.Group.Provider)
+	plan.ID = types.StringValue(mutation.UpsertAccountGroupMappings.Group.ID)
+	plan.UUID = types.StringValue(mutation.UpsertAccountGroupMappings.Group.UUID)
+	plan.Name = types.StringValue(mutation.UpsertAccountGroupMappings.Group.Name)
+	plan.Description = types.StringValue(mutation.UpsertAccountGroupMappings.Group.Description)
+	plan.CloudProvider = types.StringValue(mutation.UpsertAccountGroupMappings.Group.Provider)
+
+	// Convert regions to list
+	regions := make([]attr.Value, len(mutation.UpsertAccountGroupMappings.Group.Regions))
+	for i, region := range mutation.UpsertAccountGroupMappings.Group.Regions {
+		regions[i] = types.StringValue(region)
+	}
+	plan.Regions, _ = types.ListValue(types.StringType, regions)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -243,15 +276,24 @@ func (r *accountGroupResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 }
 
-type AddAccountGroupInput struct {
+type UpsertAccountGroupMappingsInput struct {
+	UUID        string         `json:"uuid,omitempty"`
 	Name        string         `json:"name"`
 	Provider    string         `json:"provider"`
 	Description graphql.String `json:"description,omitempty"`
+	Regions     []string       `json:"regions"`
 }
 
-type UpdateAccountGroupInput struct {
-	UUID        string         `json:"uuid"`
-	Name        graphql.String `json:"name,omitempty"`
-	Provider    graphql.String `json:"provider,omitempty"`
-	Description graphql.String `json:"description,omitempty"`
+// Helper function to convert regions list
+func convertRegionsList(regionsList types.List) []string {
+	if regionsList.IsNull() || regionsList.IsUnknown() {
+		return nil
+	}
+
+	elements := regionsList.Elements()
+	regions := make([]string, len(elements))
+	for i, element := range elements {
+		regions[i] = element.(types.String).ValueString()
+	}
+	return regions
 }
