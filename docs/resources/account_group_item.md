@@ -7,14 +7,16 @@ Manages an account within an account group in Stacklet. This resource allows you
 ```hcl
 # Add an account to a group
 resource "stacklet_account_group_item" "example" {
-  group_uuid   = "00000000-0000-0000-0000-000000000000"
-  account_uuid = "11111111-1111-1111-1111-111111111111"
+  group_uuid     = "00000000-0000-0000-0000-000000000000"
+  account_key    = "123456789012"
+  cloud_provider = "AWS"
 }
 
 # Reference existing account and group
 resource "stacklet_account_group_item" "example" {
-  group_uuid   = data.stacklet_account_group.production.uuid
-  account_uuid = data.stacklet_account.prod_account.uuid
+  group_uuid     = data.stacklet_account_group.production.uuid
+  account_key    = data.stacklet_account.prod_account.key
+  cloud_provider = data.stacklet_account.prod_account.cloud_provider
 }
 
 # Add multiple accounts to a group
@@ -32,8 +34,9 @@ resource "stacklet_account_group_item" "prod_accounts" {
 ## Argument Reference
 
 * `group_uuid` - (Required) The UUID of the account group.
-* `account_uuid` - (Required) The UUID of the account to add to the group.
+* `account_key` - (Required) The key of the account to add to the group (e.g., AWS account ID, GCP project ID).
+* `cloud_provider` - (Required) The cloud provider for the account (aws, azure, gcp, or tencentcloud).
 
 ## Attribute Reference
 
-* `id` - The ID of the account group item, formatted as `{group_uuid}:{account_uuid}`. 
+* `id` - The ID of the account group item, formatted as `{group_uuid}:{account_key}`.

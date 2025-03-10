@@ -9,24 +9,46 @@ This Terraform Provider allows you to interact with Stacklet's GraphQL API to ma
 
 ## Building The Provider
 
-1. Clone the repository
-2. Enter the repository directory
-3. Build the provider using `go build -o terraform-provider-stacklet`
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/stacklet/terraform-provider-stacklet.git
+   cd terraform-provider-stacklet
+   ```
+
+2. Install dependencies:
+   ```bash
+   go mod download
+   ```
+
+3. Build the provider:
+   ```bash
+   go build -o terraform-provider-stacklet
+   ```
+
+4. Install the provider locally for development:
+   ```bash
+   mkdir -p ~/.terraform.d/plugins/registry.terraform.io/stacklet/stacklet/0.1.0/darwin_amd64/
+   cp terraform-provider-stacklet ~/.terraform.d/plugins/registry.terraform.io/stacklet/stacklet/0.1.0/darwin_amd64/
+   ```
 
 ## Using the provider
+
+### Local Development
+
+When developing locally, you can use the provider by configuring Terraform to use your local build:
 
 ```hcl
 terraform {
   required_providers {
     stacklet = {
       source = "stacklet/stacklet"
+      version = "0.1.0"
     }
   }
 }
 
 provider "stacklet" {
-  endpoint = "https://api.stacklet.io/graphql"  # Or use STACKLET_ENDPOINT env var
-  username = "your-username"                     # Or use STACKLET_USERNAME env var
+  endpoint = "https://api.dev.stacklet.dev"     # Or use STACKLET_ENDPOINT env var
   api_key  = "your-api-key"                     # Or use STACKLET_API_KEY env var
 }
 ```
@@ -37,18 +59,33 @@ The provider can be configured using environment variables:
 
 ```bash
 export STACKLET_ENDPOINT="https://api.stacklet.io/graphql"
-export STACKLET_USERNAME="your-username"
 export STACKLET_API_KEY="your-api-key"
 ```
 
-## Developing the Provider
+### Testing with Local Provider
 
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (see [Requirements](#requirements) above).
+1. After building and installing the provider locally (see [Building The Provider](#building-the-provider)), create a test directory:
+   ```bash
+   mkdir test
+   cd test
+   ```
 
-To compile the provider, run `go build -o terraform-provider-stacklet`. This will build the provider and put the provider binary in the current directory.
+2. Create a test configuration file (e.g., `main.tf`):
+   ```hcl
+   terraform {
+     required_providers {
+       stacklet = {
+         source = "stacklet/stacklet"
+         version = "0.1.0"
+       }
+     }
+   }
 
-To generate or update documentation, run `go generate`.
+   # Add your test resources here
+   ```
 
-In order to run the full suite of acceptance tests, run `make testacc`.
-
-*Note:* Acceptance tests create real resources, and often cost money to run. 
+3. Initialize and test:
+   ```bash
+   terraform init
+   terraform plan
+   ```

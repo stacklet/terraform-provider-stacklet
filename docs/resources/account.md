@@ -44,15 +44,25 @@ resource "stacklet_account" "gcp_staging" {
     "org_id": "1234567890"
   })
 }
+
+# Configure a Tencent Cloud account
+resource "stacklet_account" "tencent_prod" {
+  cloud_provider = "tencentcloud"
+  key           = "1234567890"  # Tencent Cloud account ID
+  name          = "Production Tencent Cloud Account"
+  description   = "Production environment in Tencent Cloud"
+  path          = "/tencent/production"
+}
 ```
 
 ## Argument Reference
 
-* `cloud_provider` - (Required) The cloud provider for the account (aws, azure, or gcp). This value cannot be changed after creation.
+* `cloud_provider` - (Required) The cloud provider for the account (aws, azure, gcp, or tencentcloud). This value cannot be changed after creation.
 * `key` - (Required) The unique identifier for the account within the cloud provider:
   * For AWS: The AWS account ID
   * For Azure: The subscription ID
   * For GCP: The project ID
+  * For Tencent Cloud: The account ID
 * `name` - (Required) The display name of the account.
 * `short_name` - (Optional) A shorter display name for the account.
 * `description` - (Optional) A description of the account.
@@ -76,4 +86,5 @@ Accounts can be imported using a combination of the cloud provider and key, sepa
 terraform import stacklet_account.aws_prod aws:123456789012
 terraform import stacklet_account.azure_dev azure:00000000-0000-0000-0000-000000000000
 terraform import stacklet_account.gcp_staging gcp:my-project-id
+terraform import stacklet_account.tencent_prod tencentcloud:1234567890
 ``` 

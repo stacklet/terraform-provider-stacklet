@@ -38,7 +38,7 @@ At least one of `uuid` or `name` must be specified.
 * `uuid` - The UUID of the policy collection.
 * `name` - The name of the policy collection.
 * `description` - The description of the policy collection.
-* `cloud_provider` - The cloud provider for the policy collection (aws, azure, or gcp).
+* `cloud_provider` - The cloud provider for the policy collection (aws, azure, gcp, or tencentcloud).
 * `auto_update` - Whether the policy collection automatically updates policy versions.
 * `system` - Whether this is a system policy collection (not user editable).
 * `repository` - The repository URL if this collection was created from a repo control file. 

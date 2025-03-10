@@ -23,6 +23,12 @@ data "stacklet_account" "gcp_staging" {
   key           = "my-project-id"  # GCP project ID
 }
 
+# Fetch a Tencent Cloud account
+data "stacklet_account" "tencent_prod" {
+  cloud_provider = "tencentcloud"
+  key           = "1234567890"  # Tencent Cloud account ID
+}
+
 # Output account details
 output "account_name" {
   value = data.stacklet_account.aws_prod.name
@@ -35,11 +41,12 @@ output "account_variables" {
 
 ## Argument Reference
 
-* `cloud_provider` - (Required) The cloud provider for the account (aws, azure, or gcp).
+* `cloud_provider` - (Required) The cloud provider for the account (aws, azure, gcp, or tencentcloud).
 * `key` - (Required) The unique identifier for the account within the cloud provider:
   * For AWS: The AWS account ID
   * For Azure: The subscription ID
   * For GCP: The project ID
+  * For Tencent Cloud: The account ID
 
 ## Attribute Reference
 
