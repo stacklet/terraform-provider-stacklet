@@ -165,27 +165,29 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 // DataSources defines the data sources implemented in the provider.
 func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		NewRepositoryDataSource,
 		NewAccountDataSource,
-		NewAccountDiscoveryDataSource,
-		NewSSOGroupDataSource,
+		NewAccountGroupDataSource,
 		NewPolicyDataSource,
 		NewPolicyCollectionDataSource,
-		NewAccountGroupDataSource,
+		NewBindingDataSource,
+		NewAccountDiscoveryDataSource,
+		NewSSOGroupDataSource,
+		NewRepositoryDataSource,
 	}
 }
 
 // Resources defines the resources implemented in the provider.
 func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewRepositoryResource,
 		NewAccountResource,
+		NewAccountGroupResource,
+		NewAccountGroupItemResource,
+		NewPolicyCollectionItemResource,
+		NewPolicyCollectionResource,
+		NewBindingResource,
 		NewAccountDiscoveryResource,
 		NewSSOGroupResource,
-		NewPolicyCollectionItemResource,
-		NewAccountGroupItemResource,
-		NewPolicyCollectionResource,
-		NewAccountGroupResource,
+		NewRepositoryResource,
 	}
 }
 
