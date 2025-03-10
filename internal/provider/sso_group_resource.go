@@ -31,6 +31,22 @@ type ssoGroupResourceModel struct {
 	AccountGroupUUIDs types.List   `tfsdk:"account_group_uuids"`
 }
 
+type ssoGroupConfig struct {
+	Name              string   `json:"name"`
+	Roles             []string `json:"roles"`
+	AccountGroupUUIDs []string `graphql:"accountGroupUUIDs"`
+}
+
+type SetSSOGroupConfigsInput struct {
+	Groups []ssoGroupConfigInput `json:"groups"`
+}
+
+type ssoGroupConfigInput struct {
+	Name              string   `json:"name"`
+	Roles             []string `json:"roles"`
+	AccountGroupUUIDs []string `json:"accountGroupUUIDs"`
+}
+
 func (r *ssoGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_sso_group"
 }
@@ -90,7 +106,7 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 		SSOGroupConfigs []struct {
 			Name              string
 			Roles             []string
-			AccountGroupUUIDs []string
+			AccountGroupUUIDs []string `graphql:"accountGroupUUIDs"`
 		} `graphql:"ssoGroupConfigs"`
 	}
 
@@ -114,7 +130,7 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	// Create a new list of groups with our new group
-	groups := make([]map[string]interface{}, 0, len(query.SSOGroupConfigs)+1)
+	groups := make([]ssoGroupConfigInput, 0, len(query.SSOGroupConfigs)+1)
 	for _, group := range query.SSOGroupConfigs {
 		if group.Name == plan.Name.ValueString() {
 			resp.Diagnostics.AddError(
@@ -123,34 +139,30 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 			)
 			return
 		}
-		groups = append(groups, map[string]interface{}{
-			"name":              graphql.String(group.Name),
-			"roles":             group.Roles,
-			"accountGroupUUIDs": group.AccountGroupUUIDs,
+		groups = append(groups, ssoGroupConfigInput{
+			Name:              group.Name,
+			Roles:             group.Roles,
+			AccountGroupUUIDs: group.AccountGroupUUIDs,
 		})
 	}
 
 	// Add our new group
-	groups = append(groups, map[string]interface{}{
-		"name":              graphql.String(plan.Name.ValueString()),
-		"roles":             roles,
-		"accountGroupUUIDs": accountGroupUUIDs,
+	groups = append(groups, ssoGroupConfigInput{
+		Name:              plan.Name.ValueString(),
+		Roles:             roles,
+		AccountGroupUUIDs: accountGroupUUIDs,
 	})
 
 	// Update all groups
 	var mutation struct {
 		SetSSOGroups struct {
-			Groups []struct {
-				Name              string
-				Roles             []string
-				AccountGroupUUIDs []string
-			} `graphql:"groups"`
+			Groups []ssoGroupConfig `graphql:"groups"`
 		} `graphql:"setSSOGroups(input: $input)"`
 	}
 
 	variables := map[string]interface{}{
-		"input": map[string]interface{}{
-			"groups": groups,
+		"input": SetSSOGroupConfigsInput{
+			Groups: groups,
 		},
 	}
 
@@ -161,11 +173,7 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	// Find our group in the response
-	var ourGroup *struct {
-		Name              string
-		Roles             []string
-		AccountGroupUUIDs []string
-	}
+	var ourGroup *ssoGroupConfig
 	for _, group := range mutation.SetSSOGroups.Groups {
 		if group.Name == plan.Name.ValueString() {
 			ourGroup = &group
@@ -208,11 +216,7 @@ func (r *ssoGroupResource) Read(ctx context.Context, req resource.ReadRequest, r
 
 	// GraphQL query
 	var query struct {
-		SSOGroupConfigs []struct {
-			Name              string
-			Roles             []string
-			AccountGroupUUIDs []string
-		} `graphql:"ssoGroupConfigs"`
+		SSOGroupConfigs []ssoGroupConfig `graphql:"ssoGroupConfigs"`
 	}
 
 	err := r.client.Query(ctx, &query, nil)
@@ -222,11 +226,7 @@ func (r *ssoGroupResource) Read(ctx context.Context, req resource.ReadRequest, r
 	}
 
 	// Find our group
-	var ourGroup *struct {
-		Name              string
-		Roles             []string
-		AccountGroupUUIDs []string
-	}
+	var ourGroup *ssoGroupConfig
 	for _, group := range query.SSOGroupConfigs {
 		if group.Name == state.Name.ValueString() {
 			ourGroup = &group
@@ -272,7 +272,7 @@ func (r *ssoGroupResource) Update(ctx context.Context, req resource.UpdateReques
 		SSOGroupConfigs []struct {
 			Name              string
 			Roles             []string
-			AccountGroupUUIDs []string
+			AccountGroupUUIDs []string `graphql:"accountGroupUUIDs"`
 		} `graphql:"ssoGroupConfigs"`
 	}
 
@@ -296,39 +296,36 @@ func (r *ssoGroupResource) Update(ctx context.Context, req resource.UpdateReques
 	}
 
 	// Create a new list of groups with our updated group
-	groups := make([]map[string]interface{}, 0, len(query.SSOGroupConfigs))
+	groups := make([]ssoGroupConfigInput, 0, len(query.SSOGroupConfigs))
 	for _, group := range query.SSOGroupConfigs {
 		if group.Name == plan.Name.ValueString() {
-			// This is our group, update it
-			groups = append(groups, map[string]interface{}{
-				"name":              graphql.String(plan.Name.ValueString()),
-				"roles":             roles,
-				"accountGroupUUIDs": accountGroupUUIDs,
-			})
-		} else {
-			// Keep other groups as is
-			groups = append(groups, map[string]interface{}{
-				"name":              graphql.String(group.Name),
-				"roles":             group.Roles,
-				"accountGroupUUIDs": group.AccountGroupUUIDs,
-			})
+			// Skip the old version of our group
+			continue
 		}
+		groups = append(groups, ssoGroupConfigInput{
+			Name:              group.Name,
+			Roles:             group.Roles,
+			AccountGroupUUIDs: group.AccountGroupUUIDs,
+		})
 	}
+
+	// Add our updated group
+	groups = append(groups, ssoGroupConfigInput{
+		Name:              plan.Name.ValueString(),
+		Roles:             roles,
+		AccountGroupUUIDs: accountGroupUUIDs,
+	})
 
 	// Update all groups
 	var mutation struct {
 		SetSSOGroups struct {
-			Groups []struct {
-				Name              string
-				Roles             []string
-				AccountGroupUUIDs []string
-			} `graphql:"groups"`
+			Groups []ssoGroupConfig `graphql:"groups"`
 		} `graphql:"setSSOGroups(input: $input)"`
 	}
 
 	variables := map[string]interface{}{
-		"input": map[string]interface{}{
-			"groups": groups,
+		"input": SetSSOGroupConfigsInput{
+			Groups: groups,
 		},
 	}
 
@@ -339,11 +336,7 @@ func (r *ssoGroupResource) Update(ctx context.Context, req resource.UpdateReques
 	}
 
 	// Find our group in the response
-	var ourGroup *struct {
-		Name              string
-		Roles             []string
-		AccountGroupUUIDs []string
-	}
+	var ourGroup *ssoGroupConfig
 	for _, group := range mutation.SetSSOGroups.Groups {
 		if group.Name == plan.Name.ValueString() {
 			ourGroup = &group
@@ -389,7 +382,7 @@ func (r *ssoGroupResource) Delete(ctx context.Context, req resource.DeleteReques
 		SSOGroupConfigs []struct {
 			Name              string
 			Roles             []string
-			AccountGroupUUIDs []string
+			AccountGroupUUIDs []string `graphql:"accountGroupUUIDs"`
 		} `graphql:"ssoGroupConfigs"`
 	}
 
@@ -400,29 +393,29 @@ func (r *ssoGroupResource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 
 	// Create a new list of groups without our group
-	groups := make([]map[string]interface{}, 0, len(query.SSOGroupConfigs)-1)
+	groups := make([]ssoGroupConfigInput, 0, len(query.SSOGroupConfigs)-1)
 	for _, group := range query.SSOGroupConfigs {
-		if group.Name != state.Name.ValueString() {
-			groups = append(groups, map[string]interface{}{
-				"name":              graphql.String(group.Name),
-				"roles":             group.Roles,
-				"accountGroupUUIDs": group.AccountGroupUUIDs,
-			})
+		if group.Name == state.Name.ValueString() {
+			// Skip our group
+			continue
 		}
+		groups = append(groups, ssoGroupConfigInput{
+			Name:              group.Name,
+			Roles:             group.Roles,
+			AccountGroupUUIDs: group.AccountGroupUUIDs,
+		})
 	}
 
 	// Update all groups
 	var mutation struct {
 		SetSSOGroups struct {
-			Groups []struct {
-				Name string
-			} `graphql:"groups"`
+			Groups []ssoGroupConfig `graphql:"groups"`
 		} `graphql:"setSSOGroups(input: $input)"`
 	}
 
 	variables := map[string]interface{}{
-		"input": map[string]interface{}{
-			"groups": groups,
+		"input": SetSSOGroupConfigsInput{
+			Groups: groups,
 		},
 	}
 
@@ -434,6 +427,5 @@ func (r *ssoGroupResource) Delete(ctx context.Context, req resource.DeleteReques
 }
 
 func (r *ssoGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// The import ID is the name of the SSO group
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
 }
