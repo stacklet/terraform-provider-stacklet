@@ -145,7 +145,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 				SecurityContext string
 				Active          bool
 				Variables       string
-			} `graphql:"account"`
+			}
 		} `graphql:"addAccount(input: $input)"`
 	}
 
@@ -157,40 +157,61 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	input := map[string]interface{}{
-		"key":      graphql.String(plan.Key.ValueString()),
-		"name":     graphql.String(plan.Name.ValueString()),
-		"provider": provider,
+		"input": AccountInput{
+			Name:     plan.Name.ValueString(),
+			Key:      plan.Key.ValueString(),
+			Provider: provider,
+			ShortName: func() *string {
+				if !plan.ShortName.IsNull() {
+					s := plan.ShortName.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			Description: func() *string {
+				if !plan.Description.IsNull() {
+					s := plan.Description.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			Path: func() *string {
+				if !plan.Path.IsNull() {
+					s := plan.Path.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			Email: func() *string {
+				if !plan.Email.IsNull() {
+					s := plan.Email.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			SecurityContext: func() *string {
+				if !plan.SecurityContext.IsNull() {
+					s := plan.SecurityContext.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			Variables: func() *string {
+				if !plan.Variables.IsNull() {
+					s := plan.Variables.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+		},
 	}
 
-	if !plan.ShortName.IsNull() {
-		input["shortName"] = graphql.String(plan.ShortName.ValueString())
-	}
-	if !plan.Description.IsNull() {
-		input["description"] = graphql.String(plan.Description.ValueString())
-	}
-	if !plan.Path.IsNull() {
-		input["path"] = graphql.String(plan.Path.ValueString())
-	}
-	if !plan.Email.IsNull() {
-		input["email"] = graphql.String(plan.Email.ValueString())
-	}
-	if !plan.SecurityContext.IsNull() {
-		input["securityContext"] = graphql.String(plan.SecurityContext.ValueString())
-	}
-	if !plan.Active.IsNull() {
-		input["active"] = graphql.Boolean(plan.Active.ValueBool())
-	}
-	if !plan.Variables.IsNull() {
-		input["variables"] = graphql.String(plan.Variables.ValueString())
-	}
-
-	variables := map[string]interface{}{
-		"input": input,
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
+	err := r.client.Mutate(ctx, &mutation, input)
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to create account, got error: %s", err))
+		resp.Diagnostics.AddError(
+			"Client Error",
+			fmt.Sprintf("Unable to create account, got error: %s", err),
+		)
 		return
 	}
 
@@ -200,11 +221,31 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 	plan.ShortName = types.StringValue(mutation.AddAccount.Account.ShortName)
 	plan.Description = types.StringValue(mutation.AddAccount.Account.Description)
 	plan.CloudProvider = types.StringValue(string(mutation.AddAccount.Account.Provider))
-	plan.Path = types.StringValue(mutation.AddAccount.Account.Path)
-	plan.Email = types.StringValue(mutation.AddAccount.Account.Email)
-	plan.SecurityContext = types.StringValue(mutation.AddAccount.Account.SecurityContext)
+	plan.Path = func() types.String {
+		if mutation.AddAccount.Account.Path == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(mutation.AddAccount.Account.Path)
+	}()
+	plan.Email = func() types.String {
+		if mutation.AddAccount.Account.Email == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(mutation.AddAccount.Account.Email)
+	}()
+	plan.SecurityContext = func() types.String {
+		if mutation.AddAccount.Account.SecurityContext == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(mutation.AddAccount.Account.SecurityContext)
+	}()
 	plan.Active = types.BoolValue(mutation.AddAccount.Account.Active)
-	plan.Variables = types.StringValue(mutation.AddAccount.Account.Variables)
+	plan.Variables = func() types.String {
+		if mutation.AddAccount.Account.Variables == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(mutation.AddAccount.Account.Variables)
+	}()
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -291,7 +332,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 				SecurityContext string
 				Active          bool
 				Variables       string
-			} `graphql:"account"`
+			}
 		} `graphql:"updateAccount(input: $input)"`
 	}
 
@@ -303,38 +344,56 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	input := map[string]interface{}{
-		"key":      graphql.String(plan.Key.ValueString()),
-		"name":     graphql.String(plan.Name.ValueString()),
-		"provider": provider,
+		"input": UpdateAccountInput{
+			Key:      plan.Key.ValueString(),
+			Provider: provider,
+			Name:     plan.Name.ValueString(),
+			ShortName: func() *string {
+				if !plan.ShortName.IsNull() {
+					s := plan.ShortName.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			Description: func() *string {
+				if !plan.Description.IsNull() {
+					s := plan.Description.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			Path: func() *string {
+				if !plan.Path.IsNull() {
+					s := plan.Path.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			Email: func() *string {
+				if !plan.Email.IsNull() {
+					s := plan.Email.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			SecurityContext: func() *string {
+				if !plan.SecurityContext.IsNull() {
+					s := plan.SecurityContext.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+			Variables: func() *string {
+				if !plan.Variables.IsNull() {
+					s := plan.Variables.ValueString()
+					return &s
+				}
+				return nil
+			}(),
+		},
 	}
 
-	if !plan.ShortName.IsNull() {
-		input["shortName"] = graphql.String(plan.ShortName.ValueString())
-	}
-	if !plan.Description.IsNull() {
-		input["description"] = graphql.String(plan.Description.ValueString())
-	}
-	if !plan.Path.IsNull() {
-		input["path"] = graphql.String(plan.Path.ValueString())
-	}
-	if !plan.Email.IsNull() {
-		input["email"] = graphql.String(plan.Email.ValueString())
-	}
-	if !plan.SecurityContext.IsNull() {
-		input["securityContext"] = graphql.String(plan.SecurityContext.ValueString())
-	}
-	if !plan.Active.IsNull() {
-		input["active"] = graphql.Boolean(plan.Active.ValueBool())
-	}
-	if !plan.Variables.IsNull() {
-		input["variables"] = graphql.String(plan.Variables.ValueString())
-	}
-
-	variables := map[string]interface{}{
-		"input": input,
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
+	err := r.client.Mutate(ctx, &mutation, input)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update account, got error: %s", err))
 		return
@@ -346,11 +405,31 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 	plan.ShortName = types.StringValue(mutation.UpdateAccount.Account.ShortName)
 	plan.Description = types.StringValue(mutation.UpdateAccount.Account.Description)
 	plan.CloudProvider = types.StringValue(string(mutation.UpdateAccount.Account.Provider))
-	plan.Path = types.StringValue(mutation.UpdateAccount.Account.Path)
-	plan.Email = types.StringValue(mutation.UpdateAccount.Account.Email)
-	plan.SecurityContext = types.StringValue(mutation.UpdateAccount.Account.SecurityContext)
+	plan.Path = func() types.String {
+		if mutation.UpdateAccount.Account.Path == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(mutation.UpdateAccount.Account.Path)
+	}()
+	plan.Email = func() types.String {
+		if mutation.UpdateAccount.Account.Email == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(mutation.UpdateAccount.Account.Email)
+	}()
+	plan.SecurityContext = func() types.String {
+		if mutation.UpdateAccount.Account.SecurityContext == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(mutation.UpdateAccount.Account.SecurityContext)
+	}()
 	plan.Active = types.BoolValue(mutation.UpdateAccount.Account.Active)
-	plan.Variables = types.StringValue(mutation.UpdateAccount.Account.Variables)
+	plan.Variables = func() types.String {
+		if mutation.UpdateAccount.Account.Variables == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(mutation.UpdateAccount.Account.Variables)
+	}()
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -366,8 +445,8 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 		RemoveAccount struct {
 			Account struct {
 				Key string
-			} `graphql:"account"`
-		} `graphql:"removeAccount(input: $input)"`
+			}
+		} `graphql:"removeAccount(provider: $provider, key: $key)"`
 	}
 
 	// Convert provider string to CloudProvider type
@@ -378,10 +457,8 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	variables := map[string]interface{}{
-		"input": map[string]interface{}{
-			"key":      graphql.String(state.Key.ValueString()),
-			"provider": provider,
-		},
+		"provider": provider,
+		"key":      graphql.String(state.Key.ValueString()),
 	}
 
 	err := r.client.Mutate(ctx, &mutation, variables)
@@ -407,4 +484,28 @@ func (r *accountResource) ImportState(ctx context.Context, req resource.ImportSt
 
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), provider)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), key)...)
+}
+
+type AccountInput struct {
+	Name            string        `json:"name"`
+	Key             string        `json:"key"`
+	Provider        CloudProvider `json:"provider"`
+	ShortName       *string       `json:"shortName,omitempty"`
+	Description     *string       `json:"description,omitempty"`
+	Path            *string       `json:"path,omitempty"`
+	Email           *string       `json:"email,omitempty"`
+	SecurityContext *string       `json:"securityContext,omitempty"`
+	Variables       *string       `json:"variables,omitempty"`
+}
+
+type UpdateAccountInput struct {
+	Key             string        `json:"key"`
+	Provider        CloudProvider `json:"provider"`
+	Name            string        `json:"name"`
+	ShortName       *string       `json:"shortName,omitempty"`
+	Description     *string       `json:"description,omitempty"`
+	Path            *string       `json:"path,omitempty"`
+	Email           *string       `json:"email,omitempty"`
+	SecurityContext *string       `json:"securityContext,omitempty"`
+	Variables       *string       `json:"variables,omitempty"`
 }
