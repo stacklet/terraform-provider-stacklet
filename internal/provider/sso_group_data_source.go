@@ -35,7 +35,7 @@ func (d *ssoGroupDataSource) Metadata(_ context.Context, req datasource.Metadata
 
 func (d *ssoGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Fetch an SSO group configuration by name.",
+		Description: "Retrieves information about an SSO group configuration.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "Unique identifier for this SSO group configuration.",
@@ -77,56 +77,54 @@ func (d *ssoGroupDataSource) Configure(_ context.Context, req datasource.Configu
 }
 
 func (d *ssoGroupDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data ssoGroupDataSourceModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	var config ssoGroupDataSourceModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
 	// GraphQL query
 	var query struct {
-		SSOGroupConfigs []struct {
-			Name              string
-			Roles             []string
-			AccountGroupUUIDs []string
-		} `graphql:"ssoGroupConfigs"`
+		SSOGroupConfigs []ssoGroupConfig `graphql:"ssoGroupConfigs"`
 	}
 
 	err := d.client.Query(ctx, &query, nil)
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read SSO group configurations, got error: %s", err))
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read SSO groups, got error: %s", err))
 		return
 	}
 
-	// Find the matching group by name
-	var matchingGroup *struct {
-		Name              string
-		Roles             []string
-		AccountGroupUUIDs []string
-	}
+	// Find our group
+	var ourGroup *ssoGroupConfig
 	for _, group := range query.SSOGroupConfigs {
-		if group.Name == data.Name.ValueString() {
-			matchingGroup = &group
+		if group.Name == config.Name.ValueString() {
+			ourGroup = &group
 			break
 		}
 	}
 
-	if matchingGroup == nil {
-		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("No SSO group found with name: %s", data.Name.ValueString()))
+	if ourGroup == nil {
+		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("SSO group with name %q not found", config.Name.ValueString()))
 		return
 	}
 
 	// Generate a stable ID based on the name
-	data.ID = types.StringValue(fmt.Sprintf("sso-group-%s", matchingGroup.Name))
-	data.Name = types.StringValue(matchingGroup.Name)
+	config.ID = types.StringValue(fmt.Sprintf("sso-group-%s", ourGroup.Name))
+	config.Name = types.StringValue(ourGroup.Name)
 
-	roles, diags := types.ListValueFrom(ctx, types.StringType, matchingGroup.Roles)
+	rolesValue, diags := types.ListValueFrom(ctx, types.StringType, ourGroup.Roles)
 	resp.Diagnostics.Append(diags...)
-	data.Roles = roles
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	config.Roles = rolesValue
 
-	accountGroupUUIDs, diags := types.ListValueFrom(ctx, types.StringType, matchingGroup.AccountGroupUUIDs)
+	accountGroupUUIDsValue, diags := types.ListValueFrom(ctx, types.StringType, ourGroup.AccountGroupUUIDs)
 	resp.Diagnostics.Append(diags...)
-	data.AccountGroupUUIDs = accountGroupUUIDs
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	config.AccountGroupUUIDs = accountGroupUUIDsValue
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &config)...)
 }
