@@ -299,14 +299,44 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 	state.ID = types.StringValue(query.Account.ID)
 	state.Key = types.StringValue(query.Account.Key)
 	state.Name = types.StringValue(query.Account.Name)
-	state.ShortName = types.StringValue(query.Account.ShortName)
-	state.Description = types.StringValue(query.Account.Description)
+	state.ShortName = func() types.String {
+		if query.Account.ShortName == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(query.Account.ShortName)
+	}()
+	state.Description = func() types.String {
+		if query.Account.Description == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(query.Account.Description)
+	}()
 	state.CloudProvider = types.StringValue(string(query.Account.Provider))
-	state.Path = types.StringValue(query.Account.Path)
-	state.Email = types.StringValue(query.Account.Email)
-	state.SecurityContext = types.StringValue(query.Account.SecurityContext)
+	state.Path = func() types.String {
+		if query.Account.Path == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(query.Account.Path)
+	}()
+	state.Email = func() types.String {
+		if query.Account.Email == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(query.Account.Email)
+	}()
+	state.SecurityContext = func() types.String {
+		if query.Account.SecurityContext == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(query.Account.SecurityContext)
+	}()
 	state.Active = types.BoolValue(query.Account.Active)
-	state.Variables = types.StringValue(query.Account.Variables)
+	state.Variables = func() types.String {
+		if query.Account.Variables == "" {
+			return types.StringNull()
+		}
+		return types.StringValue(query.Account.Variables)
+	}()
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
@@ -358,13 +388,6 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 			Description: func() *string {
 				if !plan.Description.IsNull() {
 					s := plan.Description.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-			Path: func() *string {
-				if !plan.Path.IsNull() {
-					s := plan.Path.ValueString()
 					return &s
 				}
 				return nil
@@ -504,7 +527,6 @@ type UpdateAccountInput struct {
 	Name            string        `json:"name"`
 	ShortName       *string       `json:"shortName,omitempty"`
 	Description     *string       `json:"description,omitempty"`
-	Path            *string       `json:"path,omitempty"`
 	Email           *string       `json:"email,omitempty"`
 	SecurityContext *string       `json:"securityContext,omitempty"`
 	Variables       *string       `json:"variables,omitempty"`

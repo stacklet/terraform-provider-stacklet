@@ -1,0 +1,203 @@
+{
+  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}}:{\"input\":{\"description\":\"Test AWS account\",\"email\":\"test@example.com\",\"key\":\"999999999999\",\"name\":\"test-account\",\"path\":\"/test\",\"provider\":\"AWS\",\"shortName\":\"test\",\"variables\":\"{\\\"environment\\\": \\\"test\\\"}\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}}",
+        "variables": {
+          "input": {
+            "description": "Test AWS account",
+            "email": "test@example.com",
+            "key": "999999999999",
+            "name": "test-account",
+            "path": "/test",
+            "provider": "AWS",
+            "shortName": "test",
+            "variables": "{\"environment\": \"test\"}"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccount": {
+            "account": {
+              "active": true,
+              "description": "Test AWS account",
+              "email": "test@example.com",
+              "id": "WyJhY2NvdW50IiwgImF3cyIsICI5OTk5OTk5OTk5OTkiXQ==",
+              "key": "999999999999",
+              "name": "test-account",
+              "path": "/test",
+              "provider": "AWS",
+              "securityContext": "",
+              "shortName": "test",
+              "variables": "{\"environment\": \"test\"}"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateAccountInput!){updateAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}}:{\"input\":{\"description\":\"Updated AWS account\",\"email\":\"updated@example.com\",\"key\":\"999999999999\",\"name\":\"test-account-updated\",\"provider\":\"AWS\",\"shortName\":\"test-updated\",\"variables\":\"{\\\"environment\\\": \\\"staging\\\"}\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateAccountInput!){updateAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}}",
+        "variables": {
+          "input": {
+            "description": "Updated AWS account",
+            "email": "updated@example.com",
+            "key": "999999999999",
+            "name": "test-account-updated",
+            "provider": "AWS",
+            "shortName": "test-updated",
+            "variables": "{\"environment\": \"staging\"}"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateAccount": {
+            "account": {
+              "active": true,
+              "description": "Updated AWS account",
+              "email": "updated@example.com",
+              "id": "WyJhY2NvdW50IiwgImF3cyIsICI5OTk5OTk5OTk5OTkiXQ==",
+              "key": "999999999999",
+              "name": "test-account-updated",
+              "path": "/test",
+              "provider": "AWS",
+              "securityContext": "",
+              "shortName": "test-updated",
+              "variables": "{\"environment\": \"staging\"}"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($key:String!$provider:CloudProvider!){removeAccount(provider: $provider, key: $key){account{key}}}:{\"key\":\"999999999999\",\"provider\":\"AWS\"}": [
+    {
+      "request": {
+        "query": "mutation ($key:String!$provider:CloudProvider!){removeAccount(provider: $provider, key: $key){account{key}}}",
+        "variables": {
+          "key": "999999999999",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccount": {
+            "account": {
+              "key": "999999999999"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}:{\"key\":\"999999999999\",\"provider\":\"AWS\"}": [
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "999999999999",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account",
+            "email": "test@example.com",
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICI5OTk5OTk5OTk5OTkiXQ==",
+            "key": "999999999999",
+            "name": "test-account",
+            "path": "/test",
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": "test",
+            "variables": "{\"environment\": \"test\"}"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "999999999999",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account",
+            "email": "test@example.com",
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICI5OTk5OTk5OTk5OTkiXQ==",
+            "key": "999999999999",
+            "name": "test-account",
+            "path": "/test",
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": "test",
+            "variables": "{\"environment\": \"test\"}"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "999999999999",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account",
+            "email": "test@example.com",
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICI5OTk5OTk5OTk5OTkiXQ==",
+            "key": "999999999999",
+            "name": "test-account",
+            "path": "/test",
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": "test",
+            "variables": "{\"environment\": \"test\"}"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "999999999999",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Updated AWS account",
+            "email": "updated@example.com",
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICI5OTk5OTk5OTk5OTkiXQ==",
+            "key": "999999999999",
+            "name": "test-account-updated",
+            "path": "/test",
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": "test-updated",
+            "variables": "{\"environment\": \"staging\"}"
+          }
+        }
+      }
+    }
+  ]
+}
