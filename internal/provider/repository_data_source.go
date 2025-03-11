@@ -163,19 +163,12 @@ func (d *RepositoryDataSource) Read(ctx context.Context, req datasource.ReadRequ
 			LastScanned       string
 			Provider          string
 			System            bool
-		} `graphql:"repository(uuid: $uuid, url: $url, name: $name)"`
+		} `graphql:"repository(name: $name)"`
 	}
 
 	// Prepare variables based on what's provided
-	variables := map[string]interface{}{}
-	if !data.UUID.IsNull() {
-		variables["uuid"] = data.UUID.ValueString()
-	}
-	if !data.URL.IsNull() {
-		variables["url"] = data.URL.ValueString()
-	}
-	if !data.Name.IsNull() {
-		variables["name"] = data.Name.ValueString()
+	variables := map[string]interface{}{
+		"name": data.Name.ValueString(),
 	}
 
 	// Execute query

@@ -28,6 +28,7 @@ type RepositoryResource struct {
 
 // RepositoryResourceModel describes the resource data model.
 type RepositoryResourceModel struct {
+	ID                types.String   `tfsdk:"id"`
 	UUID              types.String   `tfsdk:"uuid"`
 	Name              types.String   `tfsdk:"name"`
 	URL               types.String   `tfsdk:"url"`
@@ -50,6 +51,10 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 	resp.Schema = schema.Schema{
 		Description: "Manages a Stacklet repository.",
 		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Description: "The unique identifier for this repository.",
+				Computed:    true,
+			},
 			"uuid": schema.StringAttribute{
 				Description: "The UUID of the repository.",
 				Computed:    true,
@@ -71,6 +76,9 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"description": schema.StringAttribute{
 				Description: "A description of the repository.",
 				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"policy_file_suffix": schema.ListAttribute{
 				Description: "Override the default suffix options ['.yaml', '.yml']. This could allow specifying ['.json'] to process other files.",
@@ -85,25 +93,40 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"branch_name": schema.StringAttribute{
 				Description: "If set, use the specified branch name when scanning for policies rather than the repository default.",
 				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"auth_user": schema.StringAttribute{
 				Description: "The user to use to access the repository if it is private.",
 				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"auth_token": schema.StringAttribute{
 				Description: "The token for the user to use to access the repository if it is private.",
 				Optional:    true,
 				Sensitive:   true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"ssh_private_key": schema.StringAttribute{
 				Description: "SSH private key for repository authentication.",
 				Optional:    true,
 				Sensitive:   true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"ssh_passphrase": schema.StringAttribute{
 				Description: "Passphrase for the SSH private key.",
 				Optional:    true,
 				Sensitive:   true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"deep_import": schema.BoolAttribute{
 				Description: "If true, scan repository from the beginning. If false, only scan the tip.",
@@ -186,6 +209,8 @@ func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequ
 
 	// Save UUID from response
 	data.UUID = types.StringValue(mutation.AddRepository.Repository.UUID)
+	// Set ID to URL since that's what we use for import
+	data.ID = types.StringValue(data.URL.ValueString())
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -199,6 +224,9 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// Store the deep_import value from state
+	deepImport := data.DeepImport
 
 	// Prepare GraphQL query
 	var query struct {
@@ -229,22 +257,70 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 
 	// Map response to model
 	data.UUID = types.StringValue(query.Repository.UUID)
+	// Set ID to URL since that's what we use for import
+	data.ID = types.StringValue(query.Repository.URL)
 	data.Name = types.StringValue(query.Repository.Name)
 	data.URL = types.StringValue(query.Repository.URL)
-	data.Description = types.StringValue(query.Repository.Description)
-	data.BranchName = types.StringValue(query.Repository.BranchName)
-	data.AuthUser = types.StringValue(query.Repository.AuthUser)
+
+	// Handle optional fields
+	if query.Repository.Description != "" {
+		data.Description = types.StringValue(query.Repository.Description)
+	} else {
+		data.Description = types.StringNull()
+	}
+
+	if query.Repository.BranchName != "" {
+		data.BranchName = types.StringValue(query.Repository.BranchName)
+	} else {
+		data.BranchName = types.StringNull()
+	}
+
+	if query.Repository.AuthUser != "" {
+		data.AuthUser = types.StringValue(query.Repository.AuthUser)
+	} else {
+		data.AuthUser = types.StringNull()
+	}
+
+	// Preserve sensitive fields from state if they exist
+	if !data.AuthToken.IsNull() {
+		data.AuthToken = data.AuthToken
+	} else {
+		data.AuthToken = types.StringNull()
+	}
+
+	if !data.SSHPrivateKey.IsNull() {
+		data.SSHPrivateKey = data.SSHPrivateKey
+	} else {
+		data.SSHPrivateKey = types.StringNull()
+	}
+
+	if !data.SSHPassphrase.IsNull() {
+		data.SSHPassphrase = data.SSHPassphrase
+	} else {
+		data.SSHPassphrase = types.StringNull()
+	}
+
+	// Preserve the deep_import value from state
+	data.DeepImport = deepImport
 
 	// Map policy file suffixes
-	data.PolicyFileSuffix = make([]types.String, len(query.Repository.PolicyFileSuffix))
-	for i, suffix := range query.Repository.PolicyFileSuffix {
-		data.PolicyFileSuffix[i] = types.StringValue(suffix)
+	if len(query.Repository.PolicyFileSuffix) > 0 {
+		data.PolicyFileSuffix = make([]types.String, len(query.Repository.PolicyFileSuffix))
+		for i, suffix := range query.Repository.PolicyFileSuffix {
+			data.PolicyFileSuffix[i] = types.StringValue(suffix)
+		}
+	} else {
+		data.PolicyFileSuffix = nil
 	}
 
 	// Map policy directories
-	data.PolicyDirectories = make([]types.String, len(query.Repository.PolicyDirectories))
-	for i, dir := range query.Repository.PolicyDirectories {
-		data.PolicyDirectories[i] = types.StringValue(dir)
+	if len(query.Repository.PolicyDirectories) > 0 {
+		data.PolicyDirectories = make([]types.String, len(query.Repository.PolicyDirectories))
+		for i, dir := range query.Repository.PolicyDirectories {
+			data.PolicyDirectories[i] = types.StringValue(dir)
+		}
+	} else {
+		data.PolicyDirectories = nil
 	}
 
 	// Save updated data into Terraform state
@@ -302,6 +378,9 @@ func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update repository, got error: %s", err))
 		return
 	}
+
+	// Set ID to URL since that's what we use for import
+	data.ID = types.StringValue(data.URL.ValueString())
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

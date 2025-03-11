@@ -1,0 +1,242 @@
+{
+  "mutation ($input:RepositoryInput!){addRepository(input: $input){repository{uuid}}}:{\"input\":{\"branchName\":\"main\",\"deepImport\":false,\"description\":\"Test repository\",\"name\":\"test-repo-ds\",\"policyDirectories\":[\"policies\"],\"policyFileSuffix\":[\".yaml\"],\"url\":\"https://github.com/test-org/test-repo\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RepositoryInput!){addRepository(input: $input){repository{uuid}}}",
+        "variables": {
+          "input": {
+            "branchName": "main",
+            "deepImport": false,
+            "description": "Test repository",
+            "name": "test-repo-ds",
+            "policyDirectories": [
+              "policies"
+            ],
+            "policyFileSuffix": [
+              ".yaml"
+            ],
+            "url": "https://github.com/test-org/test-repo"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addRepository": {
+            "repository": {
+              "uuid": "a2f265b4-0f1e-45df-a371-70da296c25fc"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($url:String!){removeRepository(url: $url){repository{uuid}}}:{\"url\":\"https://github.com/test-org/test-repo\"}": [
+    {
+      "request": {
+        "query": "mutation ($url:String!){removeRepository(url: $url){repository{uuid}}}",
+        "variables": {
+          "url": "https://github.com/test-org/test-repo"
+        }
+      },
+      "response": {
+        "data": {
+          "removeRepository": {
+            "repository": {
+              "uuid": "a2f265b4-0f1e-45df-a371-70da296c25fc"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!){repository(name: $name){uuid,name,url,description,policyFileSuffix,policyDirectories,branchName,authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase,head,lastScanned,provider,system}}:{\"name\":\"test-repo-ds\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!){repository(name: $name){uuid,name,url,description,policyFileSuffix,policyDirectories,branchName,authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase,head,lastScanned,provider,system}}",
+        "variables": {
+          "name": "test-repo-ds"
+        }
+      },
+      "response": {
+        "data": {
+          "repository": {
+            "authUser": null,
+            "branchName": "main",
+            "description": "Test repository",
+            "hasAuthToken": false,
+            "hasSshPassphrase": false,
+            "hasSshPrivateKey": false,
+            "head": null,
+            "lastScanned": "2025-03-11T19:13:15.396867+00:00",
+            "name": "test-repo-ds",
+            "policyDirectories": [
+              "policies"
+            ],
+            "policyFileSuffix": [
+              ".yaml"
+            ],
+            "provider": "github",
+            "system": false,
+            "url": "https://github.com/test-org/test-repo",
+            "uuid": "a2f265b4-0f1e-45df-a371-70da296c25fc"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){repository(name: $name){uuid,name,url,description,policyFileSuffix,policyDirectories,branchName,authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase,head,lastScanned,provider,system}}",
+        "variables": {
+          "name": "test-repo-ds"
+        }
+      },
+      "response": {
+        "data": {
+          "repository": {
+            "authUser": null,
+            "branchName": "main",
+            "description": "Test repository",
+            "hasAuthToken": false,
+            "hasSshPassphrase": false,
+            "hasSshPrivateKey": false,
+            "head": null,
+            "lastScanned": "2025-03-11T19:13:15.396867+00:00",
+            "name": "test-repo-ds",
+            "policyDirectories": [
+              "policies"
+            ],
+            "policyFileSuffix": [
+              ".yaml"
+            ],
+            "provider": "github",
+            "system": false,
+            "url": "https://github.com/test-org/test-repo",
+            "uuid": "a2f265b4-0f1e-45df-a371-70da296c25fc"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){repository(name: $name){uuid,name,url,description,policyFileSuffix,policyDirectories,branchName,authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase,head,lastScanned,provider,system}}",
+        "variables": {
+          "name": "test-repo-ds"
+        }
+      },
+      "response": {
+        "data": {
+          "repository": {
+            "authUser": null,
+            "branchName": "main",
+            "description": "Test repository",
+            "hasAuthToken": false,
+            "hasSshPassphrase": false,
+            "hasSshPrivateKey": false,
+            "head": null,
+            "lastScanned": "2025-03-11T19:13:15.396867+00:00",
+            "name": "test-repo-ds",
+            "policyDirectories": [
+              "policies"
+            ],
+            "policyFileSuffix": [
+              ".yaml"
+            ],
+            "provider": "github",
+            "system": false,
+            "url": "https://github.com/test-org/test-repo",
+            "uuid": "a2f265b4-0f1e-45df-a371-70da296c25fc"
+          }
+        }
+      }
+    }
+  ],
+  "query ($url:String!){repository(url: $url){uuid,name,url,description,policyFileSuffix,policyDirectories,branchName,authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}}:{\"url\":\"https://github.com/test-org/test-repo\"}": [
+    {
+      "request": {
+        "query": "query ($url:String!){repository(url: $url){uuid,name,url,description,policyFileSuffix,policyDirectories,branchName,authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}}",
+        "variables": {
+          "url": "https://github.com/test-org/test-repo"
+        }
+      },
+      "response": {
+        "data": {
+          "repository": {
+            "authUser": null,
+            "branchName": "main",
+            "description": "Test repository",
+            "hasAuthToken": false,
+            "hasSshPassphrase": false,
+            "hasSshPrivateKey": false,
+            "name": "test-repo-ds",
+            "policyDirectories": [
+              "policies"
+            ],
+            "policyFileSuffix": [
+              ".yaml"
+            ],
+            "url": "https://github.com/test-org/test-repo",
+            "uuid": "a2f265b4-0f1e-45df-a371-70da296c25fc"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($url:String!){repository(url: $url){uuid,name,url,description,policyFileSuffix,policyDirectories,branchName,authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}}",
+        "variables": {
+          "url": "https://github.com/test-org/test-repo"
+        }
+      },
+      "response": {
+        "data": {
+          "repository": {
+            "authUser": null,
+            "branchName": "main",
+            "description": "Test repository",
+            "hasAuthToken": false,
+            "hasSshPassphrase": false,
+            "hasSshPrivateKey": false,
+            "name": "test-repo-ds",
+            "policyDirectories": [
+              "policies"
+            ],
+            "policyFileSuffix": [
+              ".yaml"
+            ],
+            "url": "https://github.com/test-org/test-repo",
+            "uuid": "a2f265b4-0f1e-45df-a371-70da296c25fc"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($url:String!){repository(url: $url){uuid,name,url,description,policyFileSuffix,policyDirectories,branchName,authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}}",
+        "variables": {
+          "url": "https://github.com/test-org/test-repo"
+        }
+      },
+      "response": {
+        "data": {
+          "repository": {
+            "authUser": null,
+            "branchName": "main",
+            "description": "Test repository",
+            "hasAuthToken": false,
+            "hasSshPassphrase": false,
+            "hasSshPrivateKey": false,
+            "name": "test-repo-ds",
+            "policyDirectories": [
+              "policies"
+            ],
+            "policyFileSuffix": [
+              ".yaml"
+            ],
+            "url": "https://github.com/test-org/test-repo",
+            "uuid": "a2f265b4-0f1e-45df-a371-70da296c25fc"
+          }
+        }
+      }
+    }
+  ]
+}
