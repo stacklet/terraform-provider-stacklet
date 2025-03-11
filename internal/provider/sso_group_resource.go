@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"sort"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -45,6 +46,14 @@ type ssoGroupConfigInput struct {
 	Name              string   `json:"name"`
 	Roles             []string `json:"roles"`
 	AccountGroupUUIDs []string `json:"accountGroupUUIDs"`
+}
+
+// Helper function to sort string slices
+func sortStrings(s []string) []string {
+	sorted := make([]string, len(s))
+	copy(sorted, s)
+	sort.Strings(sorted)
+	return sorted
 }
 
 func (r *ssoGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -116,18 +125,20 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	// Convert plan values to native types
+	// Convert plan values to native types and sort them
 	var roles []string
 	resp.Diagnostics.Append(plan.Roles.ElementsAs(ctx, &roles, false)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	roles = sortStrings(roles)
 
 	var accountGroupUUIDs []string
 	resp.Diagnostics.Append(plan.AccountGroupUUIDs.ElementsAs(ctx, &accountGroupUUIDs, false)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	accountGroupUUIDs = sortStrings(accountGroupUUIDs)
 
 	// Create a new list of groups with our new group
 	groups := make([]ssoGroupConfigInput, 0, len(query.SSOGroupConfigs)+1)
@@ -139,10 +150,11 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 			)
 			return
 		}
+		// Sort the values from existing groups as well
 		groups = append(groups, ssoGroupConfigInput{
 			Name:              group.Name,
-			Roles:             group.Roles,
-			AccountGroupUUIDs: group.AccountGroupUUIDs,
+			Roles:             sortStrings(group.Roles),
+			AccountGroupUUIDs: sortStrings(group.AccountGroupUUIDs),
 		})
 	}
 
@@ -190,14 +202,19 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 	plan.ID = types.StringValue(fmt.Sprintf("sso-group-%s", ourGroup.Name))
 	plan.Name = types.StringValue(ourGroup.Name)
 
-	rolesValue, diags := types.ListValueFrom(ctx, types.StringType, ourGroup.Roles)
+	// Sort the returned values
+	roles = sortStrings(ourGroup.Roles)
+	accountGroupUUIDs = sortStrings(ourGroup.AccountGroupUUIDs)
+
+	// Create new list values with sorted data
+	rolesValue, diags := types.ListValueFrom(ctx, types.StringType, roles)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	plan.Roles = rolesValue
 
-	accountGroupUUIDsValue, diags := types.ListValueFrom(ctx, types.StringType, ourGroup.AccountGroupUUIDs)
+	accountGroupUUIDsValue, diags := types.ListValueFrom(ctx, types.StringType, accountGroupUUIDs)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -243,14 +260,19 @@ func (r *ssoGroupResource) Read(ctx context.Context, req resource.ReadRequest, r
 	state.ID = types.StringValue(fmt.Sprintf("sso-group-%s", ourGroup.Name))
 	state.Name = types.StringValue(ourGroup.Name)
 
-	rolesValue, diags := types.ListValueFrom(ctx, types.StringType, ourGroup.Roles)
+	// Sort the returned values
+	roles := sortStrings(ourGroup.Roles)
+	accountGroupUUIDs := sortStrings(ourGroup.AccountGroupUUIDs)
+
+	// Create new list values with sorted data
+	rolesValue, diags := types.ListValueFrom(ctx, types.StringType, roles)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	state.Roles = rolesValue
 
-	accountGroupUUIDsValue, diags := types.ListValueFrom(ctx, types.StringType, ourGroup.AccountGroupUUIDs)
+	accountGroupUUIDsValue, diags := types.ListValueFrom(ctx, types.StringType, accountGroupUUIDs)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -282,18 +304,20 @@ func (r *ssoGroupResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	// Convert plan values to native types
+	// Convert plan values to native types and sort them
 	var roles []string
 	resp.Diagnostics.Append(plan.Roles.ElementsAs(ctx, &roles, false)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	roles = sortStrings(roles)
 
 	var accountGroupUUIDs []string
 	resp.Diagnostics.Append(plan.AccountGroupUUIDs.ElementsAs(ctx, &accountGroupUUIDs, false)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	accountGroupUUIDs = sortStrings(accountGroupUUIDs)
 
 	// Create a new list of groups with our updated group
 	groups := make([]ssoGroupConfigInput, 0, len(query.SSOGroupConfigs))
@@ -302,10 +326,11 @@ func (r *ssoGroupResource) Update(ctx context.Context, req resource.UpdateReques
 			// Skip the old version of our group
 			continue
 		}
+		// Sort the values from existing groups as well
 		groups = append(groups, ssoGroupConfigInput{
 			Name:              group.Name,
-			Roles:             group.Roles,
-			AccountGroupUUIDs: group.AccountGroupUUIDs,
+			Roles:             sortStrings(group.Roles),
+			AccountGroupUUIDs: sortStrings(group.AccountGroupUUIDs),
 		})
 	}
 
@@ -353,14 +378,19 @@ func (r *ssoGroupResource) Update(ctx context.Context, req resource.UpdateReques
 	plan.ID = types.StringValue(fmt.Sprintf("sso-group-%s", ourGroup.Name))
 	plan.Name = types.StringValue(ourGroup.Name)
 
-	rolesValue, diags := types.ListValueFrom(ctx, types.StringType, ourGroup.Roles)
+	// Sort the returned values
+	roles = sortStrings(ourGroup.Roles)
+	accountGroupUUIDs = sortStrings(ourGroup.AccountGroupUUIDs)
+
+	// Create new list values with sorted data
+	rolesValue, diags := types.ListValueFrom(ctx, types.StringType, roles)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	plan.Roles = rolesValue
 
-	accountGroupUUIDsValue, diags := types.ListValueFrom(ctx, types.StringType, ourGroup.AccountGroupUUIDs)
+	accountGroupUUIDsValue, diags := types.ListValueFrom(ctx, types.StringType, accountGroupUUIDs)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -427,5 +457,6 @@ func (r *ssoGroupResource) Delete(ctx context.Context, req resource.DeleteReques
 }
 
 func (r *ssoGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
+	// The import ID is expected to be the name of the SSO group
+	resource.ImportStatePassthroughID(ctx, path.Root("name"), req, resp)
 }

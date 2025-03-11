@@ -1,0 +1,983 @@
+{
+  "mutation ($input:SetSSOGroupConfigsInput!){setSSOGroups(input: $input){groups{name,roles,accountGroupUUIDs}}}:{\"input\":{\"groups\":[{\"accountGroupUUIDs\":[],\"name\":\"Design\",\"roles\":[\"admin\",\"viewer\"]},{\"accountGroupUUIDs\":[],\"name\":\"Engineering\",\"roles\":[\"admin\",\"viewer\"]},{\"accountGroupUUIDs\":[\"a628b4be-7f15-4688-8e00-5bcba69ee70f\",\"d6e15e8f-1a43-457c-bb26-48866d0d2fdc\"],\"name\":\"SRE\",\"roles\":[\"viewer\"]},{\"accountGroupUUIDs\":[\"a082e128-289a-45cc-84a8-6a388a91e9a0\",\"ead117e0-726e-4839-9693-c10c2d203454\"],\"name\":\"Stacklet_PROD_Admin\",\"roles\":[\"viewer\"]},{\"accountGroupUUIDs\":[],\"name\":\"Stacklet Team\",\"roles\":[\"admin\",\"viewer\"]},{\"accountGroupUUIDs\":[\"e2e040cf-6f10-4cdf-94b1-9600b2ee36ca\"],\"name\":\"Terraform created Group\",\"roles\":[\"viewer\"]},{\"accountGroupUUIDs\":[\"e2e040cf-6f10-4cdf-94b1-9600b2ee36ca\"],\"name\":\"test-group\",\"roles\":[\"admin\"]},{\"accountGroupUUIDs\":[\"d76ccc28-5bad-49b4-9caf-ec4ea71f1cdc\",\"e2e040cf-6f10-4cdf-94b1-9600b2ee36ca\"],\"name\":\"test-group-updated\",\"roles\":[\"admin\",\"viewer\"]}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:SetSSOGroupConfigsInput!){setSSOGroups(input: $input){groups{name,roles,accountGroupUUIDs}}}",
+        "variables": {
+          "input": {
+            "groups": [
+              {
+                "accountGroupUUIDs": [],
+                "name": "Design",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Engineering",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                  "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+                ],
+                "name": "SRE",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                  "ead117e0-726e-4839-9693-c10c2d203454"
+                ],
+                "name": "Stacklet_PROD_Admin",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Stacklet Team",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "Terraform created Group",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "test-group",
+                "roles": [
+                  "admin"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "d76ccc28-5bad-49b4-9caf-ec4ea71f1cdc",
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "test-group-updated",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "setSSOGroups": {
+            "groups": [
+              {
+                "accountGroupUUIDs": [],
+                "name": "Design",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Engineering",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                  "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+                ],
+                "name": "SRE",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                  "ead117e0-726e-4839-9693-c10c2d203454"
+                ],
+                "name": "Stacklet_PROD_Admin",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Stacklet Team",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "Terraform created Group",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "test-group",
+                "roles": [
+                  "admin"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "d76ccc28-5bad-49b4-9caf-ec4ea71f1cdc",
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "test-group-updated",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:SetSSOGroupConfigsInput!){setSSOGroups(input: $input){groups{name,roles,accountGroupUUIDs}}}:{\"input\":{\"groups\":[{\"accountGroupUUIDs\":[],\"name\":\"Design\",\"roles\":[\"admin\",\"viewer\"]},{\"accountGroupUUIDs\":[],\"name\":\"Engineering\",\"roles\":[\"admin\",\"viewer\"]},{\"accountGroupUUIDs\":[\"a628b4be-7f15-4688-8e00-5bcba69ee70f\",\"d6e15e8f-1a43-457c-bb26-48866d0d2fdc\"],\"name\":\"SRE\",\"roles\":[\"viewer\"]},{\"accountGroupUUIDs\":[\"a082e128-289a-45cc-84a8-6a388a91e9a0\",\"ead117e0-726e-4839-9693-c10c2d203454\"],\"name\":\"Stacklet_PROD_Admin\",\"roles\":[\"viewer\"]},{\"accountGroupUUIDs\":[],\"name\":\"Stacklet Team\",\"roles\":[\"admin\",\"viewer\"]},{\"accountGroupUUIDs\":[\"e2e040cf-6f10-4cdf-94b1-9600b2ee36ca\"],\"name\":\"Terraform created Group\",\"roles\":[\"viewer\"]},{\"accountGroupUUIDs\":[\"e2e040cf-6f10-4cdf-94b1-9600b2ee36ca\"],\"name\":\"test-group\",\"roles\":[\"admin\"]}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:SetSSOGroupConfigsInput!){setSSOGroups(input: $input){groups{name,roles,accountGroupUUIDs}}}",
+        "variables": {
+          "input": {
+            "groups": [
+              {
+                "accountGroupUUIDs": [],
+                "name": "Design",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Engineering",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                  "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+                ],
+                "name": "SRE",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                  "ead117e0-726e-4839-9693-c10c2d203454"
+                ],
+                "name": "Stacklet_PROD_Admin",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Stacklet Team",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "Terraform created Group",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "test-group",
+                "roles": [
+                  "admin"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "setSSOGroups": {
+            "groups": [
+              {
+                "accountGroupUUIDs": [],
+                "name": "Design",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Engineering",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                  "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+                ],
+                "name": "SRE",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                  "ead117e0-726e-4839-9693-c10c2d203454"
+                ],
+                "name": "Stacklet_PROD_Admin",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Stacklet Team",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "Terraform created Group",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "test-group",
+                "roles": [
+                  "admin"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "mutation ($input:SetSSOGroupConfigsInput!){setSSOGroups(input: $input){groups{name,roles,accountGroupUUIDs}}}",
+        "variables": {
+          "input": {
+            "groups": [
+              {
+                "accountGroupUUIDs": [],
+                "name": "Design",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Engineering",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                  "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+                ],
+                "name": "SRE",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                  "ead117e0-726e-4839-9693-c10c2d203454"
+                ],
+                "name": "Stacklet_PROD_Admin",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Stacklet Team",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "Terraform created Group",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "test-group",
+                "roles": [
+                  "admin"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "setSSOGroups": {
+            "groups": [
+              {
+                "accountGroupUUIDs": [],
+                "name": "Design",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Engineering",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                  "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+                ],
+                "name": "SRE",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                  "ead117e0-726e-4839-9693-c10c2d203454"
+                ],
+                "name": "Stacklet_PROD_Admin",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [],
+                "name": "Stacklet Team",
+                "roles": [
+                  "admin",
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "Terraform created Group",
+                "roles": [
+                  "viewer"
+                ]
+              },
+              {
+                "accountGroupUUIDs": [
+                  "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+                ],
+                "name": "test-group",
+                "roles": [
+                  "admin"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "{ssoGroupConfigs{name,roles,accountGroupUUIDs}}": [
+    {
+      "request": {
+        "query": "{ssoGroupConfigs{name,roles,accountGroupUUIDs}}"
+      },
+      "response": {
+        "data": {
+          "ssoGroupConfigs": [
+            {
+              "accountGroupUUIDs": [],
+              "name": "Design",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Engineering",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+              ],
+              "name": "SRE",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                "ead117e0-726e-4839-9693-c10c2d203454"
+              ],
+              "name": "Stacklet_PROD_Admin",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Stacklet Team",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "Terraform created Group",
+              "roles": [
+                "viewer"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{ssoGroupConfigs{name,roles,accountGroupUUIDs}}"
+      },
+      "response": {
+        "data": {
+          "ssoGroupConfigs": [
+            {
+              "accountGroupUUIDs": [],
+              "name": "Design",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Engineering",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+              ],
+              "name": "SRE",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                "ead117e0-726e-4839-9693-c10c2d203454"
+              ],
+              "name": "Stacklet_PROD_Admin",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Stacklet Team",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "Terraform created Group",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "test-group",
+              "roles": [
+                "admin"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{ssoGroupConfigs{name,roles,accountGroupUUIDs}}"
+      },
+      "response": {
+        "data": {
+          "ssoGroupConfigs": [
+            {
+              "accountGroupUUIDs": [],
+              "name": "Design",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Engineering",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+              ],
+              "name": "SRE",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                "ead117e0-726e-4839-9693-c10c2d203454"
+              ],
+              "name": "Stacklet_PROD_Admin",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Stacklet Team",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "Terraform created Group",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "test-group",
+              "roles": [
+                "admin"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{ssoGroupConfigs{name,roles,accountGroupUUIDs}}"
+      },
+      "response": {
+        "data": {
+          "ssoGroupConfigs": [
+            {
+              "accountGroupUUIDs": [],
+              "name": "Design",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Engineering",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+              ],
+              "name": "SRE",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                "ead117e0-726e-4839-9693-c10c2d203454"
+              ],
+              "name": "Stacklet_PROD_Admin",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Stacklet Team",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "Terraform created Group",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "test-group",
+              "roles": [
+                "admin"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{ssoGroupConfigs{name,roles,accountGroupUUIDs}}"
+      },
+      "response": {
+        "data": {
+          "ssoGroupConfigs": [
+            {
+              "accountGroupUUIDs": [],
+              "name": "Design",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Engineering",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+              ],
+              "name": "SRE",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                "ead117e0-726e-4839-9693-c10c2d203454"
+              ],
+              "name": "Stacklet_PROD_Admin",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Stacklet Team",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "Terraform created Group",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "test-group",
+              "roles": [
+                "admin"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{ssoGroupConfigs{name,roles,accountGroupUUIDs}}"
+      },
+      "response": {
+        "data": {
+          "ssoGroupConfigs": [
+            {
+              "accountGroupUUIDs": [],
+              "name": "Design",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Engineering",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+              ],
+              "name": "SRE",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                "ead117e0-726e-4839-9693-c10c2d203454"
+              ],
+              "name": "Stacklet_PROD_Admin",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Stacklet Team",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "Terraform created Group",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "test-group",
+              "roles": [
+                "admin"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "d76ccc28-5bad-49b4-9caf-ec4ea71f1cdc",
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "test-group-updated",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{ssoGroupConfigs{name,roles,accountGroupUUIDs}}"
+      },
+      "response": {
+        "data": {
+          "ssoGroupConfigs": [
+            {
+              "accountGroupUUIDs": [],
+              "name": "Design",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Engineering",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a628b4be-7f15-4688-8e00-5bcba69ee70f",
+                "d6e15e8f-1a43-457c-bb26-48866d0d2fdc"
+              ],
+              "name": "SRE",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "a082e128-289a-45cc-84a8-6a388a91e9a0",
+                "ead117e0-726e-4839-9693-c10c2d203454"
+              ],
+              "name": "Stacklet_PROD_Admin",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [],
+              "name": "Stacklet Team",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "Terraform created Group",
+              "roles": [
+                "viewer"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "test-group",
+              "roles": [
+                "admin"
+              ]
+            },
+            {
+              "accountGroupUUIDs": [
+                "d76ccc28-5bad-49b4-9caf-ec4ea71f1cdc",
+                "e2e040cf-6f10-4cdf-94b1-9600b2ee36ca"
+              ],
+              "name": "test-group-updated",
+              "roles": [
+                "admin",
+                "viewer"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
