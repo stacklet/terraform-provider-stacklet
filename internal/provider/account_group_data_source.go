@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -28,6 +29,7 @@ type accountGroupDataSourceModel struct {
 	Name          types.String `tfsdk:"name"`
 	Description   types.String `tfsdk:"description"`
 	CloudProvider types.String `tfsdk:"cloud_provider"`
+	Regions       types.List   `tfsdk:"regions"`
 }
 
 func (d *accountGroupDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -57,6 +59,11 @@ func (d *accountGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 			"cloud_provider": schema.StringAttribute{
 				Description: "The cloud provider for the account group.",
 				Computed:    true,
+			},
+			"regions": schema.ListAttribute{
+				Description: "The regions for the account group.",
+				Computed:    true,
+				ElementType: types.StringType,
 			},
 		},
 	}
@@ -94,6 +101,7 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 			Name        string
 			Description string
 			Provider    string
+			Regions     []string
 		} `graphql:"accountGroup(uuid: $uuid, name: $name)"`
 	}
 
@@ -126,6 +134,10 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 	data.Name = types.StringValue(query.AccountGroup.Name)
 	data.Description = types.StringValue(query.AccountGroup.Description)
 	data.CloudProvider = types.StringValue(query.AccountGroup.Provider)
-
+	regions := make([]attr.Value, len(query.AccountGroup.Regions))
+	for i, region := range query.AccountGroup.Regions {
+		regions[i] = types.StringValue(region)
+	}
+	data.Regions, _ = types.ListValue(types.StringType, regions)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

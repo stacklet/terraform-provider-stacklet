@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -14,7 +15,8 @@ import (
 )
 
 var (
-	_ resource.Resource = &accountGroupResource{}
+	_ resource.Resource                = &accountGroupResource{}
+	_ resource.ResourceWithImportState = &accountGroupResource{}
 )
 
 func NewAccountGroupResource() resource.Resource {
@@ -273,6 +275,11 @@ func (r *accountGroupResource) Delete(ctx context.Context, req resource.DeleteRe
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete account group, got error: %s", err))
 		return
 	}
+}
+
+func (r *accountGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	// The import ID is the UUID of the account group
+	resource.ImportStatePassthroughID(ctx, path.Root("uuid"), req, resp)
 }
 
 type UpsertAccountGroupMappingsInput struct {
