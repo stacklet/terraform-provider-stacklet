@@ -3,7 +3,9 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -11,7 +13,8 @@ import (
 )
 
 var (
-	_ resource.Resource = &policyCollectionItemResource{}
+	_ resource.Resource                = &policyCollectionItemResource{}
+	_ resource.ResourceWithImportState = &policyCollectionItemResource{}
 )
 
 func NewPolicyCollectionItemResource() resource.Resource {
@@ -230,4 +233,51 @@ type PolicyCollectionItemsInput struct {
 
 type RemovePolicyCollectionMappingsInput struct {
 	IDs []graphql.ID `json:"ids"`
+}
+
+func (r *policyCollectionItemResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	parts := strings.Split(req.ID, ":")
+	if len(parts) != 2 {
+		resp.Diagnostics.AddError(
+			"Invalid Import ID",
+			"Import ID must be in the format: collection_name:policy_uuid",
+		)
+		return
+	}
+
+	collectionName := parts[0]
+	policyUUID := parts[1]
+
+	// First get the collection UUID from the name
+	var collectionQuery struct {
+		PolicyCollection struct {
+			UUID string
+		} `graphql:"policyCollection(name: $name)"`
+	}
+
+	variables := map[string]interface{}{
+		"name": graphql.String(collectionName),
+	}
+
+	err := r.client.Query(ctx, &collectionQuery, variables)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Policy Collection",
+			fmt.Sprintf("Could not read policy collection with name %s: %s", collectionName, err),
+		)
+		return
+	}
+
+	if collectionQuery.PolicyCollection.UUID == "" {
+		resp.Diagnostics.AddError(
+			"Policy Collection Not Found",
+			fmt.Sprintf("No policy collection found with name %s", collectionName),
+		)
+		return
+	}
+
+	// Set the imported attributes
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("collection_uuid"), collectionQuery.PolicyCollection.UUID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("policy_uuid"), policyUUID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), fmt.Sprintf("%s:%s", collectionQuery.PolicyCollection.UUID, policyUUID))...)
 }

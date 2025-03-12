@@ -1,0 +1,298 @@
+{
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}:{\"input\":{\"description\":\"Test policy collection\",\"name\":\"test-collection-items\",\"provider\":\"AWS\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}",
+        "variables": {
+          "input": {
+            "description": "Test policy collection",
+            "name": "test-collection-items",
+            "provider": "AWS"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addPolicyCollection": {
+            "collection": {
+              "autoUpdate": false,
+              "description": "Test policy collection",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI2NTlhZDY5Zi0yN2E0LTQ2ZWEtODE1ZC04Yjg3YjE1YjJkZjEiXQ==",
+              "name": "test-collection-items",
+              "provider": "AWS",
+              "repository": null,
+              "system": false,
+              "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:PolicyCollectionItemsInput!){addPolicyCollectionItems(input: $input){collection{uuid,policyMappings{edges{node{id}}}}}}:{\"input\":{\"items\":[{\"policyUUID\":\"d741e99b-5d4d-44c9-83e8-884c614cfc8f\"}],\"uuid\":\"659ad69f-27a4-46ea-815d-8b87b15b2df1\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:PolicyCollectionItemsInput!){addPolicyCollectionItems(input: $input){collection{uuid,policyMappings{edges{node{id}}}}}}",
+        "variables": {
+          "input": {
+            "items": [
+              {
+                "policyUUID": "d741e99b-5d4d-44c9-83e8-884c614cfc8f"
+              }
+            ],
+            "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addPolicyCollectionItems": {
+            "collection": {
+              "policyMappings": {
+                "edges": [
+                  {
+                    "node": {
+                      "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjY1OWFkNjlmLTI3YTQtNDZlYS04MTVkLThiODdiMTViMmRmMSIsICJkNzQxZTk5Yi01ZDRkLTQ0YzktODNlOC04ODRjNjE0Y2ZjOGYiXQ=="
+                    }
+                  }
+                ]
+              },
+              "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwiNjU5YWQ2OWYtMjdhNC00NmVhLTgxNWQtOGI4N2IxNWIyZGYxIiwiZDc0MWU5OWItNWQ0ZC00NGM5LTgzZTgtODg0YzYxNGNmYzhmIl0=\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}",
+        "variables": {
+          "input": {
+            "ids": [
+              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwiNjU5YWQ2OWYtMjdhNC00NmVhLTgxNWQtOGI4N2IxNWIyZGYxIiwiZDc0MWU5OWItNWQ0ZC00NGM5LTgzZTgtODg0YzYxNGNmYzhmIl0="
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removePolicyCollectionMappings": {
+            "removed": [
+              {
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjY1OWFkNjlmLTI3YTQtNDZlYS04MTVkLThiODdiMTViMmRmMSIsICJkNzQxZTk5Yi01ZDRkLTQ0YzktODNlOC04ODRjNjE0Y2ZjOGYiXQ=="
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"659ad69f-27a4-46ea-815d-8b87b15b2df1\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
+        "variables": {
+          "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+        }
+      },
+      "response": {
+        "data": {
+          "removePolicyCollection": {
+            "collection": {
+              "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!){policyCollection(name: $name){uuid}}:{\"name\":\"test-collection-items\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!){policyCollection(name: $name){uuid}}",
+        "variables": {
+          "name": "test-collection-items"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}:{\"uuid\":\"659ad69f-27a4-46ea-815d-8b87b15b2df1\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "variables": {
+          "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI2NTlhZDY5Zi0yN2E0LTQ2ZWEtODE1ZC04Yjg3YjE1YjJkZjEiXQ==",
+            "name": "test-collection-items",
+            "provider": "AWS",
+            "repository": null,
+            "system": false,
+            "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "variables": {
+          "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI2NTlhZDY5Zi0yN2E0LTQ2ZWEtODE1ZC04Yjg3YjE1YjJkZjEiXQ==",
+            "name": "test-collection-items",
+            "provider": "AWS",
+            "repository": null,
+            "system": false,
+            "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "variables": {
+          "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI2NTlhZDY5Zi0yN2E0LTQ2ZWEtODE1ZC04Yjg3YjE1YjJkZjEiXQ==",
+            "name": "test-collection-items",
+            "provider": "AWS",
+            "repository": null,
+            "system": false,
+            "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:String!){policyCollection(uuid: $uuid){policies{edges{node{policy{uuid}}}}}}:{\"uuid\":\"659ad69f-27a4-46ea-815d-8b87b15b2df1\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policies{edges{node{policy{uuid}}}}}}",
+        "variables": {
+          "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policies": {
+              "edges": [
+                {
+                  "node": {
+                    "policy": {
+                      "uuid": "d741e99b-5d4d-44c9-83e8-884c614cfc8f"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policies{edges{node{policy{uuid}}}}}}",
+        "variables": {
+          "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policies": {
+              "edges": [
+                {
+                  "node": {
+                    "policy": {
+                      "uuid": "d741e99b-5d4d-44c9-83e8-884c614cfc8f"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policies{edges{node{policy{uuid}}}}}}",
+        "variables": {
+          "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policies": {
+              "edges": [
+                {
+                  "node": {
+                    "policy": {
+                      "uuid": "d741e99b-5d4d-44c9-83e8-884c614cfc8f"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policies{edges{node{policy{uuid}}}}}}",
+        "variables": {
+          "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policies": {
+              "edges": [
+                {
+                  "node": {
+                    "policy": {
+                      "uuid": "d741e99b-5d4d-44c9-83e8-884c614cfc8f"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
