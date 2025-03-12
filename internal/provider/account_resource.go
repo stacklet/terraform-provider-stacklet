@@ -8,7 +8,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
@@ -70,6 +73,11 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"short_name": schema.StringAttribute{
 				Description: "The short name used as a column header if set.",
 				Optional:    true,
+				Computed:    true,
+				Default:     stringdefault.StaticString(""),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"description": schema.StringAttribute{
 				Description: "More detailed information about the account.",
@@ -98,6 +106,11 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"active": schema.BoolAttribute{
 				Description: "Whether the account is active or has been deactivated.",
 				Optional:    true,
+				Computed:    true,
+				Default:     booldefault.StaticBool(true),
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"variables": schema.StringAttribute{
 				Description: "JSON encoded dict of values used for policy templating.",
@@ -162,11 +175,13 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 			Key:      plan.Key.ValueString(),
 			Provider: provider,
 			ShortName: func() *string {
+				// Always send empty string if not explicitly set
 				if !plan.ShortName.IsNull() {
 					s := plan.ShortName.ValueString()
 					return &s
 				}
-				return nil
+				s := ""
+				return &s
 			}(),
 			Description: func() *string {
 				if !plan.Description.IsNull() {
@@ -218,34 +233,54 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 	plan.ID = types.StringValue(mutation.AddAccount.Account.ID)
 	plan.Key = types.StringValue(mutation.AddAccount.Account.Key)
 	plan.Name = types.StringValue(mutation.AddAccount.Account.Name)
-	plan.ShortName = types.StringValue(mutation.AddAccount.Account.ShortName)
-	plan.Description = types.StringValue(mutation.AddAccount.Account.Description)
 	plan.CloudProvider = types.StringValue(string(mutation.AddAccount.Account.Provider))
-	plan.Path = func() types.String {
-		if mutation.AddAccount.Account.Path == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(mutation.AddAccount.Account.Path)
-	}()
-	plan.Email = func() types.String {
-		if mutation.AddAccount.Account.Email == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(mutation.AddAccount.Account.Email)
-	}()
-	plan.SecurityContext = func() types.String {
-		if mutation.AddAccount.Account.SecurityContext == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(mutation.AddAccount.Account.SecurityContext)
-	}()
-	plan.Active = types.BoolValue(mutation.AddAccount.Account.Active)
-	plan.Variables = func() types.String {
-		if mutation.AddAccount.Account.Variables == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(mutation.AddAccount.Account.Variables)
-	}()
+	plan.ShortName = types.StringValue(mutation.AddAccount.Account.ShortName)
+
+	if mutation.AddAccount.Account.Description != "" {
+		plan.Description = types.StringValue(mutation.AddAccount.Account.Description)
+	} else if !plan.Description.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Description = types.StringNull()
+	}
+
+	if mutation.AddAccount.Account.Path != "" {
+		plan.Path = types.StringValue(mutation.AddAccount.Account.Path)
+	} else if !plan.Path.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Path = types.StringNull()
+	}
+
+	if mutation.AddAccount.Account.Email != "" {
+		plan.Email = types.StringValue(mutation.AddAccount.Account.Email)
+	} else if !plan.Email.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Email = types.StringNull()
+	}
+
+	if mutation.AddAccount.Account.SecurityContext != "" {
+		plan.SecurityContext = types.StringValue(mutation.AddAccount.Account.SecurityContext)
+	} else if !plan.SecurityContext.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.SecurityContext = types.StringNull()
+	}
+
+	if !plan.Active.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Active = types.BoolValue(mutation.AddAccount.Account.Active)
+	}
+
+	if mutation.AddAccount.Account.Variables != "" {
+		plan.Variables = types.StringValue(mutation.AddAccount.Account.Variables)
+	} else if !plan.Variables.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Variables = types.StringNull()
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -299,44 +334,40 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 	state.ID = types.StringValue(query.Account.ID)
 	state.Key = types.StringValue(query.Account.Key)
 	state.Name = types.StringValue(query.Account.Name)
-	state.ShortName = func() types.String {
-		if query.Account.ShortName == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.ShortName)
-	}()
-	state.Description = func() types.String {
-		if query.Account.Description == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.Description)
-	}()
+	state.ShortName = types.StringValue(query.Account.ShortName)
 	state.CloudProvider = types.StringValue(string(query.Account.Provider))
-	state.Path = func() types.String {
-		if query.Account.Path == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.Path)
-	}()
-	state.Email = func() types.String {
-		if query.Account.Email == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.Email)
-	}()
-	state.SecurityContext = func() types.String {
-		if query.Account.SecurityContext == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.SecurityContext)
-	}()
+
+	if query.Account.Description == "" {
+		state.Description = types.StringNull()
+	} else {
+		state.Description = types.StringValue(query.Account.Description)
+	}
+
+	if query.Account.Path == "" {
+		state.Path = types.StringNull()
+	} else {
+		state.Path = types.StringValue(query.Account.Path)
+	}
+
+	if query.Account.Email == "" {
+		state.Email = types.StringNull()
+	} else {
+		state.Email = types.StringValue(query.Account.Email)
+	}
+
+	if query.Account.SecurityContext == "" {
+		state.SecurityContext = types.StringNull()
+	} else {
+		state.SecurityContext = types.StringValue(query.Account.SecurityContext)
+	}
+
 	state.Active = types.BoolValue(query.Account.Active)
-	state.Variables = func() types.String {
-		if query.Account.Variables == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.Variables)
-	}()
+
+	if query.Account.Variables == "" {
+		state.Variables = types.StringNull()
+	} else {
+		state.Variables = types.StringValue(query.Account.Variables)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
@@ -379,11 +410,13 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 			Provider: provider,
 			Name:     plan.Name.ValueString(),
 			ShortName: func() *string {
+				// Always send empty string if not explicitly set
 				if !plan.ShortName.IsNull() {
 					s := plan.ShortName.ValueString()
 					return &s
 				}
-				return nil
+				s := ""
+				return &s
 			}(),
 			Description: func() *string {
 				if !plan.Description.IsNull() {
@@ -425,34 +458,54 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 	plan.ID = types.StringValue(mutation.UpdateAccount.Account.ID)
 	plan.Key = types.StringValue(mutation.UpdateAccount.Account.Key)
 	plan.Name = types.StringValue(mutation.UpdateAccount.Account.Name)
-	plan.ShortName = types.StringValue(mutation.UpdateAccount.Account.ShortName)
-	plan.Description = types.StringValue(mutation.UpdateAccount.Account.Description)
 	plan.CloudProvider = types.StringValue(string(mutation.UpdateAccount.Account.Provider))
-	plan.Path = func() types.String {
-		if mutation.UpdateAccount.Account.Path == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(mutation.UpdateAccount.Account.Path)
-	}()
-	plan.Email = func() types.String {
-		if mutation.UpdateAccount.Account.Email == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(mutation.UpdateAccount.Account.Email)
-	}()
-	plan.SecurityContext = func() types.String {
-		if mutation.UpdateAccount.Account.SecurityContext == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(mutation.UpdateAccount.Account.SecurityContext)
-	}()
-	plan.Active = types.BoolValue(mutation.UpdateAccount.Account.Active)
-	plan.Variables = func() types.String {
-		if mutation.UpdateAccount.Account.Variables == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(mutation.UpdateAccount.Account.Variables)
-	}()
+	plan.ShortName = types.StringValue(mutation.UpdateAccount.Account.ShortName)
+
+	if mutation.UpdateAccount.Account.Description != "" {
+		plan.Description = types.StringValue(mutation.UpdateAccount.Account.Description)
+	} else if !plan.Description.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Description = types.StringNull()
+	}
+
+	if mutation.UpdateAccount.Account.Path != "" {
+		plan.Path = types.StringValue(mutation.UpdateAccount.Account.Path)
+	} else if !plan.Path.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Path = types.StringNull()
+	}
+
+	if mutation.UpdateAccount.Account.Email != "" {
+		plan.Email = types.StringValue(mutation.UpdateAccount.Account.Email)
+	} else if !plan.Email.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Email = types.StringNull()
+	}
+
+	if mutation.UpdateAccount.Account.SecurityContext != "" {
+		plan.SecurityContext = types.StringValue(mutation.UpdateAccount.Account.SecurityContext)
+	} else if !plan.SecurityContext.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.SecurityContext = types.StringNull()
+	}
+
+	if !plan.Active.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Active = types.BoolValue(mutation.UpdateAccount.Account.Active)
+	}
+
+	if mutation.UpdateAccount.Account.Variables != "" {
+		plan.Variables = types.StringValue(mutation.UpdateAccount.Account.Variables)
+	} else if !plan.Variables.IsNull() {
+		// Keep the planned value
+	} else {
+		plan.Variables = types.StringNull()
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }

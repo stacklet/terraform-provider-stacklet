@@ -1,0 +1,645 @@
+{
+  "mutation ($input:AccountGroupItemsInput!){addAccountGroupItems(input: $input){group{id,accounts{edges{node{account{key}}}}}}}:{\"input\":{\"items\":[{\"key\":\"111111111111\",\"provider\":\"AWS\"}],\"uuid\":\"680c5cd3-5cb0-4f38-bb83-d41613a30cb4\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AccountGroupItemsInput!){addAccountGroupItems(input: $input){group{id,accounts{edges{node{account{key}}}}}}}",
+        "variables": {
+          "input": {
+            "items": [
+              {
+                "key": "111111111111",
+                "provider": "AWS"
+              }
+            ],
+            "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccountGroupItems": {
+            "group": {
+              "accounts": {
+                "edges": [
+                  {
+                    "node": {
+                      "account": {
+                        "key": "111111111111"
+                      }
+                    }
+                  }
+                ]
+              },
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AccountGroupItemsInput!){addAccountGroupItems(input: $input){group{id,accounts{edges{node{account{key}}}}}}}:{\"input\":{\"items\":[{\"key\":\"222222222222\",\"provider\":\"AWS\"}],\"uuid\":\"680c5cd3-5cb0-4f38-bb83-d41613a30cb4\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AccountGroupItemsInput!){addAccountGroupItems(input: $input){group{id,accounts{edges{node{account{key}}}}}}}",
+        "variables": {
+          "input": {
+            "items": [
+              {
+                "key": "222222222222",
+                "provider": "AWS"
+              }
+            ],
+            "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccountGroupItems": {
+            "group": {
+              "accounts": {
+                "edges": [
+                  {
+                    "node": {
+                      "account": {
+                        "key": "222222222222"
+                      }
+                    }
+                  }
+                ]
+              },
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}}:{\"input\":{\"description\":\"Test AWS account 1\",\"key\":\"111111111111\",\"name\":\"test-account-1\",\"provider\":\"AWS\",\"shortName\":\"\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}}",
+        "variables": {
+          "input": {
+            "description": "Test AWS account 1",
+            "key": "111111111111",
+            "name": "test-account-1",
+            "provider": "AWS",
+            "shortName": ""
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccount": {
+            "account": {
+              "active": true,
+              "description": "Test AWS account 1",
+              "email": null,
+              "id": "WyJhY2NvdW50IiwgImF3cyIsICIxMTExMTExMTExMTEiXQ==",
+              "key": "111111111111",
+              "name": "test-account-1",
+              "path": null,
+              "provider": "AWS",
+              "securityContext": "",
+              "shortName": null,
+              "variables": null
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}}:{\"input\":{\"description\":\"Test AWS account 2\",\"key\":\"222222222222\",\"name\":\"test-account-2\",\"provider\":\"AWS\",\"shortName\":\"\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}}",
+        "variables": {
+          "input": {
+            "description": "Test AWS account 2",
+            "key": "222222222222",
+            "name": "test-account-2",
+            "provider": "AWS",
+            "shortName": ""
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccount": {
+            "account": {
+              "active": true,
+              "description": "Test AWS account 2",
+              "email": null,
+              "id": "WyJhY2NvdW50IiwgImF3cyIsICIyMjIyMjIyMjIyMjIiXQ==",
+              "key": "222222222222",
+              "name": "test-account-2",
+              "path": null,
+              "provider": "AWS",
+              "securityContext": "",
+              "shortName": null,
+              "variables": null
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-items\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}",
+        "variables": {
+          "input": {
+            "description": "Test account group",
+            "name": "test-group-items",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccountGroup": {
+            "group": {
+              "description": "Test account group",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd",
+              "name": "test-group-items",
+              "provider": "AWS",
+              "regions": [
+                "us-east-1"
+              ],
+              "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCI2ODBjNWNkMy01Y2IwLTRmMzgtYmI4My1kNDE2MTNhMzBjYjQiLCIxMTExMTExMTExMTEiXQ==\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}",
+        "variables": {
+          "input": {
+            "ids": [
+              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCI2ODBjNWNkMy01Y2IwLTRmMzgtYmI4My1kNDE2MTNhMzBjYjQiLCIxMTExMTExMTExMTEiXQ=="
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccountGroupMappings": {
+            "removed": [
+              {
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNjgwYzVjZDMtNWNiMC00ZjM4LWJiODMtZDQxNjEzYTMwY2I0IiwgIjExMTExMTExMTExMSJd"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCI2ODBjNWNkMy01Y2IwLTRmMzgtYmI4My1kNDE2MTNhMzBjYjQiLCIyMjIyMjIyMjIyMjIiXQ==\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}",
+        "variables": {
+          "input": {
+            "ids": [
+              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCI2ODBjNWNkMy01Y2IwLTRmMzgtYmI4My1kNDE2MTNhMzBjYjQiLCIyMjIyMjIyMjIyMjIiXQ=="
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccountGroupMappings": {
+            "removed": [
+              {
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNjgwYzVjZDMtNWNiMC00ZjM4LWJiODMtZDQxNjEzYTMwY2I0IiwgIjIyMjIyMjIyMjIyMiJd"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($key:String!$provider:CloudProvider!){removeAccount(provider: $provider, key: $key){account{key}}}:{\"key\":\"111111111111\",\"provider\":\"AWS\"}": [
+    {
+      "request": {
+        "query": "mutation ($key:String!$provider:CloudProvider!){removeAccount(provider: $provider, key: $key){account{key}}}",
+        "variables": {
+          "key": "111111111111",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccount": {
+            "account": {
+              "key": "111111111111"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($key:String!$provider:CloudProvider!){removeAccount(provider: $provider, key: $key){account{key}}}:{\"key\":\"222222222222\",\"provider\":\"AWS\"}": [
+    {
+      "request": {
+        "query": "mutation ($key:String!$provider:CloudProvider!){removeAccount(provider: $provider, key: $key){account{key}}}",
+        "variables": {
+          "key": "222222222222",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccount": {
+            "account": {
+              "key": "222222222222"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"680c5cd3-5cb0-4f38-bb83-d41613a30cb4\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccountGroup": {
+            "group": {
+              "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}:{\"key\":\"111111111111\",\"provider\":\"AWS\"}": [
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "111111111111",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account 1",
+            "email": null,
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICIxMTExMTExMTExMTEiXQ==",
+            "key": "111111111111",
+            "name": "test-account-1",
+            "path": null,
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": null,
+            "variables": null
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "111111111111",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account 1",
+            "email": null,
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICIxMTExMTExMTExMTEiXQ==",
+            "key": "111111111111",
+            "name": "test-account-1",
+            "path": null,
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": null,
+            "variables": null
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "111111111111",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account 1",
+            "email": null,
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICIxMTExMTExMTExMTEiXQ==",
+            "key": "111111111111",
+            "name": "test-account-1",
+            "path": null,
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": null,
+            "variables": null
+          }
+        }
+      }
+    }
+  ],
+  "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}:{\"key\":\"222222222222\",\"provider\":\"AWS\"}": [
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "222222222222",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account 2",
+            "email": null,
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICIyMjIyMjIyMjIyMjIiXQ==",
+            "key": "222222222222",
+            "name": "test-account-2",
+            "path": null,
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": null,
+            "variables": null
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "222222222222",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account 2",
+            "email": null,
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICIyMjIyMjIyMjIyMjIiXQ==",
+            "key": "222222222222",
+            "name": "test-account-2",
+            "path": null,
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": null,
+            "variables": null
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,securityContext,active,variables}}",
+        "variables": {
+          "key": "222222222222",
+          "provider": "AWS"
+        }
+      },
+      "response": {
+        "data": {
+          "account": {
+            "active": true,
+            "description": "Test AWS account 2",
+            "email": null,
+            "id": "WyJhY2NvdW50IiwgImF3cyIsICIyMjIyMjIyMjIyMjIiXQ==",
+            "key": "222222222222",
+            "name": "test-account-2",
+            "path": null,
+            "provider": "AWS",
+            "securityContext": "",
+            "shortName": null,
+            "variables": null
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:String!){accountGroup(uuid: $uuid){accounts{edges{node{account{key}}}}}}:{\"uuid\":\"680c5cd3-5cb0-4f38-bb83-d41613a30cb4\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accounts{edges{node{account{key}}}}}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accounts": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "111111111111"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accounts{edges{node{account{key}}}}}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accounts": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "111111111111"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accounts{edges{node{account{key}}}}}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accounts": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "111111111111"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accounts{edges{node{account{key}}}}}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accounts": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "111111111111"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accounts{edges{node{account{key}}}}}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accounts": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "222222222222"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:String!){accountGroup(uuid: $uuid){id,uuid,name,description,provider,regions}}:{\"uuid\":\"680c5cd3-5cb0-4f38-bb83-d41613a30cb4\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){id,uuid,name,description,provider,regions}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test account group",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd",
+            "name": "test-group-items",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){id,uuid,name,description,provider,regions}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test account group",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd",
+            "name": "test-group-items",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){id,uuid,name,description,provider,regions}}",
+        "variables": {
+          "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test account group",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd",
+            "name": "test-group-items",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "680c5cd3-5cb0-4f38-bb83-d41613a30cb4"
+          }
+        }
+      }
+    }
+  ]
+}

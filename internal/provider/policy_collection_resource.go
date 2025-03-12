@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -13,7 +16,8 @@ import (
 )
 
 var (
-	_ resource.Resource = &policyCollectionResource{}
+	_ resource.Resource                = &policyCollectionResource{}
+	_ resource.ResourceWithImportState = &policyCollectionResource{}
 )
 
 func NewPolicyCollectionResource() resource.Resource {
@@ -72,6 +76,11 @@ func (r *policyCollectionResource) Schema(_ context.Context, _ resource.SchemaRe
 			"auto_update": schema.BoolAttribute{
 				Description: "Whether the policy collection automatically updates policy versions.",
 				Optional:    true,
+				Computed:    true,
+				Default:     booldefault.StaticBool(false),
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"system": schema.BoolAttribute{
 				Description: "Whether this is a system policy collection.",
@@ -276,6 +285,53 @@ func (r *policyCollectionResource) Delete(ctx context.Context, req resource.Dele
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete policy collection, got error: %s", err))
 		return
 	}
+}
+
+func (r *policyCollectionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	// GraphQL query to get policy collection by UUID
+	var query struct {
+		PolicyCollection struct {
+			ID          string
+			UUID        string
+			Name        string
+			Description string
+			Provider    string
+			AutoUpdate  bool
+			System      bool
+			Repository  string
+		} `graphql:"policyCollection(uuid: $uuid)"`
+	}
+
+	variables := map[string]interface{}{
+		"uuid": graphql.String(req.ID),
+	}
+
+	err := r.client.Query(ctx, &query, variables)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Policy Collection",
+			fmt.Sprintf("Could not read policy collection with UUID %s: %s", req.ID, err),
+		)
+		return
+	}
+
+	if query.PolicyCollection.UUID == "" {
+		resp.Diagnostics.AddError(
+			"Policy Collection Not Found",
+			fmt.Sprintf("No policy collection found with UUID %s", req.ID),
+		)
+		return
+	}
+
+	// Set the imported attributes
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), query.PolicyCollection.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), query.PolicyCollection.UUID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), query.PolicyCollection.Name)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("description"), query.PolicyCollection.Description)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), query.PolicyCollection.Provider)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("auto_update"), query.PolicyCollection.AutoUpdate)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("system"), query.PolicyCollection.System)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("repository"), query.PolicyCollection.Repository)...)
 }
 
 type AddPolicyCollectionInput struct {
