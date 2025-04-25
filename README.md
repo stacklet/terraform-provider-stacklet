@@ -25,17 +25,28 @@ This Terraform Provider allows you to interact with Stacklet's GraphQL API to ma
    go build -o terraform-provider-stacklet
    ```
 
-4. Install the provider locally for development:
-   ```bash
-   mkdir -p ~/.terraform.d/plugins/registry.terraform.io/stacklet/stacklet/0.1.0/darwin_amd64/
-   cp terraform-provider-stacklet ~/.terraform.d/plugins/registry.terraform.io/stacklet/stacklet/0.1.0/darwin_amd64/
-   ```
-
 ## Using the provider
 
 ### Local Development
 
 When developing locally, you can use the provider by configuring Terraform to use your local build:
+
+1. Override the provider location for development, by creating a `~/.terraformrc` with the following content:
+
+```hcl
+provider_installation {
+  dev_overrides {
+      "stacklet/stacklet" = "<absolute path to the repository directory>"
+  }
+
+  # For all other providers, install them directly from their origin provider
+  # registries as normal. If you omit this, Terraform will _only_ use the
+  # dev_overrides block, and so no other providers will be available.
+  direct {}
+}
+```
+
+2. Declare the provider in the terraform file
 
 ```hcl
 terraform {
@@ -48,8 +59,8 @@ terraform {
 }
 
 provider "stacklet" {
-  endpoint = "https://api.dev.stacklet.dev"     # Or use STACKLET_ENDPOINT env var
-  api_key  = "your-api-key"                     # Or use STACKLET_API_KEY env var
+  endpoint = "https://api.<myinstance>.stacklet.io/"  # Or use STACKLET_ENDPOINT env var
+  api_key  = "your-api-key"                           # Or use STACKLET_API_KEY env var
 }
 ```
 
@@ -58,7 +69,7 @@ provider "stacklet" {
 The provider can be configured using environment variables:
 
 ```bash
-export STACKLET_ENDPOINT="https://api.stacklet.io/graphql"
+export STACKLET_ENDPOINT="https://api.<myinstance>.stacklet.io/"
 export STACKLET_API_KEY="your-api-key"
 ```
 
@@ -104,7 +115,7 @@ terraform {
 }
 
 provider "stacklet" {
-  endpoint = "https://api.dev.stacklet.dev"
+  endpoint = "https://api.<myinstance>.stacklet.io/"
   api_key = "$api_key_here"
 }
 
