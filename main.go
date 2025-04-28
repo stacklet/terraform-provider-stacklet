@@ -5,8 +5,8 @@ import (
 	"flag"
 	"log"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
+	"github.com/stacklet/terraform-provider-stacklet/internal/provider"
 )
 
 // Run "go generate" to format example terraform files and generate the docs for the registry/website
@@ -41,4 +41,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-} 
+}
