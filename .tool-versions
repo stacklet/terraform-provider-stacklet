@@ -1,0 +1,2 @@
+go 1.21
+golangci-lint v2.1.5

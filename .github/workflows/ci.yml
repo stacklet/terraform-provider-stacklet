@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Tool versions
+        uses: wistia/parse-tool-versions@v2.1.1
+        with:
+          prefix: TOOL_VERSION_
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.TOOL_VERSION_GO }}
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v7
+        with:
+          version: ${{ env.TOOL_VERSION_GOLANGCI_LINT }}
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Tool versions
+        uses: wistia/parse-tool-versions@v2.1.1
+        with:
+          prefix: TOOL_VERSION_
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.TOOL_VERSION_GO }}
+
+      - name: Test
+        run: |
+          go test ./internal/...
