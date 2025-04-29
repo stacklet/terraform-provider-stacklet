@@ -6,8 +6,8 @@ resource "stacklet_sso_group" "admins" {
     "viewer"
   ]
   account_group_uuids = [
-    "00000000-0000-0000-0000-000000000001",  # Production accounts
-    "00000000-0000-0000-0000-000000000002"   # Development accounts
+    "00000000-0000-0000-0000-000000000001", # Production accounts
+    "00000000-0000-0000-0000-000000000002"  # Development accounts
   ]
 }
 
@@ -18,7 +18,7 @@ resource "stacklet_sso_group" "developers" {
     "viewer"
   ]
   account_group_uuids = [
-    "00000000-0000-0000-0000-000000000002"   # Development accounts only
+    "00000000-0000-0000-0000-000000000002" # Development accounts only
   ]
 }
 

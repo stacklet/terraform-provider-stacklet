@@ -4,10 +4,10 @@ provider "stacklet" {
 }
 
 resource "stacklet_policy_collection" "example" {
-  name          = "example-collection"
+  name           = "example-collection"
   cloud_provider = "aws"
-  description   = "Example policy collection"
-  auto_update   = true
+  description    = "Example policy collection"
+  auto_update    = true
 }
 
 output "policy_collection_id" {
