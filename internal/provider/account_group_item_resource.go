@@ -126,7 +126,7 @@ func (r *accountGroupItemResource) Create(ctx context.Context, req resource.Crea
 		} `graphql:"addAccountGroupItems(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": AccountGroupItemsInput{
 			UUID: plan.GroupUUID.ValueString(),
 			Items: []AccountGroupElement{
@@ -186,7 +186,7 @@ func (r *accountGroupItemResource) Read(ctx context.Context, req resource.ReadRe
 		} `graphql:"accountGroup(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(state.GroupUUID.ValueString()),
 	}
 
@@ -253,7 +253,7 @@ func (r *accountGroupItemResource) Delete(ctx context.Context, req resource.Dele
 		state.AccountKey.ValueString(),
 	})
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": RemoveAccountGroupMappingsInput{
 			IDs: []graphql.ID{nodeID},
 		},
@@ -295,7 +295,7 @@ func (r *accountGroupItemResource) ImportState(ctx context.Context, req resource
 		} `graphql:"accountGroup(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(groupUUID),
 	}
 

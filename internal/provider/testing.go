@@ -28,12 +28,12 @@ type recording struct {
 }
 
 type graphqlRequest struct {
-	Query     string                 `json:"query"`
-	Variables map[string]interface{} `json:"variables,omitempty"`
+	Query     string         `json:"query"`
+	Variables map[string]any `json:"variables,omitempty"`
 }
 
 type graphqlResponse struct {
-	Data   interface{} `json:"data,omitempty"`
+	Data   any `json:"data,omitempty"`
 	Errors []struct {
 		Message string `json:"message"`
 	} `json:"errors,omitempty"`

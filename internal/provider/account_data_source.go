@@ -142,7 +142,7 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"provider": provider,
 		"key":      graphql.String(data.Key.ValueString()),
 	}

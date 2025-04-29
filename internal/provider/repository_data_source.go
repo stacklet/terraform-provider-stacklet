@@ -167,7 +167,7 @@ func (d *RepositoryDataSource) Read(ctx context.Context, req datasource.ReadRequ
 	}
 
 	// Prepare variables based on what's provided
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"name": data.Name.ValueString(),
 	}
 

@@ -248,7 +248,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 		Name        string
 		Description string
 		Provider    string
-		Config      interface{}
+		Config      any
 		Schedule    struct {
 			Suspended bool
 		}
@@ -260,7 +260,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 
 	switch strings.ToLower(plan.CloudProvider.ValueString()) {
 	case "aws":
-		input := map[string]interface{}{
+		input := map[string]any{
 			"name":        graphql.String(plan.Name.ValueString()),
 			"orgReadRole": graphql.String(plan.OrgReadRole.ValueString()),
 		}
@@ -273,7 +273,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 		if !plan.CustodianRole.IsNull() {
 			input["custodianRole"] = graphql.String(plan.CustodianRole.ValueString())
 		}
-		variables := map[string]interface{}{"input": input}
+		variables := map[string]any{"input": input}
 		err = r.client.Mutate(ctx, &mutation.UpsertAWSAccountDiscovery, variables)
 		if err == nil {
 			result.ID = mutation.UpsertAWSAccountDiscovery.AccountDiscovery.ID
@@ -286,7 +286,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 		}
 
 	case "azure":
-		input := map[string]interface{}{
+		input := map[string]any{
 			"name":         graphql.String(plan.Name.ValueString()),
 			"tenantID":     graphql.String(plan.TenantID.ValueString()),
 			"clientID":     graphql.String(plan.ClientID.ValueString()),
@@ -295,7 +295,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 		if !plan.Description.IsNull() {
 			input["description"] = graphql.String(plan.Description.ValueString())
 		}
-		variables := map[string]interface{}{"input": input}
+		variables := map[string]any{"input": input}
 		err = r.client.Mutate(ctx, &mutation.UpsertAzureAccountDiscovery, variables)
 		if err == nil {
 			result.ID = mutation.UpsertAzureAccountDiscovery.AccountDiscovery.ID
@@ -308,7 +308,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 		}
 
 	case "gcp":
-		input := map[string]interface{}{
+		input := map[string]any{
 			"name":           graphql.String(plan.Name.ValueString()),
 			"orgID":          graphql.String(plan.OrgID.ValueString()),
 			"credentialJSON": graphql.String(plan.CredentialJSON.ValueString()),
@@ -326,7 +326,7 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 			plan.ExcludeFolderIDs.ElementsAs(ctx, &folderIDs, false)
 			input["excludeFolderIDs"] = folderIDs
 		}
-		variables := map[string]interface{}{"input": input}
+		variables := map[string]any{"input": input}
 		err = r.client.Mutate(ctx, &mutation.UpsertGCPAccountDiscovery, variables)
 		if err == nil {
 			result.ID = mutation.UpsertGCPAccountDiscovery.AccountDiscovery.ID
@@ -363,8 +363,8 @@ func (r *accountDiscoveryResource) Create(ctx context.Context, req resource.Crea
 			} `graphql:"updateAccountDiscoverySchedule(input: $input)"`
 		}
 
-		scheduleVariables := map[string]interface{}{
-			"input": map[string]interface{}{
+		scheduleVariables := map[string]any{
+			"input": map[string]any{
 				"name":      graphql.String(result.Name),
 				"suspended": graphql.Boolean(plan.Suspended.ValueBool()),
 			},
@@ -443,7 +443,7 @@ func (r *accountDiscoveryResource) Read(ctx context.Context, req resource.ReadRe
 		} `graphql:"accountDiscovery(name: $name)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"name": graphql.String(state.Name.ValueString()),
 	}
 
@@ -533,8 +533,8 @@ func (r *accountDiscoveryResource) Delete(ctx context.Context, req resource.Dele
 		} `graphql:"updateAccountDiscoverySchedule(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
-		"input": map[string]interface{}{
+	variables := map[string]any{
+		"input": map[string]any{
 			"name":      graphql.String(state.Name.ValueString()),
 			"suspended": graphql.Boolean(true),
 		},

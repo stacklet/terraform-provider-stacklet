@@ -95,7 +95,7 @@ func (r *policyCollectionItemResource) Create(ctx context.Context, req resource.
 		} `graphql:"addPolicyCollectionItems(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": PolicyCollectionItemsInput{
 			UUID: plan.CollectionUUID.ValueString(),
 			Items: []PolicyCollectionElement{
@@ -154,7 +154,7 @@ func (r *policyCollectionItemResource) Read(ctx context.Context, req resource.Re
 		} `graphql:"policyCollection(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(state.CollectionUUID.ValueString()),
 	}
 
@@ -208,7 +208,7 @@ func (r *policyCollectionItemResource) Delete(ctx context.Context, req resource.
 		} `graphql:"removePolicyCollectionMappings(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": RemovePolicyCollectionMappingsInput{
 			IDs: []graphql.ID{wrapNodeID([]string{"policy-collection-mapping", state.CollectionUUID.ValueString(), state.PolicyUUID.ValueString()})},
 		},
@@ -255,7 +255,7 @@ func (r *policyCollectionItemResource) ImportState(ctx context.Context, req reso
 		} `graphql:"policyCollection(name: $name)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"name": graphql.String(collectionName),
 	}
 

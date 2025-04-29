@@ -136,7 +136,7 @@ func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest
 		} `graphql:"addBinding(input: $input)"`
 	}
 
-	input := map[string]interface{}{
+	input := map[string]any{
 		"input": AddBindingInput{
 			Name: plan.Name.ValueString(),
 			Description: func() *string {
@@ -216,7 +216,7 @@ func (r *bindingResource) Read(ctx context.Context, req resource.ReadRequest, re
 		} `graphql:"binding(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(state.UUID.ValueString()),
 	}
 
@@ -260,7 +260,7 @@ func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest
 		} `graphql:"updateBinding(input: $input)"`
 	}
 
-	input := map[string]interface{}{
+	input := map[string]any{
 		"input": UpdateBindingInput{
 			UUID: plan.UUID.ValueString(),
 			Name: plan.Name.ValueString(),
@@ -322,7 +322,7 @@ func (r *bindingResource) Delete(ctx context.Context, req resource.DeleteRequest
 		} `graphql:"removeBinding(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(state.UUID.ValueString()),
 	}
 

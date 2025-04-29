@@ -169,7 +169,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	input := map[string]interface{}{
+	input := map[string]any{
 		"input": AccountInput{
 			Name:     plan.Name.ValueString(),
 			Key:      plan.Key.ValueString(),
@@ -315,7 +315,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"provider": provider,
 		"key":      graphql.String(state.Key.ValueString()),
 	}
@@ -404,7 +404,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	input := map[string]interface{}{
+	input := map[string]any{
 		"input": UpdateAccountInput{
 			Key:      plan.Key.ValueString(),
 			Provider: provider,
@@ -532,7 +532,7 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 		return
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"provider": provider,
 		"key":      graphql.String(state.Key.ValueString()),
 	}

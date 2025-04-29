@@ -105,7 +105,7 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 		} `graphql:"accountGroup(uuid: $uuid, name: $name)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": (*string)(nil),
 		"name": (*string)(nil),
 	}

@@ -150,7 +150,7 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		} `graphql:"binding(uuid: $uuid, name: $name)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": (*string)(nil),
 		"name": (*string)(nil),
 	}

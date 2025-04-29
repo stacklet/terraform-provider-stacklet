@@ -140,7 +140,7 @@ func (d *accountDiscoveryDataSource) Read(ctx context.Context, req datasource.Re
 		} `graphql:"accountDiscovery(name: $name)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"name": graphql.String(data.Name.ValueString()),
 	}
 

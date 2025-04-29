@@ -117,7 +117,7 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 		} `graphql:"addAccountGroup(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": AddAccountGroupInput{
 			Name:        plan.Name.ValueString(),
 			Provider:    plan.CloudProvider.ValueString(),
@@ -167,7 +167,7 @@ func (r *accountGroupResource) Read(ctx context.Context, req resource.ReadReques
 		} `graphql:"accountGroup(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(state.UUID.ValueString()),
 	}
 
@@ -219,7 +219,7 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 		} `graphql:"updateAccountGroup(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": UpdateAccountGroupInput{
 			UUID:        plan.UUID.ValueString(),
 			Name:        graphql.String(plan.Name.ValueString()),
@@ -266,7 +266,7 @@ func (r *accountGroupResource) Delete(ctx context.Context, req resource.DeleteRe
 		} `graphql:"removeAccountGroup(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(state.UUID.ValueString()),
 	}
 
