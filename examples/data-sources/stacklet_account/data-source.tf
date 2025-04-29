@@ -1,7 +1,7 @@
 # Fetch an AWS account by its account ID
 data "stacklet_account" "example" {
   cloud_provider = "aws"
-  key           = "123456789012"
+  key            = "123456789012"
 }
 
 # Output the account name

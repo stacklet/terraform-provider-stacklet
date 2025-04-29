@@ -5,7 +5,7 @@ data "stacklet_account_discovery" "aws_example" {
 
 # Output the configuration details
 output "aws_discovery_config" {
-  value = jsondecode(data.stacklet_account_discovery.aws_example.config)
+  value     = jsondecode(data.stacklet_account_discovery.aws_example.config)
   sensitive = true
 }
 

@@ -4,9 +4,9 @@ provider "stacklet" {
 }
 
 resource "stacklet_account_group" "example" {
-  name          = "example-group"
+  name           = "example-group"
   cloud_provider = "AWS"
-  description   = "Example account group"
+  description    = "Example account group"
 }
 
 output "account_group_id" {

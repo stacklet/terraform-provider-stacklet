@@ -13,8 +13,8 @@ resource "stacklet_repository" "example" {
   branch_name = "main"
 
   # Optional: Authentication for private repositories
-  auth_user = "git-user"
-  auth_token = "ghp_xxxxxxxxxxxxxxxxxxxx"  # or use STACKLET_REPO_TOKEN env var
+  auth_user  = "git-user"
+  auth_token = "ghp_xxxxxxxxxxxxxxxxxxxx" # or use STACKLET_REPO_TOKEN env var
 
   # Optional: SSH authentication
   # ssh_private_key = file("~/.ssh/id_rsa")

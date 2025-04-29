@@ -16,14 +16,14 @@ data "stacklet_repository" "by_uuid" {
 # Example of using the data source attributes
 output "repository_info" {
   value = {
-    name              = data.stacklet_repository.by_url.name
-    description       = data.stacklet_repository.by_url.description
-    policy_suffixes   = data.stacklet_repository.by_url.policy_file_suffix
-    policy_dirs       = data.stacklet_repository.by_url.policy_directories
-    branch            = data.stacklet_repository.by_url.branch_name
-    last_scanned      = data.stacklet_repository.by_url.last_scanned
-    head_commit       = data.stacklet_repository.by_url.head
-    vcs_provider      = data.stacklet_repository.by_url.vcs_provider
-    is_system_repo    = data.stacklet_repository.by_url.system
+    name            = data.stacklet_repository.by_url.name
+    description     = data.stacklet_repository.by_url.description
+    policy_suffixes = data.stacklet_repository.by_url.policy_file_suffix
+    policy_dirs     = data.stacklet_repository.by_url.policy_directories
+    branch          = data.stacklet_repository.by_url.branch_name
+    last_scanned    = data.stacklet_repository.by_url.last_scanned
+    head_commit     = data.stacklet_repository.by_url.head
+    vcs_provider    = data.stacklet_repository.by_url.vcs_provider
+    is_system_repo  = data.stacklet_repository.by_url.system
   }
 } 
