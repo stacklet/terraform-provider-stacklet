@@ -282,21 +282,15 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 
 	// Preserve sensitive fields from state if they exist
-	if !data.AuthToken.IsNull() {
-		data.AuthToken = data.AuthToken
-	} else {
+	if data.AuthToken.IsNull() {
 		data.AuthToken = types.StringNull()
 	}
 
-	if !data.SSHPrivateKey.IsNull() {
-		data.SSHPrivateKey = data.SSHPrivateKey
-	} else {
+	if data.SSHPrivateKey.IsNull() {
 		data.SSHPrivateKey = types.StringNull()
 	}
 
-	if !data.SSHPassphrase.IsNull() {
-		data.SSHPassphrase = data.SSHPassphrase
-	} else {
+	if data.SSHPassphrase.IsNull() {
 		data.SSHPassphrase = types.StringNull()
 	}
 

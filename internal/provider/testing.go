@@ -144,7 +144,9 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 		if err != nil {
 			return nil, fmt.Errorf("failed to read response body: %v", err)
 		}
-		resp.Body.Close()
+		if err := resp.Body.Close(); err != nil {
+			return nil, err
+		}
 
 		// Parse the response
 		var gqlResp graphqlResponse
