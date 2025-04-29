@@ -115,7 +115,7 @@ func (d *policyCollectionDataSource) Read(ctx context.Context, req datasource.Re
 		} `graphql:"policyCollection(uuid: $uuid, name: $name)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": (*string)(nil),
 		"name": (*string)(nil),
 	}

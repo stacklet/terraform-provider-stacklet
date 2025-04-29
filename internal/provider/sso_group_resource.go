@@ -172,7 +172,7 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 		} `graphql:"setSSOGroups(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": SetSSOGroupConfigsInput{
 			Groups: groups,
 		},
@@ -348,7 +348,7 @@ func (r *ssoGroupResource) Update(ctx context.Context, req resource.UpdateReques
 		} `graphql:"setSSOGroups(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": SetSSOGroupConfigsInput{
 			Groups: groups,
 		},
@@ -443,7 +443,7 @@ func (r *ssoGroupResource) Delete(ctx context.Context, req resource.DeleteReques
 		} `graphql:"setSSOGroups(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": SetSSOGroupConfigsInput{
 			Groups: groups,
 		},

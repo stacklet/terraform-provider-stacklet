@@ -134,7 +134,7 @@ func (r *policyCollectionResource) Create(ctx context.Context, req resource.Crea
 		} `graphql:"addPolicyCollection(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": AddPolicyCollectionInput{
 			Name:        plan.Name.ValueString(),
 			Provider:    plan.CloudProvider.ValueString(),
@@ -182,7 +182,7 @@ func (r *policyCollectionResource) Read(ctx context.Context, req resource.ReadRe
 		} `graphql:"policyCollection(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(state.UUID.ValueString()),
 	}
 
@@ -232,7 +232,7 @@ func (r *policyCollectionResource) Update(ctx context.Context, req resource.Upda
 		} `graphql:"updatePolicyCollection(input: $input)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": UpdatePolicyCollectionInput{
 			UUID:        plan.UUID.ValueString(),
 			Name:        graphql.String(plan.Name.ValueString()),
@@ -276,7 +276,7 @@ func (r *policyCollectionResource) Delete(ctx context.Context, req resource.Dele
 		} `graphql:"removePolicyCollection(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(state.UUID.ValueString()),
 	}
 
@@ -302,7 +302,7 @@ func (r *policyCollectionResource) ImportState(ctx context.Context, req resource
 		} `graphql:"policyCollection(uuid: $uuid)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"uuid": graphql.String(req.ID),
 	}
 

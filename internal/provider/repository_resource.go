@@ -185,7 +185,7 @@ func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	// Prepare variables
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": RepositoryInput{
 			Name:              data.Name.ValueString(),
 			URL:               data.URL.ValueString(),
@@ -246,7 +246,7 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 
 	// Execute query
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"url": data.URL.ValueString(),
 	}
 
@@ -352,7 +352,7 @@ func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 
 	// Prepare variables
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": UpdateRepositoryInput{
 			URL:               data.URL.ValueString(),
 			Name:              toString(data.Name),
@@ -399,7 +399,7 @@ func (r *RepositoryResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 
 	// Execute mutation
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"url": data.URL.ValueString(),
 	}
 
