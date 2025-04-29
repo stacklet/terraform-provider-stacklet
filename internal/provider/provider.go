@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+	"path"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
-	"github.com/hashicorp/terraform-plugin-framework/path"
+	tfpath "github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -84,7 +85,7 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 	// attributes, it must be a known value.
 	if config.Endpoint.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
-			path.Root("endpoint"),
+			tfpath.Root("endpoint"),
 			"Unknown Stacklet API Endpoint",
 			"The provider cannot create the Stacklet API client as there is an unknown configuration value for the Stacklet API endpoint. "+
 				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_ENDPOINT environment variable.",
@@ -93,7 +94,7 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 
 	if config.ApiKey.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
-			path.Root("api_key"),
+			tfpath.Root("api_key"),
 			"Unknown Stacklet API Key",
 			"The provider cannot create the Stacklet API client as there is an unknown configuration value for the Stacklet API key. "+
 				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_API_KEY environment variable.",
@@ -104,38 +105,22 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 		return
 	}
 
-	// Default values to environment variables, but override
-	// with Terraform configuration value if set.
-	endpoint := os.Getenv("STACKLET_ENDPOINT")
-	apiKey := os.Getenv("STACKLET_API_KEY")
+	creds := getCredentials(config)
 
-	if !config.Endpoint.IsNull() {
-		endpoint = config.Endpoint.ValueString()
-	}
-
-	if !config.ApiKey.IsNull() {
-		apiKey = config.ApiKey.ValueString()
-	}
-
-	// If any of the expected configurations are missing, return
-	// errors with provider-specific guidance.
-	if endpoint == "" {
+	if creds.endpoint == "" {
 		resp.Diagnostics.AddAttributeError(
-			path.Root("endpoint"),
+			tfpath.Root("endpoint"),
 			"Missing Stacklet API Endpoint",
 			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet API endpoint. "+
-				"Set the endpoint value in the configuration or use the STACKLET_ENDPOINT environment variable. "+
-				"If either is already set, ensure the value is not empty.",
+				"Set the endpoint value in the configuration, in the STACKLET_ENDPOINT environment variable, or login via the stacklet-admin CLI first.",
 		)
 	}
-
-	if apiKey == "" {
+	if creds.apiKey == "" {
 		resp.Diagnostics.AddAttributeError(
-			path.Root("api_key"),
+			tfpath.Root("api_key"),
 			"Missing Stacklet API Key",
 			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet API key. "+
-				"Set the api_key value in the configuration or use the STACKLET_API_KEY environment variable. "+
-				"If either is already set, ensure the value is not empty.",
+				"Set the api_key value in the configuration, in the STACKLET_API_KEY environment variable, or login via the stacklet-admin CLI first.",
 		)
 	}
 
@@ -146,13 +131,13 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 	// Create an HTTP client with the authorization header
 	httpClient := &http.Client{
 		Transport: &authTransport{
-			apiKey: apiKey,
+			apiKey: creds.apiKey,
 			base:   http.DefaultTransport,
 		},
 	}
 
 	// Create a new Stacklet client using the configuration values
-	client := graphql.NewClient(endpoint, httpClient)
+	client := graphql.NewClient(creds.endpoint, httpClient)
 
 	// Make the Stacklet client available during DataSource and Resource
 	// type Configure methods.
@@ -211,4 +196,54 @@ func wrapNodeID(parts []string) graphql.ID {
 	}
 	encoded := base64.StdEncoding.EncodeToString(jsonBytes)
 	return graphql.ID(encoded)
+}
+
+type credentials struct {
+	endpoint string
+	apiKey   string
+}
+
+// getCredentials tries to obtain provider credentials. The following sources
+// are looked up in order:
+// - provider configuration parameters
+// - environment variables
+// - stacklet-admin configuration
+func getCredentials(config stackletProviderModel) *credentials {
+	creds := credentials{}
+
+	// Lookup provider configuration
+	if !config.Endpoint.IsNull() {
+		creds.endpoint = config.Endpoint.ValueString()
+	}
+	if !config.ApiKey.IsNull() {
+		creds.apiKey = config.ApiKey.ValueString()
+	}
+
+	// Lookup env vars
+	if creds.endpoint == "" {
+		creds.endpoint = os.Getenv("STACKLET_ENDPOINT")
+	}
+	if creds.apiKey == "" {
+		creds.apiKey = os.Getenv("STACKLET_API_KEY")
+	}
+
+	if homeDir, err := os.UserHomeDir(); err == nil {
+		configFile := path.Join(homeDir, ".stacklet", "config.json")
+		if content, err := os.ReadFile(configFile); err == nil {
+			config := struct {
+				Api string `json:"api"`
+			}{}
+			if err := json.Unmarshal(content, &config); err == nil {
+				creds.endpoint = config.Api
+			}
+		}
+
+		credsFile := path.Join(homeDir, ".stacklet", "credentials")
+		if content, err := os.ReadFile(credsFile); err == nil {
+			creds.apiKey = string(content)
+		}
+	}
+
+	return &creds
+
 }

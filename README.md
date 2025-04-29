@@ -73,6 +73,13 @@ export STACKLET_ENDPOINT="https://api.<myinstance>.stacklet.io/"
 export STACKLET_API_KEY="your-api-key"
 ```
 
+### Login via stacklet-admin CLI
+
+The provider can look up authentication details from the [`stacklet-admin`](https://github.com/stacklet/stacklet-admin) CLI.
+
+After configuring and logging in to the instance via the CLI (`stacklet-admin login`), the provider will be able to connect
+to it.
+
 ### Testing with Local Provider
 
 1. After building and installing the provider locally (see [Building The Provider](#building-the-provider)), create a test directory:
