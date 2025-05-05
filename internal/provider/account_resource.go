@@ -162,9 +162,8 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		} `graphql:"addAccount(input: $input)"`
 	}
 
-	// Convert provider string to CloudProvider type
-	provider := CloudProvider(strings.ToUpper(plan.CloudProvider.ValueString()))
-	if err := provider.Validate(); err != nil {
+	provider, err := NewCloudProvider(plan.CloudProvider.ValueString())
+	if err != nil {
 		resp.Diagnostics.AddError("Invalid Provider", err.Error())
 		return
 	}
@@ -221,7 +220,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		},
 	}
 
-	err := r.client.Mutate(ctx, &mutation, input)
+	err = r.client.Mutate(ctx, &mutation, input)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Client Error",
@@ -308,9 +307,8 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 		} `graphql:"account(provider: $provider, key: $key)"`
 	}
 
-	// Convert provider string to CloudProvider type
-	provider := CloudProvider(strings.ToUpper(state.CloudProvider.ValueString()))
-	if err := provider.Validate(); err != nil {
+	provider, err := NewCloudProvider(state.CloudProvider.ValueString())
+	if err != nil {
 		resp.Diagnostics.AddError("Invalid Provider", err.Error())
 		return
 	}
@@ -320,7 +318,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 		"key":      graphql.String(state.Key.ValueString()),
 	}
 
-	err := r.client.Query(ctx, &query, variables)
+	err = r.client.Query(ctx, &query, variables)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read account, got error: %s", err))
 		return
@@ -371,9 +369,8 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		} `graphql:"updateAccount(input: $input)"`
 	}
 
-	// Convert provider string to CloudProvider type
-	provider := CloudProvider(strings.ToUpper(plan.CloudProvider.ValueString()))
-	if err := provider.Validate(); err != nil {
+	provider, err := NewCloudProvider(plan.CloudProvider.ValueString())
+	if err != nil {
 		resp.Diagnostics.AddError("Invalid Provider", err.Error())
 		return
 	}
@@ -423,7 +420,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		},
 	}
 
-	err := r.client.Mutate(ctx, &mutation, input)
+	err = r.client.Mutate(ctx, &mutation, input)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update account, got error: %s", err))
 		return
@@ -499,9 +496,8 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 		} `graphql:"removeAccount(provider: $provider, key: $key)"`
 	}
 
-	// Convert provider string to CloudProvider type
-	provider := CloudProvider(strings.ToUpper(state.CloudProvider.ValueString()))
-	if err := provider.Validate(); err != nil {
+	provider, err := NewCloudProvider(state.CloudProvider.ValueString())
+	if err != nil {
 		resp.Diagnostics.AddError("Invalid Provider", err.Error())
 		return
 	}
@@ -511,7 +507,7 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 		"key":      graphql.String(state.Key.ValueString()),
 	}
 
-	err := r.client.Mutate(ctx, &mutation, variables)
+	err = r.client.Mutate(ctx, &mutation, variables)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete account, got error: %s", err))
 		return

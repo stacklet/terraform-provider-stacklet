@@ -65,7 +65,7 @@ func TestAccAccountDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr("data.stacklet_account.test", "path", "/test"),
 					resource.TestCheckResourceAttr("data.stacklet_account.test", "email", "test@example.com"),
 					resource.TestCheckResourceAttr("data.stacklet_account.test", "active", "true"),
-					resource.TestCheckResourceAttr("data.stacklet_account.test", "variables", "{\"environment\": \"test\"}"),
+					testAccCheckMapValues("data.stacklet_account.test", "variables", map[string]string{"environment": "test"}),
 					resource.TestCheckResourceAttrSet("data.stacklet_account.test", "id"),
 				),
 			},
