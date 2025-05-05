@@ -90,11 +90,20 @@ jobs:
         with:
           prefix: TOOL_VERSION_
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TOOL_VERSION_TERRAFORM }}
+
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: ${{ env.TOOL_VERSION_GO }}
 
       - name: Test
+        env:
+          TF_ACC: "1"
+          STACKLET_ENDPOINT: fake
+          STACKLET_API_KEY: fake
         run: |
-          TF_ACC=1 STACKLET_ENDPOINT=fake STACKLET_API_KEY=fake go test ./internal/...
+          go test -v ./internal/...
