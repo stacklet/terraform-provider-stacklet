@@ -55,16 +55,28 @@ func (p *stackletProvider) Metadata(_ context.Context, _ provider.MetadataReques
 // Schema defines the provider-level schema for configuration data.
 func (p *stackletProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Interact with Stacklet.",
+		Description: `
+This provider interacts with Stacklet's cloud governance platform.
+
+It allows managing resources like accounts, account groups, policy collections, bindings and so on.
+`,
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
-				Description: "The endpoint URL of the Stacklet GraphQL API. May also be provided via STACKLET_ENDPOINT environment variable.",
-				Optional:    true,
+				Description: `
+The endpoint URL of the Stacklet GraphQL API.
+
+ May also be provided via STACKLET_ENDPOINT environment variable, or from the stacklet-admin CLI configuration.
+`,
+				Optional: true,
 			},
 			"api_key": schema.StringAttribute{
-				Description: "The API key for Stacklet authentication. May also be provided via STACKLET_API_KEY environment variable.",
-				Optional:    true,
-				Sensitive:   true,
+				Description: `
+The API key for Stacklet authentication.
+
+May also be provided via STACKLET_API_KEY environment variable, or from the stacklet-admin CLI configuration.
+`,
+				Optional:  true,
+				Sensitive: true,
 			},
 		},
 	}
