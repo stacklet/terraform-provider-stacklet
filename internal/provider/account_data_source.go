@@ -161,44 +161,13 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.ID = types.StringValue(query.Account.ID)
 	data.Key = types.StringValue(query.Account.Key)
 	data.Name = types.StringValue(query.Account.Name)
-	data.ShortName = func() types.String {
-		if query.Account.ShortName == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.ShortName)
-	}()
-	data.Description = func() types.String {
-		if query.Account.Description == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.Description)
-	}()
+	data.ShortName = nullableString(query.Account.ShortName)
+	data.Description = nullableString(query.Account.Description)
 	data.CloudProvider = types.StringValue(string(query.Account.Provider))
-	data.Path = func() types.String {
-		if query.Account.Path == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.Path)
-	}()
-	data.Email = func() types.String {
-		if query.Account.Email == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.Email)
-	}()
-	data.SecurityContext = func() types.String {
-		if query.Account.SecurityContext == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.SecurityContext)
-	}()
+	data.Path = nullableString(query.Account.Path)
+	data.Email = nullableString(query.Account.Email)
+	data.SecurityContext = nullableString(query.Account.SecurityContext)
 	data.Active = types.BoolValue(query.Account.Active)
-	data.Variables = func() types.String {
-		if query.Account.Variables == "" {
-			return types.StringNull()
-		}
-		return types.StringValue(query.Account.Variables)
-	}()
-
+	data.Variables = nullableString(query.Account.Variables)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

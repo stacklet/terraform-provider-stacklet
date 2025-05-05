@@ -261,39 +261,19 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	data.ID = types.StringValue(query.Repository.URL)
 	data.Name = types.StringValue(query.Repository.Name)
 	data.URL = types.StringValue(query.Repository.URL)
-
-	// Handle optional fields
-	if query.Repository.Description != "" {
-		data.Description = types.StringValue(query.Repository.Description)
-	} else {
-		data.Description = types.StringNull()
-	}
-
-	if query.Repository.BranchName != "" {
-		data.BranchName = types.StringValue(query.Repository.BranchName)
-	} else {
-		data.BranchName = types.StringNull()
-	}
-
-	if query.Repository.AuthUser != "" {
-		data.AuthUser = types.StringValue(query.Repository.AuthUser)
-	} else {
-		data.AuthUser = types.StringNull()
-	}
-
+	data.Description = nullableString(query.Repository.Description)
+	data.BranchName = nullableString(query.Repository.BranchName)
+	data.AuthUser = nullableString(query.Repository.AuthUser)
 	// Preserve sensitive fields from state if they exist
 	if data.AuthToken.IsNull() {
 		data.AuthToken = types.StringNull()
 	}
-
 	if data.SSHPrivateKey.IsNull() {
 		data.SSHPrivateKey = types.StringNull()
 	}
-
 	if data.SSHPassphrase.IsNull() {
 		data.SSHPassphrase = types.StringNull()
 	}
-
 	// Preserve the deep_import value from state
 	data.DeepImport = deepImport
 
