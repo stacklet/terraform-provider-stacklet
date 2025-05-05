@@ -11,8 +11,8 @@ lint:
     golangci-lint run --fix
 
 # Run tests
-test:
-    TF_ACC=1 STACKLET_ENDPOINT=fake STACKLET_API_KEY=fake go test ./internal/...
+test *args:
+    TF_ACC=1 STACKLET_ENDPOINT=fake STACKLET_API_KEY=fake go test ./internal/... {{ args }}
 
 # Generate provider docs
 docs:

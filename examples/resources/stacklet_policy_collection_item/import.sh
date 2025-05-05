@@ -1,0 +1,1 @@
+terraform import stacklet_policy_collection_item.example $policy_collection_uuid:$policy_uuid

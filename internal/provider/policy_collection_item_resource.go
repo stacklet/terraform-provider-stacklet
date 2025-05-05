@@ -37,7 +37,7 @@ func (r *policyCollectionItemResource) Metadata(_ context.Context, req resource.
 
 func (r *policyCollectionItemResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a policy within a policy collection.",
+		Description: "Manage a policy within a policy collection. This resource allows to add or remove policies from collections.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The ID of the policy collection item.",
@@ -87,7 +87,10 @@ func (r *policyCollectionItemResource) Create(ctx context.Context, req resource.
 				PolicyMappings struct {
 					Edges []struct {
 						Node struct {
-							ID string
+							ID     string
+							Policy struct {
+								UUID string
+							}
 						}
 					}
 				}
@@ -112,23 +115,19 @@ func (r *policyCollectionItemResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	// Find the added policy in the response
-	var addedPolicy bool
+	var mappingID string
 	for _, edge := range mutation.AddPolicyCollectionItems.Collection.PolicyMappings.Edges {
-		if edge.Node.ID != "" {
-			addedPolicy = true
+		if edge.Node.Policy.UUID == plan.PolicyUUID.ValueString() {
+			mappingID = edge.Node.ID
 			break
 		}
 	}
-
-	if !addedPolicy {
-		resp.Diagnostics.AddError("Client Error", "Policy was not found in collection after adding")
+	if mappingID == "" {
+		resp.Diagnostics.AddError("Client Error", "Policy collection item was not found in collection after adding")
 		return
 	}
 
-	// Generate a stable ID for the policy collection item
-	plan.ID = types.StringValue(fmt.Sprintf("%s:%s", plan.CollectionUUID.ValueString(), plan.PolicyUUID.ValueString()))
-
+	plan.ID = types.StringValue(mappingID)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -139,26 +138,7 @@ func (r *policyCollectionItemResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	// GraphQL query
-	var query struct {
-		PolicyCollection struct {
-			Policies struct {
-				Edges []struct {
-					Node struct {
-						Policy struct {
-							UUID string
-						}
-					}
-				}
-			}
-		} `graphql:"policyCollection(uuid: $uuid)"`
-	}
-
-	variables := map[string]any{
-		"uuid": graphql.String(state.CollectionUUID.ValueString()),
-	}
-
-	err := r.client.Query(ctx, &query, variables)
+	query, err := r.getCollection(ctx, state.CollectionUUID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read policy collection, got error: %s", err))
 		return
@@ -166,7 +146,7 @@ func (r *policyCollectionItemResource) Read(ctx context.Context, req resource.Re
 
 	// Find the policy in the collection
 	var foundPolicy bool
-	for _, edge := range query.PolicyCollection.Policies.Edges {
+	for _, edge := range query.PolicyCollection.PolicyMappings.Edges {
 		if edge.Node.Policy.UUID == state.PolicyUUID.ValueString() {
 			foundPolicy = true
 			break
@@ -210,7 +190,7 @@ func (r *policyCollectionItemResource) Delete(ctx context.Context, req resource.
 
 	variables := map[string]any{
 		"input": RemovePolicyCollectionMappingsInput{
-			IDs: []graphql.ID{wrapNodeID([]string{"policy-collection-mapping", state.CollectionUUID.ValueString(), state.PolicyUUID.ValueString()})},
+			IDs: []graphql.ID{graphql.ID(state.ID.ValueString())},
 		},
 	}
 
@@ -240,44 +220,61 @@ func (r *policyCollectionItemResource) ImportState(ctx context.Context, req reso
 	if len(parts) != 2 {
 		resp.Diagnostics.AddError(
 			"Invalid Import ID",
-			"Import ID must be in the format: collection_name:policy_uuid",
+			"Import ID must be in the format: collection_uuid:policy_uuid",
 		)
 		return
 	}
 
-	collectionName := parts[0]
+	collectionUUID := parts[0]
 	policyUUID := parts[1]
 
-	// First get the collection UUID from the name
-	var collectionQuery struct {
-		PolicyCollection struct {
-			UUID string
-		} `graphql:"policyCollection(name: $name)"`
-	}
-
-	variables := map[string]any{
-		"name": graphql.String(collectionName),
-	}
-
-	err := r.client.Query(ctx, &collectionQuery, variables)
+	query, err := r.getCollection(ctx, collectionUUID)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Policy Collection",
-			fmt.Sprintf("Could not read policy collection with name %s: %s", collectionName, err),
+			fmt.Sprintf("Could not read policy collection with UUID %s: %s", collectionUUID, err),
 		)
 		return
 	}
 
-	if collectionQuery.PolicyCollection.UUID == "" {
-		resp.Diagnostics.AddError(
-			"Policy Collection Not Found",
-			fmt.Sprintf("No policy collection found with name %s", collectionName),
-		)
+	var mappingID string
+	for _, edge := range query.PolicyCollection.PolicyMappings.Edges {
+		if edge.Node.Policy.UUID == policyUUID {
+			mappingID = edge.Node.ID
+			break
+		}
+	}
+	if mappingID == "" {
+		resp.Diagnostics.AddError("Client Error", "Policy collection item was not found in collection")
 		return
 	}
 
 	// Set the imported attributes
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("collection_uuid"), collectionQuery.PolicyCollection.UUID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("collection_uuid"), collectionUUID)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("policy_uuid"), policyUUID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), fmt.Sprintf("%s:%s", collectionQuery.PolicyCollection.UUID, policyUUID))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), mappingID)...)
+}
+
+type collectionQuery struct {
+	PolicyCollection struct {
+		PolicyMappings struct {
+			Edges []struct {
+				Node struct {
+					ID     string
+					Policy struct {
+						UUID string
+					}
+				}
+			}
+		}
+	} `graphql:"policyCollection(uuid: $uuid)"`
+}
+
+func (r *policyCollectionItemResource) getCollection(ctx context.Context, uuid string) (collectionQuery, error) {
+	var query collectionQuery
+	variables := map[string]any{
+		"uuid": graphql.String(uuid),
+	}
+	err := r.client.Query(ctx, &query, variables)
+	return query, err
 }
