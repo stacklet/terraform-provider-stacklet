@@ -33,7 +33,7 @@ When developing locally, you can use the provider by configuring Terraform to us
 
 1. Override the provider location for development, by creating a `~/.terraformrc` with the following content:
 
-```hcl
+```terraform
 provider_installation {
   dev_overrides {
       "stacklet/stacklet" = "<absolute path to the repository directory>"
@@ -48,7 +48,7 @@ provider_installation {
 
 2. Declare the provider in the terraform file
 
-```hcl
+```terraform
 terraform {
   required_providers {
     stacklet = {
@@ -89,7 +89,7 @@ to it.
    ```
 
 2. Create a test configuration file (e.g., `main.tf`):
-   ```hcl
+   ```terraform
    terraform {
      required_providers {
        stacklet = {
@@ -110,7 +110,7 @@ to it.
 
 ### Example Terraform
 
-```hcl
+```terraform
 
 terraform {
   required_providers {

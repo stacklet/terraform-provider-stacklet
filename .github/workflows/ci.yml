@@ -13,7 +13,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  go-lint:
+  lint-go:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,7 +34,7 @@ jobs:
         with:
           version: ${{ env.TOOL_VERSION_GOLANGCI_LINT }}
 
-  tf-lint:
+  lint-tf:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -53,6 +53,31 @@ jobs:
       - name: Lint
         run: |
           terraform fmt -recursive -check
+
+  # lint-docs:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+
+  #     - name: Tool versions
+  #       uses: wistia/parse-tool-versions@v2.1.1
+  #       with:
+  #         prefix: TOOL_VERSION_
+
+  #     - name: Setup Go
+  #       uses: actions/setup-go@v5
+  #       with:
+  #         go-version: ${{ env.TOOL_VERSION_GO }}
+
+  #     - name: Setup tfplugindocs
+  #       run: |
+  #         go get github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+  #         go install github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+
+  #     - name: Lint
+  #       run: |
+  #         tfplugindocs validate
 
   test:
     runs-on: ubuntu-latest
