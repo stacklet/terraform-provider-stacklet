@@ -2,7 +2,6 @@ package provider
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"os"
@@ -198,16 +197,6 @@ type authTransport struct {
 func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.Header.Set("Authorization", t.apiKey)
 	return t.base.RoundTrip(req)
-}
-
-func wrapNodeID(parts []string) graphql.ID {
-	jsonBytes, err := json.Marshal(parts)
-	if err != nil {
-		// This should never happen with a simple string array
-		return graphql.ID("")
-	}
-	encoded := base64.StdEncoding.EncodeToString(jsonBytes)
-	return graphql.ID(encoded)
 }
 
 type credentials struct {

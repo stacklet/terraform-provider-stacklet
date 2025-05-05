@@ -336,38 +336,12 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 	state.Name = types.StringValue(query.Account.Name)
 	state.ShortName = types.StringValue(query.Account.ShortName)
 	state.CloudProvider = types.StringValue(string(query.Account.Provider))
-
-	if query.Account.Description == "" {
-		state.Description = types.StringNull()
-	} else {
-		state.Description = types.StringValue(query.Account.Description)
-	}
-
-	if query.Account.Path == "" {
-		state.Path = types.StringNull()
-	} else {
-		state.Path = types.StringValue(query.Account.Path)
-	}
-
-	if query.Account.Email == "" {
-		state.Email = types.StringNull()
-	} else {
-		state.Email = types.StringValue(query.Account.Email)
-	}
-
-	if query.Account.SecurityContext == "" {
-		state.SecurityContext = types.StringNull()
-	} else {
-		state.SecurityContext = types.StringValue(query.Account.SecurityContext)
-	}
-
+	state.Description = nullableString(query.Account.Description)
+	state.Path = nullableString(query.Account.Path)
+	state.Email = nullableString(query.Account.Email)
+	state.SecurityContext = nullableString(query.Account.SecurityContext)
 	state.Active = types.BoolValue(query.Account.Active)
-
-	if query.Account.Variables == "" {
-		state.Variables = types.StringNull()
-	} else {
-		state.Variables = types.StringValue(query.Account.Variables)
-	}
+	state.Variables = nullableString(query.Account.Variables)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }

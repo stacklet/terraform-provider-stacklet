@@ -1,3 +1,7 @@
+# Build the provider
+build:
+    go build -o terraform-provider-stacklet
+
 # Format code
 fmt:
     go fmt ./...
