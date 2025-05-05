@@ -12,6 +12,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 type recordedTransport struct {
@@ -228,4 +230,22 @@ func setupRecordedTest(t *testing.T, testName string) (*recordedTransport, error
 	})
 
 	return rt, nil
+}
+
+func testAccCheckMapValues(resourceName string, mapAttr string, expectedMap map[string]string) resource.TestCheckFunc {
+	return func(s *terraform.State) error {
+		rs, ok := s.RootModule().Resources[resourceName]
+		if !ok {
+			return fmt.Errorf("resource not found: %s", resourceName)
+		}
+
+		for k, v := range expectedMap {
+			attrKey := fmt.Sprintf("%s.%s", mapAttr, k)
+			if rs.Primary.Attributes[attrKey] != v {
+				return fmt.Errorf("expected %s to be %s, got %s", attrKey, v, rs.Primary.Attributes[attrKey])
+			}
+		}
+
+		return nil
+	}
 }

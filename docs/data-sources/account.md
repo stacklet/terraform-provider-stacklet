@@ -65,4 +65,4 @@ output "account_variables" {
 - `path` (String) The path used to group accounts in a hierarchy.
 - `security_context` (String) The security context for the account.
 - `short_name` (String) The short name for the account.
-- `variables` (String) JSON encoded dict of values used for policy templating.
+- `variables` (Map of String) Values used for policy templating.

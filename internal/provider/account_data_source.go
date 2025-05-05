@@ -33,7 +33,7 @@ type accountDataSourceModel struct {
 	Email           types.String `tfsdk:"email"`
 	SecurityContext types.String `tfsdk:"security_context"`
 	Active          types.Bool   `tfsdk:"active"`
-	Variables       types.String `tfsdk:"variables"`
+	Variables       types.Map    `tfsdk:"variables"`
 }
 
 func (d *accountDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -84,8 +84,9 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Description: "Whether the account is active or has been deactivated.",
 				Computed:    true,
 			},
-			"variables": schema.StringAttribute{
-				Description: "JSON encoded dict of values used for policy templating.",
+			"variables": schema.MapAttribute{
+				ElementType: types.StringType,
+				Description: "Values used for policy templating.",
 				Computed:    true,
 			},
 		},
@@ -165,6 +166,11 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.Email = nullableString(query.Account.Email)
 	data.SecurityContext = nullableString(query.Account.SecurityContext)
 	data.Active = types.BoolValue(query.Account.Active)
-	data.Variables = nullableString(query.Account.Variables)
+	if vars, diags := jsonMap(ctx, query.Account.Variables); diags.HasError() {
+		resp.Diagnostics.Append(diags...)
+		return
+	} else {
+		data.Variables = vars
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
