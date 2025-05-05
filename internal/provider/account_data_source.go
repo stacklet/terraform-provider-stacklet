@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -43,7 +42,7 @@ func (d *accountDataSource) Metadata(_ context.Context, req datasource.MetadataR
 
 func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Fetch an account by provider and key.",
+		Description: "Retrieve information about a cloud account in Stacklet across different cloud providers.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the account.",
@@ -58,7 +57,7 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Computed:    true,
 			},
 			"short_name": schema.StringAttribute{
-				Description: "The short name used as a column header if set.",
+				Description: "The short name for the account.",
 				Computed:    true,
 			},
 			"description": schema.StringAttribute{
@@ -80,7 +79,6 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 			"security_context": schema.StringAttribute{
 				Description: "The security context for the account.",
 				Computed:    true,
-				Sensitive:   true,
 			},
 			"active": schema.BoolAttribute{
 				Description: "Whether the account is active or has been deactivated.",
@@ -135,9 +133,8 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		} `graphql:"account(provider: $provider, key: $key)"`
 	}
 
-	// Convert provider string to CloudProvider type
-	provider := CloudProvider(strings.ToUpper(data.CloudProvider.ValueString()))
-	if err := provider.Validate(); err != nil {
+	provider, err := NewCloudProvider(data.CloudProvider.ValueString())
+	if err != nil {
 		resp.Diagnostics.AddError("Invalid Provider", err.Error())
 		return
 	}
@@ -147,7 +144,7 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		"key":      graphql.String(data.Key.ValueString()),
 	}
 
-	err := d.client.Query(ctx, &query, variables)
+	err = d.client.Query(ctx, &query, variables)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read account, got error: %s", err))
 		return

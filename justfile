@@ -8,11 +8,11 @@ fmt:
 
 # Run linters
 lint:
-    golangci-lint run
+    golangci-lint run --fix
 
 # Run tests
 test:
-    go test ./internal/...
+    TF_ACC=1 STACKLET_ENDPOINT=fake STACKLET_API_KEY=fake go test ./internal/...
 
 # Generate provider docs
 docs:

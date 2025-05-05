@@ -17,6 +17,12 @@ const (
 	CloudProviderTencent    CloudProvider = "TENCENT"
 )
 
+// NewCloudProvider creates a CloudProvider from a string and validates it.
+func NewCloudProvider(s string) (CloudProvider, error) {
+	p := CloudProvider(strings.ToUpper(s))
+	return p, p.Validate()
+}
+
 // UnmarshalJSON implements the json.Unmarshaler interface
 func (cp *CloudProvider) UnmarshalJSON(data []byte) error {
 	var s string
