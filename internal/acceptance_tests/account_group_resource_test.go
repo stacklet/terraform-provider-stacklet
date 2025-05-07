@@ -1,12 +1,10 @@
 package acceptance_tests
 
 import (
-	"fmt"
 	"net/http"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccAccountGroupResource(t *testing.T) {
@@ -44,13 +42,7 @@ func TestAccAccountGroupResource(t *testing.T) {
 				ResourceName:      "stacklet_account_group.test",
 				ImportState:       true,
 				ImportStateVerify: true,
-				ImportStateIdFunc: func(s *terraform.State) (string, error) {
-					rs, ok := s.RootModule().Resources["stacklet_account_group.test"]
-					if !ok {
-						return "", fmt.Errorf("resource not found in state")
-					}
-					return rs.Primary.Attributes["uuid"], nil
-				},
+				ImportStateId:     "d9784826-dba3-4bb1-8df3-3dd60c8983e1",
 			},
 			// Update and Read testing
 			{

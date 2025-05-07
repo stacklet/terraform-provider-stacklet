@@ -15,14 +15,9 @@ This Terraform Provider allows you to interact with Stacklet's GraphQL API to ma
    cd terraform-provider-stacklet
    ```
 
-2. Install dependencies:
+2. Build the provider:
    ```bash
-   go mod download
-   ```
-
-3. Build the provider:
-   ```bash
-   go build -o terraform-provider-stacklet
+   just build
    ```
 
 ## Using the provider

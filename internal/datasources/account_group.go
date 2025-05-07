@@ -4,11 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -20,16 +24,7 @@ func NewAccountGroupDataSource() datasource.DataSource {
 }
 
 type accountGroupDataSource struct {
-	client *graphql.Client
-}
-
-type accountGroupDataSourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	UUID          types.String `tfsdk:"uuid"`
-	Name          types.String `tfsdk:"name"`
-	Description   types.String `tfsdk:"description"`
-	CloudProvider types.String `tfsdk:"cloud_provider"`
-	Regions       types.List   `tfsdk:"regions"`
+	api *api.API
 }
 
 func (d *accountGroupDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -38,7 +33,7 @@ func (d *accountGroupDataSource) Metadata(_ context.Context, req datasource.Meta
 
 func (d *accountGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Fetch an account group by UUID or name.",
+		Description: "Retrieve an account group by UUID or name.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the account group.",
@@ -83,61 +78,33 @@ func (d *accountGroupDataSource) Configure(_ context.Context, req datasource.Con
 		return
 	}
 
-	d.client = client
+	d.api = api.New(client)
 }
 
 func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data accountGroupDataSourceModel
+	var data models.AccountGroupDataSource
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL query
-	var query struct {
-		AccountGroup struct {
-			ID          string
-			UUID        string
-			Name        string
-			Description string
-			Provider    string
-			Regions     []string
-		} `graphql:"accountGroup(uuid: $uuid, name: $name)"`
-	}
-
-	variables := map[string]any{
-		"uuid": (*string)(nil),
-		"name": (*string)(nil),
-	}
-
-	if !data.UUID.IsNull() {
-		variables["uuid"] = graphql.String(data.UUID.ValueString())
-	}
-
-	if !data.Name.IsNull() {
-		variables["name"] = graphql.String(data.Name.ValueString())
-	}
-
-	err := d.client.Query(ctx, &query, variables)
+	account_group, err := d.api.AccountGroup.Read(ctx, data.UUID.ValueString(), data.Name.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read account group, got error: %s", err))
+		helpers.AddDiagError(resp.Diagnostics, err)
 		return
 	}
 
-	if query.AccountGroup.UUID == "" {
+	if account_group.UUID == "" {
 		resp.Diagnostics.AddError("Not Found", "No account group found with the specified UUID or name")
 		return
 	}
 
-	data.ID = types.StringValue(query.AccountGroup.ID)
-	data.UUID = types.StringValue(query.AccountGroup.UUID)
-	data.Name = types.StringValue(query.AccountGroup.Name)
-	data.Description = types.StringValue(query.AccountGroup.Description)
-	data.CloudProvider = types.StringValue(query.AccountGroup.Provider)
-	regions := make([]attr.Value, len(query.AccountGroup.Regions))
-	for i, region := range query.AccountGroup.Regions {
-		regions[i] = types.StringValue(region)
-	}
-	data.Regions, _ = types.ListValue(types.StringType, regions)
+	data.ID = types.StringValue(account_group.ID)
+	data.UUID = types.StringValue(account_group.UUID)
+	data.Name = types.StringValue(account_group.Name)
+	data.Description = tftypes.NullableString(account_group.Description)
+	data.CloudProvider = types.StringValue(account_group.Provider)
+	data.Regions = tftypes.StringsList(account_group.Regions)
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

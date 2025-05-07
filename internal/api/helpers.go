@@ -13,3 +13,16 @@ func NullableString(s types.String) *string {
 	str := s.ValueString()
 	return &str
 }
+
+// StringsList concerts a types.List ta list of strings
+func StringsList(l types.List) []string {
+	if l.IsNull() || l.IsUnknown() {
+		return nil
+	}
+	elements := l.Elements()
+	sl := make([]string, len(elements))
+	for i, element := range elements {
+		sl[i] = element.(types.String).ValueString()
+	}
+	return sl
+}

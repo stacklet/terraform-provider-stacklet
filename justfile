@@ -1,5 +1,8 @@
+package := "./internal/..."
+
 # Build the provider
 build:
+    go mod download
     go build -o terraform-provider-stacklet
 
 # Format code
@@ -10,11 +13,12 @@ format:
 # Run linters
 lint:
     terraform fmt -recursive -check
+    go vet {{ package }}
     golangci-lint run --fix
 
 # Run tests
 test *args:
-    TF_ACC=1 go test ./internal/... {{ args }}
+    TF_ACC=1 go test {{ package }} {{ args }}
 
 
 # Record API request/responses for an acceptance test.
