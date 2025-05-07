@@ -10,7 +10,7 @@ import (
 	"github.com/hasura/go-graphql-client"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tfTypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -162,14 +162,14 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.ID = types.StringValue(query.Account.ID)
 	data.Key = types.StringValue(query.Account.Key)
 	data.Name = types.StringValue(query.Account.Name)
-	data.ShortName = tfTypes.NullableString(query.Account.ShortName)
-	data.Description = tfTypes.NullableString(query.Account.Description)
+	data.ShortName = tftypes.NullableString(query.Account.ShortName)
+	data.Description = tftypes.NullableString(query.Account.Description)
 	data.CloudProvider = types.StringValue(string(query.Account.Provider))
-	data.Path = tfTypes.NullableString(query.Account.Path)
-	data.Email = tfTypes.NullableString(query.Account.Email)
-	data.SecurityContext = tfTypes.NullableString(query.Account.SecurityContext)
+	data.Path = tftypes.NullableString(query.Account.Path)
+	data.Email = tftypes.NullableString(query.Account.Email)
+	data.SecurityContext = tftypes.NullableString(query.Account.SecurityContext)
 	data.Active = types.BoolValue(query.Account.Active)
-	if vars, diags := tfTypes.JSONMap(ctx, query.Account.Variables); diags.HasError() {
+	if vars, diags := tftypes.JSONMap(ctx, query.Account.Variables); diags.HasError() {
 		resp.Diagnostics.Append(diags...)
 		return
 	} else {

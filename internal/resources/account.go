@@ -17,7 +17,7 @@ import (
 	"github.com/hasura/go-graphql-client"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tfTypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -337,12 +337,12 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 	state.Name = types.StringValue(query.Account.Name)
 	state.ShortName = types.StringValue(query.Account.ShortName)
 	state.CloudProvider = types.StringValue(string(query.Account.Provider))
-	state.Description = tfTypes.NullableString(query.Account.Description)
-	state.Path = tfTypes.NullableString(query.Account.Path)
-	state.Email = tfTypes.NullableString(query.Account.Email)
-	state.SecurityContext = tfTypes.NullableString(query.Account.SecurityContext)
+	state.Description = tftypes.NullableString(query.Account.Description)
+	state.Path = tftypes.NullableString(query.Account.Path)
+	state.Email = tftypes.NullableString(query.Account.Email)
+	state.SecurityContext = tftypes.NullableString(query.Account.SecurityContext)
 	state.Active = types.BoolValue(query.Account.Active)
-	state.Variables = tfTypes.NullableString(query.Account.Variables)
+	state.Variables = tftypes.NullableString(query.Account.Variables)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }

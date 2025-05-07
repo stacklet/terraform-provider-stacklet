@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
 
-	tfTypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces
@@ -263,9 +263,9 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	data.ID = types.StringValue(query.Repository.URL)
 	data.Name = types.StringValue(query.Repository.Name)
 	data.URL = types.StringValue(query.Repository.URL)
-	data.Description = tfTypes.NullableString(query.Repository.Description)
-	data.BranchName = tfTypes.NullableString(query.Repository.BranchName)
-	data.AuthUser = tfTypes.NullableString(query.Repository.AuthUser)
+	data.Description = tftypes.NullableString(query.Repository.Description)
+	data.BranchName = tftypes.NullableString(query.Repository.BranchName)
+	data.AuthUser = tftypes.NullableString(query.Repository.AuthUser)
 	// Preserve sensitive fields from state if they exist
 	if data.AuthToken.IsNull() {
 		data.AuthToken = types.StringNull()
