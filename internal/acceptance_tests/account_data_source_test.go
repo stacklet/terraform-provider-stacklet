@@ -29,9 +29,7 @@ func TestAccAccountDataSource(t *testing.T) {
 						cloud_provider = "AWS"
 						description = "Test AWS account"
 						short_name = "test"
-						path = "/test"
 						email = "test@example.com"
-						active = true
 						variables = "{\"environment\": \"test\"}"
 					}
 				`,
@@ -45,9 +43,7 @@ func TestAccAccountDataSource(t *testing.T) {
 						cloud_provider = "AWS"
 						description = "Test AWS account"
 						short_name = "test"
-						path = "/test"
 						email = "test@example.com"
-						active = true
 						variables = "{\"environment\": \"test\"}"
 					}
 
@@ -62,10 +58,8 @@ func TestAccAccountDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr("data.stacklet_account.test", "cloud_provider", "AWS"),
 					resource.TestCheckResourceAttr("data.stacklet_account.test", "description", "Test AWS account"),
 					resource.TestCheckResourceAttr("data.stacklet_account.test", "short_name", "test"),
-					resource.TestCheckResourceAttr("data.stacklet_account.test", "path", "/test"),
 					resource.TestCheckResourceAttr("data.stacklet_account.test", "email", "test@example.com"),
-					resource.TestCheckResourceAttr("data.stacklet_account.test", "active", "true"),
-					testAccCheckMapValues("data.stacklet_account.test", "variables", map[string]string{"environment": "test"}),
+					resource.TestCheckResourceAttr("data.stacklet_account.test", "variables", "{\"environment\": \"test\"}"),
 					resource.TestCheckResourceAttrSet("data.stacklet_account.test", "id"),
 				),
 			},

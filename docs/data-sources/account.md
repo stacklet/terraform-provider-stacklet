@@ -57,12 +57,11 @@ output "account_variables" {
 
 ### Read-Only
 
-- `active` (Boolean) Whether the account is active or has been deactivated.
 - `description` (String) More detailed information about the account.
 - `email` (String) The email contact address for the account.
 - `id` (String) The GraphQL Node ID of the account.
-- `name` (String) The human readable identifier for the account.
+- `name` (String) The display name for the account.
 - `path` (String) The path used to group accounts in a hierarchy.
 - `security_context` (String) The security context for the account.
 - `short_name` (String) The short name for the account.
-- `variables` (Map of String) Values used for policy templating.
+- `variables` (String) JSON encoded dict of values used for policy templating.

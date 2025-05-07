@@ -3,11 +3,13 @@ build:
     go build -o terraform-provider-stacklet
 
 # Format code
-fmt:
+format:
+    terraform fmt -recursive
     go fmt ./...
 
 # Run linters
 lint:
+    terraform fmt -recursive -check
     golangci-lint run --fix
 
 # Run tests
@@ -16,4 +18,5 @@ test *args:
 
 # Generate provider docs
 docs:
-    go generate
+    go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+

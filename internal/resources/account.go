@@ -8,20 +8,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
 	_ resource.Resource                = &accountResource{}
+	_ resource.ResourceWithConfigure   = &accountResource{}
 	_ resource.ResourceWithImportState = &accountResource{}
 )
 
@@ -30,21 +30,7 @@ func NewAccountResource() resource.Resource {
 }
 
 type accountResource struct {
-	client *graphql.Client
-}
-
-type accountResourceModel struct {
-	ID              types.String `tfsdk:"id"`
-	Key             types.String `tfsdk:"key"`
-	Name            types.String `tfsdk:"name"`
-	ShortName       types.String `tfsdk:"short_name"`
-	Description     types.String `tfsdk:"description"`
-	CloudProvider   types.String `tfsdk:"cloud_provider"`
-	Path            types.String `tfsdk:"path"`
-	Email           types.String `tfsdk:"email"`
-	SecurityContext types.String `tfsdk:"security_context"`
-	Active          types.Bool   `tfsdk:"active"`
-	Variables       types.String `tfsdk:"variables"`
+	api *api.API
 }
 
 func (r *accountResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -53,7 +39,7 @@ func (r *accountResource) Metadata(_ context.Context, req resource.MetadataReque
 
 func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a Stacklet account.",
+		Description: "Manage a Stacklet account with a specific cloud provider.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the account.",
@@ -70,17 +56,12 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "The human readable identifier for the account.",
+				Description: "The display name for the account.",
 				Required:    true,
 			},
 			"short_name": schema.StringAttribute{
-				Description: "The short name used as a column header if set.",
+				Description: "The short name for the account.",
 				Optional:    true,
-				Computed:    true,
-				Default:     stringdefault.StaticString(""),
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Description: "More detailed information about the account.",
@@ -96,6 +77,7 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"path": schema.StringAttribute{
 				Description: "The path used to group accounts in a hierarchy.",
 				Optional:    true,
+				Computed:    true,
 			},
 			"email": schema.StringAttribute{
 				Description: "The email contact address for the account.",
@@ -105,15 +87,6 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "The security context for the account.",
 				Optional:    true,
 				Sensitive:   true,
-			},
-			"active": schema.BoolAttribute{
-				Description: "Whether the account is active or has been deactivated.",
-				Optional:    true,
-				Computed:    true,
-				Default:     booldefault.StaticBool(true),
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"variables": schema.StringAttribute{
 				Description: "JSON encoded dict of values used for policy templating.",
@@ -137,32 +110,14 @@ func (r *accountResource) Configure(_ context.Context, req resource.ConfigureReq
 		return
 	}
 
-	r.client = client
+	r.api = api.New(client)
 }
 
 func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan accountResourceModel
+	var plan models.AccountResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
-	}
-
-	var mutation struct {
-		AddAccount struct {
-			Account struct {
-				ID              string
-				Key             string
-				Name            string
-				ShortName       string
-				Description     string
-				Provider        api.CloudProvider
-				Path            string
-				Email           string
-				SecurityContext string
-				Active          bool
-				Variables       string
-			}
-		} `graphql:"addAccount(input: $input)"`
 	}
 
 	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
@@ -171,205 +126,53 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	input := map[string]any{
-		"input": AccountInput{
-			Name:     plan.Name.ValueString(),
-			Key:      plan.Key.ValueString(),
-			Provider: provider,
-			ShortName: func() *string {
-				// Always send empty string if not explicitly set
-				if !plan.ShortName.IsNull() {
-					s := plan.ShortName.ValueString()
-					return &s
-				}
-				s := ""
-				return &s
-			}(),
-			Description: func() *string {
-				if !plan.Description.IsNull() {
-					s := plan.Description.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-			Path: func() *string {
-				if !plan.Path.IsNull() {
-					s := plan.Path.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-			Email: func() *string {
-				if !plan.Email.IsNull() {
-					s := plan.Email.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-			SecurityContext: func() *string {
-				if !plan.SecurityContext.IsNull() {
-					s := plan.SecurityContext.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-			Variables: func() *string {
-				if !plan.Variables.IsNull() {
-					s := plan.Variables.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-		},
+	input := api.AccountCreateInput{
+		Name:            plan.Name.ValueString(),
+		Key:             plan.Key.ValueString(),
+		Provider:        provider,
+		ShortName:       api.NullableString(plan.ShortName),
+		Description:     api.NullableString(plan.Description),
+		Email:           api.NullableString(plan.Email),
+		SecurityContext: api.NullableString(plan.SecurityContext),
+		Variables:       api.NullableString(plan.Variables),
 	}
-
-	err = r.client.Mutate(ctx, &mutation, input)
+	account, err := r.api.Account.Create(ctx, input)
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Client Error",
-			fmt.Sprintf("Unable to create account, got error: %s", err),
-		)
+		helpers.AddDiagError(resp.Diagnostics, err)
 		return
 	}
 
-	plan.ID = types.StringValue(mutation.AddAccount.Account.ID)
-	plan.Key = types.StringValue(mutation.AddAccount.Account.Key)
-	plan.Name = types.StringValue(mutation.AddAccount.Account.Name)
-	plan.CloudProvider = types.StringValue(string(mutation.AddAccount.Account.Provider))
-	plan.ShortName = types.StringValue(mutation.AddAccount.Account.ShortName)
-
-	if mutation.AddAccount.Account.Description != "" {
-		plan.Description = types.StringValue(mutation.AddAccount.Account.Description)
-	} else if !plan.Description.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Description = types.StringNull()
-	}
-
-	if mutation.AddAccount.Account.Path != "" {
-		plan.Path = types.StringValue(mutation.AddAccount.Account.Path)
-	} else if !plan.Path.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Path = types.StringNull()
-	}
-
-	if mutation.AddAccount.Account.Email != "" {
-		plan.Email = types.StringValue(mutation.AddAccount.Account.Email)
-	} else if !plan.Email.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Email = types.StringNull()
-	}
-
-	if mutation.AddAccount.Account.SecurityContext != "" {
-		plan.SecurityContext = types.StringValue(mutation.AddAccount.Account.SecurityContext)
-	} else if !plan.SecurityContext.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.SecurityContext = types.StringNull()
-	}
-
-	if !plan.Active.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Active = types.BoolValue(mutation.AddAccount.Account.Active)
-	}
-
-	if mutation.AddAccount.Account.Variables != "" {
-		plan.Variables = types.StringValue(mutation.AddAccount.Account.Variables)
-	} else if !plan.Variables.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Variables = types.StringNull()
-	}
-
+	updateAccountModel(&plan, account)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state accountResourceModel
+	var state models.AccountResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var query struct {
-		Account struct {
-			ID              string
-			Key             string
-			Name            string
-			ShortName       string
-			Description     string
-			Provider        api.CloudProvider
-			Path            string
-			Email           string
-			SecurityContext string
-			Active          bool
-			Variables       string
-		} `graphql:"account(provider: $provider, key: $key)"`
-	}
-
-	provider, err := api.NewCloudProvider(state.CloudProvider.ValueString())
+	account, err := r.api.Account.Read(ctx, state.CloudProvider.ValueString(), state.Key.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Provider", err.Error())
+		helpers.AddDiagError(resp.Diagnostics, err)
 		return
 	}
 
-	variables := map[string]any{
-		"provider": provider,
-		"key":      graphql.String(state.Key.ValueString()),
-	}
-
-	err = r.client.Query(ctx, &query, variables)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read account, got error: %s", err))
-		return
-	}
-
-	if query.Account.Key == "" {
+	if account.Key == "" {
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	state.ID = types.StringValue(query.Account.ID)
-	state.Key = types.StringValue(query.Account.Key)
-	state.Name = types.StringValue(query.Account.Name)
-	state.ShortName = types.StringValue(query.Account.ShortName)
-	state.CloudProvider = types.StringValue(string(query.Account.Provider))
-	state.Description = tftypes.NullableString(query.Account.Description)
-	state.Path = tftypes.NullableString(query.Account.Path)
-	state.Email = tftypes.NullableString(query.Account.Email)
-	state.SecurityContext = tftypes.NullableString(query.Account.SecurityContext)
-	state.Active = types.BoolValue(query.Account.Active)
-	state.Variables = tftypes.NullableString(query.Account.Variables)
-
+	updateAccountModel(&state, account)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
 func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan accountResourceModel
+	var plan models.AccountResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
-	}
-
-	var mutation struct {
-		UpdateAccount struct {
-			Account struct {
-				ID              string
-				Key             string
-				Name            string
-				ShortName       string
-				Description     string
-				Provider        api.CloudProvider
-				Path            string
-				Email           string
-				SecurityContext string
-				Active          bool
-				Variables       string
-			}
-		} `graphql:"updateAccount(input: $input)"`
 	}
 
 	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
@@ -378,141 +181,36 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	input := map[string]any{
-		"input": UpdateAccountInput{
-			Key:      plan.Key.ValueString(),
-			Provider: provider,
-			Name:     plan.Name.ValueString(),
-			ShortName: func() *string {
-				// Always send empty string if not explicitly set
-				if !plan.ShortName.IsNull() {
-					s := plan.ShortName.ValueString()
-					return &s
-				}
-				s := ""
-				return &s
-			}(),
-			Description: func() *string {
-				if !plan.Description.IsNull() {
-					s := plan.Description.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-			Email: func() *string {
-				if !plan.Email.IsNull() {
-					s := plan.Email.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-			SecurityContext: func() *string {
-				if !plan.SecurityContext.IsNull() {
-					s := plan.SecurityContext.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-			Variables: func() *string {
-				if !plan.Variables.IsNull() {
-					s := plan.Variables.ValueString()
-					return &s
-				}
-				return nil
-			}(),
-		},
+	input := api.AccountUpdateInput{
+		Key:             plan.Key.ValueString(),
+		Provider:        provider,
+		Name:            api.NullableString(plan.Name),
+		ShortName:       api.NullableString(plan.ShortName),
+		Description:     api.NullableString(plan.Description),
+		Email:           api.NullableString(plan.Email),
+		SecurityContext: api.NullableString(plan.SecurityContext),
+		Variables:       api.NullableString(plan.Variables),
 	}
 
-	err = r.client.Mutate(ctx, &mutation, input)
+	account, err := r.api.Account.Update(ctx, input)
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update account, got error: %s", err))
+		helpers.AddDiagError(resp.Diagnostics, err)
 		return
 	}
 
-	plan.ID = types.StringValue(mutation.UpdateAccount.Account.ID)
-	plan.Key = types.StringValue(mutation.UpdateAccount.Account.Key)
-	plan.Name = types.StringValue(mutation.UpdateAccount.Account.Name)
-	plan.CloudProvider = types.StringValue(string(mutation.UpdateAccount.Account.Provider))
-	plan.ShortName = types.StringValue(mutation.UpdateAccount.Account.ShortName)
-
-	if mutation.UpdateAccount.Account.Description != "" {
-		plan.Description = types.StringValue(mutation.UpdateAccount.Account.Description)
-	} else if !plan.Description.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Description = types.StringNull()
-	}
-
-	if mutation.UpdateAccount.Account.Path != "" {
-		plan.Path = types.StringValue(mutation.UpdateAccount.Account.Path)
-	} else if !plan.Path.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Path = types.StringNull()
-	}
-
-	if mutation.UpdateAccount.Account.Email != "" {
-		plan.Email = types.StringValue(mutation.UpdateAccount.Account.Email)
-	} else if !plan.Email.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Email = types.StringNull()
-	}
-
-	if mutation.UpdateAccount.Account.SecurityContext != "" {
-		plan.SecurityContext = types.StringValue(mutation.UpdateAccount.Account.SecurityContext)
-	} else if !plan.SecurityContext.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.SecurityContext = types.StringNull()
-	}
-
-	if !plan.Active.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Active = types.BoolValue(mutation.UpdateAccount.Account.Active)
-	}
-
-	if mutation.UpdateAccount.Account.Variables != "" {
-		plan.Variables = types.StringValue(mutation.UpdateAccount.Account.Variables)
-	} else if !plan.Variables.IsNull() {
-		// Keep the planned value
-	} else {
-		plan.Variables = types.StringNull()
-	}
-
+	updateAccountModel(&plan, account)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state accountResourceModel
+	var state models.AccountResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var mutation struct {
-		RemoveAccount struct {
-			Account struct {
-				Key string
-			}
-		} `graphql:"removeAccount(provider: $provider, key: $key)"`
-	}
-
-	provider, err := api.NewCloudProvider(state.CloudProvider.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid Provider", err.Error())
-		return
-	}
-
-	variables := map[string]any{
-		"provider": provider,
-		"key":      graphql.String(state.Key.ValueString()),
-	}
-
-	err = r.client.Mutate(ctx, &mutation, variables)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete account, got error: %s", err))
+	if err := r.api.Account.Delete(ctx, state.CloudProvider.ValueString(), state.Key.ValueString()); err != nil {
+		helpers.AddDiagError(resp.Diagnostics, err)
 		return
 	}
 }
@@ -535,25 +233,14 @@ func (r *accountResource) ImportState(ctx context.Context, req resource.ImportSt
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), key)...)
 }
 
-type AccountInput struct {
-	Name            string            `json:"name"`
-	Key             string            `json:"key"`
-	Provider        api.CloudProvider `json:"provider"`
-	ShortName       *string           `json:"shortName,omitempty"`
-	Description     *string           `json:"description,omitempty"`
-	Path            *string           `json:"path,omitempty"`
-	Email           *string           `json:"email,omitempty"`
-	SecurityContext *string           `json:"securityContext,omitempty"`
-	Variables       *string           `json:"variables,omitempty"`
-}
-
-type UpdateAccountInput struct {
-	Key             string            `json:"key"`
-	Provider        api.CloudProvider `json:"provider"`
-	Name            string            `json:"name"`
-	ShortName       *string           `json:"shortName,omitempty"`
-	Description     *string           `json:"description,omitempty"`
-	Email           *string           `json:"email,omitempty"`
-	SecurityContext *string           `json:"securityContext,omitempty"`
-	Variables       *string           `json:"variables,omitempty"`
+func updateAccountModel(m *models.AccountResource, account api.Account) {
+	m.ID = types.StringValue(account.ID)
+	m.Key = types.StringValue(account.Key)
+	m.Name = types.StringValue(account.Name)
+	m.ShortName = tftypes.NullableString(account.ShortName)
+	m.CloudProvider = types.StringValue(string(account.Provider))
+	m.Description = tftypes.NullableString(account.Description)
+	m.Path = tftypes.NullableString(account.Path)
+	m.Email = tftypes.NullableString(account.Email)
+	m.Variables = tftypes.NullableString(account.Variables)
 }

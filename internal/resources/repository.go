@@ -236,11 +236,11 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 			UUID              string
 			Name              string
 			URL               string
-			Description       string
+			Description       *string
 			PolicyFileSuffix  []string
 			PolicyDirectories []string
-			BranchName        string
-			AuthUser          string
+			BranchName        *string
+			AuthUser          *string
 			HasAuthToken      bool
 			HasSshPrivateKey  bool
 			HasSshPassphrase  bool
