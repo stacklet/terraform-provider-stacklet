@@ -53,7 +53,6 @@ terraform {
   required_providers {
     stacklet = {
       source = "stacklet/stacklet"
-      version = "0.1.0"
     }
   }
 }
@@ -63,6 +62,8 @@ provider "stacklet" {
   api_key  = "your-api-key"                           # Or use STACKLET_API_KEY env var
 }
 ```
+
+Note that `terraform init` must not be run when working with a locally installed provider.
 
 ### Environment Variables
 

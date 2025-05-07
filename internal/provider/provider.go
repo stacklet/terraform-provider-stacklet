@@ -15,6 +15,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/datasources"
+	"github.com/stacklet/terraform-provider-stacklet/internal/resources"
 )
 
 // Ensure the implementation satisfies the expected interfaces
@@ -160,31 +163,12 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 
 // DataSources defines the data sources implemented in the provider.
 func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{
-		NewAccountDataSource,
-		NewAccountGroupDataSource,
-		NewPolicyDataSource,
-		NewPolicyCollectionDataSource,
-		NewBindingDataSource,
-		NewAccountDiscoveryDataSource,
-		NewSSOGroupDataSource,
-		NewRepositoryDataSource,
-	}
+	return datasources.DATASOURCES
 }
 
 // Resources defines the resources implemented in the provider.
 func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resource {
-	return []func() resource.Resource{
-		NewAccountResource,
-		NewAccountGroupResource,
-		NewAccountGroupItemResource,
-		NewPolicyCollectionItemResource,
-		NewPolicyCollectionResource,
-		NewBindingResource,
-		NewAccountDiscoveryResource,
-		NewSSOGroupResource,
-		NewRepositoryResource,
-	}
+	return resources.RESOURCES
 }
 
 // authTransport is an http.RoundTripper that adds authentication headers
