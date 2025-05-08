@@ -174,7 +174,6 @@ resource "stacklet_account" "two" {
   short_name    = "tftest"
   description   = "Test account from terraform testing update"
   email         = "cloud-team@example.com"
-  active        = true
 }
 
 resource "stacklet_binding" "binding" {

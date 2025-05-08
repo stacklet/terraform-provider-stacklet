@@ -29,9 +29,7 @@ func TestAccAccountResource(t *testing.T) {
 						cloud_provider = "AWS"
 						description = "Test AWS account"
 						short_name = "test"
-						path = "/test"
 						email = "test@example.com"
-						active = true
 						variables = "{\"environment\": \"test\"}"
 					}
 				`,
@@ -41,9 +39,7 @@ func TestAccAccountResource(t *testing.T) {
 					resource.TestCheckResourceAttr("stacklet_account.test", "cloud_provider", "AWS"),
 					resource.TestCheckResourceAttr("stacklet_account.test", "description", "Test AWS account"),
 					resource.TestCheckResourceAttr("stacklet_account.test", "short_name", "test"),
-					resource.TestCheckResourceAttr("stacklet_account.test", "path", "/test"),
 					resource.TestCheckResourceAttr("stacklet_account.test", "email", "test@example.com"),
-					resource.TestCheckResourceAttr("stacklet_account.test", "active", "true"),
 					resource.TestCheckResourceAttr("stacklet_account.test", "variables", "{\"environment\": \"test\"}"),
 					resource.TestCheckResourceAttrSet("stacklet_account.test", "id"),
 				),
@@ -65,9 +61,7 @@ func TestAccAccountResource(t *testing.T) {
 						cloud_provider = "AWS"
 						description = "Updated AWS account"
 						short_name = "test-updated"
-						path = "/test"
 						email = "updated@example.com"
-						active = true
 						variables = "{\"environment\": \"staging\"}"
 					}
 				`,
@@ -77,9 +71,7 @@ func TestAccAccountResource(t *testing.T) {
 					resource.TestCheckResourceAttr("stacklet_account.test", "cloud_provider", "AWS"),
 					resource.TestCheckResourceAttr("stacklet_account.test", "description", "Updated AWS account"),
 					resource.TestCheckResourceAttr("stacklet_account.test", "short_name", "test-updated"),
-					resource.TestCheckResourceAttr("stacklet_account.test", "path", "/test"),
 					resource.TestCheckResourceAttr("stacklet_account.test", "email", "updated@example.com"),
-					resource.TestCheckResourceAttr("stacklet_account.test", "active", "true"),
 					resource.TestCheckResourceAttr("stacklet_account.test", "variables", "{\"environment\": \"staging\"}"),
 				),
 			},

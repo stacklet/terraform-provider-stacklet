@@ -10,6 +10,8 @@ import (
 	"github.com/hasura/go-graphql-client"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
@@ -22,21 +24,7 @@ func NewAccountDataSource() datasource.DataSource {
 }
 
 type accountDataSource struct {
-	client *graphql.Client
-}
-
-type accountDataSourceModel struct {
-	ID              types.String `tfsdk:"id"`
-	Key             types.String `tfsdk:"key"`
-	Name            types.String `tfsdk:"name"`
-	ShortName       types.String `tfsdk:"short_name"`
-	Description     types.String `tfsdk:"description"`
-	CloudProvider   types.String `tfsdk:"cloud_provider"`
-	Path            types.String `tfsdk:"path"`
-	Email           types.String `tfsdk:"email"`
-	SecurityContext types.String `tfsdk:"security_context"`
-	Active          types.Bool   `tfsdk:"active"`
-	Variables       types.Map    `tfsdk:"variables"`
+	api *api.API
 }
 
 func (d *accountDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -56,7 +44,7 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Required:    true,
 			},
 			"name": schema.StringAttribute{
-				Description: "The human readable identifier for the account.",
+				Description: "The display name for the account.",
 				Computed:    true,
 			},
 			"short_name": schema.StringAttribute{
@@ -83,20 +71,15 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Description: "The security context for the account.",
 				Computed:    true,
 			},
-			"active": schema.BoolAttribute{
-				Description: "Whether the account is active or has been deactivated.",
-				Computed:    true,
-			},
-			"variables": schema.MapAttribute{
-				ElementType: types.StringType,
-				Description: "Values used for policy templating.",
+			"variables": schema.StringAttribute{
+				Description: "JSON encoded dict of values used for policy templating.",
 				Computed:    true,
 			},
 		},
 	}
 }
 
-func (d *accountDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *accountDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -110,70 +93,36 @@ func (d *accountDataSource) Configure(_ context.Context, req datasource.Configur
 		return
 	}
 
-	d.client = client
+	d.api = api.New(client)
 }
 
 func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data accountDataSourceModel
+	var data models.AccountDataSource
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL query
-	var query struct {
-		Account struct {
-			ID              string
-			Key             string
-			Name            string
-			ShortName       string
-			Description     string
-			Provider        api.CloudProvider
-			Path            string
-			Email           string
-			SecurityContext string
-			Active          bool
-			Variables       string
-		} `graphql:"account(provider: $provider, key: $key)"`
-	}
-
-	provider, err := api.NewCloudProvider(data.CloudProvider.ValueString())
+	account, err := d.api.Account.Read(ctx, data.CloudProvider.ValueString(), data.Key.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Provider", err.Error())
+		helpers.AddDiagError(resp.Diagnostics, err)
 		return
 	}
 
-	variables := map[string]any{
-		"provider": provider,
-		"key":      graphql.String(data.Key.ValueString()),
-	}
-
-	err = d.client.Query(ctx, &query, variables)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read account, got error: %s", err))
-		return
-	}
-
-	if query.Account.Key == "" {
+	if account.Key == "" {
 		resp.Diagnostics.AddError("Not Found", "No account found with the specified provider and key")
 		return
 	}
 
-	data.ID = types.StringValue(query.Account.ID)
-	data.Key = types.StringValue(query.Account.Key)
-	data.Name = types.StringValue(query.Account.Name)
-	data.ShortName = tftypes.NullableString(query.Account.ShortName)
-	data.Description = tftypes.NullableString(query.Account.Description)
-	data.CloudProvider = types.StringValue(string(query.Account.Provider))
-	data.Path = tftypes.NullableString(query.Account.Path)
-	data.Email = tftypes.NullableString(query.Account.Email)
-	data.SecurityContext = tftypes.NullableString(query.Account.SecurityContext)
-	data.Active = types.BoolValue(query.Account.Active)
-	if vars, diags := tftypes.JSONMap(ctx, query.Account.Variables); diags.HasError() {
-		resp.Diagnostics.Append(diags...)
-		return
-	} else {
-		data.Variables = vars
-	}
+	data.ID = types.StringValue(account.ID)
+	data.Key = types.StringValue(account.Key)
+	data.Name = types.StringValue(account.Name)
+	data.ShortName = tftypes.NullableString(account.ShortName)
+	data.Description = tftypes.NullableString(account.Description)
+	data.CloudProvider = types.StringValue(string(account.Provider))
+	data.Path = tftypes.NullableString(account.Path)
+	data.Email = tftypes.NullableString(account.Email)
+	data.Variables = tftypes.NullableString(account.Variables)
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
