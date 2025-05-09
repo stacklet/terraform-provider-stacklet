@@ -103,7 +103,5 @@ jobs:
       - name: Test
         env:
           TF_ACC: "1"
-          STACKLET_ENDPOINT: fake
-          STACKLET_API_KEY: fake
         run: |
           go test ./internal/...
