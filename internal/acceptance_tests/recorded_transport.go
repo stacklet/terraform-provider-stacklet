@@ -128,7 +128,7 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 	}
 
 	if rt.mode == "record" {
-		rt.t.Logf("Recording request with query: %s", gqlReq.Query)
+		rt.t.Logf("Recording request with query: %s - %v", gqlReq.Query, gqlReq.Variables)
 
 		// Make the real request with the original body
 		req.Body = io.NopCloser(bytes.NewReader(body))
@@ -164,11 +164,12 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 	}
 
 	// Replay mode
-	rt.t.Logf("Attempting to replay request with query: %s", gqlReq.Query)
+	rt.t.Logf("Attempting to replay request with query: %s - %v", gqlReq.Query, gqlReq.Variables)
 	recs, ok := rt.recordings[key]
 	if !ok || len(recs) == 0 {
 		return nil, fmt.Errorf("no recording found for query: %s", key)
 	}
+	rt.t.Logf("Recording found with key: %s", key)
 
 	// Use the first recording and rotate
 	rec := recs[0]
@@ -182,8 +183,8 @@ Request doesn't match expected one:
 got     : %s
 expected: %s
 -- parameters
-got     : %+v
-expected: %+v`,
+got     : %v
+expected: %v`,
 			gqlReq.Query, rec.Request.Query, gqlReq.Variables, rec.Request.Variables)
 	}
 

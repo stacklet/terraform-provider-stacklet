@@ -7,14 +7,16 @@ import (
 
 // API provides access to the GraphQL API.
 type API struct {
-	Account accountAPI
-	Policy  policyAPI
+	Account      accountAPI
+	AccountGroup accountGroupAPI
+	Policy       policyAPI
 }
 
 // New creates an API wrapper.
 func New(c *graphql.Client) *API {
 	return &API{
-		Account: accountAPI{c},
-		Policy:  policyAPI{c},
+		Account:      accountAPI{c},
+		AccountGroup: accountGroupAPI{c},
+		Policy:       policyAPI{c},
 	}
 }

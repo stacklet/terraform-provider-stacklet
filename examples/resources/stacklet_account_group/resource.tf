@@ -1,26 +1,14 @@
-provider "stacklet" {
-  endpoint = "http://localhost:8080/graphql"
-  api_key  = "your-api-key"
+# Create an AWS account group
+resource "stacklet_account_group" "production" {
+  name           = "production-accounts"
+  cloud_provider = "aws"
+  description    = "Production AWS accounts"
+  regions        = ["us-east-1", "us-west-2"]
 }
 
-resource "stacklet_account_group" "example" {
-  name           = "example-group"
-  cloud_provider = "AWS"
-  description    = "Example account group"
+# Create an Azure account group
+resource "stacklet_account_group" "development" {
+  name           = "development-accounts"
+  cloud_provider = "azure"
+  description    = "Development Azure accounts"
 }
-
-output "account_group_id" {
-  value = stacklet_account_group.example.id
-}
-
-output "account_group_uuid" {
-  value = stacklet_account_group.example.uuid
-}
-
-output "account_group_description" {
-  value = stacklet_account_group.example.description
-}
-
-output "account_group_cloud_provider" {
-  value = stacklet_account_group.example.cloud_provider
-} 

@@ -1,24 +1,18 @@
-provider "stacklet" {
-  endpoint = "http://localhost:8080/graphql"
-  api_key  = "your-api-key"
-}
-
+# Fetch an account group by UUID
 data "stacklet_account_group" "example" {
-  name = "example-group"
+  uuid = "00000000-0000-0000-0000-000000000000"
 }
 
-output "account_group_id" {
-  value = data.stacklet_account_group.example.id
+# Fetch an account group by name
+data "stacklet_account_group" "example" {
+  name = "production-accounts"
 }
 
-output "account_group_uuid" {
-  value = data.stacklet_account_group.example.uuid
+# Output account group details
+output "group_cloud_provider" {
+  value = data.stacklet_account_group.example.cloud_provider
 }
 
-output "account_group_description" {
+output "group_description" {
   value = data.stacklet_account_group.example.description
 }
-
-output "account_group_cloud_provider" {
-  value = data.stacklet_account_group.example.cloud_provider
-} 
