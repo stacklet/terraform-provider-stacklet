@@ -40,11 +40,11 @@ func (d *accountGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Computed:    true,
 			},
 			"uuid": schema.StringAttribute{
-				Description: "The UUID of the account group.",
+				Description: "The UUID of the account group, alternative to the name.",
 				Optional:    true,
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the account group.",
+				Description: "The name of the account group, alternative to the UUID.",
 				Optional:    true,
 			},
 			"description": schema.StringAttribute{
@@ -85,6 +85,11 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 	var data models.AccountGroupDataSource
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if !data.UUID.IsNull() && !data.Name.IsNull() {
+		resp.Diagnostics.AddError("Invalid configuration", "Only one of UUID and name must be set")
 		return
 	}
 

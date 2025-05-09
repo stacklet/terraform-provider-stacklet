@@ -67,9 +67,9 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 				Required:    true,
 			},
 			"regions": schema.ListAttribute{
-				Description: "The list of regions for the account group (e.g., us-east-1, eu-west-2).",
+				Description: "The list of regions for the account group (e.g., us-east-1, eu-west-2), for providers that require it.",
 				ElementType: types.StringType,
-				Required:    true,
+				Optional:    true,
 			},
 		},
 	}

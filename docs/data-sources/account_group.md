@@ -38,8 +38,8 @@ output "group_description" {
 
 ### Optional
 
-- `name` (String) The name of the account group.
-- `uuid` (String) The UUID of the account group.
+- `name` (String) The name of the account group, alternative to the UUID.
+- `uuid` (String) The UUID of the account group, alternative to the name.
 
 ### Read-Only
 

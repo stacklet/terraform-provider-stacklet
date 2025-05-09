@@ -50,12 +50,9 @@ func (a accountGroupAPI) Read(ctx context.Context, uuid string, name string) (Ac
 		AccountGroup AccountGroup `graphql:"accountGroup(uuid: $uuid, name: $name)"`
 	}
 
-	variables := map[string]any{}
-	if uuid != "" {
-		variables["uuid"] = graphql.String(uuid)
-	}
-	if name != "" {
-		variables["name"] = graphql.String(name)
+	variables := map[string]any{
+		"uuid": graphql.String(uuid),
+		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return query.AccountGroup, APIError{"Client error", err.Error()}

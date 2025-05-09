@@ -18,6 +18,7 @@ resource "stacklet_account_group" "production" {
   name           = "production-accounts"
   cloud_provider = "aws"
   description    = "Production AWS accounts"
+  regions        = ["us-east-1", "us-west-2"]
 }
 
 # Create an Azure account group
@@ -35,11 +36,11 @@ resource "stacklet_account_group" "development" {
 
 - `cloud_provider` (String) The cloud provider for the account group (aws, azure, gcp, kubernetes, or tencentcloud).
 - `name` (String) The name of the account group.
-- `regions` (List of String) The list of regions for the account group (e.g., us-east-1, eu-west-2).
 
 ### Optional
 
 - `description` (String) The description of the account group.
+- `regions` (List of String) The list of regions for the account group (e.g., us-east-1, eu-west-2), for providers that require it.
 
 ### Read-Only
 
