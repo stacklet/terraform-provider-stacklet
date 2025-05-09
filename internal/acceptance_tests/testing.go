@@ -43,7 +43,7 @@ type graphqlResponse struct {
 
 func newRecordedTransport(t *testing.T, testName string, wrapped http.RoundTripper) *recordedTransport {
 	mode := "replay"
-	if os.Getenv("STACKLET_RECORD") != "" {
+	if os.Getenv("TF_ACC_RECORD") != "" {
 		mode = "record"
 		t.Logf("Recording mode enabled for test: %s", testName)
 	} else {
@@ -166,7 +166,7 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 		if err := rt.saveRecordings(); err != nil {
 			rt.t.Logf("Warning: failed to save recordings: %v", err)
 		} else {
-			rt.t.Logf("Successfully saved recording to testdata/recordings/%s.json", rt.testName)
+			rt.t.Logf("Successfully saved recording to recordings/%s.json", rt.testName)
 		}
 
 		// Return the response with a new body reader
@@ -207,13 +207,6 @@ var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 		p := provider.New("test")()
 		return providerserver.NewProtocol6WithError(p)()
 	},
-}
-
-func testAccPreCheck(t *testing.T) {
-	// Verify environment variables required for API calls are set
-	if v := os.Getenv("STACKLET_API_KEY"); v == "" {
-		t.Skip("STACKLET_API_KEY must be set for acceptance tests")
-	}
 }
 
 // setupRecordedTest prepares a test with recording/replay capability

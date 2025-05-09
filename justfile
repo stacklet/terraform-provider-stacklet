@@ -14,7 +14,13 @@ lint:
 
 # Run tests
 test *args:
-    TF_ACC=1 STACKLET_ENDPOINT=fake STACKLET_API_KEY=fake go test ./internal/... {{ args }}
+    TF_ACC=1 go test ./internal/... {{ args }}
+
+
+# Record API request/responses for an acceptance test.
+# Requires real STACKLET_ENDPOINT and STACKLET_API_KEY or logged in stacklet-admin.
+test-record testname:
+    TF_ACC_RECORD=1 just test -run {{ testname }}
 
 # Generate provider docs
 docs:

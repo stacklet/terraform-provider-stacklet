@@ -17,7 +17,6 @@ func TestAccAccountResource(t *testing.T) {
 	http.DefaultTransport = rt
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
