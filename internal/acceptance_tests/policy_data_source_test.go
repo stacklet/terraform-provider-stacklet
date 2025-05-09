@@ -1,24 +1,16 @@
 package acceptance_tests
 
 import (
-	"net/http"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccPolicyDataSource(t *testing.T) {
-	rt, err := setupRecordedTest(t, "TestAccPolicyDataSource")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// Set up the HTTP client with our recorded transport
-	http.DefaultTransport = rt
-
-	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
+	runRecordedAccTest(
+		t,
+		"TestAccPolicyDataSource",
+		[]resource.TestStep{
 			// Read resource
 			{
 				Config: `
@@ -45,5 +37,5 @@ func TestAccPolicyDataSource(t *testing.T) {
 				),
 			},
 		},
-	})
+	)
 }

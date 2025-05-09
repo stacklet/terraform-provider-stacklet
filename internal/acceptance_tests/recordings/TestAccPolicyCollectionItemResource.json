@@ -138,7 +138,7 @@
   "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid}}}}}}:{\"uuid\":\"659ad69f-27a4-46ea-815d-8b87b15b2df1\"}": [
     {
       "request": {
-        "query": "query ($name:String!)($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{id,node{policy{uuid}}}}}}",
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid}}}}}}",
         "variables": {
           "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
         }
@@ -164,7 +164,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!)($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{id,node{policy{uuid}}}}}}",
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid}}}}}}",
         "variables": {
           "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
         }
@@ -190,7 +190,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!)($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{id,node{policy{uuid}}}}}}",
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid}}}}}}",
         "variables": {
           "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
         }
@@ -216,7 +216,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!)($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{id,node{policy{uuid}}}}}}",
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid}}}}}}",
         "variables": {
           "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
         }
@@ -242,7 +242,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!)($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{id,node{policy{uuid}}}}}}",
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid}}}}}}",
         "variables": {
           "uuid": "659ad69f-27a4-46ea-815d-8b87b15b2df1"
         }
