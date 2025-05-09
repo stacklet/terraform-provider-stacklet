@@ -8,12 +8,20 @@ import (
 
 // Policy is the data returned by reading policy data
 type Policy struct {
-	ID          string
-	UUID        string
-	Name        string
-	Description *string
-	Provider    string
-	Version     int
+	ID              string
+	UUID            string
+	Name            string
+	Description     *string
+	Provider        string
+	Version         int
+	Category        []string
+	Mode            string
+	ResourceType    string
+	Path            string
+	Source          string
+	SourceYAML      string `graphql:"sourceYAML"`
+	System          bool
+	UnqualifiedName string
 }
 
 type policyAPI struct {

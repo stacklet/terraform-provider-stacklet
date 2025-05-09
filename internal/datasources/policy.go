@@ -59,6 +59,39 @@ func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 				Description: "The cloud provider for the policy (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Computed:    true,
 			},
+			"category": schema.ListAttribute{
+				ElementType: types.StringType,
+				Description: "The list of categories the policy belongs to.",
+				Computed:    true,
+			},
+			"mode": schema.StringAttribute{
+				Description: "The policy mode.",
+				Computed:    true,
+			},
+			"resource_type": schema.StringAttribute{
+				Description: "The resource type that the policy applies to.",
+				Computed:    true,
+			},
+			"path": schema.StringAttribute{
+				Description: "The path of the policy in the source repository.",
+				Computed:    true,
+			},
+			"source_json": schema.StringAttribute{
+				Description: "The policy source in JSON format.",
+				Computed:    true,
+			},
+			"source_yaml": schema.StringAttribute{
+				Description: "The policy source in YAML format.",
+				Computed:    true,
+			},
+			"system": schema.BoolAttribute{
+				Description: "Whether this is a system policy.",
+				Computed:    true,
+			},
+			"unqualified_name": schema.StringAttribute{
+				Description: "The policy name without namespace prefix.",
+				Computed:    true,
+			},
 		},
 	}
 }
@@ -108,6 +141,19 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	data.Description = tftypes.NullableString(policy.Description)
 	data.CloudProvider = types.StringValue(policy.Provider)
 	data.Version = types.Int64Value(int64(policy.Version))
+	category, diag := types.ListValueFrom(ctx, types.StringType, policy.Category)
+	if diag.HasError() {
+		resp.Diagnostics.Append(diag...)
+		return
+	}
+	data.Category = category
+	data.Mode = types.StringValue(policy.Mode)
+	data.ResourceType = types.StringValue(policy.ResourceType)
+	data.Path = types.StringValue(policy.Path)
+	data.SourceJSON = types.StringValue(policy.Source)
+	data.SourceYAML = types.StringValue(policy.SourceYAML)
+	data.System = types.BoolValue(policy.System)
+	data.UnqualifiedName = types.StringValue(policy.UnqualifiedName)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

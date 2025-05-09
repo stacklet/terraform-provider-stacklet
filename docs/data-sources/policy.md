@@ -37,10 +37,18 @@ data "stacklet_policy" "s3_encryption_3" {
 
 - `name` (String) The name of the policy, alternative to the UUID.
 - `uuid` (String) The UUID of the policy, alternative to the name.
-- `version` (String) The version policy. If not specified, the latest is used.
+- `version` (Number) The version policy. If not specified, the latest is used.
 
 ### Read-Only
 
+- `category` (List of String) The list of categories the policy belongs to.
 - `cloud_provider` (String) The cloud provider for the policy (aws, azure, gcp, kubernetes, or tencentcloud).
 - `description` (String) The description of the policy.
 - `id` (String) The GraphQL Node ID of the policy.
+- `mode` (String) The policy mode.
+- `path` (String) The path of the policy in the source repository.
+- `resource_type` (String) The resource type that the policy applies to.
+- `source_json` (String) The policy source in JSON format.
+- `source_yaml` (String) The policy source in YAML format.
+- `system` (Boolean) Whether this is a system policy.
+- `unqualified_name` (String) The policy name without namespace prefix.
