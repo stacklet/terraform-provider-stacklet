@@ -1,0 +1,132 @@
+{
+  "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}:{\"name\":\"\",\"uuid\":\"bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "variables": {
+          "name": "",
+          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7"
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "description": "RDS storage is a significant component of the pricing of RDS instances. \nSince storage autoscaling can be implemented, over provisioning storage \nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\n",
+            "id": "WyJwb2xpY3kiLCAiYmQyN2ZmYjQtMmQ3ZS00MmJmLWE3YjMtNThlZGNiNzI4NGE3IiwgIjEiXQ==",
+            "name": "cost-aws:aws-rds-rightsize-disk-inform",
+            "provider": "AWS",
+            "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "variables": {
+          "name": "",
+          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7"
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "description": "RDS storage is a significant component of the pricing of RDS instances. \nSince storage autoscaling can be implemented, over provisioning storage \nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\n",
+            "id": "WyJwb2xpY3kiLCAiYmQyN2ZmYjQtMmQ3ZS00MmJmLWE3YjMtNThlZGNiNzI4NGE3IiwgIjEiXQ==",
+            "name": "cost-aws:aws-rds-rightsize-disk-inform",
+            "provider": "AWS",
+            "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "variables": {
+          "name": "",
+          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7"
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "description": "RDS storage is a significant component of the pricing of RDS instances. \nSince storage autoscaling can be implemented, over provisioning storage \nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\n",
+            "id": "WyJwb2xpY3kiLCAiYmQyN2ZmYjQtMmQ3ZS00MmJmLWE3YjMtNThlZGNiNzI4NGE3IiwgIjEiXQ==",
+            "name": "cost-aws:aws-rds-rightsize-disk-inform",
+            "provider": "AWS",
+            "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+            "version": 1
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}:{\"name\":\"cost-aws:aws-elb-unattached-inform\",\"uuid\":\"\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "variables": {
+          "name": "cost-aws:aws-elb-unattached-inform",
+          "uuid": ""
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "description": "Identify ELBs with no instances attached. These load balancers should be\ninvestigated and deleted if they are no longer in use.\n",
+            "id": "WyJwb2xpY3kiLCAiMmEwN2M1NjEtZDFiMC00Y2I2LWFkODEtMjIwMTNkMmRhZjZlIiwgIjEiXQ==",
+            "name": "cost-aws:aws-elb-unattached-inform",
+            "provider": "AWS",
+            "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "variables": {
+          "name": "cost-aws:aws-elb-unattached-inform",
+          "uuid": ""
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "description": "Identify ELBs with no instances attached. These load balancers should be\ninvestigated and deleted if they are no longer in use.\n",
+            "id": "WyJwb2xpY3kiLCAiMmEwN2M1NjEtZDFiMC00Y2I2LWFkODEtMjIwMTNkMmRhZjZlIiwgIjEiXQ==",
+            "name": "cost-aws:aws-elb-unattached-inform",
+            "provider": "AWS",
+            "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "variables": {
+          "name": "cost-aws:aws-elb-unattached-inform",
+          "uuid": ""
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "description": "Identify ELBs with no instances attached. These load balancers should be\ninvestigated and deleted if they are no longer in use.\n",
+            "id": "WyJwb2xpY3kiLCAiMmEwN2M1NjEtZDFiMC00Y2I2LWFkODEtMjIwMTNkMmRhZjZlIiwgIjEiXQ==",
+            "name": "cost-aws:aws-elb-unattached-inform",
+            "provider": "AWS",
+            "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
+            "version": 1
+          }
+        }
+      }
+    }
+  ]
+}
