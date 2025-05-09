@@ -32,12 +32,13 @@
       }
     }
   ],
-  "query ($name:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"test-group-ds\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"test-group-ds\",\"uuid\":\"\"}": [
     {
       "request": {
-        "query": "query ($name:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"test-group-ds\"}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
-          "name": "test-group-ds"
+          "name": "test-group-ds",
+          "uuid": ""
         }
       },
       "response": {
