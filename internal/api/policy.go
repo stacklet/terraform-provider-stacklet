@@ -13,7 +13,7 @@ type Policy struct {
 	Name        string
 	Description *string
 	Provider    string
-	Version     float64
+	Version     int
 }
 
 type policyAPI struct {
@@ -21,13 +21,14 @@ type policyAPI struct {
 }
 
 // Read returns data for a policy
-func (a policyAPI) Read(ctx context.Context, uuid string, name string) (Policy, error) {
+func (a policyAPI) Read(ctx context.Context, uuid string, name string, version int) (Policy, error) {
 	var query struct {
-		Policy Policy `graphql:"policy(uuid: $uuid, name: $name)"`
+		Policy Policy `graphql:"policy(uuid: $uuid, name: $name, version: $version)"`
 	}
 	variables := map[string]any{
-		"uuid": graphql.String(uuid),
-		"name": graphql.String(name),
+		"uuid":    graphql.String(uuid),
+		"name":    graphql.String(name),
+		"version": graphql.Int(version),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return query.Policy, APIError{"Client error", err.Error()}

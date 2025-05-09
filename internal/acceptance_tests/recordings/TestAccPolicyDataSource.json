@@ -1,11 +1,12 @@
 {
-  "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}:{\"name\":\"\",\"uuid\":\"bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7\"}": [
+  "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version}}:{\"name\":\"\",\"uuid\":\"bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7\",\"version\":0}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version}}",
         "variables": {
           "name": "",
-          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7"
+          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+          "version": 0
         }
       },
       "response": {
@@ -23,10 +24,11 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version}}",
         "variables": {
           "name": "",
-          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7"
+          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+          "version": 0
         }
       },
       "response": {
@@ -44,10 +46,11 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version}}",
         "variables": {
           "name": "",
-          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7"
+          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+          "version": 0
         }
       },
       "response": {
@@ -64,13 +67,14 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}:{\"name\":\"cost-aws:aws-elb-unattached-inform\",\"uuid\":\"\"}": [
+  "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version}}:{\"name\":\"cost-aws:aws-elb-unattached-inform\",\"uuid\":\"\",\"version\":0}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version}}",
         "variables": {
           "name": "cost-aws:aws-elb-unattached-inform",
-          "uuid": ""
+          "uuid": "",
+          "version": 0
         }
       },
       "response": {
@@ -88,10 +92,11 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version}}",
         "variables": {
           "name": "cost-aws:aws-elb-unattached-inform",
-          "uuid": ""
+          "uuid": "",
+          "version": 0
         }
       },
       "response": {
@@ -109,10 +114,11 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policy(uuid: $uuid, name: $name){id,uuid,name,description,provider,version}}",
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version}}",
         "variables": {
           "name": "cost-aws:aws-elb-unattached-inform",
-          "uuid": ""
+          "uuid": "",
+          "version": 0
         }
       },
       "response": {

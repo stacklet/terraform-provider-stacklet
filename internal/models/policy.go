@@ -11,5 +11,5 @@ type PolicyDataSource struct {
 	Name          types.String `tfsdk:"name"`
 	Description   types.String `tfsdk:"description"`
 	CloudProvider types.String `tfsdk:"cloud_provider"`
-	Version       types.Number `tfsdk:"version"`
+	Version       types.Int64  `tfsdk:"version"`
 }

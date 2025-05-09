@@ -7,3 +7,9 @@ data "stacklet_policy" "example" {
 data "stacklet_policy" "s3_encryption" {
   name = "s3-bucket-encryption"
 }
+
+# Fetch a specific version of a policy
+data "stacklet_policy" "s3_encryption_3" {
+  name    = "s3-bucket-encryption"
+  version = 3
+}

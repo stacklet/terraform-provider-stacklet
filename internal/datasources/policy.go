@@ -3,7 +3,6 @@ package datasources
 import (
 	"context"
 	"fmt"
-	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -41,11 +40,15 @@ func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 				Computed:    true,
 			},
 			"uuid": schema.StringAttribute{
-				Description: "The UUID of the policy.",
+				Description: "The UUID of the policy, alternative to the name.",
 				Optional:    true,
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the policy.",
+				Description: "The name of the policy, alternative to the UUID.",
+				Optional:    true,
+			},
+			"version": schema.Int64Attribute{
+				Description: "The version policy. If not specified, the latest is used.",
 				Optional:    true,
 			},
 			"description": schema.StringAttribute{
@@ -54,10 +57,6 @@ func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 			},
 			"cloud_provider": schema.StringAttribute{
 				Description: "The cloud provider for the policy (aws, azure, gcp, kubernetes, or tencentcloud).",
-				Computed:    true,
-			},
-			"version": schema.NumberAttribute{
-				Description: "The version of the policy.",
 				Computed:    true,
 			},
 		},
@@ -88,14 +87,18 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	policy, err := d.api.Policy.Read(ctx, data.UUID.ValueString(), data.Name.ValueString())
+	if !data.UUID.IsNull() && !data.Name.IsNull() {
+		resp.Diagnostics.AddError("Invalid configuration", "Only one of UUID and name must be set")
+	}
+
+	policy, err := d.api.Policy.Read(ctx, data.UUID.ValueString(), data.Name.ValueString(), int(data.Version.ValueInt64()))
 	if err != nil {
 		helpers.AddDiagError(resp.Diagnostics, err)
 		return
 	}
 
 	if policy.UUID == "" {
-		resp.Diagnostics.AddError("Not Found", "No policy found with the specified UUID or name")
+		resp.Diagnostics.AddError("Not Found", "No policy found with specified details")
 		return
 	}
 
@@ -104,7 +107,7 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	data.Name = types.StringValue(policy.Name)
 	data.Description = tftypes.NullableString(policy.Description)
 	data.CloudProvider = types.StringValue(policy.Provider)
-	data.Version = types.NumberValue(big.NewFloat(policy.Version))
+	data.Version = types.Int64Value(int64(policy.Version))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
