@@ -36,27 +36,27 @@ resource "stacklet_account" "azure_dev" {
   name           = "Development Azure Subscription"
   description    = "Development environment in Azure"
   security_context = jsonencode({
-    tenant_id = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-    client_id = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+    tenant_id     = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+    client_id     = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
     client_secret = "seKret"
   })
 }
 
 # Configure a GCP project
 resource "stacklet_account" "gcp_staging" {
-  cloud_provider = "gcp"
-  key            = "my-project-id" # GCP project ID
-  name           = "Staging GCP Project"
-  description    = "Staging environment in GCP"
+  cloud_provider   = "gcp"
+  key              = "my-project-id" # GCP project ID
+  name             = "Staging GCP Project"
+  description      = "Staging environment in GCP"
   security_context = "arn:aws:secretsmanager:us-east-11:12345678912:secret:gcp-staging" # ARN of the secret containing the configuration
 }
 
 # Configure a Tencent Cloud account
 resource "stacklet_account" "tencent_prod" {
-  cloud_provider = "tencentcloud"
-  key            = "1234567890" # Tencent Cloud account ID
-  name           = "Production Tencent Cloud Account"
-  description    = "Production environment in Tencent Cloud"
+  cloud_provider   = "tencentcloud"
+  key              = "1234567890" # Tencent Cloud account ID
+  name             = "Production Tencent Cloud Account"
+  description      = "Production environment in Tencent Cloud"
   security_context = "arn:aws:secretsmanager:us-east-11:12345678912:secret:tencent-prod" # ARN of the secret containing the configuration
 }
 ```

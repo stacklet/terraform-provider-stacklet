@@ -3,12 +3,16 @@ package datasources
 import (
 	"context"
 	"fmt"
-	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -20,16 +24,7 @@ func NewPolicyDataSource() datasource.DataSource {
 }
 
 type policyDataSource struct {
-	client *graphql.Client
-}
-
-type policyDataSourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	UUID          types.String `tfsdk:"uuid"`
-	Name          types.String `tfsdk:"name"`
-	Description   types.String `tfsdk:"description"`
-	CloudProvider types.String `tfsdk:"cloud_provider"`
-	Version       types.Number `tfsdk:"version"`
+	api *api.API
 }
 
 func (d *policyDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -38,18 +33,22 @@ func (d *policyDataSource) Metadata(_ context.Context, req datasource.MetadataRe
 
 func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Fetch a policy by UUID or name.",
+		Description: "Retrieve information about a policy, by UUID or name.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the policy.",
 				Computed:    true,
 			},
 			"uuid": schema.StringAttribute{
-				Description: "The UUID of the policy.",
+				Description: "The UUID of the policy, alternative to the name.",
 				Optional:    true,
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the policy.",
+				Description: "The name of the policy, alternative to the UUID.",
+				Optional:    true,
+			},
+			"version": schema.Int64Attribute{
+				Description: "The version policy. If not specified, the latest is used.",
 				Optional:    true,
 			},
 			"description": schema.StringAttribute{
@@ -60,8 +59,37 @@ func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 				Description: "The cloud provider for the policy (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Computed:    true,
 			},
-			"version": schema.NumberAttribute{
-				Description: "The version of the policy.",
+			"category": schema.ListAttribute{
+				ElementType: types.StringType,
+				Description: "The list of categories the policy belongs to.",
+				Computed:    true,
+			},
+			"mode": schema.StringAttribute{
+				Description: "The policy mode.",
+				Computed:    true,
+			},
+			"resource_type": schema.StringAttribute{
+				Description: "The resource type that the policy applies to.",
+				Computed:    true,
+			},
+			"path": schema.StringAttribute{
+				Description: "The path of the policy in the source repository.",
+				Computed:    true,
+			},
+			"source_json": schema.StringAttribute{
+				Description: "The policy source in JSON format.",
+				Computed:    true,
+			},
+			"source_yaml": schema.StringAttribute{
+				Description: "The policy source in YAML format.",
+				Computed:    true,
+			},
+			"system": schema.BoolAttribute{
+				Description: "Whether this is a system policy.",
+				Computed:    true,
+			},
+			"unqualified_name": schema.StringAttribute{
+				Description: "The policy name without namespace prefix.",
 				Computed:    true,
 			},
 		},
@@ -82,58 +110,50 @@ func (d *policyDataSource) Configure(_ context.Context, req datasource.Configure
 		return
 	}
 
-	d.client = client
+	d.api = api.New(client)
 }
 
 func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data policyDataSourceModel
+	var data models.PolicyDataSource
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL query
-	var query struct {
-		Policy struct {
-			ID          string
-			UUID        string
-			Name        string
-			Description string
-			Provider    string
-			Version     float64
-		} `graphql:"policy(uuid: $uuid, name: $name)"`
+	if !data.UUID.IsNull() && !data.Name.IsNull() {
+		resp.Diagnostics.AddError("Invalid configuration", "Only one of UUID and name must be set")
 	}
 
-	variables := map[string]any{
-		"uuid": (*string)(nil),
-		"name": (*string)(nil),
-	}
-
-	if !data.UUID.IsNull() {
-		variables["uuid"] = graphql.String(data.UUID.ValueString())
-	}
-
-	if !data.Name.IsNull() {
-		variables["name"] = graphql.String(data.Name.ValueString())
-	}
-
-	err := d.client.Query(ctx, &query, variables)
+	policy, err := d.api.Policy.Read(ctx, data.UUID.ValueString(), data.Name.ValueString(), int(data.Version.ValueInt64()))
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read policy, got error: %s", err))
+		helpers.AddDiagError(resp.Diagnostics, err)
 		return
 	}
 
-	if query.Policy.UUID == "" {
-		resp.Diagnostics.AddError("Not Found", "No policy found with the specified UUID or name")
+	if policy.UUID == "" {
+		resp.Diagnostics.AddError("Not Found", "No policy found with specified details")
 		return
 	}
 
-	data.ID = types.StringValue(query.Policy.ID)
-	data.UUID = types.StringValue(query.Policy.UUID)
-	data.Name = types.StringValue(query.Policy.Name)
-	data.Description = types.StringValue(query.Policy.Description)
-	data.CloudProvider = types.StringValue(query.Policy.Provider)
-	data.Version = types.NumberValue(big.NewFloat(query.Policy.Version))
+	data.ID = types.StringValue(policy.ID)
+	data.UUID = types.StringValue(policy.UUID)
+	data.Name = types.StringValue(policy.Name)
+	data.Description = tftypes.NullableString(policy.Description)
+	data.CloudProvider = types.StringValue(policy.Provider)
+	data.Version = types.Int64Value(int64(policy.Version))
+	category, diag := types.ListValueFrom(ctx, types.StringType, policy.Category)
+	if diag.HasError() {
+		resp.Diagnostics.Append(diag...)
+		return
+	}
+	data.Category = category
+	data.Mode = types.StringValue(policy.Mode)
+	data.ResourceType = types.StringValue(policy.ResourceType)
+	data.Path = types.StringValue(policy.Path)
+	data.SourceJSON = types.StringValue(policy.Source)
+	data.SourceYAML = types.StringValue(policy.SourceYAML)
+	data.System = types.BoolValue(policy.System)
+	data.UnqualifiedName = types.StringValue(policy.UnqualifiedName)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
