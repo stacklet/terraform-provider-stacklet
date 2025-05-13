@@ -10,7 +10,7 @@ import (
 	"github.com/hasura/go-graphql-client"
 )
 
-// Ensure provider defined types fully satisfy framework interfaces
+// Ensure provider defined types fully satisfy framework interfaces.
 var _ datasource.DataSource = &RepositoryDataSource{}
 
 func NewRepositoryDataSource() datasource.DataSource {

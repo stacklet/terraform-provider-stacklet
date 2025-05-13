@@ -5,7 +5,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 )
 
-// AddErrors adds an error to the diagnostics
+// AddErrors adds an error to the diagnostics.
 func AddDiagError(diag diag.Diagnostics, err error) {
 	switch e := err.(type) {
 	case api.APIError:

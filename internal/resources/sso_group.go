@@ -43,7 +43,7 @@ type ssoGroupConfigInput struct {
 	AccountGroupUUIDs []string `json:"accountGroupUUIDs"`
 }
 
-// Helper function to sort string slices
+// Helper function to sort string slices.
 func sortStrings(s []string) []string {
 	sorted := make([]string, len(s))
 	copy(sorted, s)

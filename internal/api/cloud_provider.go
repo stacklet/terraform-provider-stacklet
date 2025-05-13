@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// CloudProvider represents a cloud service provider in Stacklet
+// CloudProvider represents a cloud service provider in Stacklet.
 type CloudProvider string
 
 const (
@@ -23,7 +23,7 @@ func NewCloudProvider(s string) (CloudProvider, error) {
 	return p, p.Validate()
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface
+// UnmarshalJSON implements the json.Unmarshaler interface.
 func (cp *CloudProvider) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -33,17 +33,17 @@ func (cp *CloudProvider) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaler interface
+// MarshalJSON implements the json.Marshaler interface.
 func (cp CloudProvider) MarshalJSON() ([]byte, error) {
 	return json.Marshal(string(cp))
 }
 
-// String implements the fmt.Stringer interface
+// String implements the fmt.Stringer interface.
 func (cp CloudProvider) String() string {
 	return string(cp)
 }
 
-// Validate returns an error if the cloud provider is not valid
+// Validate returns an error if the cloud provider is not valid.
 func (cp CloudProvider) Validate() error {
 	switch cp {
 	case CloudProviderAWS, CloudProviderAzure, CloudProviderGCP, CloudProviderKubernetes, CloudProviderTencent:

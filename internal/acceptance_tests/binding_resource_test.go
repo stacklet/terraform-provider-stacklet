@@ -1,7 +1,6 @@
 package acceptance_tests
 
 import (
-	"net/http"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -9,20 +8,10 @@ import (
 )
 
 func TestAccBindingResource(t *testing.T) {
-	rt, err := setupRecordedTest(t, "TestAccBindingResource")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// Set up the HTTP client with our recorded transport
-	http.DefaultTransport = rt
-
-	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			// Create and Read testing
-			{
-				Config: `
+	steps := []resource.TestStep{
+		// Create and Read testing
+		{
+			Config: `
 					resource "stacklet_account_group" "test" {
 						name = "test-binding-group"
 						description = "Test account group for binding"
@@ -49,30 +38,30 @@ func TestAccBindingResource(t *testing.T) {
 						})
 					}
 				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("stacklet_binding.test", "name", "test-binding"),
-					resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Test binding"),
-					resource.TestCheckResourceAttrSet("stacklet_binding.test", "account_group_uuid"),
-					resource.TestCheckResourceAttrSet("stacklet_binding.test", "policy_collection_uuid"),
-					resource.TestCheckResourceAttr("stacklet_binding.test", "auto_deploy", "true"),
-					resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(1 hour)"),
-					resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
-					resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
-				),
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_binding.test", "name", "test-binding"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Test binding"),
+				resource.TestCheckResourceAttrSet("stacklet_binding.test", "account_group_uuid"),
+				resource.TestCheckResourceAttrSet("stacklet_binding.test", "policy_collection_uuid"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "auto_deploy", "true"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(1 hour)"),
+				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
+				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+			),
+		},
+		// ImportState testing
+		{
+			ResourceName:      "stacklet_binding.test",
+			ImportState:       true,
+			ImportStateVerify: true,
+			ImportStateIdFunc: func(s *terraform.State) (string, error) {
+				r := s.RootModule().Resources["stacklet_binding.test"]
+				return r.Primary.Attributes["uuid"], nil
 			},
-			// ImportState testing
-			{
-				ResourceName:      "stacklet_binding.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateIdFunc: func(s *terraform.State) (string, error) {
-					r := s.RootModule().Resources["stacklet_binding.test"]
-					return r.Primary.Attributes["uuid"], nil
-				},
-			},
-			// Update and Read testing
-			{
-				Config: `
+		},
+		// Update and Read testing
+		{
+			Config: `
 					resource "stacklet_account_group" "test" {
 						name = "test-binding-group"
 						description = "Test account group for binding"
@@ -99,17 +88,17 @@ func TestAccBindingResource(t *testing.T) {
 						})
 					}
 				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("stacklet_binding.test", "name", "test-binding-updated"),
-					resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Updated test binding"),
-					resource.TestCheckResourceAttrSet("stacklet_binding.test", "account_group_uuid"),
-					resource.TestCheckResourceAttrSet("stacklet_binding.test", "policy_collection_uuid"),
-					resource.TestCheckResourceAttr("stacklet_binding.test", "auto_deploy", "false"),
-					resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(2 hours)"),
-					resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
-					resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
-				),
-			},
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_binding.test", "name", "test-binding-updated"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Updated test binding"),
+				resource.TestCheckResourceAttrSet("stacklet_binding.test", "account_group_uuid"),
+				resource.TestCheckResourceAttrSet("stacklet_binding.test", "policy_collection_uuid"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "auto_deploy", "false"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(2 hours)"),
+				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
+				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+			),
 		},
-	})
+	}
+	runRecordedAccTest(t, "TestAccBindingResource", steps)
 }

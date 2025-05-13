@@ -201,7 +201,7 @@ func (r *policyCollectionItemResource) Delete(ctx context.Context, req resource.
 	}
 }
 
-// Input types for GraphQL mutations
+// Input types for GraphQL mutations.
 type PolicyCollectionElement struct {
 	PolicyUUID string `json:"policyUUID"`
 }

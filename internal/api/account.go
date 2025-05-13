@@ -6,7 +6,7 @@ import (
 	"github.com/hasura/go-graphql-client"
 )
 
-// Account is the data returned by reading account data
+// Account is the data returned by reading account data.
 type Account struct {
 	ID          string
 	Key         string
@@ -20,7 +20,7 @@ type Account struct {
 	Variables   *string
 }
 
-// AccountCreateInput is the input for creating an account
+// AccountCreateInput is the input for creating an account.
 type AccountCreateInput struct {
 	Name            string        `json:"name"`
 	Key             string        `json:"key"`
@@ -36,7 +36,7 @@ func (i AccountCreateInput) GetGraphQLType() string {
 	return "AccountInput"
 }
 
-// AccountUpdateInput is the input for updating an account
+// AccountUpdateInput is the input for updating an account.
 type AccountUpdateInput struct {
 	Key             string        `json:"key"`
 	Provider        CloudProvider `json:"provider"`

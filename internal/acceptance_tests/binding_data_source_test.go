@@ -1,27 +1,16 @@
 package acceptance_tests
 
 import (
-	"net/http"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccBindingDataSource(t *testing.T) {
-	rt, err := setupRecordedTest(t, "TestAccBindingDataSource")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// Set up the HTTP client with our recorded transport
-	http.DefaultTransport = rt
-
-	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			// Create a binding to test the data source
-			{
-				Config: `
+	steps := []resource.TestStep{
+		// Create a binding to test the data source
+		{
+			Config: `
 					resource "stacklet_account_group" "test" {
 						name = "test-binding-ds-group"
 						description = "Test account group for binding data source"
@@ -58,28 +47,28 @@ func TestAccBindingDataSource(t *testing.T) {
 						uuid = stacklet_binding.test.uuid
 					}
 				`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					// Verify lookup by name
-					resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "name", "test-binding-ds"),
-					resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "description", "Test binding for data source"),
-					resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "account_group_uuid"),
-					resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "policy_collection_uuid"),
-					resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "auto_deploy", "true"),
-					resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "schedule", "rate(1 hour)"),
-					resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "id"),
-					resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "uuid"),
+			Check: resource.ComposeAggregateTestCheckFunc(
+				// Verify lookup by name
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "name", "test-binding-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "description", "Test binding for data source"),
+				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "account_group_uuid"),
+				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "policy_collection_uuid"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "auto_deploy", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "schedule", "rate(1 hour)"),
+				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "id"),
+				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "uuid"),
 
-					// Verify lookup by UUID
-					resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "name", "test-binding-ds"),
-					resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "description", "Test binding for data source"),
-					resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "account_group_uuid"),
-					resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "policy_collection_uuid"),
-					resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "auto_deploy", "true"),
-					resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "schedule", "rate(1 hour)"),
-					resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "id"),
-					resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "uuid"),
-				),
-			},
+				// Verify lookup by UUID
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "name", "test-binding-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "description", "Test binding for data source"),
+				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "account_group_uuid"),
+				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "policy_collection_uuid"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "auto_deploy", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "schedule", "rate(1 hour)"),
+				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "id"),
+				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "uuid"),
+			),
 		},
-	})
+	}
+	runRecordedAccTest(t, "TestAccBindingDataSource", steps)
 }

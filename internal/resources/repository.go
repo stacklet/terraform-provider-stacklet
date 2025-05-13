@@ -15,7 +15,7 @@ import (
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
-// Ensure provider defined types fully satisfy framework interfaces
+// Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &RepositoryResource{}
 var _ resource.ResourceWithImportState = &RepositoryResource{}
 
@@ -395,7 +395,7 @@ func (r *RepositoryResource) ImportState(ctx context.Context, req resource.Impor
 	resource.ImportStatePassthroughID(ctx, path.Root("url"), req, resp)
 }
 
-// Helper functions for handling optional values
+// Helper functions for handling optional values.
 func toString(v types.String) *string {
 	if v.IsNull() || v.IsUnknown() {
 		return nil
@@ -412,7 +412,7 @@ func toBoolPtr(v types.Bool) *bool {
 	return &value
 }
 
-// GraphQL input types
+// GraphQL input types.
 type RepositoryInput struct {
 	Name              string   `json:"name"`
 	URL               string   `json:"url"`
