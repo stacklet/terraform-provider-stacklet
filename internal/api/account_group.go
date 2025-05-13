@@ -6,7 +6,7 @@ import (
 	"github.com/hasura/go-graphql-client"
 )
 
-// AccountGroup is the data returned by reading account group data
+// AccountGroup is the data returned by reading account group data.
 type AccountGroup struct {
 	ID          string
 	UUID        string
@@ -16,7 +16,7 @@ type AccountGroup struct {
 	Regions     []string
 }
 
-// AccountGroupCreateInput is the input for creating an account group
+// AccountGroupCreateInput is the input for creating an account group.
 type AccountGroupCreateInput struct {
 	Name        string   `json:"name"`
 	Provider    string   `json:"provider"`
@@ -28,7 +28,7 @@ func (i AccountGroupCreateInput) GetGraphQLType() string {
 	return "AddAccountGroupInput"
 }
 
-// AccountGroupUpdateInput is the input for updating an account group
+// AccountGroupUpdateInput is the input for updating an account group.
 type AccountGroupUpdateInput struct {
 	UUID        string   `json:"uuid"`
 	Name        *string  `json:"name"`

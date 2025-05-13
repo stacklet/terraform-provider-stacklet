@@ -4,7 +4,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// AccountResource is the model for account resources
+// AccountResource is the model for account resources.
 type AccountResource struct {
 	ID              types.String `tfsdk:"id"`
 	Key             types.String `tfsdk:"key"`
@@ -18,5 +18,5 @@ type AccountResource struct {
 	Variables       types.String `tfsdk:"variables"`
 }
 
-// AcountDataSourcemodel is the model for account data sources
+// AcountDataSourcemodel is the model for account data sources.
 type AccountDataSource AccountResource

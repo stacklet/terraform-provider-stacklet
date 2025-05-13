@@ -92,7 +92,7 @@ func (r *accountGroupItemResource) Configure(_ context.Context, req resource.Con
 	r.client = client
 }
 
-// generateStableID creates a stable hash from the resource's attributes
+// generateStableID creates a stable hash from the resource's attributes.
 func generateStableID(groupUUID, cloudProvider, accountKey string) string {
 	// Create a deterministic string to hash
 	input := fmt.Sprintf("%s:%s:%s", groupUUID, cloudProvider, accountKey)

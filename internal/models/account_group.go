@@ -4,7 +4,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// AccountGroupResource is the model for account group resources
+// AccountGroupResource is the model for account group resources.
 type AccountGroupResource struct {
 	ID            types.String `tfsdk:"id"`
 	UUID          types.String `tfsdk:"uuid"`
@@ -14,5 +14,5 @@ type AccountGroupResource struct {
 	Regions       types.List   `tfsdk:"regions"`
 }
 
-// AccountGroupDataSource is the model for account group data sources
+// AccountGroupDataSource is the model for account group data sources.
 type AccountGroupDataSource AccountGroupResource

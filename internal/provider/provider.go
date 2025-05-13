@@ -20,7 +20,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/resources"
 )
 
-// Ensure the implementation satisfies the expected interfaces
+// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ provider.Provider = &stackletProvider{}
 )
@@ -39,7 +39,7 @@ type stackletProviderModel struct {
 	ApiKey   types.String `tfsdk:"api_key"`
 }
 
-// New creates a new provider instance
+// New creates a new provider instance.
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &stackletProvider{
@@ -171,13 +171,13 @@ func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resour
 	return resources.RESOURCES
 }
 
-// authTransport is an http.RoundTripper that adds authentication headers
+// authTransport is an http.RoundTripper that adds authentication headers.
 type authTransport struct {
 	apiKey string
 	base   http.RoundTripper
 }
 
-// RoundTrip implements the http.RoundTripper interface
+// RoundTrip implements the http.RoundTripper interface.
 func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.Header.Set("Authorization", t.apiKey)
 	return t.base.RoundTrip(req)
@@ -188,11 +188,7 @@ type credentials struct {
 	apiKey   string
 }
 
-// getCredentials tries to obtain provider credentials. The following sources
-// are looked up in order:
-// - provider configuration parameters
-// - environment variables
-// - stacklet-admin configuration
+// - stacklet-admin configuration.
 func getCredentials(config stackletProviderModel) *credentials {
 	creds := credentials{}
 
