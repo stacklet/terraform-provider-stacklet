@@ -90,10 +90,10 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"9ecfdd7e-3897-4c47-972e-52d976ad4332\"}": [
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){accountGroup{uuid}}}:{\"uuid\":\"9ecfdd7e-3897-4c47-972e-52d976ad4332\"}": [
     {
       "request": {
-        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){accountGroup{uuid}}}",
         "variables": {
           "uuid": "9ecfdd7e-3897-4c47-972e-52d976ad4332"
         }
@@ -101,7 +101,7 @@
       "response": {
         "data": {
           "removeAccountGroup": {
-            "group": {
+            "accountGroup": {
               "uuid": "9ecfdd7e-3897-4c47-972e-52d976ad4332"
             }
           }
@@ -343,11 +343,12 @@
       }
     }
   ],
-  "query ($uuid:String!){accountGroup(uuid: $uuid){id,uuid,name,description,provider,regions}}:{\"uuid\":\"9ecfdd7e-3897-4c47-972e-52d976ad4332\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"9ecfdd7e-3897-4c47-972e-52d976ad4332\"}": [
     {
       "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){id,uuid,name,description,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
+          "name": "",
           "uuid": "9ecfdd7e-3897-4c47-972e-52d976ad4332"
         }
       },

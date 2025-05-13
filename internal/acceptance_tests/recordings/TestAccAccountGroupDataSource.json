@@ -55,12 +55,83 @@
           }
         }
       }
-    }
-  ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"c7da65d3-307d-43f8-9c4b-822359e2d078\"}": [
+    },
     {
       "request": {
-        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
+        "variables": {
+          "name": "test-group-ds",
+          "uuid": ""
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test account group",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImM3ZGE2NWQzLTMwN2QtNDNmOC05YzRiLTgyMjM1OWUyZDA3OCJd",
+            "name": "test-group-ds",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "c7da65d3-307d-43f8-9c4b-822359e2d078"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
+        "variables": {
+          "name": "test-group-ds",
+          "uuid": ""
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test account group",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImM3ZGE2NWQzLTMwN2QtNDNmOC05YzRiLTgyMjM1OWUyZDA3OCJd",
+            "name": "test-group-ds",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "c7da65d3-307d-43f8-9c4b-822359e2d078"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"c7da65d3-307d-43f8-9c4b-822359e2d078\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
+        "variables": {
+          "name": "",
+          "uuid": "c7da65d3-307d-43f8-9c4b-822359e2d078"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test account group",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImM3ZGE2NWQzLTMwN2QtNDNmOC05YzRiLTgyMjM1OWUyZDA3OCJd",
+            "name": "test-group-ds",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "c7da65d3-307d-43f8-9c4b-822359e2d078"
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){accountGroup{uuid}}}:{\"uuid\":\"c7da65d3-307d-43f8-9c4b-822359e2d078\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){accountGroup{uuid}}}",
         "variables": {
           "uuid": "c7da65d3-307d-43f8-9c4b-822359e2d078"
         }
@@ -68,7 +139,7 @@
       "response": {
         "data": {
           "removeAccountGroup": {
-            "group": {
+            "accountGroup": {
               "uuid": "c7da65d3-307d-43f8-9c4b-822359e2d078"
             }
           }

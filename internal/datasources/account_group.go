@@ -95,7 +95,7 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 
 	account_group, err := d.api.AccountGroup.Read(ctx, data.UUID.ValueString(), data.Name.ValueString())
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
