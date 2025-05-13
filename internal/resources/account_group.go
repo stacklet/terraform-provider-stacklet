@@ -108,7 +108,7 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 
 	account_group, err := r.api.AccountGroup.Create(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -125,7 +125,7 @@ func (r *accountGroupResource) Read(ctx context.Context, req resource.ReadReques
 
 	account_group, err := r.api.AccountGroup.Read(ctx, state.UUID.ValueString(), "")
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 	if account_group.UUID == "" {
@@ -153,7 +153,7 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 
 	account_group, err := r.api.AccountGroup.Update(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -169,7 +169,7 @@ func (r *accountGroupResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 
 	if err := r.api.AccountGroup.Delete(ctx, state.UUID.ValueString()); err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }

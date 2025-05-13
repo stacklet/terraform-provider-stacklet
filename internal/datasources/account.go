@@ -105,7 +105,7 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	account, err := d.api.Account.Read(ctx, data.CloudProvider.ValueString(), data.Key.ValueString())
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 

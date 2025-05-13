@@ -138,7 +138,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 	account, err := r.api.Account.Create(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -155,7 +155,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 	account, err := r.api.Account.Read(ctx, state.CloudProvider.ValueString(), state.Key.ValueString())
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -194,7 +194,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	account, err := r.api.Account.Update(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -210,7 +210,7 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	if err := r.api.Account.Delete(ctx, state.CloudProvider.ValueString(), state.Key.ValueString()); err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }

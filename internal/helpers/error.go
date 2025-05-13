@@ -6,7 +6,7 @@ import (
 )
 
 // AddErrors adds an error to the diagnostics.
-func AddDiagError(diag diag.Diagnostics, err error) {
+func AddDiagError(diag *diag.Diagnostics, err error) {
 	switch e := err.(type) {
 	case api.APIError:
 		diag.AddError(e.Summary, e.Detail)

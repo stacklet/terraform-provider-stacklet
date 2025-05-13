@@ -126,7 +126,7 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 
 	policy, err := d.api.Policy.Read(ctx, data.UUID.ValueString(), data.Name.ValueString(), int(data.Version.ValueInt64()))
 	if err != nil {
-		helpers.AddDiagError(resp.Diagnostics, err)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
