@@ -58,7 +58,21 @@ provider "stacklet" {
 }
 ```
 
-Note that `terraform init` must not be run when working with a locally installed provider.
+3. Run `terraform plan` or `terraform apply` with the local resources configuration.
+
+
+**Note**: `terraform init` must not be run when working with a locally installed provider.
+
+
+#### Debugging the provider
+
+Debug messages and output are not visible when running the provider directly from terraform.
+To enable debug
+
+1. run `./terraform-provider-stacklet -debug`
+
+2. export the `TF_REATTACH_PROVIDERS` variable provided in the output in the shell where `terraform` is run
+
 
 ### Environment Variables
 
@@ -76,33 +90,6 @@ The provider can look up authentication details from the [`stacklet-admin`](http
 After configuring and logging in to the instance via the CLI (`stacklet-admin login`), the provider will be able to connect
 to it.
 
-### Testing with Local Provider
-
-1. After building and installing the provider locally (see [Building The Provider](#building-the-provider)), create a test directory:
-   ```bash
-   mkdir test
-   cd test
-   ```
-
-2. Create a test configuration file (e.g., `main.tf`):
-   ```terraform
-   terraform {
-     required_providers {
-       stacklet = {
-         source = "stacklet/stacklet"
-         version = "0.1.0"
-       }
-     }
-   }
-
-   # Add your test resources here
-   ```
-
-3. Initialize and test:
-   ```bash
-   terraform init
-   terraform plan
-   ```
 
 ### Example Terraform
 
