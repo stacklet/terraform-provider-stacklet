@@ -2,10 +2,6 @@ package resources
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/base64"
-	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -16,10 +12,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
 var (
 	_ resource.Resource                = &accountGroupItemResource{}
+	_ resource.ResourceWithConfigure   = &accountGroupItemResource{}
 	_ resource.ResourceWithImportState = &accountGroupItemResource{}
 )
 
@@ -28,14 +29,7 @@ func NewAccountGroupItemResource() resource.Resource {
 }
 
 type accountGroupItemResource struct {
-	client *graphql.Client
-}
-
-type accountGroupItemResourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	GroupUUID     types.String `tfsdk:"group_uuid"`
-	AccountKey    types.String `tfsdk:"account_key"`
-	CloudProvider types.String `tfsdk:"cloud_provider"`
+	api *api.API
 }
 
 func (r *accountGroupItemResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -89,181 +83,68 @@ func (r *accountGroupItemResource) Configure(_ context.Context, req resource.Con
 		return
 	}
 
-	r.client = client
-}
-
-// generateStableID creates a stable hash from the resource's attributes.
-func generateStableID(groupUUID, cloudProvider, accountKey string) string {
-	// Create a deterministic string to hash
-	input := fmt.Sprintf("%s:%s:%s", groupUUID, cloudProvider, accountKey)
-	// Create a new SHA256 hash
-	hash := sha256.New()
-	hash.Write([]byte(input))
-	// Get the first 8 characters of the hex-encoded hash
-	return hex.EncodeToString(hash.Sum(nil))[:8]
+	r.api = api.New(client)
 }
 
 func (r *accountGroupItemResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan accountGroupItemResourceModel
+	var plan models.AccountGroupItemResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL mutation
-	var mutation struct {
-		AddAccountGroupItems struct {
-			Group struct {
-				ID       string
-				Accounts struct {
-					Edges []struct {
-						Node struct {
-							Account struct {
-								Key string
-							}
-						}
-					}
-				}
-			}
-		} `graphql:"addAccountGroupItems(input: $input)"`
-	}
-
-	variables := map[string]any{
-		"input": AccountGroupItemsInput{
-			UUID: plan.GroupUUID.ValueString(),
-			Items: []AccountGroupElement{
-				{
-					Key:      plan.AccountKey.ValueString(),
-					Provider: plan.CloudProvider.ValueString(),
-				},
-			},
-		},
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
+	item, err := r.api.AccountGroupItem.Create(ctx, plan.CloudProvider.ValueString(), plan.AccountKey.ValueString(), plan.GroupUUID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to add account to group, got error: %s", err))
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	// Find the added account in the response
-	var addedAccount bool
-	for _, edge := range mutation.AddAccountGroupItems.Group.Accounts.Edges {
-		if edge.Node.Account.Key == plan.AccountKey.ValueString() {
-			addedAccount = true
-			break
-		}
-	}
-
-	if !addedAccount {
-		resp.Diagnostics.AddError("Client Error", "Account was not found in group after adding")
-		return
-	}
-
-	// Generate a simple ID for the account group item
-	plan.ID = types.StringValue(fmt.Sprintf("%s:%s", plan.GroupUUID.ValueString(), plan.AccountKey.ValueString()))
-
+	updateAccountGroupItemModel(&plan, item)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *accountGroupItemResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state accountGroupItemResourceModel
+	var state models.AccountGroupItemResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL query
-	var query struct {
-		AccountGroup struct {
-			Accounts struct {
-				Edges []struct {
-					Node struct {
-						Account struct {
-							Key string
-						}
-					}
-				}
-			}
-		} `graphql:"accountGroup(uuid: $uuid)"`
-	}
-
-	variables := map[string]any{
-		"uuid": graphql.String(state.GroupUUID.ValueString()),
-	}
-
-	err := r.client.Query(ctx, &query, variables)
+	accountGroupItem, err := r.api.AccountGroupItem.Read(ctx, state.CloudProvider.ValueString(), state.AccountKey.ValueString(), state.GroupUUID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read account group, got error: %s", err))
-		return
+		helpers.AddDiagError(&resp.Diagnostics, err)
 	}
 
-	// Find the account in the group
-	var foundAccount bool
-	for _, edge := range query.AccountGroup.Accounts.Edges {
-		if edge.Node.Account.Key == state.AccountKey.ValueString() {
-			foundAccount = true
-			break
-		}
-	}
-
-	if !foundAccount {
+	if accountGroupItem.ID == "" {
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
+	updateAccountGroupItemModel(&state, accountGroupItem)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
 func (r *accountGroupItemResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan accountGroupItemResourceModel
+	var plan models.AccountGroupItemResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Generate a stable ID for the account group item
-	plan.ID = types.StringValue(generateStableID(
-		plan.GroupUUID.ValueString(),
-		plan.CloudProvider.ValueString(),
-		plan.AccountKey.ValueString(),
-	))
+	// There's nothing that can be updated in the state
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *accountGroupItemResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state accountGroupItemResourceModel
+	var state models.AccountGroupItemResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL mutation
-	var mutation struct {
-		RemoveAccountGroupMappings struct {
-			Removed []struct {
-				ID graphql.ID
-			}
-		} `graphql:"removeAccountGroupMappings(input: $input)"`
-	}
-
-	// Construct the node ID using the proper format
-	nodeID := wrapNodeID([]string{
-		"account-group-mapping",
-		state.GroupUUID.ValueString(),
-		state.AccountKey.ValueString(),
-	})
-
-	variables := map[string]any{
-		"input": RemoveAccountGroupMappingsInput{
-			IDs: []graphql.ID{nodeID},
-		},
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to remove account from group, got error: %s", err))
+	if err := r.api.AccountGroupItem.Delete(ctx, state.ID.ValueString()); err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }
@@ -282,79 +163,21 @@ func (r *accountGroupItemResource) ImportState(ctx context.Context, req resource
 	cloudProvider := parts[1]
 	accountKey := parts[2]
 
-	// Query to verify the account group exists and contains the account
-	var query struct {
-		AccountGroup struct {
-			Accounts struct {
-				Edges []struct {
-					Node struct {
-						Account struct {
-							Key string
-						}
-					}
-				}
-			}
-		} `graphql:"accountGroup(uuid: $uuid)"`
-	}
-
-	variables := map[string]any{
-		"uuid": graphql.String(groupUUID),
-	}
-
-	err := r.client.Query(ctx, &query, variables)
+	accountGroupItem, err := r.api.AccountGroupItem.Read(ctx, cloudProvider, accountKey, groupUUID)
 	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading Account Group",
-			fmt.Sprintf("Could not read account group with UUID %s: %s", groupUUID, err),
-		)
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	// Verify the account exists in the group
-	var accountFound bool
-	for _, edge := range query.AccountGroup.Accounts.Edges {
-		if edge.Node.Account.Key == accountKey {
-			accountFound = true
-			break
-		}
-	}
-
-	if !accountFound {
-		resp.Diagnostics.AddError(
-			"Account Not Found",
-			fmt.Sprintf("Account with key %s was not found in account group %s", accountKey, groupUUID),
-		)
-		return
-	}
-
-	// Set the imported attributes
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), groupUUID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), cloudProvider)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), accountKey)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), fmt.Sprintf("%s:%s", groupUUID, accountKey))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), accountGroupItem.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), accountGroupItem.GroupUUID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), accountGroupItem.Provider)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), accountGroupItem.AccountKey)...)
 }
 
-type AccountGroupElement struct {
-	Key      string   `json:"key"`
-	Provider string   `json:"provider"`
-	Regions  []string `json:"regions,omitempty"`
-}
-
-type AccountGroupItemsInput struct {
-	UUID  string                `json:"uuid"`
-	Items []AccountGroupElement `json:"items"`
-}
-
-type RemoveAccountGroupMappingsInput struct {
-	IDs []graphql.ID `json:"ids"`
-}
-
-func wrapNodeID(parts []string) graphql.ID {
-	jsonBytes, err := json.Marshal(parts)
-	if err != nil {
-		// This should never happen with a simple string array
-		return graphql.ID("")
-	}
-	encoded := base64.StdEncoding.EncodeToString(jsonBytes)
-	return graphql.ID(encoded)
+func updateAccountGroupItemModel(m *models.AccountGroupItemResource, accountGroupItem api.AccountGroupItem) {
+	m.ID = types.StringValue(accountGroupItem.ID)
+	m.GroupUUID = types.StringValue(accountGroupItem.GroupUUID)
+	m.AccountKey = types.StringValue(accountGroupItem.AccountKey)
+	m.CloudProvider = types.StringValue(string(accountGroupItem.Provider))
 }
