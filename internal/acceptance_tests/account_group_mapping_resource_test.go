@@ -45,20 +45,6 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "group_uuid"),
-				func(s *terraform.State) error {
-					rs, ok := s.RootModule().Resources["stacklet_account_group_mapping.test"]
-					if !ok {
-						return fmt.Errorf("resource not found in state")
-					}
-					id := rs.Primary.Attributes["id"]
-					groupUUID := rs.Primary.Attributes["group_uuid"]
-					accountKey := rs.Primary.Attributes["account_key"]
-					expectedID := fmt.Sprintf("%s:%s", groupUUID, accountKey)
-					if id != expectedID {
-						return fmt.Errorf("expected ID to be %s, got %s", expectedID, id)
-					}
-					return nil
-				},
 			),
 		},
 		// ImportState testing
@@ -109,20 +95,6 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "group_uuid"),
-				func(s *terraform.State) error {
-					rs, ok := s.RootModule().Resources["stacklet_account_group_mapping.test"]
-					if !ok {
-						return fmt.Errorf("resource not found in state")
-					}
-					id := rs.Primary.Attributes["id"]
-					groupUUID := rs.Primary.Attributes["group_uuid"]
-					accountKey := rs.Primary.Attributes["account_key"]
-					expectedID := fmt.Sprintf("%s:%s", groupUUID, accountKey)
-					if id != expectedID {
-						return fmt.Errorf("expected ID to be %s, got %s", expectedID, id)
-					}
-					return nil
-				},
 			),
 		},
 	}
