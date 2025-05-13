@@ -1,7 +1,6 @@
 package acceptance_tests
 
 import (
-	"fmt"
 	"net/http"
 	"testing"
 
@@ -21,22 +20,6 @@ var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 		p := provider.New("test")()
 		return providerserver.NewProtocol6WithError(p)()
 	},
-}
-
-// setupRecordedTest prepares a test with recording/replay capability
-func setupRecordedTest(t *testing.T, testName string) (*recordedTransport, error) {
-	rt := newRecordedTransport(t, testName, http.DefaultTransport)
-	if err := rt.loadRecordings(); err != nil && rt.mode == "replay" {
-		return nil, fmt.Errorf("failed to load recordings: %v", err)
-	}
-
-	t.Cleanup(func() {
-		if err := rt.saveRecordings(); err != nil {
-			t.Errorf("failed to save recordings: %v", err)
-		}
-	})
-
-	return rt, nil
 }
 
 func runRecordedAccTest(t *testing.T, testName string, testSteps []resource.TestStep) {
