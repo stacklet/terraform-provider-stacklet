@@ -19,29 +19,29 @@ import (
 )
 
 var (
-	_ resource.Resource                = &accountGroupItemResource{}
-	_ resource.ResourceWithConfigure   = &accountGroupItemResource{}
-	_ resource.ResourceWithImportState = &accountGroupItemResource{}
+	_ resource.Resource                = &accountGroupMappingResource{}
+	_ resource.ResourceWithConfigure   = &accountGroupMappingResource{}
+	_ resource.ResourceWithImportState = &accountGroupMappingResource{}
 )
 
-func NewAccountGroupItemResource() resource.Resource {
-	return &accountGroupItemResource{}
+func NewAccountGroupMappingResource() resource.Resource {
+	return &accountGroupMappingResource{}
 }
 
-type accountGroupItemResource struct {
+type accountGroupMappingResource struct {
 	api *api.API
 }
 
-func (r *accountGroupItemResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_account_group_item"
+func (r *accountGroupMappingResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_account_group_mapping"
 }
 
-func (r *accountGroupItemResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *accountGroupMappingResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Manages an account within an account group.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The ID of the account group item.",
+				Description: "The ID of the account group mapping.",
 				Computed:    true,
 			},
 			"group_uuid": schema.StringAttribute{
@@ -69,7 +69,7 @@ func (r *accountGroupItemResource) Schema(_ context.Context, _ resource.SchemaRe
 	}
 }
 
-func (r *accountGroupItemResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *accountGroupMappingResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -86,46 +86,46 @@ func (r *accountGroupItemResource) Configure(_ context.Context, req resource.Con
 	r.api = api.New(client)
 }
 
-func (r *accountGroupItemResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan models.AccountGroupItemResource
+func (r *accountGroupMappingResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan models.AccountGroupMappingResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	item, err := r.api.AccountGroupItem.Create(ctx, plan.CloudProvider.ValueString(), plan.AccountKey.ValueString(), plan.GroupUUID.ValueString())
+	item, err := r.api.AccountGroupMapping.Create(ctx, plan.CloudProvider.ValueString(), plan.AccountKey.ValueString(), plan.GroupUUID.ValueString())
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	updateAccountGroupItemModel(&plan, item)
+	updateAccountGroupMappingModel(&plan, item)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
-func (r *accountGroupItemResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state models.AccountGroupItemResource
+func (r *accountGroupMappingResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state models.AccountGroupMappingResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	accountGroupItem, err := r.api.AccountGroupItem.Read(ctx, state.CloudProvider.ValueString(), state.AccountKey.ValueString(), state.GroupUUID.ValueString())
+	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, state.CloudProvider.ValueString(), state.AccountKey.ValueString(), state.GroupUUID.ValueString())
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 	}
 
-	if accountGroupItem.ID == "" {
+	if accountGroupMapping.ID == "" {
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	updateAccountGroupItemModel(&state, accountGroupItem)
+	updateAccountGroupMappingModel(&state, accountGroupMapping)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
-func (r *accountGroupItemResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan models.AccountGroupItemResource
+func (r *accountGroupMappingResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan models.AccountGroupMappingResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -136,20 +136,20 @@ func (r *accountGroupItemResource) Update(ctx context.Context, req resource.Upda
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
-func (r *accountGroupItemResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state models.AccountGroupItemResource
+func (r *accountGroupMappingResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state models.AccountGroupMappingResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	if err := r.api.AccountGroupItem.Delete(ctx, state.ID.ValueString()); err != nil {
+	if err := r.api.AccountGroupMapping.Delete(ctx, state.ID.ValueString()); err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }
 
-func (r *accountGroupItemResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	parts := strings.Split(req.ID, ":")
 	if len(parts) != 3 {
 		resp.Diagnostics.AddError(
@@ -163,21 +163,21 @@ func (r *accountGroupItemResource) ImportState(ctx context.Context, req resource
 	cloudProvider := parts[1]
 	accountKey := parts[2]
 
-	accountGroupItem, err := r.api.AccountGroupItem.Read(ctx, cloudProvider, accountKey, groupUUID)
+	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, cloudProvider, accountKey, groupUUID)
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), accountGroupItem.ID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), accountGroupItem.GroupUUID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), accountGroupItem.Provider)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), accountGroupItem.AccountKey)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), accountGroupMapping.ID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), accountGroupMapping.GroupUUID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), accountGroupMapping.Provider)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), accountGroupMapping.AccountKey)...)
 }
 
-func updateAccountGroupItemModel(m *models.AccountGroupItemResource, accountGroupItem api.AccountGroupItem) {
-	m.ID = types.StringValue(accountGroupItem.ID)
-	m.GroupUUID = types.StringValue(accountGroupItem.GroupUUID)
-	m.AccountKey = types.StringValue(accountGroupItem.AccountKey)
-	m.CloudProvider = types.StringValue(string(accountGroupItem.Provider))
+func updateAccountGroupMappingModel(m *models.AccountGroupMappingResource, accountGroupMapping api.AccountGroupMapping) {
+	m.ID = types.StringValue(accountGroupMapping.ID)
+	m.GroupUUID = types.StringValue(accountGroupMapping.GroupUUID)
+	m.AccountKey = types.StringValue(accountGroupMapping.AccountKey)
+	m.CloudProvider = types.StringValue(string(accountGroupMapping.Provider))
 }

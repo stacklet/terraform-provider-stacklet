@@ -4,8 +4,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// AccountGroupItemResource is the model for an account group item resource.
-type AccountGroupItemResource struct {
+// AccountGroupMappingResource is the model for an account group mapping resource.
+type AccountGroupMappingResource struct {
 	ID            types.String `tfsdk:"id"`
 	GroupUUID     types.String `tfsdk:"group_uuid"`
 	AccountKey    types.String `tfsdk:"account_key"`

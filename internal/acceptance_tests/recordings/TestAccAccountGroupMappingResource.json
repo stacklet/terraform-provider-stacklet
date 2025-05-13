@@ -141,14 +141,14 @@
       }
     }
   ],
-  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-items\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-mappings\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
     {
       "request": {
         "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}",
         "variables": {
           "input": {
             "description": "Test account group",
-            "name": "test-group-items",
+            "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"
@@ -162,7 +162,7 @@
             "group": {
               "description": "Test account group",
               "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd",
-              "name": "test-group-items",
+              "name": "test-group-mappings",
               "provider": "AWS",
               "regions": [
                 "us-east-1"
@@ -578,7 +578,7 @@
           "accountGroup": {
             "description": "Test account group",
             "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd",
-            "name": "test-group-items",
+            "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"
@@ -601,7 +601,7 @@
           "accountGroup": {
             "description": "Test account group",
             "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd",
-            "name": "test-group-items",
+            "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"
@@ -624,7 +624,7 @@
           "accountGroup": {
             "description": "Test account group",
             "id": "WyJhY2NvdW50LWdyb3VwIiwgIjY4MGM1Y2QzLTVjYjAtNGYzOC1iYjgzLWQ0MTYxM2EzMGNiNCJd",
-            "name": "test-group-items",
+            "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"

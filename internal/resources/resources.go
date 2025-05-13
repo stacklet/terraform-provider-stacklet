@@ -7,7 +7,7 @@ import (
 var RESOURCES = []func() resource.Resource{
 	NewAccountResource,
 	NewAccountGroupResource,
-	NewAccountGroupItemResource,
+	NewAccountGroupMappingResource,
 	NewPolicyCollectionItemResource,
 	NewPolicyCollectionResource,
 	NewBindingResource,

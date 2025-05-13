@@ -6,8 +6,8 @@ import (
 	"github.com/hasura/go-graphql-client"
 )
 
-// AccountGroupItem is the data returned by reading an account group item data.
-type AccountGroupItem struct {
+// AccountGroupMapping is the data returned by reading an account group mapping data.
+type AccountGroupMapping struct {
 	ID         string
 	GroupUUID  string
 	AccountKey string
@@ -39,15 +39,15 @@ func (i removeAccountGroupMappingsInput) GetGraphQLType() string {
 	return "RemoveAccountGroupMappingsInput"
 }
 
-type accountGroupItemAPI struct {
+type accountGroupMappingAPI struct {
 	c *graphql.Client
 }
 
-// Read returns data for an account group item.
-func (a accountGroupItemAPI) Read(ctx context.Context, cloudProvider string, accountKey string, groupUUID string) (AccountGroupItem, error) {
+// Read returns data for an account group mapping.
+func (a accountGroupMappingAPI) Read(ctx context.Context, cloudProvider string, accountKey string, groupUUID string) (AccountGroupMapping, error) {
 	provider, err := NewCloudProvider(cloudProvider)
 	if err != nil {
-		return AccountGroupItem{}, APIError{"Invalid provider", err.Error()}
+		return AccountGroupMapping{}, APIError{"Invalid provider", err.Error()}
 	}
 
 	var query struct {
@@ -69,12 +69,12 @@ func (a accountGroupItemAPI) Read(ctx context.Context, cloudProvider string, acc
 		"uuid": graphql.String(groupUUID),
 	}
 	if err = a.c.Query(ctx, &query, variables); err != nil {
-		return AccountGroupItem{}, APIError{"Client error", err.Error()}
+		return AccountGroupMapping{}, APIError{"Client error", err.Error()}
 	}
 
 	for _, edge := range query.AccountGroup.AccountMappings.Edges {
 		if edge.Node.Account.Key == accountKey && edge.Node.Account.Provider == cloudProvider {
-			return AccountGroupItem{
+			return AccountGroupMapping{
 				ID:         edge.Node.ID,
 				GroupUUID:  groupUUID,
 				AccountKey: accountKey,
@@ -83,14 +83,14 @@ func (a accountGroupItemAPI) Read(ctx context.Context, cloudProvider string, acc
 		}
 	}
 
-	return AccountGroupItem{}, nil
+	return AccountGroupMapping{}, nil
 }
 
-// Create creates an account group item.
-func (a accountGroupItemAPI) Create(ctx context.Context, cloudProvider string, accountKey string, groupUUID string) (AccountGroupItem, error) {
+// Create creates an account group mapping.
+func (a accountGroupMappingAPI) Create(ctx context.Context, cloudProvider string, accountKey string, groupUUID string) (AccountGroupMapping, error) {
 	provider, err := NewCloudProvider(cloudProvider)
 	if err != nil {
-		return AccountGroupItem{}, APIError{"Invalid provider", err.Error()}
+		return AccountGroupMapping{}, APIError{"Invalid provider", err.Error()}
 	}
 
 	var mutation struct {
@@ -113,10 +113,10 @@ func (a accountGroupItemAPI) Create(ctx context.Context, cloudProvider string, a
 
 	err = a.c.Mutate(ctx, &mutation, variables)
 	if err != nil {
-		return AccountGroupItem{}, APIError{"Client error", err.Error()}
+		return AccountGroupMapping{}, APIError{"Client error", err.Error()}
 	}
 
-	return AccountGroupItem{
+	return AccountGroupMapping{
 		ID:         mutation.UpsertAccountGroupMappings.Mappings[0].ID,
 		AccountKey: accountKey,
 		GroupUUID:  groupUUID,
@@ -124,8 +124,8 @@ func (a accountGroupItemAPI) Create(ctx context.Context, cloudProvider string, a
 	}, nil
 }
 
-// Delete removes an account group item.
-func (a accountGroupItemAPI) Delete(ctx context.Context, id string) error {
+// Delete removes an account group mapping.
+func (a accountGroupMappingAPI) Delete(ctx context.Context, id string) error {
 	var mutation struct {
 		RemoveAccountGroupMappings struct {
 			Removed []struct {

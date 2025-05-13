@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
-func TestAccAccountGroupItemsResource(t *testing.T) {
+func TestAccAccountGroupMappingResource(t *testing.T) {
 	steps := []resource.TestStep{
 		// Create and Read testing
 		{
@@ -28,25 +28,25 @@ func TestAccAccountGroupItemsResource(t *testing.T) {
 					}
 
 					resource "stacklet_account_group" "test" {
-						name = "test-group-items"
+						name = "test-group-mappings"
 						description = "Test account group"
 						cloud_provider = "AWS"
 						regions = ["us-east-1"]
 					}
 
-					resource "stacklet_account_group_item" "test" {
+					resource "stacklet_account_group_mapping" "test" {
 						group_uuid = stacklet_account_group.test.uuid
 						account_key = stacklet_account.test1.key
 						cloud_provider = stacklet_account.test1.cloud_provider
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_account_group_item.test", "account_key", "111111111111"),
-				resource.TestCheckResourceAttr("stacklet_account_group_item.test", "cloud_provider", "AWS"),
-				resource.TestCheckResourceAttrSet("stacklet_account_group_item.test", "id"),
-				resource.TestCheckResourceAttrSet("stacklet_account_group_item.test", "group_uuid"),
+				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "account_key", "111111111111"),
+				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "cloud_provider", "AWS"),
+				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "id"),
+				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "group_uuid"),
 				func(s *terraform.State) error {
-					rs, ok := s.RootModule().Resources["stacklet_account_group_item.test"]
+					rs, ok := s.RootModule().Resources["stacklet_account_group_mapping.test"]
 					if !ok {
 						return fmt.Errorf("resource not found in state")
 					}
@@ -63,11 +63,11 @@ func TestAccAccountGroupItemsResource(t *testing.T) {
 		},
 		// ImportState testing
 		{
-			ResourceName:      "stacklet_account_group_item.test",
+			ResourceName:      "stacklet_account_group_mapping.test",
 			ImportState:       true,
 			ImportStateVerify: true,
 			ImportStateIdFunc: func(s *terraform.State) (string, error) {
-				rs, ok := s.RootModule().Resources["stacklet_account_group_item.test"]
+				rs, ok := s.RootModule().Resources["stacklet_account_group_mapping.test"]
 				if !ok {
 					return "", fmt.Errorf("resource not found in state")
 				}
@@ -92,25 +92,25 @@ func TestAccAccountGroupItemsResource(t *testing.T) {
 					}
 
 					resource "stacklet_account_group" "test" {
-						name = "test-group-items"
+						name = "test-group-mappings"
 						description = "Test account group"
 						cloud_provider = "AWS"
 						regions = ["us-east-1"]
 					}
 
-					resource "stacklet_account_group_item" "test" {
+					resource "stacklet_account_group_mapping" "test" {
 						group_uuid = stacklet_account_group.test.uuid
 						account_key = stacklet_account.test2.key
 						cloud_provider = stacklet_account.test2.cloud_provider
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_account_group_item.test", "account_key", "222222222222"),
-				resource.TestCheckResourceAttr("stacklet_account_group_item.test", "cloud_provider", "AWS"),
-				resource.TestCheckResourceAttrSet("stacklet_account_group_item.test", "id"),
-				resource.TestCheckResourceAttrSet("stacklet_account_group_item.test", "group_uuid"),
+				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "account_key", "222222222222"),
+				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "cloud_provider", "AWS"),
+				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "id"),
+				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "group_uuid"),
 				func(s *terraform.State) error {
-					rs, ok := s.RootModule().Resources["stacklet_account_group_item.test"]
+					rs, ok := s.RootModule().Resources["stacklet_account_group_mapping.test"]
 					if !ok {
 						return fmt.Errorf("resource not found in state")
 					}
@@ -126,5 +126,5 @@ func TestAccAccountGroupItemsResource(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccAccountGroupItemsResource", steps)
+	runRecordedAccTest(t, "TestAccAccountGroupMappingResource", steps)
 }
