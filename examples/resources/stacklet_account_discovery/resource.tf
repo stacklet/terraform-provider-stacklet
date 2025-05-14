@@ -2,7 +2,7 @@
 resource "stacklet_account_discovery" "aws_example" {
   name           = "aws-production"
   description    = "AWS production organization discovery"
-  provider       = "aws"
+  cloud_provider = "aws"
   org_read_role  = "arn:aws:iam::123456789012:role/StackletOrgReadRole"
   member_role    = "arn:aws:iam::{Id}:role/StackletAssetDBRole"
   custodian_role = "arn:aws:iam::{id}:role/StackletCustodianRole-{tag}"
@@ -11,20 +11,20 @@ resource "stacklet_account_discovery" "aws_example" {
 
 # Azure account discovery configuration
 resource "stacklet_account_discovery" "azure_example" {
-  name          = "azure-production"
-  description   = "Azure production tenant discovery"
-  provider      = "azure"
-  tenant_id     = "00000000-0000-0000-0000-000000000000"
-  client_id     = "11111111-1111-1111-1111-111111111111"
-  client_secret = "your-client-secret"
-  suspended     = false
+  name           = "azure-production"
+  description    = "Azure production tenant discovery"
+  cloud_provider = "azure"
+  tenant_id      = "00000000-0000-0000-0000-000000000000"
+  client_id      = "11111111-1111-1111-1111-111111111111"
+  client_secret  = "your-client-secret"
+  suspended      = false
 }
 
 # GCP account discovery configuration
 resource "stacklet_account_discovery" "gcp_example" {
   name               = "gcp-production"
   description        = "GCP production organization discovery"
-  provider           = "gcp"
+  cloud_provider     = "gcp"
   org_id             = "123456789012"
   root_folder_ids    = ["folders/123456", "folders/789012"]
   exclude_folder_ids = ["folders/345678"]
@@ -54,4 +54,4 @@ output "azure_discovery_validity" {
 
 output "gcp_discovery_validity" {
   value = stacklet_account_discovery.gcp_example.validity
-} 
+}

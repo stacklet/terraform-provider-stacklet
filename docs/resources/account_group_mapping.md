@@ -29,17 +29,17 @@ data "stacklet_account" "prod_account" {
 }
 
 locals {
-  azure_accounts = [
+  azure_accounts = toset([
     "22222222-2222-2222-2222-222222222222",
     "33333333-3333-3333-3333-333333333333",
-  ]
+  ])
 }
 
 resource "stacklet_account_group_mapping" "prod_accounts" {
   for_each = local.azure_accounts
 
-  group_uuid   = stacklet_account_group.production.uuid
-  account_uuid = each.value
+  group_uuid  = data.stacklet_account_group.production.uuid
+  account_key = each.value
 }
 ```
 
