@@ -94,7 +94,7 @@ func (a accountGroupAPI) Update(ctx context.Context, i AccountGroupUpdateInput) 
 func (a accountGroupAPI) Delete(ctx context.Context, uuid string) error {
 	var mutation struct {
 		RemoveAccountGroup struct {
-			AccountGroup struct {
+			Group struct {
 				UUID string
 			}
 		} `graphql:"removeAccountGroup(uuid: $uuid)"`

@@ -90,10 +90,10 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){accountGroup{uuid}}}:{\"uuid\":\"9ecfdd7e-3897-4c47-972e-52d976ad4332\"}": [
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"9ecfdd7e-3897-4c47-972e-52d976ad4332\"}": [
     {
       "request": {
-        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){accountGroup{uuid}}}",
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
         "variables": {
           "uuid": "9ecfdd7e-3897-4c47-972e-52d976ad4332"
         }
@@ -101,7 +101,7 @@
       "response": {
         "data": {
           "removeAccountGroup": {
-            "accountGroup": {
+            "group": {
               "uuid": "9ecfdd7e-3897-4c47-972e-52d976ad4332"
             }
           }

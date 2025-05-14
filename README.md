@@ -138,7 +138,7 @@ data "stacklet_account" "one" {
   key            = "123456789012"
 }
 
-resource "stacklet_account_group_item" "one" {
+resource "stacklet_account_group_mapping" "one" {
   group_uuid     = stacklet_account_group.example.uuid
   account_key    = data.stacklet_account.one.key
   cloud_provider = data.stacklet_account.one.cloud_provider
