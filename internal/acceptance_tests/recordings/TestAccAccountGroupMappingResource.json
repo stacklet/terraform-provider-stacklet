@@ -488,10 +488,10 @@
       }
     }
   ],
-  "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key,provider}}}}}}:{\"uuid\":\"0558c75a-393d-48ea-b2bc-e690e79219dd\"}": [
+  "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}:{\"uuid\":\"0558c75a-393d-48ea-b2bc-e690e79219dd\"}": [
     {
       "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key,provider}}}}}}",
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
         "variables": {
           "uuid": "0558c75a-393d-48ea-b2bc-e690e79219dd"
         }
@@ -504,8 +504,7 @@
                 {
                   "node": {
                     "account": {
-                      "key": "111111111111",
-                      "provider": "AWS"
+                      "key": "111111111111"
                     },
                     "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiMDU1OGM3NWEtMzkzZC00OGVhLWIyYmMtZTY5MGU3OTIxOWRkIiwgIjExMTExMTExMTExMSJd"
                   }
@@ -518,7 +517,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key,provider}}}}}}",
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
         "variables": {
           "uuid": "0558c75a-393d-48ea-b2bc-e690e79219dd"
         }
@@ -531,8 +530,7 @@
                 {
                   "node": {
                     "account": {
-                      "key": "111111111111",
-                      "provider": "AWS"
+                      "key": "111111111111"
                     },
                     "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiMDU1OGM3NWEtMzkzZC00OGVhLWIyYmMtZTY5MGU3OTIxOWRkIiwgIjExMTExMTExMTExMSJd"
                   }
@@ -545,7 +543,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key,provider}}}}}}",
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
         "variables": {
           "uuid": "0558c75a-393d-48ea-b2bc-e690e79219dd"
         }
@@ -558,8 +556,7 @@
                 {
                   "node": {
                     "account": {
-                      "key": "111111111111",
-                      "provider": "AWS"
+                      "key": "111111111111"
                     },
                     "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiMDU1OGM3NWEtMzkzZC00OGVhLWIyYmMtZTY5MGU3OTIxOWRkIiwgIjExMTExMTExMTExMSJd"
                   }
@@ -572,7 +569,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key,provider}}}}}}",
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
         "variables": {
           "uuid": "0558c75a-393d-48ea-b2bc-e690e79219dd"
         }
@@ -585,8 +582,7 @@
                 {
                   "node": {
                     "account": {
-                      "key": "111111111111",
-                      "provider": "AWS"
+                      "key": "111111111111"
                     },
                     "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiMDU1OGM3NWEtMzkzZC00OGVhLWIyYmMtZTY5MGU3OTIxOWRkIiwgIjExMTExMTExMTExMSJd"
                   }
@@ -599,7 +595,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key,provider}}}}}}",
+        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
         "variables": {
           "uuid": "0558c75a-393d-48ea-b2bc-e690e79219dd"
         }
@@ -612,8 +608,7 @@
                 {
                   "node": {
                     "account": {
-                      "key": "222222222222",
-                      "provider": "AWS"
+                      "key": "222222222222"
                     },
                     "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiMDU1OGM3NWEtMzkzZC00OGVhLWIyYmMtZTY5MGU3OTIxOWRkIiwgIjIyMjIyMjIyMjIyMiJd"
                   }

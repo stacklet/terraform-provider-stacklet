@@ -37,12 +37,10 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 					resource "stacklet_account_group_mapping" "test" {
 						group_uuid = stacklet_account_group.test.uuid
 						account_key = stacklet_account.test1.key
-						cloud_provider = stacklet_account.test1.cloud_provider
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "account_key", "111111111111"),
-				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "group_uuid"),
 			),
@@ -57,7 +55,7 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 				if !ok {
 					return "", fmt.Errorf("resource not found in state")
 				}
-				return fmt.Sprintf("%s:%s:%s", rs.Primary.Attributes["group_uuid"], rs.Primary.Attributes["cloud_provider"], rs.Primary.Attributes["account_key"]), nil
+				return fmt.Sprintf("%s:%s", rs.Primary.Attributes["group_uuid"], rs.Primary.Attributes["account_key"]), nil
 			},
 		},
 		// Update and Read testing
@@ -87,12 +85,10 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 					resource "stacklet_account_group_mapping" "test" {
 						group_uuid = stacklet_account_group.test.uuid
 						account_key = stacklet_account.test2.key
-						cloud_provider = stacklet_account.test2.cloud_provider
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "account_key", "222222222222"),
-				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "group_uuid"),
 			),

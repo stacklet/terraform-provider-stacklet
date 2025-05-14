@@ -13,26 +13,30 @@ Manages an account within an account group.
 ## Example Usage
 
 ```terraform
-# Add an account to a group
+# Add an existing account to an existing group
 resource "stacklet_account_group_mapping" "example" {
-  group_uuid     = "00000000-0000-0000-0000-000000000000"
-  account_key    = "123456789012"
-  cloud_provider = "AWS"
+  group_uuid  = data.stacklet_account_group.production.uuid
+  account_key = data.stacklet_account.prod_account.key
 }
 
-# Reference existing account and group
-resource "stacklet_account_group_mapping" "example" {
-  group_uuid     = data.stacklet_account_group.production.uuid
-  account_key    = data.stacklet_account.prod_account.key
-  cloud_provider = data.stacklet_account.prod_account.cloud_provider
+data "stacklet_account_group" "production" {
+  name = "production-accounts"
 }
 
-# Add multiple accounts to a group
-resource "stacklet_account_group_mapping" "prod_accounts" {
-  for_each = toset([
+data "stacklet_account" "prod_account" {
+  cloud_provider = "aws"
+  key            = "123456789012"
+}
+
+locals {
+  azure_accounts = [
     "22222222-2222-2222-2222-222222222222",
     "33333333-3333-3333-3333-333333333333",
-  ])
+  ]
+}
+
+resource "stacklet_account_group_mapping" "prod_accounts" {
+  for_each = local.azure_accounts
 
   group_uuid   = stacklet_account_group.production.uuid
   account_uuid = each.value
@@ -45,7 +49,6 @@ resource "stacklet_account_group_mapping" "prod_accounts" {
 ### Required
 
 - `account_key` (String) The Key of the account to add to the group.
-- `cloud_provider` (String) The cloud provider for the account (aws, azure, gcp, kubernetes, or tencentcloud).
 - `group_uuid` (String) The UUID of the account group.
 
 ### Read-Only
@@ -57,5 +60,5 @@ resource "stacklet_account_group_mapping" "prod_accounts" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import stacklet_account_group_mapping.example $group_uuid:$cloud_provider:$account_key
+terraform import stacklet_account_group_mapping.example $group_uuid:$account_key
 ```

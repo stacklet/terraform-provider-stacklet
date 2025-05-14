@@ -1,8 +1,7 @@
 # Add an existing account to an existing group
 resource "stacklet_account_group_mapping" "example" {
-  group_uuid     = data.stacklet_account_group.production.uuid
-  account_key    = data.stacklet_account.prod_account.key
-  cloud_provider = data.stacklet_account.prod_account.cloud_provider
+  group_uuid  = data.stacklet_account_group.production.uuid
+  account_key = data.stacklet_account.prod_account.key
 }
 
 data "stacklet_account_group" "production" {
@@ -24,7 +23,6 @@ locals {
 resource "stacklet_account_group_mapping" "prod_accounts" {
   for_each = local.azure_accounts
 
-  group_uuid     = stacklet_account_group.production.uuid
-  cloud_provider = "azure"
-  account_uuid   = each.value
+  group_uuid   = stacklet_account_group.production.uuid
+  account_uuid = each.value
 }

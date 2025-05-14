@@ -58,13 +58,6 @@ func (r *accountGroupMappingResource) Schema(_ context.Context, _ resource.Schem
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"cloud_provider": schema.StringAttribute{
-				Description: "The cloud provider for the account (aws, azure, gcp, kubernetes, or tencentcloud).",
-				Required:    true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
 		},
 	}
 }
@@ -93,7 +86,7 @@ func (r *accountGroupMappingResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	item, err := r.api.AccountGroupMapping.Create(ctx, plan.CloudProvider.ValueString(), plan.AccountKey.ValueString(), plan.GroupUUID.ValueString())
+	item, err := r.api.AccountGroupMapping.Create(ctx, plan.AccountKey.ValueString(), plan.GroupUUID.ValueString())
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
@@ -110,7 +103,7 @@ func (r *accountGroupMappingResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, state.CloudProvider.ValueString(), state.AccountKey.ValueString(), state.GroupUUID.ValueString())
+	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, state.AccountKey.ValueString(), state.GroupUUID.ValueString())
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 	}
@@ -152,19 +145,18 @@ func (r *accountGroupMappingResource) Delete(ctx context.Context, req resource.D
 
 func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	parts := strings.Split(req.ID, ":")
-	if len(parts) != 3 {
+	if len(parts) != 2 {
 		resp.Diagnostics.AddError(
 			"Invalid Import ID",
-			"Import ID must be in the format: $group_uuid:$cloud_provider:$account_key",
+			"Import ID must be in the format: $group_uuid:$account_key",
 		)
 		return
 	}
 
 	groupUUID := parts[0]
-	cloudProvider := parts[1]
-	accountKey := parts[2]
+	accountKey := parts[1]
 
-	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, cloudProvider, accountKey, groupUUID)
+	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, accountKey, groupUUID)
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
@@ -172,7 +164,6 @@ func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resou
 
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), accountGroupMapping.ID)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), accountGroupMapping.GroupUUID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), accountGroupMapping.Provider)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), accountGroupMapping.AccountKey)...)
 }
 
@@ -180,5 +171,4 @@ func updateAccountGroupMappingModel(m *models.AccountGroupMappingResource, accou
 	m.ID = types.StringValue(accountGroupMapping.ID)
 	m.GroupUUID = types.StringValue(accountGroupMapping.GroupUUID)
 	m.AccountKey = types.StringValue(accountGroupMapping.AccountKey)
-	m.CloudProvider = types.StringValue(string(accountGroupMapping.Provider))
 }

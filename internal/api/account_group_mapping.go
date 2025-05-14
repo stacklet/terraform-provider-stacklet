@@ -11,7 +11,6 @@ type AccountGroupMapping struct {
 	ID         string
 	GroupUUID  string
 	AccountKey string
-	Provider   CloudProvider
 }
 
 type upsertAccountGroupMappingsInput struct {
@@ -44,12 +43,7 @@ type accountGroupMappingAPI struct {
 }
 
 // Read returns data for an account group mapping.
-func (a accountGroupMappingAPI) Read(ctx context.Context, cloudProvider string, accountKey string, groupUUID string) (AccountGroupMapping, error) {
-	provider, err := NewCloudProvider(cloudProvider)
-	if err != nil {
-		return AccountGroupMapping{}, APIError{"Invalid provider", err.Error()}
-	}
-
+func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, groupUUID string) (AccountGroupMapping, error) {
 	var query struct {
 		AccountGroup struct {
 			AccountMappings struct {
@@ -57,8 +51,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, cloudProvider string, 
 					Node struct {
 						ID      string
 						Account struct {
-							Key      string
-							Provider string
+							Key string
 						}
 					}
 				}
@@ -68,17 +61,16 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, cloudProvider string, 
 	variables := map[string]any{
 		"uuid": graphql.String(groupUUID),
 	}
-	if err = a.c.Query(ctx, &query, variables); err != nil {
+	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return AccountGroupMapping{}, APIError{"Client error", err.Error()}
 	}
 
 	for _, edge := range query.AccountGroup.AccountMappings.Edges {
-		if edge.Node.Account.Key == accountKey && edge.Node.Account.Provider == cloudProvider {
+		if edge.Node.Account.Key == accountKey {
 			return AccountGroupMapping{
 				ID:         edge.Node.ID,
 				GroupUUID:  groupUUID,
 				AccountKey: accountKey,
-				Provider:   provider,
 			}, nil
 		}
 	}
@@ -87,12 +79,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, cloudProvider string, 
 }
 
 // Create creates an account group mapping.
-func (a accountGroupMappingAPI) Create(ctx context.Context, cloudProvider string, accountKey string, groupUUID string) (AccountGroupMapping, error) {
-	provider, err := NewCloudProvider(cloudProvider)
-	if err != nil {
-		return AccountGroupMapping{}, APIError{"Invalid provider", err.Error()}
-	}
-
+func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, groupUUID string) (AccountGroupMapping, error) {
 	var mutation struct {
 		UpsertAccountGroupMappings struct {
 			Mappings []struct {
@@ -111,7 +98,7 @@ func (a accountGroupMappingAPI) Create(ctx context.Context, cloudProvider string
 		},
 	}
 
-	err = a.c.Mutate(ctx, &mutation, variables)
+	err := a.c.Mutate(ctx, &mutation, variables)
 	if err != nil {
 		return AccountGroupMapping{}, APIError{"Client error", err.Error()}
 	}
@@ -120,7 +107,6 @@ func (a accountGroupMappingAPI) Create(ctx context.Context, cloudProvider string
 		ID:         mutation.UpsertAccountGroupMappings.Mappings[0].ID,
 		AccountKey: accountKey,
 		GroupUUID:  groupUUID,
-		Provider:   provider,
 	}, nil
 }
 
