@@ -11,8 +11,15 @@ format:
     go fmt ./...
 
 # Run linters
-lint:
+lint: lint-tf lint-go
+
+# Run linters for terraform
+lint-tf:
     terraform fmt -recursive -check
+    just validate-tf
+
+# Run linters for golang
+lint-go:
     go vet {{ package }}
     golangci-lint run --fix
 
@@ -30,3 +37,51 @@ test-record testname:
 docs:
     go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 
+
+tf_config := '''
+provider_installation {
+  dev_overrides {
+    "stacklet/stacklet" = "$PWD"
+  }
+  direct {}
+}
+'''
+tf_provider_config := '''
+terraform {
+  required_providers {
+    stacklet = {
+      source = "stacklet/stacklet"
+    }
+  }
+}
+'''
+
+# validate terraform example files
+validate-tf:
+    #!/usr/bin/env bash
+    set -e
+
+    validate() {
+      local dir="$1"
+
+      echo "Validating $dir"
+
+      local module="$(mktemp -d)"
+      trap "rm -rf $module" EXIT
+
+      local terraformrc="$module/.terraformrc"
+      cat > "$terraformrc" <<EOF
+    {{ tf_config }}
+    EOF
+      cat > "$module/provider.tf" <<EOF
+    {{ tf_provider_config }}
+    EOF
+
+      cp -a "$dir"/* "$module"
+      TF_CLI_CONFIG_FILE="$terraformrc" terraform -chdir="$module" validate
+      rm -rf $module
+    }
+
+    for dir in examples/provider examples/data-sources/* examples/resources/*; do
+      validate $dir
+    done
