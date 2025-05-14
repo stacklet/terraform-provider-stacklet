@@ -131,7 +131,8 @@ func (r *accountGroupMappingResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	// There's nothing that can be updated in the state
+	// There's nothing that can be updated in the state, as no currently exposed field can be changed.
+	// This might change if we end up exposing fields like `regions`.
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
