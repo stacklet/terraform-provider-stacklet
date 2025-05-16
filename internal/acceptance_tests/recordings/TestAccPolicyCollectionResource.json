@@ -1,10 +1,11 @@
 {
-  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}:{\"input\":{\"description\":\"Test policy collection\",\"name\":\"test-collection\",\"provider\":\"AWS\"}}": [
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection\",\"name\":\"test-collection\",\"provider\":\"AWS\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}",
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}}",
         "variables": {
           "input": {
+            "autoUpdate": false,
             "description": "Test policy collection",
             "name": "test-collection",
             "provider": "AWS"
@@ -18,9 +19,10 @@
               "autoUpdate": false,
               "description": "Test policy collection",
               "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0OTVlZTRhYi05ZmM3LTQxNDEtOTQwYi0zMmVkOTYwZTkyMGYiXQ==",
+              "isDynamic": false,
               "name": "test-collection",
               "provider": "AWS",
-              "repository": null,
+              "repositoryConfig": null,
               "system": false,
               "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
             }
@@ -29,12 +31,13 @@
       }
     }
   ],
-  "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}:{\"input\":{\"description\":\"Updated policy collection\",\"name\":\"test-collection-updated\",\"provider\":\"AWS\",\"uuid\":\"495ee4ab-9fc7-4141-940b-32ed960e920f\"}}": [
+  "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Updated policy collection\",\"name\":\"test-collection-updated\",\"provider\":\"AWS\",\"uuid\":\"495ee4ab-9fc7-4141-940b-32ed960e920f\"}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}",
+        "query": "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}}",
         "variables": {
           "input": {
+            "autoUpdate": false,
             "description": "Updated policy collection",
             "name": "test-collection-updated",
             "provider": "AWS",
@@ -51,7 +54,7 @@
               "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0OTVlZTRhYi05ZmM3LTQxNDEtOTQwYi0zMmVkOTYwZTkyMGYiXQ==",
               "name": "test-collection-updated",
               "provider": "AWS",
-              "repository": null,
+              "repositoryConfig": null,
               "system": false,
               "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
             }
@@ -79,11 +82,36 @@
       }
     }
   ],
-  "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}:{\"uuid\":\"495ee4ab-9fc7-4141-940b-32ed960e920f\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}:{\"name\":\"\",\"uuid\":\"495ee4ab-9fc7-4141-940b-32ed960e920f\"}": [
     {
       "request": {
-        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
         "variables": {
+          "name": "",
+          "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0OTVlZTRhYi05ZmM3LTQxNDEtOTQwYi0zMmVkOTYwZTkyMGYiXQ==",
+            "isDynamic": false,
+            "name": "test-collection",
+            "provider": "AWS",
+            "repositoryConfig": null,
+            "system": false,
+            "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
+        "variables": {
+          "name": "",
           "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
         }
       },
@@ -95,7 +123,7 @@
             "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0OTVlZTRhYi05ZmM3LTQxNDEtOTQwYi0zMmVkOTYwZTkyMGYiXQ==",
             "name": "test-collection",
             "provider": "AWS",
-            "repository": null,
+            "repositoryConfig": null,
             "system": false,
             "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
           }
@@ -104,8 +132,9 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
         "variables": {
+          "name": "",
           "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
         }
       },
@@ -115,9 +144,10 @@
             "autoUpdate": false,
             "description": "Test policy collection",
             "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0OTVlZTRhYi05ZmM3LTQxNDEtOTQwYi0zMmVkOTYwZTkyMGYiXQ==",
+            "isDynamic": false,
             "name": "test-collection",
             "provider": "AWS",
-            "repository": null,
+            "repositoryConfig": null,
             "system": false,
             "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
           }
@@ -126,52 +156,9 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
         "variables": {
-          "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
-        }
-      },
-      "response": {
-        "data": {
-          "policyCollection": {
-            "autoUpdate": false,
-            "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0OTVlZTRhYi05ZmM3LTQxNDEtOTQwYi0zMmVkOTYwZTkyMGYiXQ==",
-            "name": "test-collection",
-            "provider": "AWS",
-            "repository": null,
-            "system": false,
-            "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
-        "variables": {
-          "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
-        }
-      },
-      "response": {
-        "data": {
-          "policyCollection": {
-            "autoUpdate": false,
-            "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0OTVlZTRhYi05ZmM3LTQxNDEtOTQwYi0zMmVkOTYwZTkyMGYiXQ==",
-            "name": "test-collection",
-            "provider": "AWS",
-            "repository": null,
-            "system": false,
-            "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
-        "variables": {
+          "name": "",
           "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
         }
       },
@@ -181,9 +168,10 @@
             "autoUpdate": false,
             "description": "Updated policy collection",
             "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0OTVlZTRhYi05ZmM3LTQxNDEtOTQwYi0zMmVkOTYwZTkyMGYiXQ==",
+            "isDynamic": false,
             "name": "test-collection-updated",
             "provider": "AWS",
-            "repository": null,
+            "repositoryConfig": null,
             "system": false,
             "uuid": "495ee4ab-9fc7-4141-940b-32ed960e920f"
           }
