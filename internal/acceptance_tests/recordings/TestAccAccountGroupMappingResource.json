@@ -85,27 +85,27 @@
           "addAccountGroup": {
             "group": {
               "description": "Test account group",
-              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjU0ODgwYmUxLTliMjctNDUzZS1hZWNmLWJlNzQzNzQ2Y2Y0ZSJd",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgImU5ZjI3ZDk1LWI5YWEtNDk3ZS1iMDZmLTJjZTcxZWQ3YTZiNiJd",
               "name": "test-group-mappings",
               "provider": "AWS",
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
+              "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjExMTExMTExMTExMSJd\"]}}": [
+  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}",
         "variables": {
           "input": {
             "ids": [
-              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjExMTExMTExMTExMSJd"
+              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
             ]
           }
         }
@@ -115,7 +115,7 @@
           "removeAccountGroupMappings": {
             "removed": [
               {
-                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjExMTExMTExMTExMSJd"
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
               }
             ]
           }
@@ -123,14 +123,14 @@
       }
     }
   ],
-  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjIyMjIyMjIyMjIyMiJd\"]}}": [
+  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}",
         "variables": {
           "input": {
             "ids": [
-              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjIyMjIyMjIyMjIyMiJd"
+              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd"
             ]
           }
         }
@@ -140,7 +140,7 @@
           "removeAccountGroupMappings": {
             "removed": [
               {
-                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjIyMjIyMjIyMjIyMiJd"
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd"
               }
             ]
           }
@@ -148,7 +148,7 @@
       }
     }
   ],
-  "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}:{\"input\":{\"mappings\":[{\"accountKey\":\"111111111111\",\"groupUUID\":\"54880be1-9b27-453e-aecf-be743746cf4e\"}]}}": [
+  "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}:{\"input\":{\"mappings\":[{\"accountKey\":\"111111111111\",\"groupUUID\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}",
@@ -157,7 +157,7 @@
             "mappings": [
               {
                 "accountKey": "111111111111",
-                "groupUUID": "54880be1-9b27-453e-aecf-be743746cf4e"
+                "groupUUID": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
               }
             ]
           }
@@ -168,7 +168,7 @@
           "upsertAccountGroupMappings": {
             "mappings": [
               {
-                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjExMTExMTExMTExMSJd"
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
               }
             ]
           }
@@ -176,7 +176,7 @@
       }
     }
   ],
-  "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}:{\"input\":{\"mappings\":[{\"accountKey\":\"222222222222\",\"groupUUID\":\"54880be1-9b27-453e-aecf-be743746cf4e\"}]}}": [
+  "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}:{\"input\":{\"mappings\":[{\"accountKey\":\"222222222222\",\"groupUUID\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}",
@@ -185,7 +185,7 @@
             "mappings": [
               {
                 "accountKey": "222222222222",
-                "groupUUID": "54880be1-9b27-453e-aecf-be743746cf4e"
+                "groupUUID": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
               }
             ]
           }
@@ -196,7 +196,7 @@
           "upsertAccountGroupMappings": {
             "mappings": [
               {
-                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjIyMjIyMjIyMjIyMiJd"
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd"
               }
             ]
           }
@@ -244,19 +244,155 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"54880be1-9b27-453e-aecf-be743746cf4e\"}": [
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
         "variables": {
-          "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
+          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
         }
       },
       "response": {
         "data": {
           "removeAccountGroup": {
             "group": {
-              "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
+              "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}:{\"accountFilter\":{\"single\":{\"name\":\"id\",\"operator\":\"equals\",\"value\":\"111111111111\"}},\"uuid\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}": [
+    {
+      "request": {
+        "query": "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}",
+        "variables": {
+          "accountFilter": {
+            "single": {
+              "name": "id",
+              "operator": "equals",
+              "value": "111111111111"
+            }
+          },
+          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accountMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "111111111111"
+                    },
+                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}",
+        "variables": {
+          "accountFilter": {
+            "single": {
+              "name": "id",
+              "operator": "equals",
+              "value": "111111111111"
+            }
+          },
+          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accountMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "111111111111"
+                    },
+                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}",
+        "variables": {
+          "accountFilter": {
+            "single": {
+              "name": "id",
+              "operator": "equals",
+              "value": "111111111111"
+            }
+          },
+          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accountMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "111111111111"
+                    },
+                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}:{\"accountFilter\":{\"single\":{\"name\":\"id\",\"operator\":\"equals\",\"value\":\"222222222222\"}},\"uuid\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}": [
+    {
+      "request": {
+        "query": "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}",
+        "variables": {
+          "accountFilter": {
+            "single": {
+              "name": "id",
+              "operator": "equals",
+              "value": "222222222222"
+            }
+          },
+          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "accountMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "account": {
+                      "key": "222222222222"
+                    },
+                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd"
+                  }
+                }
+              ]
             }
           }
         }
@@ -417,49 +553,26 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"54880be1-9b27-453e-aecf-be743746cf4e\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
+          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjU0ODgwYmUxLTliMjctNDUzZS1hZWNmLWJlNzQzNzQ2Y2Y0ZSJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImU5ZjI3ZDk1LWI5YWEtNDk3ZS1iMDZmLTJjZTcxZWQ3YTZiNiJd",
             "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
-        "variables": {
-          "name": "",
-          "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
-        }
-      },
-      "response": {
-        "data": {
-          "accountGroup": {
-            "description": "Test account group",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjU0ODgwYmUxLTliMjctNDUzZS1hZWNmLWJlNzQzNzQ2Y2Y0ZSJd",
-            "name": "test-group-mappings",
-            "provider": "AWS",
-            "regions": [
-              "us-east-1"
-            ],
-            "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
+            "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
           }
         }
       }
@@ -469,126 +582,43 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
+          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjU0ODgwYmUxLTliMjctNDUzZS1hZWNmLWJlNzQzNzQ2Y2Y0ZSJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImU5ZjI3ZDk1LWI5YWEtNDk3ZS1iMDZmLTJjZTcxZWQ3YTZiNiJd",
             "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
-          }
-        }
-      }
-    }
-  ],
-  "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}:{\"uuid\":\"54880be1-9b27-453e-aecf-be743746cf4e\"}": [
-    {
-      "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
-        "variables": {
-          "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
-        }
-      },
-      "response": {
-        "data": {
-          "accountGroup": {
-            "accountMappings": {
-              "edges": [
-                {
-                  "node": {
-                    "account": {
-                      "key": "111111111111"
-                    },
-                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjExMTExMTExMTExMSJd"
-                  }
-                }
-              ]
-            }
+            "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
-          "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
+          "name": "",
+          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
-            "accountMappings": {
-              "edges": [
-                {
-                  "node": {
-                    "account": {
-                      "key": "111111111111"
-                    },
-                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjExMTExMTExMTExMSJd"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
-        "variables": {
-          "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
-        }
-      },
-      "response": {
-        "data": {
-          "accountGroup": {
-            "accountMappings": {
-              "edges": [
-                {
-                  "node": {
-                    "account": {
-                      "key": "111111111111"
-                    },
-                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjExMTExMTExMTExMSJd"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($uuid:String!){accountGroup(uuid: $uuid){accountMappings{edges{node{id,account{key}}}}}}",
-        "variables": {
-          "uuid": "54880be1-9b27-453e-aecf-be743746cf4e"
-        }
-      },
-      "response": {
-        "data": {
-          "accountGroup": {
-            "accountMappings": {
-              "edges": [
-                {
-                  "node": {
-                    "account": {
-                      "key": "222222222222"
-                    },
-                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiNTQ4ODBiZTEtOWIyNy00NTNlLWFlY2YtYmU3NDM3NDZjZjRlIiwgIjIyMjIyMjIyMjIyMiJd"
-                  }
-                }
-              ]
-            }
+            "description": "Test account group",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImU5ZjI3ZDk1LWI5YWEtNDk3ZS1iMDZmLTJjZTcxZWQ3YTZiNiJd",
+            "name": "test-group-mappings",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
           }
         }
       }
