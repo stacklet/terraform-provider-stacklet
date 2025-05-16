@@ -3,12 +3,12 @@
 page_title: "stacklet_policy_collection_item Resource - terraform-provider-stacklet"
 subcategory: ""
 description: |-
-  Manage a policy within a policy collection. This resource allows to add or remove policies from collections.
+  Manage a policy within a policy collection.
 ---
 
 # stacklet_policy_collection_item (Resource)
 
-Manage a policy within a policy collection. This resource allows to add or remove policies from collections.
+Manage a policy within a policy collection.
 
 ## Example Usage
 
@@ -17,6 +17,7 @@ Manage a policy within a policy collection. This resource allows to add or remov
 resource "stacklet_policy_collection_item" "example" {
   collection_uuid = "00000000-0000-0000-0000-000000000000"
   policy_uuid     = "11111111-1111-1111-1111-111111111111"
+  policy_version  = 1
 }
 ```
 
@@ -27,6 +28,7 @@ resource "stacklet_policy_collection_item" "example" {
 
 - `collection_uuid` (String) The UUID of the policy collection.
 - `policy_uuid` (String) The UUID of the policy to add to the collection.
+- `policy_version` (Number) The version of the policy to add to the collection.
 
 ### Read-Only
 

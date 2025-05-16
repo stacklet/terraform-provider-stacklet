@@ -7,14 +7,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int32planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
 	"github.com/hasura/go-graphql-client"
 
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
 var (
 	_ resource.Resource                = &policyCollectionItemResource{}
+	_ resource.ResourceWithConfigure   = &policyCollectionItemResource{}
 	_ resource.ResourceWithImportState = &policyCollectionItemResource{}
 )
 
@@ -23,13 +30,7 @@ func NewPolicyCollectionItemResource() resource.Resource {
 }
 
 type policyCollectionItemResource struct {
-	client *graphql.Client
-}
-
-type policyCollectionItemResourceModel struct {
-	ID             types.String `tfsdk:"id"`
-	CollectionUUID types.String `tfsdk:"collection_uuid"`
-	PolicyUUID     types.String `tfsdk:"policy_uuid"`
+	api *api.API
 }
 
 func (r *policyCollectionItemResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -38,7 +39,7 @@ func (r *policyCollectionItemResource) Metadata(_ context.Context, req resource.
 
 func (r *policyCollectionItemResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manage a policy within a policy collection. This resource allows to add or remove policies from collections.",
+		Description: "Manage a policy within a policy collection.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The ID of the policy collection item.",
@@ -47,10 +48,23 @@ func (r *policyCollectionItemResource) Schema(_ context.Context, _ resource.Sche
 			"collection_uuid": schema.StringAttribute{
 				Description: "The UUID of the policy collection.",
 				Required:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"policy_uuid": schema.StringAttribute{
 				Description: "The UUID of the policy to add to the collection.",
 				Required:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"policy_version": schema.Int32Attribute{
+				Description: "The version of the policy to add to the collection.",
+				Required:    true,
+				PlanModifiers: []planmodifier.Int32{
+					int32planmodifier.RequiresReplace(),
+				},
 			},
 		},
 	}
@@ -70,150 +84,75 @@ func (r *policyCollectionItemResource) Configure(_ context.Context, req resource
 		return
 	}
 
-	r.client = client
+	r.api = api.New(client)
 }
 
 func (r *policyCollectionItemResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan policyCollectionItemResourceModel
+	var plan models.PolicyCollectionItemResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL mutation
-	var mutation struct {
-		AddPolicyCollectionItems struct {
-			Collection struct {
-				UUID           string
-				PolicyMappings struct {
-					Edges []struct {
-						Node struct {
-							ID     string
-							Policy struct {
-								UUID string
-							}
-						}
-					}
-				}
-			}
-		} `graphql:"addPolicyCollectionItems(input: $input)"`
+	input := api.PolicyCollectionItemCreateInput{
+		CollectionUUID: plan.CollectionUUID.ValueString(),
+		PolicyUUID:     plan.PolicyUUID.ValueString(),
+		PolicyVersion:  int(plan.PolicyVersion.ValueInt32()),
 	}
-
-	variables := map[string]any{
-		"input": PolicyCollectionItemsInput{
-			UUID: plan.CollectionUUID.ValueString(),
-			Items: []PolicyCollectionElement{
-				{
-					PolicyUUID: plan.PolicyUUID.ValueString(),
-				},
-			},
-		},
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
+	policyCollectionItem, err := r.api.PolicyCollectionItem.Create(ctx, input)
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to add policy to collection, got error: %s", err))
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	var mappingID string
-	for _, edge := range mutation.AddPolicyCollectionItems.Collection.PolicyMappings.Edges {
-		if edge.Node.Policy.UUID == plan.PolicyUUID.ValueString() {
-			mappingID = edge.Node.ID
-			break
-		}
-	}
-	if mappingID == "" {
-		resp.Diagnostics.AddError("Client Error", "Policy collection item was not found in collection after adding")
-		return
-	}
-
-	plan.ID = types.StringValue(mappingID)
+	updatePolicyCollectionItemModel(&plan, policyCollectionItem)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *policyCollectionItemResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state policyCollectionItemResourceModel
+	var state models.PolicyCollectionItemResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	query, err := r.getCollection(ctx, state.CollectionUUID.ValueString())
+	policyCollectionItem, err := r.api.PolicyCollectionItem.Read(ctx, state.CollectionUUID.ValueString(), state.PolicyUUID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read policy collection, got error: %s", err))
-		return
+		helpers.AddDiagError(&resp.Diagnostics, err)
 	}
 
-	// Find the policy in the collection
-	var foundPolicy bool
-	for _, edge := range query.PolicyCollection.PolicyMappings.Edges {
-		if edge.Node.Policy.UUID == state.PolicyUUID.ValueString() {
-			foundPolicy = true
-			break
-		}
-	}
-
-	if !foundPolicy {
+	if policyCollectionItem.ID == "" {
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
+	updatePolicyCollectionItemModel(&state, policyCollectionItem)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
 func (r *policyCollectionItemResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// Policy collection items don't have any updateable attributes
-	var plan policyCollectionItemResourceModel
+	var plan models.PolicyCollectionItemResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// PolicyCollectionItems don't have any updatable attributes
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *policyCollectionItemResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state policyCollectionItemResourceModel
+	var state models.PolicyCollectionItemResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL mutation
-	var mutation struct {
-		RemovePolicyCollectionMappings struct {
-			Removed []struct {
-				ID string
-			}
-		} `graphql:"removePolicyCollectionMappings(input: $input)"`
-	}
-
-	variables := map[string]any{
-		"input": RemovePolicyCollectionMappingsInput{
-			IDs: []graphql.ID{graphql.ID(state.ID.ValueString())},
-		},
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to remove policy from collection, got error: %s", err))
+	if err := r.api.PolicyCollectionItem.Delete(ctx, state.ID.ValueString()); err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
-}
-
-// Input types for GraphQL mutations.
-type PolicyCollectionElement struct {
-	PolicyUUID string `json:"policyUUID"`
-}
-
-type PolicyCollectionItemsInput struct {
-	UUID  string                    `json:"uuid"`
-	Items []PolicyCollectionElement `json:"items"`
-}
-
-type RemovePolicyCollectionMappingsInput struct {
-	IDs []graphql.ID `json:"ids"`
 }
 
 func (r *policyCollectionItemResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
@@ -223,56 +162,13 @@ func (r *policyCollectionItemResource) ImportState(ctx context.Context, req reso
 		return
 	}
 
-	collectionUUID := parts[0]
-	policyUUID := parts[1]
-
-	query, err := r.getCollection(ctx, collectionUUID)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading Policy Collection",
-			fmt.Sprintf("Could not read policy collection with UUID %s: %s", collectionUUID, err),
-		)
-		return
-	}
-
-	var mappingID string
-	for _, edge := range query.PolicyCollection.PolicyMappings.Edges {
-		if edge.Node.Policy.UUID == policyUUID {
-			mappingID = edge.Node.ID
-			break
-		}
-	}
-	if mappingID == "" {
-		resp.Diagnostics.AddError("Client Error", "Policy collection item was not found in collection")
-		return
-	}
-
-	// Set the imported attributes
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("collection_uuid"), collectionUUID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("policy_uuid"), policyUUID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), mappingID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("collection_uuid"), parts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("policy_uuid"), parts[1])...)
 }
 
-type collectionQuery struct {
-	PolicyCollection struct {
-		PolicyMappings struct {
-			Edges []struct {
-				Node struct {
-					ID     string
-					Policy struct {
-						UUID string
-					}
-				}
-			}
-		}
-	} `graphql:"policyCollection(uuid: $uuid)"`
-}
-
-func (r *policyCollectionItemResource) getCollection(ctx context.Context, uuid string) (collectionQuery, error) {
-	var query collectionQuery
-	variables := map[string]any{
-		"uuid": graphql.String(uuid),
-	}
-	err := r.client.Query(ctx, &query, variables)
-	return query, err
+func updatePolicyCollectionItemModel(m *models.PolicyCollectionItemResource, policyCollectionItem api.PolicyCollectionItem) {
+	m.ID = types.StringValue(policyCollectionItem.ID)
+	m.CollectionUUID = types.StringValue(policyCollectionItem.Collection.UUID)
+	m.PolicyUUID = types.StringValue(policyCollectionItem.Policy.UUID)
+	m.PolicyVersion = types.Int32Value(int32(policyCollectionItem.Policy.Version))
 }
