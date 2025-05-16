@@ -9,7 +9,7 @@ data "stacklet_account_group" "production" {
 }
 
 data "stacklet_account" "prod_account" {
-  cloud_provider = "aws"
+  cloud_provider = "AWS"
   key            = "123456789012"
 }
 

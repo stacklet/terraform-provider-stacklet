@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
 
@@ -16,6 +17,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/schemavalidate"
 )
 
 var (
@@ -65,6 +67,9 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 			"cloud_provider": schema.StringAttribute{
 				Description: "The cloud provider for the account group (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Required:    true,
+				Validators: []validator.String{
+					schemavalidate.OneOfCloudProviders(),
+				},
 			},
 			"regions": schema.ListAttribute{
 				Description: "The list of regions for the account group (e.g., us-east-1, eu-west-2), for providers that require it.",

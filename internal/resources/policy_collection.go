@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
 
@@ -18,6 +19,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/schemavalidate"
 )
 
 var (
@@ -67,6 +69,9 @@ func (r *policyCollectionResource) Schema(_ context.Context, _ resource.SchemaRe
 			"cloud_provider": schema.StringAttribute{
 				Description: "The cloud provider for the policy collection (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Required:    true,
+				Validators: []validator.String{
+					schemavalidate.OneOfCloudProviders(),
+				},
 			},
 			"auto_update": schema.BoolAttribute{
 				Description: "Whether the policy collection automatically updates policy versions.",
@@ -124,15 +129,9 @@ func (r *policyCollectionResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid Provider", err.Error())
-		return
-	}
-
 	input := api.PolicyCollectionCreateInput{
 		Name:        plan.Name.ValueString(),
-		Provider:    provider,
+		Provider:    api.CloudProvider(plan.CloudProvider.ValueString()),
 		Description: api.NullableString(plan.Description),
 		AutoUpdate:  plan.AutoUpdate.ValueBoolPointer(),
 	}
@@ -175,16 +174,10 @@ func (r *policyCollectionResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid Provider", err.Error())
-		return
-	}
-
 	input := api.PolicyCollectionUpdateInput{
 		UUID:        plan.UUID.ValueString(),
 		Name:        plan.Name.ValueString(),
-		Provider:    provider,
+		Provider:    api.CloudProvider(plan.CloudProvider.ValueString()),
 		Description: plan.Description.ValueStringPointer(),
 		AutoUpdate:  plan.AutoUpdate.ValueBoolPointer(),
 	}
