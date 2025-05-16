@@ -3,7 +3,6 @@ package resources
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -216,21 +215,14 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 }
 
 func (r *accountResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// Extract the provider and key from the import ID (format: provider:key)
-	idParts := strings.Split(req.ID, ":")
-	if len(idParts) != 2 {
-		resp.Diagnostics.AddError(
-			"Invalid Import ID",
-			"Import ID must be in the format: provider:key (e.g., aws:123456789012)",
-		)
+	parts, err := helpers.SplitImportID(req.ID, []string{"provider", "key"})
+	if err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	provider := idParts[0]
-	key := idParts[1]
-
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), provider)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), key)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), parts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), parts[1])...)
 }
 
 func updateAccountModel(m *models.AccountResource, account api.Account) {
