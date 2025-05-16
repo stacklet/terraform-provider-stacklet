@@ -3,7 +3,6 @@ package resources
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -144,27 +143,14 @@ func (r *accountGroupMappingResource) Delete(ctx context.Context, req resource.D
 }
 
 func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	parts := strings.Split(req.ID, ":")
-	if len(parts) != 2 {
-		resp.Diagnostics.AddError(
-			"Invalid Import ID",
-			"Import ID must be in the format: $group_uuid:$account_key",
-		)
-		return
-	}
-
-	groupUUID := parts[0]
-	accountKey := parts[1]
-
-	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, accountKey, groupUUID)
+	parts, err := helpers.SplitImportID(req.ID, []string{"group_uuid", "account_key"})
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), accountGroupMapping.ID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), accountGroupMapping.GroupUUID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), accountGroupMapping.AccountKey)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), parts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), parts[1])...)
 }
 
 func updateAccountGroupMappingModel(m *models.AccountGroupMappingResource, accountGroupMapping api.AccountGroupMapping) {

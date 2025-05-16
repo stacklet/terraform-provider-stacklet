@@ -3,13 +3,14 @@ package resources
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
 )
 
 var (
@@ -216,12 +217,9 @@ type RemovePolicyCollectionMappingsInput struct {
 }
 
 func (r *policyCollectionItemResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	parts := strings.Split(req.ID, ":")
-	if len(parts) != 2 {
-		resp.Diagnostics.AddError(
-			"Invalid Import ID",
-			"Import ID must be in the format: collection_uuid:policy_uuid",
-		)
+	parts, err := helpers.SplitImportID(req.ID, []string{"collection_uuid", "policy_uuid"})
+	if err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
