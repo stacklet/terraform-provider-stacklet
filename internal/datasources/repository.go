@@ -8,54 +8,38 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
-// Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &RepositoryDataSource{}
+// Ensure provider defined types fully satisfy framework interfaces
+var _ datasource.DataSource = &repositoryDataSource{}
 
 func NewRepositoryDataSource() datasource.DataSource {
-	return &RepositoryDataSource{}
+	return &repositoryDataSource{}
 }
 
-// RepositoryDataSource defines the data source implementation.
-type RepositoryDataSource struct {
-	client *graphql.Client
+// repositoryDataSource defines the data source implementation.
+type repositoryDataSource struct {
+	api *api.API
 }
 
-// RepositoryDataSourceModel describes the data source data model.
-type RepositoryDataSourceModel struct {
-	UUID              types.String   `tfsdk:"uuid"`
-	Name              types.String   `tfsdk:"name"`
-	URL               types.String   `tfsdk:"url"`
-	Description       types.String   `tfsdk:"description"`
-	PolicyFileSuffix  []types.String `tfsdk:"policy_file_suffix"`
-	PolicyDirectories []types.String `tfsdk:"policy_directories"`
-	BranchName        types.String   `tfsdk:"branch_name"`
-	AuthUser          types.String   `tfsdk:"auth_user"`
-	HasAuthToken      types.Bool     `tfsdk:"has_auth_token"`
-	HasSSHPrivateKey  types.Bool     `tfsdk:"has_ssh_private_key"`
-	HasSSHPassphrase  types.Bool     `tfsdk:"has_ssh_passphrase"`
-	Head              types.String   `tfsdk:"head"`
-	LastScanned       types.String   `tfsdk:"last_scanned"`
-	VCSProvider       types.String   `tfsdk:"vcs_provider"`
-	System            types.Bool     `tfsdk:"system"`
-}
-
-func (d *RepositoryDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *repositoryDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_repository"
 }
 
-func (d *RepositoryDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *repositoryDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Fetch a Stacklet repository.",
 		Attributes: map[string]schema.Attribute{
-			"uuid": schema.StringAttribute{
-				Description: "The UUID of the repository.",
-				Optional:    true,
+			"id": schema.StringAttribute{
+				Description: "The GraphQL ID of the repository.",
 				Computed:    true,
 			},
-			"name": schema.StringAttribute{
-				Description: "The name of the repository.",
+			"uuid": schema.StringAttribute{
+				Description: "The UUID of the repository.",
 				Optional:    true,
 				Computed:    true,
 			},
@@ -64,22 +48,16 @@ func (d *RepositoryDataSource) Schema(ctx context.Context, req datasource.Schema
 				Optional:    true,
 				Computed:    true,
 			},
+			"name": schema.StringAttribute{
+				Description: "The name of the repository.",
+				Computed:    true,
+			},
+			"webhook_url": schema.StringAttribute{
+				Description: "The URL of the webhook which triggers repository scans.",
+				Computed:    true,
+			},
 			"description": schema.StringAttribute{
 				Description: "A description of the repository.",
-				Computed:    true,
-			},
-			"policy_file_suffix": schema.ListAttribute{
-				Description: "The file suffixes used for policy scanning.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
-			"policy_directories": schema.ListAttribute{
-				Description: "The directories that are scanned for policies.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
-			"branch_name": schema.StringAttribute{
-				Description: "The branch used for scanning policies.",
 				Computed:    true,
 			},
 			"auth_user": schema.StringAttribute{
@@ -98,18 +76,6 @@ func (d *RepositoryDataSource) Schema(ctx context.Context, req datasource.Schema
 				Description: "Whether the repository has an SSH passphrase configured.",
 				Computed:    true,
 			},
-			"head": schema.StringAttribute{
-				Description: "The head commit that was processed.",
-				Computed:    true,
-			},
-			"last_scanned": schema.StringAttribute{
-				Description: "The ISO format datetime of when the repo was last scanned.",
-				Computed:    true,
-			},
-			"vcs_provider": schema.StringAttribute{
-				Description: "The provider of the repository (e.g., 'github', 'gitlab').",
-				Computed:    true,
-			},
 			"system": schema.BoolAttribute{
 				Description: "Whether this is a system repository (not user editable).",
 				Computed:    true,
@@ -118,12 +84,10 @@ func (d *RepositoryDataSource) Schema(ctx context.Context, req datasource.Schema
 	}
 }
 
-func (d *RepositoryDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	// Prevent panic if the provider has not been configured.
+func (d *repositoryDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
-
 	client, ok := req.ProviderData.(*graphql.Client)
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -132,77 +96,40 @@ func (d *RepositoryDataSource) Configure(ctx context.Context, req datasource.Con
 		)
 		return
 	}
-
-	d.client = client
+	d.api = api.New(client)
 }
 
-func (d *RepositoryDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data RepositoryDataSourceModel
-
-	// Read Terraform configuration data into the model
+func (d *repositoryDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data models.RepositoryDataSource
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Prepare GraphQL query
-	var query struct {
-		Repository struct {
-			UUID              string
-			Name              string
-			URL               string
-			Description       string
-			PolicyFileSuffix  []string
-			PolicyDirectories []string
-			BranchName        string
-			AuthUser          string
-			HasAuthToken      bool
-			HasSshPrivateKey  bool
-			HasSshPassphrase  bool
-			Head              string
-			LastScanned       string
-			Provider          string
-			System            bool
-		} `graphql:"repository(name: $name)"`
+	var err error
+	var repo api.Repository
+	if data.UUID.IsNull() || data.UUID.IsUnknown() {
+		repo, err = d.api.Repository.ReadURL(ctx, data.URL.ValueString())
+	} else {
+		repo, err = d.api.Repository.Read(ctx, data.UUID.ValueString())
 	}
-
-	// Prepare variables based on what's provided
-	variables := map[string]any{
-		"name": data.Name.ValueString(),
-	}
-
-	// Execute query
-	if err := d.client.Query(ctx, &query, variables); err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read repository, got error: %s", err))
+	if err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
 	// Map response to model
-	data.UUID = types.StringValue(query.Repository.UUID)
-	data.Name = types.StringValue(query.Repository.Name)
-	data.URL = types.StringValue(query.Repository.URL)
-	data.Description = types.StringValue(query.Repository.Description)
-	data.BranchName = types.StringValue(query.Repository.BranchName)
-	data.AuthUser = types.StringValue(query.Repository.AuthUser)
-	data.HasAuthToken = types.BoolValue(query.Repository.HasAuthToken)
-	data.HasSSHPrivateKey = types.BoolValue(query.Repository.HasSshPrivateKey)
-	data.HasSSHPassphrase = types.BoolValue(query.Repository.HasSshPassphrase)
-	data.Head = types.StringValue(query.Repository.Head)
-	data.LastScanned = types.StringValue(query.Repository.LastScanned)
-	data.VCSProvider = types.StringValue(query.Repository.Provider)
-	data.System = types.BoolValue(query.Repository.System)
-
-	// Map policy file suffixes
-	data.PolicyFileSuffix = make([]types.String, len(query.Repository.PolicyFileSuffix))
-	for i, suffix := range query.Repository.PolicyFileSuffix {
-		data.PolicyFileSuffix[i] = types.StringValue(suffix)
-	}
-
-	// Map policy directories
-	data.PolicyDirectories = make([]types.String, len(query.Repository.PolicyDirectories))
-	for i, dir := range query.Repository.PolicyDirectories {
-		data.PolicyDirectories[i] = types.StringValue(dir)
-	}
+	data.ID = types.StringValue(repo.ID)
+	data.UUID = types.StringValue(repo.UUID)
+	data.URL = types.StringValue(repo.URL)
+	data.Name = types.StringValue(repo.Name)
+	data.WebhookURL = types.StringValue(repo.WebhookURL)
+	data.Description = tftypes.NullableString(repo.Description)
+	data.AuthUser = tftypes.NullableString(repo.Auth.AuthUser)
+	data.HasAuthToken = types.BoolValue(repo.Auth.HasAuthToken)
+	data.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
+	data.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
+	data.System = types.BoolValue(repo.System)
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
