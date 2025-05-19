@@ -68,7 +68,7 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "Whether the binding should automatically deploy when the policy collection changes.",
 				Optional:    true,
 				Computed:    true,
-				Default:     booldefault.StaticBool(false),
+				Default:     booldefault.StaticBool(true),
 			},
 			"schedule": schema.StringAttribute{
 				Description: "The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).",
