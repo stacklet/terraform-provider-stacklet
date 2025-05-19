@@ -57,7 +57,7 @@ terraform {
 '''
 
 # validate terraform example files
-validate-tf:
+validate-tf: build
     #!/usr/bin/env bash
     set -e
 

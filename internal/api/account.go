@@ -112,6 +112,7 @@ func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (Account, 
 	return mutation.UpdateAccount.Account, nil
 }
 
+// Delete removes an account.
 func (a accountAPI) Delete(ctx context.Context, cloudProvider string, key string) error {
 	provider, err := NewCloudProvider(cloudProvider)
 	if err != nil {
