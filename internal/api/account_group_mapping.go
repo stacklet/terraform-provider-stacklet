@@ -55,27 +55,28 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 						}
 					}
 				}
-			}
+			} `graphql:"accountMappings(filterElement: $accountFilter)"`
 		} `graphql:"accountGroup(uuid: $uuid)"`
 	}
 	variables := map[string]any{
-		"uuid": graphql.String(groupUUID),
+		"uuid":          graphql.String(groupUUID),
+		"accountFilter": NewFieldMatchFilter("id", accountKey),
 	}
+
 	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return AccountGroupMapping{}, APIError{"Client error", err.Error()}
 	}
 
-	for _, edge := range query.AccountGroup.AccountMappings.Edges {
-		if edge.Node.Account.Key == accountKey {
-			return AccountGroupMapping{
-				ID:         edge.Node.ID,
-				GroupUUID:  groupUUID,
-				AccountKey: accountKey,
-			}, nil
-		}
+	if len(query.AccountGroup.AccountMappings.Edges) == 0 {
+		return AccountGroupMapping{}, nil
 	}
 
-	return AccountGroupMapping{}, nil
+	node := query.AccountGroup.AccountMappings.Edges[0].Node
+	return AccountGroupMapping{
+		ID:         node.ID,
+		GroupUUID:  groupUUID,
+		AccountKey: accountKey,
+	}, nil
 }
 
 // Create creates an account group mapping.
