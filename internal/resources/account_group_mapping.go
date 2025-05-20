@@ -85,13 +85,13 @@ func (r *accountGroupMappingResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	item, err := r.api.AccountGroupMapping.Create(ctx, plan.AccountKey.ValueString(), plan.GroupUUID.ValueString())
+	mapping, err := r.api.AccountGroupMapping.Create(ctx, plan.AccountKey.ValueString(), plan.GroupUUID.ValueString())
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	updateAccountGroupMappingModel(&plan, item)
+	updateAccountGroupMappingModel(&plan, mapping)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
