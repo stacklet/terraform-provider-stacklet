@@ -93,13 +93,13 @@ func (r *policyCollectionMappingResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	// Note that given this is an upsert operation, if the mapping already exists it will be updated.
 	input := api.PolicyCollectionMappingInput{
 		CollectionUUID: plan.CollectionUUID.ValueString(),
 		PolicyUUID:     plan.PolicyUUID.ValueString(),
 		PolicyVersion:  int(plan.PolicyVersion.ValueInt32()),
 	}
-	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Create(ctx, input)
+	// Note that given this is an upsert operation, if the mapping already exists it will be updated.
+	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Upsert(ctx, input)
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
@@ -142,7 +142,7 @@ func (r *policyCollectionMappingResource) Update(ctx context.Context, req resour
 		PolicyUUID:     plan.PolicyUUID.ValueString(),
 		PolicyVersion:  int(plan.PolicyVersion.ValueInt32()),
 	}
-	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Create(ctx, input)
+	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Upsert(ctx, input)
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
