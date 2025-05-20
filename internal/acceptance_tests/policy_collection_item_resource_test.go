@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
-func TestAccPolicyCollectionItemResource(t *testing.T) {
+func TestAccPolicyCollectionMappingResource(t *testing.T) {
 	steps := []resource.TestStep{
 		// Create and Read testing
 		{
@@ -22,26 +22,26 @@ func TestAccPolicyCollectionItemResource(t *testing.T) {
                     }
  
 					resource "stacklet_policy_collection" "test" {
-						name = "test-collection-items"
+						name = "test-collection-mapping"
 						description = "Test policy collection"
 						cloud_provider = "AWS"
 					}
 
-					resource "stacklet_policy_collection_item" "test" {
+					resource "stacklet_policy_collection_mapping" "test" {
 						collection_uuid = stacklet_policy_collection.test.uuid
 						policy_uuid = data.stacklet_policy.policy1.uuid
                         policy_version = data.stacklet_policy.policy1.version
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttrSet("stacklet_policy_collection_item.test", "collection_uuid"),
-				resource.TestCheckResourceAttrSet("stacklet_policy_collection_item.test", "policy_uuid"),
-				resource.TestCheckResourceAttrSet("stacklet_policy_collection_item.test", "policy_version"),
+				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "collection_uuid"),
+				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "policy_uuid"),
+				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "policy_version"),
 			),
 		},
 		// ImportState testing
 		{
-			ResourceName:      "stacklet_policy_collection_item.test",
+			ResourceName:      "stacklet_policy_collection_mapping.test",
 			ImportState:       true,
 			ImportStateVerify: true,
 			ImportStateIdFunc: func(s *terraform.State) (string, error) {
@@ -68,23 +68,23 @@ func TestAccPolicyCollectionItemResource(t *testing.T) {
                     }
  
 					resource "stacklet_policy_collection" "test" {
-						name = "test-collection-items"
+						name = "test-collection-mapping"
 						description = "Test policy collection"
 						cloud_provider = "AWS"
 					}
 
-					resource "stacklet_policy_collection_item" "test" {
+					resource "stacklet_policy_collection_mapping" "test" {
 						collection_uuid = stacklet_policy_collection.test.uuid
 						policy_uuid = data.stacklet_policy.policy2.uuid
                         policy_version = data.stacklet_policy.policy2.version
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttrSet("stacklet_policy_collection_item.test", "collection_uuid"),
-				resource.TestCheckResourceAttrSet("stacklet_policy_collection_item.test", "policy_uuid"),
-				resource.TestCheckResourceAttrSet("stacklet_policy_collection_item.test", "policy_version"),
+				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "collection_uuid"),
+				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "policy_uuid"),
+				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "policy_version"),
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccPolicyCollectionItemResource", steps)
+	runRecordedAccTest(t, "TestAccPolicyCollectionMappingResource", steps)
 }

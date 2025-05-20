@@ -4,8 +4,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// PolicyCollectionItemResource is the model for a policy collection item resource.
-type PolicyCollectionItemResource struct {
+// PolicyCollectionMappingResource is the model for a policy collection mapping resource.
+type PolicyCollectionMappingResource struct {
 	ID             types.String `tfsdk:"id"`
 	CollectionUUID types.String `tfsdk:"collection_uuid"`
 	PolicyUUID     types.String `tfsdk:"policy_uuid"`

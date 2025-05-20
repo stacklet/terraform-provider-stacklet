@@ -8,7 +8,7 @@ var RESOURCES = []func() resource.Resource{
 	NewAccountResource,
 	NewAccountGroupResource,
 	NewAccountGroupMappingResource,
-	NewPolicyCollectionItemResource,
+	NewPolicyCollectionMappingResource,
 	NewPolicyCollectionResource,
 	NewBindingResource,
 	NewAccountDiscoveryResource,

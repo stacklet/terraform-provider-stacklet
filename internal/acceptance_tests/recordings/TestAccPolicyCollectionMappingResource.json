@@ -1,12 +1,12 @@
 {
-  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}:{\"input\":{\"description\":\"Test policy collection\",\"name\":\"test-collection-items\",\"provider\":\"AWS\"}}": [
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}:{\"input\":{\"description\":\"Test policy collection\",\"name\":\"test-collection-mapping\",\"provider\":\"AWS\"}}": [
     {
       "request": {
         "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}",
         "variables": {
           "input": {
             "description": "Test policy collection",
-            "name": "test-collection-items",
+            "name": "test-collection-mapping",
             "provider": "AWS"
           }
         }
@@ -18,7 +18,7 @@
               "autoUpdate": false,
               "description": "Test policy collection",
               "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZDdkMTgxOC00NWE3LTQxYjgtOGVmMS1kODE2NWRiYzZlZDAiXQ==",
-              "name": "test-collection-items",
+              "name": "test-collection-mapping",
               "provider": "AWS",
               "repository": null,
               "system": false,
@@ -650,7 +650,7 @@
             "autoUpdate": false,
             "description": "Test policy collection",
             "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZDdkMTgxOC00NWE3LTQxYjgtOGVmMS1kODE2NWRiYzZlZDAiXQ==",
-            "name": "test-collection-items",
+            "name": "test-collection-mapping",
             "provider": "AWS",
             "repository": null,
             "system": false,
@@ -672,7 +672,7 @@
             "autoUpdate": false,
             "description": "Test policy collection",
             "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZDdkMTgxOC00NWE3LTQxYjgtOGVmMS1kODE2NWRiYzZlZDAiXQ==",
-            "name": "test-collection-items",
+            "name": "test-collection-mapping",
             "provider": "AWS",
             "repository": null,
             "system": false,
@@ -694,7 +694,7 @@
             "autoUpdate": false,
             "description": "Test policy collection",
             "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZDdkMTgxOC00NWE3LTQxYjgtOGVmMS1kODE2NWRiYzZlZDAiXQ==",
-            "name": "test-collection-items",
+            "name": "test-collection-mapping",
             "provider": "AWS",
             "repository": null,
             "system": false,
