@@ -3,9 +3,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
-	"net/http/httputil"
 	"os"
 	"path"
 
@@ -182,15 +180,7 @@ type authTransport struct {
 // RoundTrip implements the http.RoundTripper interface.
 func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.Header.Set("Authorization", t.apiKey)
-	reqb, _ := httputil.DumpRequestOut(req, true)
-	log.Printf("SENDING:\n%s\n", string(reqb))
-
-	resp, respErr := t.base.RoundTrip(req)
-	if resp != nil {
-		respb, _ := httputil.DumpResponse(resp, true)
-		log.Printf("RECEIVED:\n%s\n", string(respb))
-	}
-	return resp, respErr
+	return t.base.RoundTrip(req)
 }
 
 type credentials struct {
