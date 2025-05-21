@@ -5,11 +5,12 @@ import (
 )
 
 var RESOURCES = []func() resource.Resource{
-	NewAccountResource,
-	NewAccountGroupResource,
+	NewAccountDiscoveryGCPResource,
 	NewAccountGroupMappingResource,
+	NewAccountGroupResource,
+	NewAccountResource,
+	NewBindingResource,
 	NewPolicyCollectionMappingResource,
 	NewPolicyCollectionResource,
-	NewBindingResource,
 	NewRepositoryResource,
 }
