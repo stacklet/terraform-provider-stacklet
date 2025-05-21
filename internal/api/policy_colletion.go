@@ -34,11 +34,11 @@ func (i PolicyCollectionCreateInput) GetGraphQLType() string {
 }
 
 type PolicyCollectionUpdateInput struct {
-	UUID        string         `json:"uuid"`
-	Name        *string        `json:"name"`
-	Provider    *CloudProvider `json:"provider"`
-	Description *string        `json:"description"`
-	AutoUpdate  *bool          `json:"autoUpdate"`
+	UUID        string        `json:"uuid"`
+	Name        string        `json:"name"`
+	Provider    CloudProvider `json:"provider"`
+	Description *string       `json:"description"`
+	AutoUpdate  *bool         `json:"autoUpdate"`
 }
 
 func (i PolicyCollectionUpdateInput) GetGraphQLType() string {

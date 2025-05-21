@@ -175,19 +175,15 @@ func (r *policyCollectionResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	var provider *api.CloudProvider
-	if !plan.CloudProvider.IsNull() {
-		providerString, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError("Invalid Provider", err.Error())
-			return
-		}
-		provider = &providerString
+	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid Provider", err.Error())
+		return
 	}
 
 	input := api.PolicyCollectionUpdateInput{
 		UUID:        plan.UUID.ValueString(),
-		Name:        plan.Name.ValueStringPointer(),
+		Name:        plan.Name.ValueString(),
 		Provider:    provider,
 		Description: plan.Description.ValueStringPointer(),
 		AutoUpdate:  plan.AutoUpdate.ValueBoolPointer(),
