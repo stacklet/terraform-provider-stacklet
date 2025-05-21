@@ -7,20 +7,24 @@ import (
 
 // API provides access to the GraphQL API.
 type API struct {
-	Account             accountAPI
-	AccountGroup        accountGroupAPI
-	AccountGroupMapping accountGroupMappingAPI
-	Policy              policyAPI
-	Repository          repositoryAPI
+	Account                 accountAPI
+	AccountGroup            accountGroupAPI
+	AccountGroupMapping     accountGroupMappingAPI
+	Binding                 bindingAPI
+	Policy                  policyAPI
+	PolicyCollectionMapping policyCollectionMappingAPI
+	Repository              repositoryAPI
 }
 
 // New creates an API wrapper.
 func New(c *graphql.Client) *API {
 	return &API{
-		Account:             accountAPI{c},
-		AccountGroup:        accountGroupAPI{c},
-		AccountGroupMapping: accountGroupMappingAPI{c},
-		Policy:              policyAPI{c},
-		Repository:          repositoryAPI{c},
+		Account:                 accountAPI{c},
+		AccountGroup:            accountGroupAPI{c},
+		AccountGroupMapping:     accountGroupMappingAPI{c},
+		Binding:                 bindingAPI{c},
+		Policy:                  policyAPI{c},
+		PolicyCollectionMapping: policyCollectionMappingAPI{c},
+		Repository:              repositoryAPI{c},
 	}
 }

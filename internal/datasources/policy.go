@@ -47,7 +47,7 @@ func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 				Description: "The name of the policy, alternative to the UUID.",
 				Optional:    true,
 			},
-			"version": schema.Int64Attribute{
+			"version": schema.Int32Attribute{
 				Description: "The version policy. If not specified, the latest is used.",
 				Optional:    true,
 			},
@@ -124,7 +124,7 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		resp.Diagnostics.AddError("Invalid configuration", "Only one of UUID and name must be set")
 	}
 
-	policy, err := d.api.Policy.Read(ctx, data.UUID.ValueString(), data.Name.ValueString(), int(data.Version.ValueInt64()))
+	policy, err := d.api.Policy.Read(ctx, data.UUID.ValueString(), data.Name.ValueString(), int(data.Version.ValueInt32()))
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
@@ -140,7 +140,7 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	data.Name = types.StringValue(policy.Name)
 	data.Description = tftypes.NullableString(policy.Description)
 	data.CloudProvider = types.StringValue(policy.Provider)
-	data.Version = types.Int64Value(int64(policy.Version))
+	data.Version = types.Int32Value(int32(policy.Version))
 	category, diag := types.ListValueFrom(ctx, types.StringType, policy.Category)
 	if diag.HasError() {
 		resp.Diagnostics.Append(diag...)

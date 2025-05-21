@@ -4,7 +4,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// NullableString converts a types.String to a string pointer that can be null.
+// NullableString converts a types.String to a string pointer which can be null.
 func NullableString(s types.String) *string {
 	if s.IsNull() {
 		return nil
@@ -14,7 +14,17 @@ func NullableString(s types.String) *string {
 	return &str
 }
 
-// StringsList concerts a types.List ta list of strings.
+// NullableBool converts a types.Bool to a bool pointer which can be null.
+func NullableBool(b types.Bool) *bool {
+	if b.IsNull() {
+		return nil
+	}
+
+	bv := b.ValueBool()
+	return &bv
+}
+
+// StringsList concerts a types.List to a list of strings.
 func StringsList(l types.List) []string {
 	if l.IsNull() || l.IsUnknown() {
 		return nil

@@ -9,15 +9,18 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"sync"
 	"testing"
 )
 
 type recordedTransport struct {
 	recordings map[string][]recording
-	mode       string // "record" or "replay"
-	t          *testing.T
-	testName   string
-	wrapped    http.RoundTripper
+	// lock around modifications of recordings
+	recordingsLock sync.Mutex
+	mode           string // "record" or "replay"
+	t              *testing.T
+	testName       string
+	wrapped        http.RoundTripper
 }
 
 type recording struct {
@@ -153,10 +156,12 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 		}
 
 		// Record the interaction
+		rt.recordingsLock.Lock()
 		rt.recordings[key] = append(rt.recordings[key], recording{
 			Request:  gqlReq,
 			Response: gqlResp,
 		})
+		rt.recordingsLock.Unlock()
 
 		// Return the response with a new body reader
 		resp.Body = io.NopCloser(bytes.NewReader(respBody))
@@ -165,6 +170,7 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 
 	// Replay mode
 	rt.t.Logf("Attempting to replay request with query: %s - %v", gqlReq.Query, gqlReq.Variables)
+	rt.recordingsLock.Lock()
 	recs, ok := rt.recordings[key]
 	if !ok || len(recs) == 0 {
 		return nil, fmt.Errorf("no recording found for query: %s", key)
@@ -174,6 +180,7 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 	// Use the first recording and rotate
 	rec := recs[0]
 	rt.recordings[key] = recs[1:]
+	rt.recordingsLock.Unlock()
 
 	// Check that the recording matches
 	if gqlReq.Query != rec.Request.Query || !reflect.DeepEqual(gqlReq.Variables, rec.Request.Variables) {

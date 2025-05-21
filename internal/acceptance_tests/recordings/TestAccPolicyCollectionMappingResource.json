@@ -1,0 +1,829 @@
+{
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}:{\"input\":{\"description\":\"Test policy collection\",\"name\":\"test-collection-mapping\",\"provider\":\"AWS\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,repository}}}",
+        "variables": {
+          "input": {
+            "description": "Test policy collection",
+            "name": "test-collection-mapping",
+            "provider": "AWS"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addPolicyCollection": {
+            "collection": {
+              "autoUpdate": false,
+              "description": "Test policy collection",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZDdkMTgxOC00NWE3LTQxYjgtOGVmMS1kODE2NWRiYzZlZDAiXQ==",
+              "name": "test-collection-mapping",
+              "provider": "AWS",
+              "repository": null,
+              "system": false,
+              "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}",
+        "variables": {
+          "input": {
+            "ids": [
+              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removePolicyCollectionMappings": {
+            "removed": [
+              {
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}",
+        "variables": {
+          "input": {
+            "ids": [
+              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removePolicyCollectionMappings": {
+            "removed": [
+              {
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0\",\"policyUUID\":\"0ee44f79-0c23-4b46-9d76-3d4bdfd32392\",\"policyVersion\":1}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}",
+        "variables": {
+          "input": {
+            "mappings": [
+              {
+                "collectionUUID": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0",
+                "policyUUID": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+                "policyVersion": 1
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "upsertPolicyCollectionMappings": {
+            "mappings": [
+              {
+                "collection": {
+                  "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+                },
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
+                "policy": {
+                  "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+                  "version": 1
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0\",\"policyUUID\":\"382c1cbd-9942-4ec4-ae48-ae0c303188eb\",\"policyVersion\":1}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}",
+        "variables": {
+          "input": {
+            "mappings": [
+              {
+                "collectionUUID": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0",
+                "policyUUID": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+                "policyVersion": 1
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "upsertPolicyCollectionMappings": {
+            "mappings": [
+              {
+                "collection": {
+                  "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+                },
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                "policy": {
+                  "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+                  "version": 1
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
+        "variables": {
+          "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+        }
+      },
+      "response": {
+        "data": {
+          "removePolicyCollection": {
+            "collection": {
+              "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}:{\"name\":\"cost-aws:aws-rds-instance-unused-inform\",\"uuid\":\"\",\"version\":0}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-rds-instance-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify RDS instances with no recent activity. These RDS instances can\nbe investigated and if they are no longer needed should be deleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMzgyYzFjYmQtOTk0Mi00ZWM0LWFlNDgtYWUwYzMwMzE4OGViIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-rds-instance-unused-inform",
+            "path": "aws/aws-rds-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.rds",
+            "source": "{\"description\": \"Identify RDS instances with no recent activity.\\n\", \"filters\": [{\"key\": \"InstanceCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.6\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify RDS instances with no recent activity. These RDS instances can\\nbe investigated and if they are no longer needed should be deleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\", \"description\": \"Review and stop RDS database instances that are temporarily or no\\nlonger in use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\", \"description\": \"Stops RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\", \"description\": \"Deletes RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-instance-unused-inform\", \"resource\": \"aws.rds\"}",
+            "sourceYAML": "policies:\n- name: aws-rds-instance-unused-inform\n  resource: aws.rds\n  description: Identify RDS instances with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.6\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify RDS instances with no recent activity. These RDS instances\n      can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and stop RDS database instances that are temporarily or\n          no longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Stops RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: InstanceCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-rds-instance-unused-inform",
+            "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-rds-instance-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify RDS instances with no recent activity. These RDS instances can\nbe investigated and if they are no longer needed should be deleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMzgyYzFjYmQtOTk0Mi00ZWM0LWFlNDgtYWUwYzMwMzE4OGViIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-rds-instance-unused-inform",
+            "path": "aws/aws-rds-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.rds",
+            "source": "{\"description\": \"Identify RDS instances with no recent activity.\\n\", \"filters\": [{\"key\": \"InstanceCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.6\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify RDS instances with no recent activity. These RDS instances can\\nbe investigated and if they are no longer needed should be deleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\", \"description\": \"Review and stop RDS database instances that are temporarily or no\\nlonger in use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\", \"description\": \"Stops RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\", \"description\": \"Deletes RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-instance-unused-inform\", \"resource\": \"aws.rds\"}",
+            "sourceYAML": "policies:\n- name: aws-rds-instance-unused-inform\n  resource: aws.rds\n  description: Identify RDS instances with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.6\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify RDS instances with no recent activity. These RDS instances\n      can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and stop RDS database instances that are temporarily or\n          no longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Stops RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: InstanceCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-rds-instance-unused-inform",
+            "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-rds-instance-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify RDS instances with no recent activity. These RDS instances can\nbe investigated and if they are no longer needed should be deleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMzgyYzFjYmQtOTk0Mi00ZWM0LWFlNDgtYWUwYzMwMzE4OGViIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-rds-instance-unused-inform",
+            "path": "aws/aws-rds-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.rds",
+            "source": "{\"description\": \"Identify RDS instances with no recent activity.\\n\", \"filters\": [{\"key\": \"InstanceCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.6\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify RDS instances with no recent activity. These RDS instances can\\nbe investigated and if they are no longer needed should be deleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\", \"description\": \"Review and stop RDS database instances that are temporarily or no\\nlonger in use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\", \"description\": \"Stops RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\", \"description\": \"Deletes RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-instance-unused-inform\", \"resource\": \"aws.rds\"}",
+            "sourceYAML": "policies:\n- name: aws-rds-instance-unused-inform\n  resource: aws.rds\n  description: Identify RDS instances with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.6\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify RDS instances with no recent activity. These RDS instances\n      can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and stop RDS database instances that are temporarily or\n          no longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Stops RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: InstanceCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-rds-instance-unused-inform",
+            "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-rds-instance-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify RDS instances with no recent activity. These RDS instances can\nbe investigated and if they are no longer needed should be deleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMzgyYzFjYmQtOTk0Mi00ZWM0LWFlNDgtYWUwYzMwMzE4OGViIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-rds-instance-unused-inform",
+            "path": "aws/aws-rds-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.rds",
+            "source": "{\"description\": \"Identify RDS instances with no recent activity.\\n\", \"filters\": [{\"key\": \"InstanceCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.6\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify RDS instances with no recent activity. These RDS instances can\\nbe investigated and if they are no longer needed should be deleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\", \"description\": \"Review and stop RDS database instances that are temporarily or no\\nlonger in use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\", \"description\": \"Stops RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\", \"description\": \"Deletes RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-instance-unused-inform\", \"resource\": \"aws.rds\"}",
+            "sourceYAML": "policies:\n- name: aws-rds-instance-unused-inform\n  resource: aws.rds\n  description: Identify RDS instances with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.6\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify RDS instances with no recent activity. These RDS instances\n      can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and stop RDS database instances that are temporarily or\n          no longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Stops RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: InstanceCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-rds-instance-unused-inform",
+            "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-rds-instance-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify RDS instances with no recent activity. These RDS instances can\nbe investigated and if they are no longer needed should be deleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMzgyYzFjYmQtOTk0Mi00ZWM0LWFlNDgtYWUwYzMwMzE4OGViIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-rds-instance-unused-inform",
+            "path": "aws/aws-rds-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.rds",
+            "source": "{\"description\": \"Identify RDS instances with no recent activity.\\n\", \"filters\": [{\"key\": \"InstanceCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.6\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify RDS instances with no recent activity. These RDS instances can\\nbe investigated and if they are no longer needed should be deleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\", \"description\": \"Review and stop RDS database instances that are temporarily or no\\nlonger in use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\", \"description\": \"Stops RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\", \"description\": \"Deletes RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-instance-unused-inform\", \"resource\": \"aws.rds\"}",
+            "sourceYAML": "policies:\n- name: aws-rds-instance-unused-inform\n  resource: aws.rds\n  description: Identify RDS instances with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.6\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify RDS instances with no recent activity. These RDS instances\n      can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and stop RDS database instances that are temporarily or\n          no longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Stops RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: InstanceCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-rds-instance-unused-inform",
+            "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-rds-instance-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify RDS instances with no recent activity. These RDS instances can\nbe investigated and if they are no longer needed should be deleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMzgyYzFjYmQtOTk0Mi00ZWM0LWFlNDgtYWUwYzMwMzE4OGViIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-rds-instance-unused-inform",
+            "path": "aws/aws-rds-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.rds",
+            "source": "{\"description\": \"Identify RDS instances with no recent activity.\\n\", \"filters\": [{\"key\": \"InstanceCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.6\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify RDS instances with no recent activity. These RDS instances can\\nbe investigated and if they are no longer needed should be deleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\", \"description\": \"Review and stop RDS database instances that are temporarily or no\\nlonger in use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\", \"description\": \"Stops RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\", \"description\": \"Deletes RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-instance-unused-inform\", \"resource\": \"aws.rds\"}",
+            "sourceYAML": "policies:\n- name: aws-rds-instance-unused-inform\n  resource: aws.rds\n  description: Identify RDS instances with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.6\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify RDS instances with no recent activity. These RDS instances\n      can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and stop RDS database instances that are temporarily or\n          no longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Stops RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: InstanceCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-rds-instance-unused-inform",
+            "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-rds-instance-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify RDS instances with no recent activity. These RDS instances can\nbe investigated and if they are no longer needed should be deleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMzgyYzFjYmQtOTk0Mi00ZWM0LWFlNDgtYWUwYzMwMzE4OGViIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-rds-instance-unused-inform",
+            "path": "aws/aws-rds-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.rds",
+            "source": "{\"description\": \"Identify RDS instances with no recent activity.\\n\", \"filters\": [{\"key\": \"InstanceCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.6\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify RDS instances with no recent activity. These RDS instances can\\nbe investigated and if they are no longer needed should be deleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\", \"description\": \"Review and stop RDS database instances that are temporarily or no\\nlonger in use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\", \"description\": \"Stops RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\", \"description\": \"Deletes RDS database instances identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-instance-unused-inform\", \"resource\": \"aws.rds\"}",
+            "sourceYAML": "policies:\n- name: aws-rds-instance-unused-inform\n  resource: aws.rds\n  description: Identify RDS instances with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.6\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify RDS instances with no recent activity. These RDS instances\n      can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and stop RDS database instances that are temporarily or\n          no longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Stops RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-stop\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes RDS database instances identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/rds.html#aws-rds-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: InstanceCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-rds-instance-unused-inform",
+            "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+            "version": 1
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}:{\"name\":\"cost-aws:aws-redshift-unused-inform\",\"uuid\":\"\",\"version\":0}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-redshift-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify Redshift clusters with no recent activity. These Redshift\nclusters can be investigated and if they are no longer needed should be\ndeleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMGVlNDRmNzktMGMyMy00YjQ2LTlkNzYtM2Q0YmRmZDMyMzkyIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-redshift-unused-inform",
+            "path": "aws/aws-redshift-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.redshift",
+            "source": "{\"description\": \"Identify Redshift clusters with no recent activity.\\n\", \"filters\": [{\"key\": \"ClusterCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.8\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify Redshift clusters with no recent activity. These Redshift\\nclusters can be investigated and if they are no longer needed should be\\ndeleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\", \"description\": \"Review and pause Redshift clusters that are temporarily or no longer\\nin use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\", \"description\": \"Pauses Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\", \"description\": \"Deletes Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-redshift-unused-inform\", \"resource\": \"aws.redshift\"}",
+            "sourceYAML": "policies:\n- name: aws-redshift-unused-inform\n  resource: aws.redshift\n  description: Identify Redshift clusters with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.8\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify Redshift clusters with no recent activity. These Redshift\n      clusters can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and pause Redshift clusters that are temporarily or no\n          longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Pauses Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: ClusterCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-redshift-unused-inform",
+            "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-redshift-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify Redshift clusters with no recent activity. These Redshift\nclusters can be investigated and if they are no longer needed should be\ndeleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMGVlNDRmNzktMGMyMy00YjQ2LTlkNzYtM2Q0YmRmZDMyMzkyIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-redshift-unused-inform",
+            "path": "aws/aws-redshift-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.redshift",
+            "source": "{\"description\": \"Identify Redshift clusters with no recent activity.\\n\", \"filters\": [{\"key\": \"ClusterCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.8\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify Redshift clusters with no recent activity. These Redshift\\nclusters can be investigated and if they are no longer needed should be\\ndeleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\", \"description\": \"Review and pause Redshift clusters that are temporarily or no longer\\nin use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\", \"description\": \"Pauses Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\", \"description\": \"Deletes Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-redshift-unused-inform\", \"resource\": \"aws.redshift\"}",
+            "sourceYAML": "policies:\n- name: aws-redshift-unused-inform\n  resource: aws.redshift\n  description: Identify Redshift clusters with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.8\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify Redshift clusters with no recent activity. These Redshift\n      clusters can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and pause Redshift clusters that are temporarily or no\n          longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Pauses Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: ClusterCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-redshift-unused-inform",
+            "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-redshift-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify Redshift clusters with no recent activity. These Redshift\nclusters can be investigated and if they are no longer needed should be\ndeleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMGVlNDRmNzktMGMyMy00YjQ2LTlkNzYtM2Q0YmRmZDMyMzkyIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-redshift-unused-inform",
+            "path": "aws/aws-redshift-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.redshift",
+            "source": "{\"description\": \"Identify Redshift clusters with no recent activity.\\n\", \"filters\": [{\"key\": \"ClusterCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.8\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify Redshift clusters with no recent activity. These Redshift\\nclusters can be investigated and if they are no longer needed should be\\ndeleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\", \"description\": \"Review and pause Redshift clusters that are temporarily or no longer\\nin use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\", \"description\": \"Pauses Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\", \"description\": \"Deletes Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-redshift-unused-inform\", \"resource\": \"aws.redshift\"}",
+            "sourceYAML": "policies:\n- name: aws-redshift-unused-inform\n  resource: aws.redshift\n  description: Identify Redshift clusters with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.8\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify Redshift clusters with no recent activity. These Redshift\n      clusters can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and pause Redshift clusters that are temporarily or no\n          longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Pauses Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: ClusterCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-redshift-unused-inform",
+            "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-redshift-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify Redshift clusters with no recent activity. These Redshift\nclusters can be investigated and if they are no longer needed should be\ndeleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMGVlNDRmNzktMGMyMy00YjQ2LTlkNzYtM2Q0YmRmZDMyMzkyIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-redshift-unused-inform",
+            "path": "aws/aws-redshift-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.redshift",
+            "source": "{\"description\": \"Identify Redshift clusters with no recent activity.\\n\", \"filters\": [{\"key\": \"ClusterCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.8\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify Redshift clusters with no recent activity. These Redshift\\nclusters can be investigated and if they are no longer needed should be\\ndeleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\", \"description\": \"Review and pause Redshift clusters that are temporarily or no longer\\nin use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\", \"description\": \"Pauses Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\", \"description\": \"Deletes Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-redshift-unused-inform\", \"resource\": \"aws.redshift\"}",
+            "sourceYAML": "policies:\n- name: aws-redshift-unused-inform\n  resource: aws.redshift\n  description: Identify Redshift clusters with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.8\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify Redshift clusters with no recent activity. These Redshift\n      clusters can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and pause Redshift clusters that are temporarily or no\n          longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Pauses Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: ClusterCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-redshift-unused-inform",
+            "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-redshift-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify Redshift clusters with no recent activity. These Redshift\nclusters can be investigated and if they are no longer needed should be\ndeleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMGVlNDRmNzktMGMyMy00YjQ2LTlkNzYtM2Q0YmRmZDMyMzkyIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-redshift-unused-inform",
+            "path": "aws/aws-redshift-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.redshift",
+            "source": "{\"description\": \"Identify Redshift clusters with no recent activity.\\n\", \"filters\": [{\"key\": \"ClusterCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.8\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify Redshift clusters with no recent activity. These Redshift\\nclusters can be investigated and if they are no longer needed should be\\ndeleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\", \"description\": \"Review and pause Redshift clusters that are temporarily or no longer\\nin use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\", \"description\": \"Pauses Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\", \"description\": \"Deletes Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-redshift-unused-inform\", \"resource\": \"aws.redshift\"}",
+            "sourceYAML": "policies:\n- name: aws-redshift-unused-inform\n  resource: aws.redshift\n  description: Identify Redshift clusters with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.8\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify Redshift clusters with no recent activity. These Redshift\n      clusters can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and pause Redshift clusters that are temporarily or no\n          longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Pauses Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: ClusterCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-redshift-unused-inform",
+            "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-redshift-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify Redshift clusters with no recent activity. These Redshift\nclusters can be investigated and if they are no longer needed should be\ndeleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMGVlNDRmNzktMGMyMy00YjQ2LTlkNzYtM2Q0YmRmZDMyMzkyIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-redshift-unused-inform",
+            "path": "aws/aws-redshift-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.redshift",
+            "source": "{\"description\": \"Identify Redshift clusters with no recent activity.\\n\", \"filters\": [{\"key\": \"ClusterCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.8\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify Redshift clusters with no recent activity. These Redshift\\nclusters can be investigated and if they are no longer needed should be\\ndeleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\", \"description\": \"Review and pause Redshift clusters that are temporarily or no longer\\nin use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\", \"description\": \"Pauses Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\", \"description\": \"Deletes Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-redshift-unused-inform\", \"resource\": \"aws.redshift\"}",
+            "sourceYAML": "policies:\n- name: aws-redshift-unused-inform\n  resource: aws.redshift\n  description: Identify Redshift clusters with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.8\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify Redshift clusters with no recent activity. These Redshift\n      clusters can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and pause Redshift clusters that are temporarily or no\n          longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Pauses Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: ClusterCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-redshift-unused-inform",
+            "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+            "version": 1
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
+        "variables": {
+          "name": "cost-aws:aws-redshift-unused-inform",
+          "uuid": "",
+          "version": 0
+        }
+      },
+      "response": {
+        "data": {
+          "policy": {
+            "category": [
+              "security/data-management/unused",
+              "cost/efficiency/business-value"
+            ],
+            "description": "Identify Redshift clusters with no recent activity. These Redshift\nclusters can be investigated and if they are no longer needed should be\ndeleted.\n",
+            "id": "WyJwb2xpY3kiLCAiMGVlNDRmNzktMGMyMy00YjQ2LTlkNzYtM2Q0YmRmZDMyMzkyIiwgIjEiXQ==",
+            "mode": "pull",
+            "name": "cost-aws:aws-redshift-unused-inform",
+            "path": "aws/aws-redshift-unused.yaml",
+            "provider": "AWS",
+            "resourceType": "aws.redshift",
+            "source": "{\"description\": \"Identify Redshift clusters with no recent activity.\\n\", \"filters\": [{\"key\": \"ClusterCreateTime\", \"op\": \"greater-than\", \"type\": \"value\", \"value\": 30, \"value_type\": \"age\"}, {\"days\": 14, \"missing-value\": 0, \"name\": \"DatabaseConnections\", \"op\": \"equal\", \"statistics\": \"Sum\", \"type\": \"metrics\", \"value\": 0}], \"metadata\": {\"autoremediable\": true, \"category\": [\"security/data-management/unused\", \"cost/efficiency/business-value\"], \"classification\": [{\"pillar\": \"security\", \"scope\": \"unused\", \"segment\": \"attack-surface\", \"severity\": \"high\"}, {\"pillar\": \"finops\", \"scope\": \"business-value\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.3.8\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify Redshift clusters with no recent activity. These Redshift\\nclusters can be investigated and if they are no longer needed should be\\ndeleted.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\", \"description\": \"Review and pause Redshift clusters that are temporarily or no longer\\nin use.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\", \"description\": \"Pauses Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\", \"description\": \"Deletes Redshift clusters identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-redshift-unused-inform\", \"resource\": \"aws.redshift\"}",
+            "sourceYAML": "policies:\n- name: aws-redshift-unused-inform\n  resource: aws.redshift\n  description: Identify Redshift clusters with no recent activity.\n  metadata:\n    autoremediable: true\n    category:\n    - security/data-management/unused\n    - cost/efficiency/business-value\n    classification:\n    - pillar: security\n      scope: unused\n      segment: attack-surface\n      severity: high\n    - pillar: finops\n      scope: business-value\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.3.8\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify Redshift clusters with no recent activity. These Redshift\n      clusters can be investigated and if they are no longer needed should be deleted.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and pause Redshift clusters that are temporarily or no\n          longer in use.\n        type: link\n        content: https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-operations.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Pauses Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-pause\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes Redshift clusters identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/redshift.html#aws-redshift-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - type: value\n    key: ClusterCreateTime\n    op: greater-than\n    value: 30\n    value_type: age\n  - name: DatabaseConnections\n    type: metrics\n    days: 14\n    missing-value: 0\n    op: equal\n    statistics: Sum\n    value: 0\n",
+            "system": true,
+            "unqualifiedName": "aws-redshift-unused-inform",
+            "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+            "version": 1
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}:{\"uuid\":\"fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "variables": {
+          "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZDdkMTgxOC00NWE3LTQxYjgtOGVmMS1kODE2NWRiYzZlZDAiXQ==",
+            "name": "test-collection-mapping",
+            "provider": "AWS",
+            "repository": null,
+            "system": false,
+            "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "variables": {
+          "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZDdkMTgxOC00NWE3LTQxYjgtOGVmMS1kODE2NWRiYzZlZDAiXQ==",
+            "name": "test-collection-mapping",
+            "provider": "AWS",
+            "repository": null,
+            "system": false,
+            "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){id,uuid,name,description,provider,autoUpdate,system,repository}}",
+        "variables": {
+          "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZDdkMTgxOC00NWE3LTQxYjgtOGVmMS1kODE2NWRiYzZlZDAiXQ==",
+            "name": "test-collection-mapping",
+            "provider": "AWS",
+            "repository": null,
+            "system": false,
+            "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}:{\"uuid\":\"fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}",
+        "variables": {
+          "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policyMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "collection": {
+                      "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+                    },
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "policy": {
+                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+                      "version": 1
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}",
+        "variables": {
+          "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policyMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "collection": {
+                      "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+                    },
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "policy": {
+                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+                      "version": 1
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}",
+        "variables": {
+          "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policyMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "collection": {
+                      "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+                    },
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "policy": {
+                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+                      "version": 1
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}",
+        "variables": {
+          "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policyMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "collection": {
+                      "uuid": "fd7d1818-45a7-41b8-8ef1-d8165dbc6ed0"
+                    },
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImZkN2QxODE4LTQ1YTctNDFiOC04ZWYxLWQ4MTY1ZGJjNmVkMCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
+                    "policy": {
+                      "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+                      "version": 1
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

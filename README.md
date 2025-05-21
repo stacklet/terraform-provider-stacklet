@@ -144,9 +144,10 @@ resource "stacklet_account_group_mapping" "one" {
   cloud_provider = data.stacklet_account.one.cloud_provider
 }
 
-resource "stacklet_policy_collection_item" "one" {
+resource "stacklet_policy_collection_mapping" "one" {
   collection_uuid = stacklet_policy_collection.example.uuid
   policy_uuid     = data.stacklet_policy.one.uuid
+  policy_version  = 2
 }
 
 resource "stacklet_account" "two" {
