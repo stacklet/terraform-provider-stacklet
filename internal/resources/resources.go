@@ -11,6 +11,5 @@ var RESOURCES = []func() resource.Resource{
 	NewPolicyCollectionMappingResource,
 	NewPolicyCollectionResource,
 	NewBindingResource,
-	NewAccountDiscoveryResource,
 	NewRepositoryResource,
 }

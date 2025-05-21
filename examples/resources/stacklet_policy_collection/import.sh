@@ -1,0 +1,1 @@
+terraform import stacklet_account.example $collection_uuid

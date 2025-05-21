@@ -6,6 +6,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/schemavalidate"
 )
 
 var (
@@ -58,6 +60,9 @@ func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 			"cloud_provider": schema.StringAttribute{
 				Description: "The cloud provider for the policy (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Computed:    true,
+				Validators: []validator.String{
+					schemavalidate.OneOfCloudProviders(),
+				},
 			},
 			"category": schema.ListAttribute{
 				ElementType: types.StringType,
