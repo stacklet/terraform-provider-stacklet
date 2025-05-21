@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/hasura/go-graphql-client"
 )
@@ -18,20 +19,52 @@ type Repository struct {
 	Auth struct {
 		AuthUser         *string
 		HasAuthToken     bool
+		SSHPublicKey     *string
 		HasSshPrivateKey bool
 		HasSshPassphrase bool
 	}
 }
 
-type Problem struct {
-	Kind    string `graphql:"__typename"`
-	Message string
+// RepositoryConfigAuthInput exists to allow us to set only the fields we want to
+// change in this type, which matches the expectations of the API and is much more
+// clear to casual inspection than exacting use of `omitempty` struct tags.
+type RepositoryConfigAuthInput struct {
+	m map[string]any
+}
+
+func NewRepositoryConfigAuthInput() *RepositoryConfigAuthInput {
+	return &RepositoryConfigAuthInput{m: map[string]any{}}
+}
+
+func (i *RepositoryConfigAuthInput) SetAuthUser(v *string) {
+	i.m["authUser"] = v
+}
+
+func (i *RepositoryConfigAuthInput) SetAuthToken(v *string) {
+	i.m["authToken"] = v
+}
+
+func (i *RepositoryConfigAuthInput) SetSSHPrivateKey(v *string) {
+	i.m["sshPrivateKey"] = v
+}
+
+func (i *RepositoryConfigAuthInput) SetSSHPassphrase(v *string) {
+	i.m["sshPassphrase"] = v
+}
+
+func (i *RepositoryConfigAuthInput) MarshalJSON() ([]byte, error) {
+	return json.Marshal(i.m)
+}
+
+func (i *RepositoryConfigAuthInput) GetGraphQLType() string {
+	return "RepositoryConfigAuthInput"
 }
 
 type RepositoryCreateInput struct {
-	URL         string  `json:"url"`
-	Name        string  `json:"name"`
-	Description *string `json:"description,omitempty"`
+	URL         string                     `json:"url"`
+	Name        string                     `json:"name"`
+	Description *string                    `json:"description,omitempty"`
+	Auth        *RepositoryConfigAuthInput `json:"auth,omitempty"`
 }
 
 func (i RepositoryCreateInput) GetGraphQLType() string {
@@ -39,9 +72,10 @@ func (i RepositoryCreateInput) GetGraphQLType() string {
 }
 
 type RepositoryUpdateInput struct {
-	UUID        string  `json:"uuid"`
-	Name        string  `json:"name"`
-	Description *string `json:"description"`
+	UUID        string                     `json:"uuid"`
+	Name        string                     `json:"name"`
+	Description *string                    `json:"description"`
+	Auth        *RepositoryConfigAuthInput `json:"auth,omitempty"`
 }
 
 func (i RepositoryUpdateInput) GetGraphQLType() string {

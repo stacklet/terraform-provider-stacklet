@@ -1,10 +1,16 @@
 {
-  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"description\":\"Test repository\",\"name\":\"test-repo-ds\",\"url\":\"https://github.com/test-org/test-repo\"}}": [
+  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":null,\"authUser\":\"\",\"sshPassphrase\":null,\"sshPrivateKey\":null},\"description\":\"Test repository\",\"name\":\"test-repo-ds\",\"url\":\"https://github.com/test-org/test-repo\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "input": {
+            "auth": {
+              "authToken": null,
+              "authUser": "",
+              "sshPassphrase": null,
+              "sshPrivateKey": null
+            },
             "description": "Test repository",
             "name": "test-repo-ds",
             "url": "https://github.com/test-org/test-repo"
@@ -20,29 +26,30 @@
                 "authUser": null,
                 "hasAuthToken": false,
                 "hasSshPassphrase": false,
-                "hasSshPrivateKey": false
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
               },
               "description": "Test repository",
-              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
               "name": "test-repo-ds",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
-              "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+              "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:RemoveRepositoryConfigInput!){removeRepositoryConfig(input: $input){problems{__typename,message}}}:{\"input\":{\"cascade\":false,\"uuid\":\"9be89753-dcbc-4932-9162-396f84395ab1\"}}": [
+  "mutation ($input:RemoveRepositoryConfigInput!){removeRepositoryConfig(input: $input){problems{__typename,message}}}:{\"input\":{\"cascade\":false,\"uuid\":\"47d23162-55a5-4531-9f8a-27812fba9473\"}}": [
     {
       "request": {
         "query": "mutation ($input:RemoveRepositoryConfigInput!){removeRepositoryConfig(input: $input){problems{__typename,message}}}",
         "variables": {
           "input": {
             "cascade": false,
-            "uuid": "9be89753-dcbc-4932-9162-396f84395ab1"
+            "uuid": "47d23162-55a5-4531-9f8a-27812fba9473"
           }
         }
       },
@@ -55,10 +62,10 @@
       }
     }
   ],
-  "query ($count:Int!$cursor:String!){repositoryConfigs(first: $count, after: $cursor){edges{node{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}:{\"count\":100,\"cursor\":\"\"}": [
+  "query ($count:Int!$cursor:String!){repositoryConfigs(first: $count, after: $cursor){edges{node{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}:{\"count\":100,\"cursor\":\"\"}": [
     {
       "request": {
-        "query": "query ($count:Int!$cursor:String!){repositoryConfigs(first: $count, after: $cursor){edges{node{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}",
+        "query": "query ($count:Int!$cursor:String!){repositoryConfigs(first: $count, after: $cursor){edges{node{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}",
         "variables": {
           "count": 100,
           "cursor": ""
@@ -74,7 +81,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI3MzZjZjY0Mi0xMGQ5LTQ4YmUtYmU1Ny00ODUxNGE1ZmZkNTAiXQ==",
@@ -91,7 +99,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Azure CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIxMjA4YWEzZi0wM2NkLTRmYWYtYmYyYy1iOGNjMTJlMDg1NjkiXQ==",
@@ -108,7 +117,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "GCP CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJjYzJlZmRiZS1lZWVkLTQ1MDAtODBlNi1kM2UwMDE2MjM2ZTIiXQ==",
@@ -125,7 +135,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS cost savings policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI1YWI1MTBlNC0yNDczLTQ3NGMtODUxNy03NmI5NTU3MDFkZTIiXQ==",
@@ -142,7 +153,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Azure cost savings policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIxYTExYzEyNy0yMTdlLTQzYjctODZiMS1iNTM4ZjE4NTA3MzIiXQ==",
@@ -159,7 +171,8 @@
                     "authUser": "iam",
                     "hasAuthToken": true,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI4OGM1MTNhOS1hYWFkLTRhMDItODFjYi1iYTQzNjM4MDI1NzgiXQ==",
@@ -176,7 +189,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS SOC2 policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJhMzg3ZjhjYy1mYWUyLTQ2YjYtYmJmOS1mYmRlZGUxZDQyYmEiXQ==",
@@ -193,7 +207,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": null,
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIzYzJkMTYyYi1mZmVmLTQ5ZDctODNlYy05YzBmMWEyMTI4MDEiXQ==",
@@ -210,7 +225,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "This is how you set a description.",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIwY2NmMGE2My03NWRlLTQ0ZDQtODg2My02NDgwOGVjMWJkMWMiXQ==",
@@ -227,15 +243,16 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Test repository",
-                  "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+                  "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
                   "name": "test-repo-ds",
                   "system": false,
                   "url": "https://github.com/test-org/test-repo",
-                  "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-                  "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+                  "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+                  "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
                 }
               }
             ],
@@ -250,7 +267,7 @@
     },
     {
       "request": {
-        "query": "query ($count:Int!$cursor:String!){repositoryConfigs(first: $count, after: $cursor){edges{node{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}",
+        "query": "query ($count:Int!$cursor:String!){repositoryConfigs(first: $count, after: $cursor){edges{node{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}",
         "variables": {
           "count": 100,
           "cursor": ""
@@ -266,7 +283,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI3MzZjZjY0Mi0xMGQ5LTQ4YmUtYmU1Ny00ODUxNGE1ZmZkNTAiXQ==",
@@ -283,7 +301,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Azure CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIxMjA4YWEzZi0wM2NkLTRmYWYtYmYyYy1iOGNjMTJlMDg1NjkiXQ==",
@@ -300,7 +319,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "GCP CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJjYzJlZmRiZS1lZWVkLTQ1MDAtODBlNi1kM2UwMDE2MjM2ZTIiXQ==",
@@ -317,7 +337,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS cost savings policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI1YWI1MTBlNC0yNDczLTQ3NGMtODUxNy03NmI5NTU3MDFkZTIiXQ==",
@@ -334,7 +355,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Azure cost savings policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIxYTExYzEyNy0yMTdlLTQzYjctODZiMS1iNTM4ZjE4NTA3MzIiXQ==",
@@ -351,7 +373,8 @@
                     "authUser": "iam",
                     "hasAuthToken": true,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI4OGM1MTNhOS1hYWFkLTRhMDItODFjYi1iYTQzNjM4MDI1NzgiXQ==",
@@ -368,7 +391,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS SOC2 policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJhMzg3ZjhjYy1mYWUyLTQ2YjYtYmJmOS1mYmRlZGUxZDQyYmEiXQ==",
@@ -385,7 +409,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": null,
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIzYzJkMTYyYi1mZmVmLTQ5ZDctODNlYy05YzBmMWEyMTI4MDEiXQ==",
@@ -402,7 +427,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "This is how you set a description.",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIwY2NmMGE2My03NWRlLTQ0ZDQtODg2My02NDgwOGVjMWJkMWMiXQ==",
@@ -419,15 +445,16 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Test repository",
-                  "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+                  "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
                   "name": "test-repo-ds",
                   "system": false,
                   "url": "https://github.com/test-org/test-repo",
-                  "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-                  "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+                  "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+                  "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
                 }
               }
             ],
@@ -442,7 +469,7 @@
     },
     {
       "request": {
-        "query": "query ($count:Int!$cursor:String!){repositoryConfigs(first: $count, after: $cursor){edges{node{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}",
+        "query": "query ($count:Int!$cursor:String!){repositoryConfigs(first: $count, after: $cursor){edges{node{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}",
         "variables": {
           "count": 100,
           "cursor": ""
@@ -458,7 +485,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI3MzZjZjY0Mi0xMGQ5LTQ4YmUtYmU1Ny00ODUxNGE1ZmZkNTAiXQ==",
@@ -475,7 +503,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Azure CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIxMjA4YWEzZi0wM2NkLTRmYWYtYmYyYy1iOGNjMTJlMDg1NjkiXQ==",
@@ -492,7 +521,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "GCP CIS policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJjYzJlZmRiZS1lZWVkLTQ1MDAtODBlNi1kM2UwMDE2MjM2ZTIiXQ==",
@@ -509,7 +539,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS cost savings policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI1YWI1MTBlNC0yNDczLTQ3NGMtODUxNy03NmI5NTU3MDFkZTIiXQ==",
@@ -526,7 +557,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Azure cost savings policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIxYTExYzEyNy0yMTdlLTQzYjctODZiMS1iNTM4ZjE4NTA3MzIiXQ==",
@@ -543,7 +575,8 @@
                     "authUser": "iam",
                     "hasAuthToken": true,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI4OGM1MTNhOS1hYWFkLTRhMDItODFjYi1iYTQzNjM4MDI1NzgiXQ==",
@@ -560,7 +593,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "AWS SOC2 policies and dashboards",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJhMzg3ZjhjYy1mYWUyLTQ2YjYtYmJmOS1mYmRlZGUxZDQyYmEiXQ==",
@@ -577,7 +611,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": null,
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIzYzJkMTYyYi1mZmVmLTQ5ZDctODNlYy05YzBmMWEyMTI4MDEiXQ==",
@@ -594,7 +629,8 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "This is how you set a description.",
                   "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICIwY2NmMGE2My03NWRlLTQ0ZDQtODg2My02NDgwOGVjMWJkMWMiXQ==",
@@ -611,15 +647,16 @@
                     "authUser": null,
                     "hasAuthToken": false,
                     "hasSshPassphrase": false,
-                    "hasSshPrivateKey": false
+                    "hasSshPrivateKey": false,
+                    "sshPublicKey": null
                   },
                   "description": "Test repository",
-                  "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+                  "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
                   "name": "test-repo-ds",
                   "system": false,
                   "url": "https://github.com/test-org/test-repo",
-                  "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-                  "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+                  "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+                  "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
                 }
               }
             ],
@@ -633,12 +670,12 @@
       }
     }
   ],
-  "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"uuid\":\"9be89753-dcbc-4932-9162-396f84395ab1\"}": [
+  "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"uuid\":\"47d23162-55a5-4531-9f8a-27812fba9473\"}": [
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
-          "uuid": "9be89753-dcbc-4932-9162-396f84395ab1"
+          "uuid": "47d23162-55a5-4531-9f8a-27812fba9473"
         }
       },
       "response": {
@@ -650,15 +687,16 @@
                 "authUser": null,
                 "hasAuthToken": false,
                 "hasSshPassphrase": false,
-                "hasSshPrivateKey": false
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
               },
               "description": "Test repository",
-              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
               "name": "test-repo-ds",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
-              "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+              "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
             }
           }
         }
@@ -666,9 +704,9 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
-          "uuid": "9be89753-dcbc-4932-9162-396f84395ab1"
+          "uuid": "47d23162-55a5-4531-9f8a-27812fba9473"
         }
       },
       "response": {
@@ -680,15 +718,16 @@
                 "authUser": null,
                 "hasAuthToken": false,
                 "hasSshPassphrase": false,
-                "hasSshPrivateKey": false
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
               },
               "description": "Test repository",
-              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
               "name": "test-repo-ds",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
-              "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+              "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
             }
           }
         }
@@ -696,9 +735,9 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
-          "uuid": "9be89753-dcbc-4932-9162-396f84395ab1"
+          "uuid": "47d23162-55a5-4531-9f8a-27812fba9473"
         }
       },
       "response": {
@@ -710,15 +749,16 @@
                 "authUser": null,
                 "hasAuthToken": false,
                 "hasSshPassphrase": false,
-                "hasSshPrivateKey": false
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
               },
               "description": "Test repository",
-              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
               "name": "test-repo-ds",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
-              "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+              "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
             }
           }
         }
@@ -726,9 +766,9 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
-          "uuid": "9be89753-dcbc-4932-9162-396f84395ab1"
+          "uuid": "47d23162-55a5-4531-9f8a-27812fba9473"
         }
       },
       "response": {
@@ -740,15 +780,16 @@
                 "authUser": null,
                 "hasAuthToken": false,
                 "hasSshPassphrase": false,
-                "hasSshPrivateKey": false
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
               },
               "description": "Test repository",
-              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
               "name": "test-repo-ds",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
-              "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+              "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
             }
           }
         }
@@ -756,9 +797,9 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
-          "uuid": "9be89753-dcbc-4932-9162-396f84395ab1"
+          "uuid": "47d23162-55a5-4531-9f8a-27812fba9473"
         }
       },
       "response": {
@@ -770,15 +811,16 @@
                 "authUser": null,
                 "hasAuthToken": false,
                 "hasSshPassphrase": false,
-                "hasSshPrivateKey": false
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
               },
               "description": "Test repository",
-              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
               "name": "test-repo-ds",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
-              "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+              "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
             }
           }
         }
@@ -786,9 +828,9 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
-          "uuid": "9be89753-dcbc-4932-9162-396f84395ab1"
+          "uuid": "47d23162-55a5-4531-9f8a-27812fba9473"
         }
       },
       "response": {
@@ -800,15 +842,16 @@
                 "authUser": null,
                 "hasAuthToken": false,
                 "hasSshPassphrase": false,
-                "hasSshPrivateKey": false
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
               },
               "description": "Test repository",
-              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI5YmU4OTc1My1kY2JjLTQ5MzItOTE2Mi0zOTZmODQzOTVhYjEiXQ==",
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI0N2QyMzE2Mi01NWE1LTQ1MzEtOWY4YS0yNzgxMmZiYTk0NzMiXQ==",
               "name": "test-repo-ds",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
-              "uuid": "9be89753-dcbc-4932-9162-396f84395ab1",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/ade36354-2480-4e38-ae05-f28c3a4ad7be"
+              "uuid": "47d23162-55a5-4531-9f8a-27812fba9473",
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/56f5bdfe-13dd-40b4-9664-3d3f06d6614a"
             }
           }
         }

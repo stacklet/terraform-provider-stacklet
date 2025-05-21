@@ -68,6 +68,10 @@ func (d *repositoryDataSource) Schema(ctx context.Context, req datasource.Schema
 				Description: "Whether the repository has an auth token configured.",
 				Computed:    true,
 			},
+			"ssh_public_key": schema.StringAttribute{
+				Description: "If has_ssh_private_key, identifies that SSH private key.",
+				Computed:    true,
+			},
 			"has_ssh_private_key": schema.BoolAttribute{
 				Description: "Whether the repository has an SSH private key configured.",
 				Computed:    true,
@@ -127,6 +131,7 @@ func (d *repositoryDataSource) Read(ctx context.Context, req datasource.ReadRequ
 	data.Description = tftypes.NullableString(repo.Description)
 	data.AuthUser = tftypes.NullableString(repo.Auth.AuthUser)
 	data.HasAuthToken = types.BoolValue(repo.Auth.HasAuthToken)
+	data.SSHPublicKey = tftypes.NullableString(repo.Auth.SSHPublicKey)
 	data.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
 	data.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
 	data.System = types.BoolValue(repo.System)

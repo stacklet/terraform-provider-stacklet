@@ -39,3 +39,8 @@ func FromProblems(ctx context.Context, problems []Problem) error {
 	}
 	return APIError{problems[0].Kind, problems[0].Message}
 }
+
+type Problem struct {
+	Kind    string `graphql:"__typename"`
+	Message string
+}

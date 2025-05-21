@@ -21,6 +21,7 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &RepositoryResource{}
+var _ resource.ResourceWithConfigure = &RepositoryResource{}
 var _ resource.ResourceWithImportState = &RepositoryResource{}
 
 func NewRepositoryResource() resource.Resource {
@@ -41,7 +42,7 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 		Description: "Manages a Stacklet repository.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier for this repository.",
+				Description: "The GraphQL node ID.",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
@@ -55,18 +56,18 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"url": schema.StringAttribute{
-				Description: "The URL of the repository.",
+				Description: "The URL of the remote repository.",
 				Required:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the repository.",
+				Description: "The human-readable name of the repository.",
 				Required:    true,
 			},
 			"description": schema.StringAttribute{
-				Description: "A description of the repository.",
+				Description: "An optional description of the repository.",
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
@@ -80,43 +81,36 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"webhook_url": schema.StringAttribute{
-				Description: "A description of the repository.",
+				Description: "A URL which triggers scans of the remote repository.",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"auth_user": schema.StringAttribute{
-				Description: "The user to use to access the repository if it is private.",
+				Description: "The user with access to the remote repository.",
 				Optional:    true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
+				Computed:    true,
 			},
 			"has_auth_token": schema.BoolAttribute{
 				Description: "Whether auth_token_wo has a value set.",
 				Computed:    true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.UseStateForUnknown(),
-				},
+			},
+			"ssh_public_key": schema.StringAttribute{
+				Description: "The public key associated with the value set via ssh_private_key_wo.",
+				Computed:    true,
 			},
 			"has_ssh_private_key": schema.BoolAttribute{
 				Description: "Whether ssh_private_key_wo has a value set.",
 				Computed:    true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"has_ssh_passphrase": schema.BoolAttribute{
 				Description: "Whether ssh_passphrase_wo has a value set.",
 				Computed:    true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.UseStateForUnknown(),
-				},
 			},
 			// After this, write-only secrets and associated trigger attrs.
 			"auth_token_wo": schema.StringAttribute{
-				Description: "The token for the user to use to access the repository if it is private.",
+				Description: "User password/token, or IAM role, to access the remote repository.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
@@ -126,7 +120,7 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:    true,
 			},
 			"ssh_private_key_wo": schema.StringAttribute{
-				Description: "SSH private key for repository authentication.",
+				Description: "SSH private key for remote repository authentication.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
@@ -166,18 +160,25 @@ func (r *RepositoryResource) Configure(ctx context.Context, req resource.Configu
 }
 
 func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	// Read plan
-	var plan models.RepositoryResource
+	// Read plan and config.
+	var plan, config models.RepositoryResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Create remote from plan
+	// Create remote from plan and config.
+	auth := api.NewRepositoryConfigAuthInput()
+	auth.SetAuthUser(api.NullableString(plan.AuthUser))
+	auth.SetAuthToken(api.NullableString(config.AuthTokenWO))
+	auth.SetSSHPrivateKey(api.NullableString(config.SSHPrivateKeyWO))
+	auth.SetSSHPassphrase(api.NullableString(config.SSHPassphraseWO))
 	input := api.RepositoryCreateInput{
 		Name:        plan.Name.ValueString(),
 		URL:         plan.URL.ValueString(),
 		Description: api.NullableString(plan.Description),
+		Auth:        auth,
 	}
 	repo, err := r.api.Repository.Create(ctx, input)
 	if err != nil {
@@ -185,21 +186,21 @@ func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	// Save response into state
+	// Update plan from response and save into state.
 	updateRepositoryModel(&plan, repo)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	// Read state for UUID
-	var data models.RepositoryResource
-	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	// Read known state.
+	var state models.RepositoryResource
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Read remote by UUID
-	repo, err := r.api.Repository.Read(ctx, data.UUID.ValueString())
+	// Read remote by UUID.
+	repo, err := r.api.Repository.Read(ctx, state.UUID.ValueString())
 	if err != nil {
 		if _, ok := err.(api.NotFound); ok {
 			resp.State.RemoveResource(ctx)
@@ -209,24 +210,43 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	// Save response into state
-	updateRepositoryModel(&data, repo)
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	// Update state from response.
+	updateRepositoryModel(&state, repo)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
 func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// Read plan
-	var plan models.RepositoryResource
+	// Read everything.
+	var plan, state, config models.RepositoryResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Update remote according to plan
+	// Determine which auth fields need to be updated.
+	auth := api.NewRepositoryConfigAuthInput()
+	auth.SetAuthUser(api.NullableString(plan.AuthUser))
+	if state.AuthTokenWOVersion != plan.AuthTokenWOVersion {
+		state.AuthTokenWOVersion = plan.AuthTokenWOVersion
+		auth.SetAuthToken(api.NullableString(config.AuthTokenWO))
+	}
+	if state.SSHPrivateKeyWOVersion != plan.SSHPrivateKeyWOVersion {
+		state.SSHPrivateKeyWOVersion = plan.SSHPrivateKeyWOVersion
+		auth.SetSSHPrivateKey(api.NullableString(config.SSHPrivateKeyWO))
+	}
+	if state.SSHPassphraseWOVersion != plan.SSHPassphraseWOVersion {
+		state.SSHPassphraseWOVersion = plan.SSHPassphraseWOVersion
+		auth.SetSSHPassphrase(api.NullableString(config.SSHPassphraseWO))
+	}
+
+	// Update remote according to the combined grand plan.
 	input := api.RepositoryUpdateInput{
 		UUID:        plan.UUID.ValueString(),
 		Name:        plan.Name.ValueString(),
 		Description: api.NullableString(plan.Description),
+		Auth:        auth,
 	}
 	repo, err := r.api.Repository.Update(ctx, input)
 	if err != nil {
@@ -234,8 +254,7 @@ func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	// Save response into state
-	var state models.RepositoryResource
+	// Merge response into state.
 	updateRepositoryModel(&state, repo)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
@@ -279,6 +298,7 @@ func updateRepositoryModel(m *models.RepositoryResource, repo api.Repository) {
 	m.WebhookURL = types.StringValue(repo.WebhookURL)
 	m.AuthUser = tftypes.NullableString(repo.Auth.AuthUser)
 	m.HasAuthToken = types.BoolValue(repo.Auth.HasAuthToken)
+	m.SSHPublicKey = tftypes.NullableString(repo.Auth.SSHPublicKey)
 	m.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
 	m.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
 }
