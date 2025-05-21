@@ -1,7 +1,7 @@
 # Create an AWS policy collection
 resource "stacklet_policy_collection" "aws_security" {
   name           = "aws-security-policies"
-  cloud_provider = "aws"
+  cloud_provider = "AWS"
   description    = "Security policies for AWS resources"
   auto_update    = true
 }
@@ -9,7 +9,7 @@ resource "stacklet_policy_collection" "aws_security" {
 # Create an Azure policy collection
 resource "stacklet_policy_collection" "azure_compliance" {
   name           = "azure-compliance-policies"
-  cloud_provider = "azure"
+  cloud_provider = "Azure"
   description    = "Compliance policies for Azure resources"
   auto_update    = false
 }
@@ -17,7 +17,7 @@ resource "stacklet_policy_collection" "azure_compliance" {
 # Create a GCP policy collection
 resource "stacklet_policy_collection" "gcp_cost" {
   name           = "gcp-cost-policies"
-  cloud_provider = "gcp"
+  cloud_provider = "GCP"
   description    = "Cost optimization policies for GCP resources"
   auto_update    = true
 }

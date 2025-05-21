@@ -61,17 +61,11 @@ func (a accountAPI) Read(ctx context.Context, cloudProvider string, key string) 
 	var query struct {
 		Account Account `graphql:"account(provider: $provider, key: $key)"`
 	}
-
-	provider, err := NewCloudProvider(cloudProvider)
-	if err != nil {
-		return query.Account, APIError{"Invalid provider", err.Error()}
-	}
-
 	variables := map[string]any{
-		"provider": provider,
+		"provider": CloudProvider(cloudProvider),
 		"key":      graphql.String(key),
 	}
-	if err = a.c.Query(ctx, &query, variables); err != nil {
+	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return query.Account, APIError{"Client error", err.Error()}
 	}
 
@@ -114,11 +108,6 @@ func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (Account, 
 
 // Delete removes an account.
 func (a accountAPI) Delete(ctx context.Context, cloudProvider string, key string) error {
-	provider, err := NewCloudProvider(cloudProvider)
-	if err != nil {
-		return APIError{"Invalid provider", err.Error()}
-	}
-
 	var mutation struct {
 		RemoveAccount struct {
 			Account struct {
@@ -127,10 +116,10 @@ func (a accountAPI) Delete(ctx context.Context, cloudProvider string, key string
 		} `graphql:"removeAccount(provider: $provider, key: $key)"`
 	}
 	variables := map[string]any{
-		"provider": provider,
+		"provider": CloudProvider(cloudProvider),
 		"key":      graphql.String(key),
 	}
-	if err = a.c.Mutate(ctx, &mutation, variables); err != nil {
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
 		return APIError{"Client error", err.Error()}
 	}
 	return nil

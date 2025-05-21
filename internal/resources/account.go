@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
 
@@ -16,6 +17,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/schemavalidate"
 )
 
 var (
@@ -69,6 +71,9 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"cloud_provider": schema.StringAttribute{
 				Description: "The cloud provider for the account (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Required:    true,
+				Validators: []validator.String{
+					schemavalidate.OneOfCloudProviders(),
+				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -119,16 +124,10 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid Provider", err.Error())
-		return
-	}
-
 	input := api.AccountCreateInput{
 		Name:            plan.Name.ValueString(),
 		Key:             plan.Key.ValueString(),
-		Provider:        provider,
+		Provider:        api.CloudProvider(plan.CloudProvider.ValueString()),
 		ShortName:       api.NullableString(plan.ShortName),
 		Description:     api.NullableString(plan.Description),
 		Email:           api.NullableString(plan.Email),
@@ -174,15 +173,9 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid Provider", err.Error())
-		return
-	}
-
 	input := api.AccountUpdateInput{
 		Key:             plan.Key.ValueString(),
-		Provider:        provider,
+		Provider:        api.CloudProvider(plan.CloudProvider.ValueString()),
 		Name:            api.NullableString(plan.Name),
 		ShortName:       api.NullableString(plan.ShortName),
 		Description:     api.NullableString(plan.Description),

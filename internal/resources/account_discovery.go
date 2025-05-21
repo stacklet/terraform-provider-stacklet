@@ -11,8 +11,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/schemavalidate"
 )
 
 var (
@@ -83,6 +86,9 @@ func (r *accountDiscoveryResource) Schema(_ context.Context, _ resource.SchemaRe
 			"cloud_provider": schema.StringAttribute{
 				Required:    true,
 				Description: "The cloud provider for the account discovery (aws, azure, gcp, kubernetes, or tencentcloud).",
+				Validators: []validator.String{
+					schemavalidate.OneOfCloudProviders(),
+				},
 			},
 			// AWS-specific fields
 			"org_read_role": schema.StringAttribute{

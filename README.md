@@ -93,23 +93,21 @@ to it.
 
 ### Example Terraform
 
-```terraform
+Below is a full example of a configuration to create a few resources in Stacklet.
 
+```terraform
 terraform {
   required_providers {
     stacklet = {
-      source  = "stacklet/stacklet"
-      version = "0.1.0"
+      source = "stacklet/stacklet"
     }
   }
 }
 
 provider "stacklet" {
   endpoint = "https://api.<myinstance>.stacklet.io/"
-  api_key = "$api_key_here"
+  api_key  = "$api_key_here"
 }
-
-# policy collection creation
 
 data "stacklet_policy_collection" "example" {
   name = "aws policies for cis-aws"
@@ -141,7 +139,6 @@ data "stacklet_account" "one" {
 resource "stacklet_account_group_mapping" "one" {
   group_uuid     = stacklet_account_group.example.uuid
   account_key    = data.stacklet_account.one.key
-  cloud_provider = data.stacklet_account.one.cloud_provider
 }
 
 resource "stacklet_policy_collection_mapping" "one" {
@@ -152,17 +149,17 @@ resource "stacklet_policy_collection_mapping" "one" {
 
 resource "stacklet_account" "two" {
   cloud_provider = "AWS"
-  key           = "000000000000"  # AWS account ID
-  name          = "test-tf-acccount"
-  short_name    = "tftest"
-  description   = "Test account from terraform testing update"
-  email         = "cloud-team@example.com"
+  key            = "000000000000" # AWS account ID
+  name           = "test-tf-acccount"
+  short_name     = "tftest"
+  description    = "Test account from terraform testing update"
+  email          = "cloud-team@example.com"
 }
 
 resource "stacklet_binding" "binding" {
-  name = "test-tf-cursor-binding"
-  description = "created with terraform update"
-  account_group_uuid = stacklet_account_group.example.uuid
+  name                   = "test-tf-cursor-binding"
+  description            = "created with terraform update"
+  account_group_uuid     = stacklet_account_group.example.uuid
   policy_collection_uuid = stacklet_policy_collection.example.uuid
 }
 

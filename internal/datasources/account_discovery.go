@@ -59,8 +59,8 @@ func (d *accountDiscoveryDataSource) Schema(_ context.Context, _ datasource.Sche
 				Computed:    true,
 			},
 			"cloud_provider": schema.StringAttribute{
-				Computed:    true,
 				Description: "The cloud provider for the account discovery (aws, azure, gcp, kubernetes, or tencentcloud).",
+				Computed:    true,
 			},
 			"enabled": schema.BoolAttribute{
 				Description: "Whether the account discovery configuration is enabled.",
