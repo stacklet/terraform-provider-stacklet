@@ -1,27 +1,23 @@
-provider "stacklet" {
-  endpoint = "http://localhost:8080/graphql"
-  api_key  = "your-api-key"
-}
-
-resource "stacklet_policy_collection" "example" {
-  name           = "example-collection"
-  cloud_provider = "aws"
-  description    = "Example policy collection"
+# Create an AWS policy collection
+resource "stacklet_policy_collection" "aws_security" {
+  name           = "aws-security-policies"
+  cloud_provider = "AWS"
+  description    = "Security policies for AWS resources"
   auto_update    = true
 }
 
-output "policy_collection_id" {
-  value = stacklet_policy_collection.example.id
+# Create an Azure policy collection
+resource "stacklet_policy_collection" "azure_compliance" {
+  name           = "azure-compliance-policies"
+  cloud_provider = "Azure"
+  description    = "Compliance policies for Azure resources"
+  auto_update    = false
 }
 
-output "policy_collection_uuid" {
-  value = stacklet_policy_collection.example.uuid
+# Create a GCP policy collection
+resource "stacklet_policy_collection" "gcp_cost" {
+  name           = "gcp-cost-policies"
+  cloud_provider = "GCP"
+  description    = "Cost optimization policies for GCP resources"
+  auto_update    = true
 }
-
-output "policy_collection_system" {
-  value = stacklet_policy_collection.example.system
-}
-
-output "policy_collection_repository" {
-  value = stacklet_policy_collection.example.repository
-} 

@@ -60,10 +60,6 @@ jobs:
         with:
           go-version: ${{ env.TOOL_VERSION_GO }}
 
-      - name: Build provider
-        run: |
-          just build
-
       - name: Lint
         run: |
           just lint-tf

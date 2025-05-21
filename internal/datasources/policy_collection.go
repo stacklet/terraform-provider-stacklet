@@ -8,6 +8,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -19,18 +24,7 @@ func NewPolicyCollectionDataSource() datasource.DataSource {
 }
 
 type policyCollectionDataSource struct {
-	client *graphql.Client
-}
-
-type policyCollectionDataSourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	UUID          types.String `tfsdk:"uuid"`
-	Name          types.String `tfsdk:"name"`
-	Description   types.String `tfsdk:"description"`
-	CloudProvider types.String `tfsdk:"cloud_provider"`
-	AutoUpdate    types.Bool   `tfsdk:"auto_update"`
-	System        types.Bool   `tfsdk:"system"`
-	Repository    types.String `tfsdk:"repository"`
+	api *api.API
 }
 
 func (d *policyCollectionDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -39,7 +33,7 @@ func (d *policyCollectionDataSource) Metadata(_ context.Context, req datasource.
 
 func (d *policyCollectionDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Fetch a policy collection by UUID or name.",
+		Description: "Retrieve a policy collection by UUID or name.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the policy collection.",
@@ -69,8 +63,12 @@ func (d *policyCollectionDataSource) Schema(_ context.Context, _ datasource.Sche
 				Description: "Whether this is a system policy collection.",
 				Computed:    true,
 			},
-			"repository": schema.StringAttribute{
-				Description: "The repository URL if this collection was created from a repo control file.",
+			"dynamic": schema.BoolAttribute{
+				Description: "Whether this is a dynamic policy collection.",
+				Computed:    true,
+			},
+			"repository_uuid": schema.StringAttribute{
+				Description: "The UUID of the repository the collection is linked to, if dynamic.",
 				Computed:    true,
 			},
 		},
@@ -91,62 +89,36 @@ func (d *policyCollectionDataSource) Configure(_ context.Context, req datasource
 		return
 	}
 
-	d.client = client
+	d.api = api.New(client)
 }
 
 func (d *policyCollectionDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data policyCollectionDataSourceModel
+	var data models.PolicyCollectionDataSource
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL query
-	var query struct {
-		PolicyCollection struct {
-			ID          string
-			UUID        string
-			Name        string
-			Description string
-			Provider    string
-			AutoUpdate  bool
-			System      bool
-			Repository  string
-		} `graphql:"policyCollection(uuid: $uuid, name: $name)"`
-	}
-
-	variables := map[string]any{
-		"uuid": (*string)(nil),
-		"name": (*string)(nil),
-	}
-
-	if !data.UUID.IsNull() {
-		variables["uuid"] = graphql.String(data.UUID.ValueString())
-	}
-
-	if !data.Name.IsNull() {
-		variables["name"] = graphql.String(data.Name.ValueString())
-	}
-
-	err := d.client.Query(ctx, &query, variables)
+	policyCollection, err := d.api.PolicyCollection.Read(ctx, data.UUID.ValueString(), data.Name.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read policy collection, got error: %s", err))
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	if query.PolicyCollection.UUID == "" {
+	if policyCollection.UUID == "" {
 		resp.Diagnostics.AddError("Not Found", "No policy collection found with the specified UUID or name")
 		return
 	}
 
-	data.ID = types.StringValue(query.PolicyCollection.ID)
-	data.UUID = types.StringValue(query.PolicyCollection.UUID)
-	data.Name = types.StringValue(query.PolicyCollection.Name)
-	data.Description = types.StringValue(query.PolicyCollection.Description)
-	data.CloudProvider = types.StringValue(query.PolicyCollection.Provider)
-	data.AutoUpdate = types.BoolValue(query.PolicyCollection.AutoUpdate)
-	data.System = types.BoolValue(query.PolicyCollection.System)
-	data.Repository = types.StringValue(query.PolicyCollection.Repository)
+	data.ID = types.StringValue(policyCollection.ID)
+	data.UUID = types.StringValue(policyCollection.UUID)
+	data.Name = types.StringValue(policyCollection.Name)
+	data.Description = tftypes.NullableString(policyCollection.Description)
+	data.CloudProvider = types.StringValue(string(policyCollection.Provider))
+	data.AutoUpdate = types.BoolValue(policyCollection.AutoUpdate)
+	data.System = types.BoolValue(policyCollection.System)
+	data.Dynamic = types.BoolValue(policyCollection.IsDynamic)
+	data.RepositoryUUID = tftypes.NullableString(policyCollection.RepositoryConfig.UUID)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
