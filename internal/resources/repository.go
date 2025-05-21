@@ -115,7 +115,7 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Sensitive:   true,
 				WriteOnly:   true,
 			},
-			"auth_token_wo_version": schema.Int32Attribute{
+			"auth_token_wo_version": schema.StringAttribute{
 				Description: "Change value to update auth_token_wo.",
 				Optional:    true,
 			},
@@ -125,7 +125,7 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Sensitive:   true,
 				WriteOnly:   true,
 			},
-			"ssh_private_key_wo_version": schema.Int32Attribute{
+			"ssh_private_key_wo_version": schema.StringAttribute{
 				Description: "Change value to update ssh_private_key_wo.",
 				Optional:    true,
 			},
@@ -135,7 +135,7 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Sensitive:   true,
 				WriteOnly:   true,
 			},
-			"ssh_passphrase_wo_version": schema.Int32Attribute{
+			"ssh_passphrase_wo_version": schema.StringAttribute{
 				Description: "Change value to update ssh_passphrase_wo.",
 				Optional:    true,
 			},
@@ -280,12 +280,12 @@ func (r *RepositoryResource) Delete(ctx context.Context, req resource.DeleteRequ
 }
 
 func (r *RepositoryResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	repo, err := r.api.Repository.ReadURL(ctx, req.ID)
+	uuid, err := r.api.Repository.FindByURL(ctx, req.ID)
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), repo.UUID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), uuid)...)
 }
 
 func updateRepositoryModel(m *models.RepositoryResource, repo api.Repository) {

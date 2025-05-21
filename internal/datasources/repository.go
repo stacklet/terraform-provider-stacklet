@@ -110,13 +110,19 @@ func (d *repositoryDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	var err error
-	var repo api.Repository
+	// Find by UUID, looking that up by URL if necessary.
+	var uuid string
 	if data.UUID.IsNull() || data.UUID.IsUnknown() {
-		repo, err = d.api.Repository.ReadURL(ctx, data.URL.ValueString())
+		var err error
+		uuid, err = d.api.Repository.FindByURL(ctx, data.URL.ValueString())
+		if err != nil {
+			helpers.AddDiagError(&resp.Diagnostics, err)
+			return
+		}
 	} else {
-		repo, err = d.api.Repository.Read(ctx, data.UUID.ValueString())
+		uuid = data.UUID.ValueString()
 	}
+	repo, err := d.api.Repository.Read(ctx, uuid)
 	if err != nil {
 		helpers.AddDiagError(&resp.Diagnostics, err)
 		return

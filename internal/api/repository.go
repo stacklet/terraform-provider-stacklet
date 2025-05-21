@@ -114,40 +114,40 @@ func (a repositoryAPI) Read(ctx context.Context, uuid string) (Repository, error
 	return query.RepositoryConfig.RepositoryConfig, nil
 }
 
-func (a repositoryAPI) ReadURL(ctx context.Context, url string) (Repository, error) {
-	var search struct {
-		RepositoryConfigs struct {
-			Edges []struct {
-				Node Repository
-			}
-			PageInfo struct {
-				HasNextPage bool
-				EndCursor   string
-			}
-			Problems []Problem
-		} `graphql:"repositoryConfigs(first: $count, after: $cursor)"`
-	}
-	variables := map[string]any{
-		"count":  100,
-		"cursor": "",
-	}
+func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error) {
+	cursor := ""
 	for {
-		if err := a.c.Query(ctx, &search, variables); err != nil {
-			return Repository{}, APIError{"Client error", err.Error()}
+		var search struct {
+			RepositoryConfigs struct {
+				Edges []struct {
+					Node struct {
+						URL  string
+						UUID string
+					}
+				}
+				PageInfo struct {
+					HasNextPage bool
+					EndCursor   string
+				}
+				Problems []Problem
+			} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
+		}
+		if err := a.c.Query(ctx, &search, map[string]any{"cursor": cursor}); err != nil {
+			return "", APIError{"Client error", err.Error()}
 		}
 		connection := search.RepositoryConfigs
 		if err := FromProblems(ctx, connection.Problems); err != nil {
-			return Repository{}, err
+			return "", err
 		}
 		for _, edge := range connection.Edges {
 			if edge.Node.URL == url {
-				return edge.Node, nil
+				return edge.Node.UUID, nil
 			}
 		}
 		if !connection.PageInfo.HasNextPage {
-			return Repository{}, NotFound{"Repository with given URL not found"}
+			return "", NotFound{"Repository with given URL not found"}
 		}
-		variables["cursor"] = connection.PageInfo.EndCursor
+		cursor = connection.PageInfo.EndCursor
 	}
 }
 

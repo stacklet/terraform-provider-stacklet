@@ -310,13 +310,13 @@ AAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt
 ktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==
 -----END OPENSSH PRIVATE KEY-----
 EOT
-	ssh_private_key_wo_version = 3
+	ssh_private_key_wo_version = "something else"
 }
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINBIt1S68mWzaTbxsvJqUsKtktoEb85tBcGQQmXy8HUb"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_ssh_private_key", "true"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_private_key_wo_version", "3"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_private_key_wo_version", "something else"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_private_key_wo"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_ssh_passphrase", "false"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_passphrase_wo_version"),

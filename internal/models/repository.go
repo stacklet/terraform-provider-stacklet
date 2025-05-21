@@ -23,9 +23,9 @@ type RepositoryResource struct {
 	RepositoryDataSource
 
 	AuthTokenWO            types.String `tfsdk:"auth_token_wo"`
-	AuthTokenWOVersion     types.Int32  `tfsdk:"auth_token_wo_version"`
+	AuthTokenWOVersion     types.String `tfsdk:"auth_token_wo_version"`
 	SSHPrivateKeyWO        types.String `tfsdk:"ssh_private_key_wo"`
-	SSHPrivateKeyWOVersion types.Int32  `tfsdk:"ssh_private_key_wo_version"`
+	SSHPrivateKeyWOVersion types.String `tfsdk:"ssh_private_key_wo_version"`
 	SSHPassphraseWO        types.String `tfsdk:"ssh_passphrase_wo"`
-	SSHPassphraseWOVersion types.Int32  `tfsdk:"ssh_passphrase_wo_version"`
+	SSHPassphraseWOVersion types.String `tfsdk:"ssh_passphrase_wo_version"`
 }
