@@ -17,7 +17,7 @@ resource "stacklet_repository" "example_ssh_auth" {
   name = "example-http-auth"
   url  = "ssh://git@github.com/example/private-repo"
 
-  ssh_private_key_wo = <<EOT
+  ssh_private_key_wo         = <<EOT
 -----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
 QyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP

@@ -14,7 +14,7 @@ import (
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
-// Ensure provider defined types fully satisfy framework interfaces
+// Ensure provider defined types fully satisfy framework interfaces.
 var _ datasource.DataSource = &repositoryDataSource{}
 
 func NewRepositoryDataSource() datasource.DataSource {
