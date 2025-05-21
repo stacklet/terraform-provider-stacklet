@@ -1,1 +1,1 @@
-terraform import stacklet_account.example $clour_provider:$key
+terraform import stacklet_account.example $cloud_provider:$key

@@ -17,27 +17,17 @@ func TestAccRepositoryDataSource(t *testing.T) {
 						name = "test-repo-ds"
 						url = "https://github.com/test-org/test-repo"
 						description = "Test repository"
-						policy_file_suffix = [".yaml"]
-						policy_directories = ["policies"]
-						branch_name = "main"
-						deep_import = false
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				// Check every single attribute to see what might be different
+				resource.TestCheckResourceAttrSet("stacklet_repository.test", "id"),
+				resource.TestCheckResourceAttrSet("stacklet_repository.test", "uuid"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "name", "test-repo-ds"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Test repository"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "policy_file_suffix.#", "1"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "policy_file_suffix.0", ".yaml"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "policy_directories.#", "1"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "policy_directories.0", "policies"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "branch_name", "main"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "deep_import", "false"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "auth_token"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_private_key"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_passphrase"),
-				resource.TestCheckResourceAttrSet("stacklet_repository.test", "uuid"),
 				// Add a custom check that logs all attributes
 				func(s *terraform.State) error {
 					rs, ok := s.RootModule().Resources["stacklet_repository.test"]
@@ -48,23 +38,22 @@ func TestAccRepositoryDataSource(t *testing.T) {
 					return nil
 				},
 			),
-			ExpectNonEmptyPlan: false,
 		},
-		// Read testing by name
+		// Read testing by uuid
 		{
 			Config: `
 					resource "stacklet_repository" "test" {
 						name = "test-repo-ds"
 						url = "https://github.com/test-org/test-repo"
 						description = "Test repository"
-						policy_file_suffix = [".yaml"]
-						policy_directories = ["policies"]
-						branch_name = "main"
-						deep_import = false
 					}
 
-					data "stacklet_repository" "test" {
-						name = stacklet_repository.test.name
+					data "stacklet_repository" "test_uuid" {
+						uuid = stacklet_repository.test.uuid
+					}
+
+					data "stacklet_repository" "test_url" {
+						url = stacklet_repository.test.url
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -72,31 +61,24 @@ func TestAccRepositoryDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_repository.test", "name", "test-repo-ds"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Test repository"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "policy_file_suffix.#", "1"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "policy_file_suffix.0", ".yaml"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "policy_directories.#", "1"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "policy_directories.0", "policies"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "branch_name", "main"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "deep_import", "false"),
 				// Check data source attributes match exactly
-				resource.TestCheckResourceAttr("data.stacklet_repository.test", "name", "test-repo-ds"),
-				resource.TestCheckResourceAttr("data.stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
-				resource.TestCheckResourceAttr("data.stacklet_repository.test", "description", "Test repository"),
-				resource.TestCheckResourceAttr("data.stacklet_repository.test", "policy_file_suffix.#", "1"),
-				resource.TestCheckResourceAttr("data.stacklet_repository.test", "policy_file_suffix.0", ".yaml"),
-				resource.TestCheckResourceAttr("data.stacklet_repository.test", "policy_directories.#", "1"),
-				resource.TestCheckResourceAttr("data.stacklet_repository.test", "policy_directories.0", "policies"),
-				resource.TestCheckResourceAttr("data.stacklet_repository.test", "branch_name", "main"),
+				resource.TestCheckResourceAttr("data.stacklet_repository.test_uuid", "name", "test-repo-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_repository.test_uuid", "url", "https://github.com/test-org/test-repo"),
+				resource.TestCheckResourceAttr("data.stacklet_repository.test_uuid", "description", "Test repository"),
+				resource.TestCheckResourceAttr("data.stacklet_repository.test_url", "name", "test-repo-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_repository.test_url", "url", "https://github.com/test-org/test-repo"),
+				resource.TestCheckResourceAttr("data.stacklet_repository.test_url", "description", "Test repository"),
 				// Add debug logging for both resource and data source
 				func(s *terraform.State) error {
 					rs := s.RootModule().Resources["stacklet_repository.test"]
-					ds := s.RootModule().Resources["data.stacklet_repository.test"]
+					ds_url := s.RootModule().Resources["data.stacklet_repository.test_url"]
+					ds_uuid := s.RootModule().Resources["data.stacklet_repository.test_uuid"]
 					t.Logf("Resource Attributes: %#v", rs.Primary.Attributes)
-					t.Logf("Data Source Attributes: %#v", ds.Primary.Attributes)
+					t.Logf("Data Source (URL) Attributes: %#v", ds_url.Primary.Attributes)
+					t.Logf("Data Source (UUID) Attributes: %#v", ds_uuid.Primary.Attributes)
 					return nil
 				},
 			),
-			ExpectNonEmptyPlan: false,
 		},
 	}
 	runRecordedAccTest(t, "TestAccRepositoryDataSource", steps)
