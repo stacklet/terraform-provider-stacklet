@@ -96,29 +96,26 @@ type repositoryAPI struct {
 }
 
 func (a repositoryAPI) Read(ctx context.Context, uuid string) (Repository, error) {
-	var query struct {
-		RepositoryConfig struct {
+	var q struct {
+		Payload struct {
 			RepositoryConfig Repository
 			Problems         []Problem
 		} `graphql:"repositoryConfig(uuid: $uuid)"`
 	}
-	variables := map[string]any{
-		"uuid": uuid,
-	}
-	if err := a.c.Query(ctx, &query, variables); err != nil {
+	if err := a.c.Query(ctx, &q, map[string]any{"uuid": uuid}); err != nil {
 		return Repository{}, APIError{"Client error", err.Error()}
 	}
-	if err := FromProblems(ctx, query.RepositoryConfig.Problems); err != nil {
+	if err := FromProblems(ctx, q.Payload.Problems); err != nil {
 		return Repository{}, err
 	}
-	return query.RepositoryConfig.RepositoryConfig, nil
+	return q.Payload.RepositoryConfig, nil
 }
 
 func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error) {
 	cursor := ""
 	for {
-		var search struct {
-			RepositoryConfigs struct {
+		var q struct {
+			Conn struct {
 				Edges []struct {
 					Node struct {
 						URL  string
@@ -132,72 +129,66 @@ func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error
 				Problems []Problem
 			} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
 		}
-		if err := a.c.Query(ctx, &search, map[string]any{"cursor": cursor}); err != nil {
+		if err := a.c.Query(ctx, &q, map[string]any{"cursor": cursor}); err != nil {
 			return "", APIError{"Client error", err.Error()}
 		}
-		connection := search.RepositoryConfigs
-		if err := FromProblems(ctx, connection.Problems); err != nil {
+		if err := FromProblems(ctx, q.Conn.Problems); err != nil {
 			return "", err
 		}
-		for _, edge := range connection.Edges {
+		for _, edge := range q.Conn.Edges {
 			if edge.Node.URL == url {
 				return edge.Node.UUID, nil
 			}
 		}
-		if !connection.PageInfo.HasNextPage {
+		if !q.Conn.PageInfo.HasNextPage {
 			return "", NotFound{"Repository with given URL not found"}
 		}
-		cursor = connection.PageInfo.EndCursor
+		cursor = q.Conn.PageInfo.EndCursor
 	}
 }
 
 func (a repositoryAPI) Create(ctx context.Context, i RepositoryCreateInput) (Repository, error) {
 	var m struct {
-		AddRepositoryConfig struct {
+		Payload struct {
 			RepositoryConfig Repository
 			Problems         []Problem
 		} `graphql:"addRepositoryConfig(input: $input)"`
 	}
-	variables := map[string]any{"input": i}
-	if err := a.c.Mutate(ctx, &m, variables); err != nil {
+	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
 		return Repository{}, APIError{"Client error", err.Error()}
 	}
-	payload := m.AddRepositoryConfig
-	if err := FromProblems(ctx, payload.Problems); err != nil {
+	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
 		return Repository{}, err
 	}
-	return payload.RepositoryConfig, nil
+	return m.Payload.RepositoryConfig, nil
 }
 
 func (a repositoryAPI) Update(ctx context.Context, i RepositoryUpdateInput) (Repository, error) {
 	var m struct {
-		UpdateRepositoryConfig struct {
+		Payload struct {
 			RepositoryConfig Repository
 			Problems         []Problem
 		} `graphql:"updateRepositoryConfig(input: $input)"`
 	}
-	variables := map[string]any{"input": i}
-	if err := a.c.Mutate(ctx, &m, variables); err != nil {
+	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
 		return Repository{}, APIError{"Client error", err.Error()}
 	}
-	payload := m.UpdateRepositoryConfig
-	if err := FromProblems(ctx, payload.Problems); err != nil {
+	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
 		return Repository{}, err
 	}
-	return payload.RepositoryConfig, nil
+	return m.Payload.RepositoryConfig, nil
 }
 
 func (a repositoryAPI) Delete(ctx context.Context, i RepositoryDeleteInput) error {
-	input := map[string]any{"input": i}
 	var m struct {
-		RemoveRepositoryConfig struct {
+		Payload struct {
 			Problems []Problem
 		} `graphql:"removeRepositoryConfig(input: $input)"`
 	}
-	if err := a.c.Mutate(ctx, &m, input); err != nil {
+	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
 		return APIError{"Client error", err.Error()}
 	}
-	if err := FromProblems(ctx, m.RemoveRepositoryConfig.Problems); err != nil {
+	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
 		return err
 	}
 	return nil
