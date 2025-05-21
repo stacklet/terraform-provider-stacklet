@@ -13,3 +13,10 @@ updates:
       interval: weekly
     commit-message:
       prefix: chore
+
+  - package-ecosystem: gomod
+    directory: /tools
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore

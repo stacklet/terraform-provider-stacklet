@@ -23,20 +23,21 @@ lint-go:
     go vet {{ package }}
     golangci-lint run --fix
 
+# Run checker for generated docs
+lint-docs:
+    env -C tools go generate -run=validate-docs
+
 # Run tests
 test *args:
     TF_ACC=1 go test {{ package }} {{ args }}
 
-
-# Record API request/responses for an acceptance test.
-# Requires real STACKLET_ENDPOINT and STACKLET_API_KEY or logged in stacklet-admin.
+# Record API request/responses for an acceptance test. Requires real STACKLET_ENDPOINT and STACKLET_API_KEY or logged in stacklet-admin.
 test-record testname:
     TF_ACC_RECORD=1 just test -run {{ testname }}
 
-# Generate provider docs
+# Generate provider documentation
 docs:
-    go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
-
+    env -C tools go generate -run=generate-docs
 
 tf_config := '''
 provider_installation {
