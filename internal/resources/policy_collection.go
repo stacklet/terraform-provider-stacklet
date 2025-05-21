@@ -13,10 +13,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
 	_ resource.Resource                = &policyCollectionResource{}
+	_ resource.ResourceWithConfigure   = &policyCollectionResource{}
 	_ resource.ResourceWithImportState = &policyCollectionResource{}
 )
 
@@ -25,18 +31,7 @@ func NewPolicyCollectionResource() resource.Resource {
 }
 
 type policyCollectionResource struct {
-	client *graphql.Client
-}
-
-type policyCollectionResourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	UUID          types.String `tfsdk:"uuid"`
-	Name          types.String `tfsdk:"name"`
-	Description   types.String `tfsdk:"description"`
-	CloudProvider types.String `tfsdk:"cloud_provider"`
-	AutoUpdate    types.Bool   `tfsdk:"auto_update"`
-	System        types.Bool   `tfsdk:"system"`
-	Repository    types.String `tfsdk:"repository"`
+	api *api.API
 }
 
 func (r *policyCollectionResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -85,10 +80,21 @@ func (r *policyCollectionResource) Schema(_ context.Context, _ resource.SchemaRe
 			"system": schema.BoolAttribute{
 				Description: "Whether this is a system policy collection.",
 				Computed:    true,
+				Default:     booldefault.StaticBool(false),
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.UseStateForUnknown(),
+				},
 			},
-			"repository": schema.StringAttribute{
-				Description: "The repository URL if this collection was created from a repo control file.",
+			"dynamic": schema.BoolAttribute{
+				Description: "Whether this is a dynamic policy collection.",
 				Computed:    true,
+			},
+			"repository_uuid": schema.StringAttribute{
+				Description: "The UUID of the repository the collection is linked to, if dynamic.",
+				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 		},
 	}
@@ -108,243 +114,116 @@ func (r *policyCollectionResource) Configure(_ context.Context, req resource.Con
 		return
 	}
 
-	r.client = client
+	r.api = api.New(client)
 }
 
 func (r *policyCollectionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan policyCollectionResourceModel
+	var plan models.PolicyCollectionResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL mutation
-	var mutation struct {
-		AddPolicyCollection struct {
-			Collection struct {
-				ID          string
-				UUID        string
-				Name        string
-				Description string
-				Provider    string
-				AutoUpdate  bool
-				System      bool
-				Repository  string
-			}
-		} `graphql:"addPolicyCollection(input: $input)"`
-	}
-
-	variables := map[string]any{
-		"input": AddPolicyCollectionInput{
-			Name:        plan.Name.ValueString(),
-			Provider:    plan.CloudProvider.ValueString(),
-			Description: graphql.String(plan.Description.ValueString()),
-			AutoUpdate:  graphql.Boolean(plan.AutoUpdate.ValueBool()),
-		},
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
+	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to create policy collection, got error: %s", err))
+		resp.Diagnostics.AddError("Invalid Provider", err.Error())
 		return
 	}
 
-	plan.ID = types.StringValue(mutation.AddPolicyCollection.Collection.ID)
-	plan.UUID = types.StringValue(mutation.AddPolicyCollection.Collection.UUID)
-	plan.Name = types.StringValue(mutation.AddPolicyCollection.Collection.Name)
-	plan.Description = types.StringValue(mutation.AddPolicyCollection.Collection.Description)
-	plan.CloudProvider = types.StringValue(mutation.AddPolicyCollection.Collection.Provider)
-	plan.AutoUpdate = types.BoolValue(mutation.AddPolicyCollection.Collection.AutoUpdate)
-	plan.System = types.BoolValue(mutation.AddPolicyCollection.Collection.System)
-	plan.Repository = types.StringValue(mutation.AddPolicyCollection.Collection.Repository)
+	input := api.PolicyCollectionCreateInput{
+		Name:        plan.Name.ValueString(),
+		Provider:    provider,
+		Description: api.NullableString(plan.Description),
+		AutoUpdate:  plan.AutoUpdate.ValueBoolPointer(),
+	}
+	policyCollection, err := r.api.PolicyCollection.Create(ctx, input)
+	if err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
+		return
+	}
 
+	updatePolicyCollectionModel(&plan, policyCollection)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *policyCollectionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state policyCollectionResourceModel
+	var state models.PolicyCollectionResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL query
-	var query struct {
-		PolicyCollection struct {
-			ID          string
-			UUID        string
-			Name        string
-			Description string
-			Provider    string
-			AutoUpdate  bool
-			System      bool
-			Repository  string
-		} `graphql:"policyCollection(uuid: $uuid)"`
-	}
-
-	variables := map[string]any{
-		"uuid": graphql.String(state.UUID.ValueString()),
-	}
-
-	err := r.client.Query(ctx, &query, variables)
+	policyCollection, err := r.api.PolicyCollection.Read(ctx, state.UUID.ValueString(), "")
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read policy collection, got error: %s", err))
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	if query.PolicyCollection.UUID == "" {
+	if policyCollection.UUID == "" {
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	state.ID = types.StringValue(query.PolicyCollection.ID)
-	state.UUID = types.StringValue(query.PolicyCollection.UUID)
-	state.Name = types.StringValue(query.PolicyCollection.Name)
-	state.Description = types.StringValue(query.PolicyCollection.Description)
-	state.CloudProvider = types.StringValue(query.PolicyCollection.Provider)
-	state.AutoUpdate = types.BoolValue(query.PolicyCollection.AutoUpdate)
-	state.System = types.BoolValue(query.PolicyCollection.System)
-	state.Repository = types.StringValue(query.PolicyCollection.Repository)
-
+	updatePolicyCollectionModel(&state, policyCollection)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
 func (r *policyCollectionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan policyCollectionResourceModel
+	var plan models.PolicyCollectionResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL mutation
-	var mutation struct {
-		UpdatePolicyCollection struct {
-			Collection struct {
-				ID          string
-				UUID        string
-				Name        string
-				Description string
-				Provider    string
-				AutoUpdate  bool
-				System      bool
-				Repository  string
-			}
-		} `graphql:"updatePolicyCollection(input: $input)"`
-	}
-
-	variables := map[string]any{
-		"input": UpdatePolicyCollectionInput{
-			UUID:        plan.UUID.ValueString(),
-			Name:        graphql.String(plan.Name.ValueString()),
-			Provider:    graphql.String(plan.CloudProvider.ValueString()),
-			Description: graphql.String(plan.Description.ValueString()),
-			AutoUpdate:  graphql.Boolean(plan.AutoUpdate.ValueBool()),
-		},
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
+	provider, err := api.NewCloudProvider(plan.CloudProvider.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update policy collection, got error: %s", err))
+		resp.Diagnostics.AddError("Invalid Provider", err.Error())
 		return
 	}
 
-	plan.ID = types.StringValue(mutation.UpdatePolicyCollection.Collection.ID)
-	plan.UUID = types.StringValue(mutation.UpdatePolicyCollection.Collection.UUID)
-	plan.Name = types.StringValue(mutation.UpdatePolicyCollection.Collection.Name)
-	plan.Description = types.StringValue(mutation.UpdatePolicyCollection.Collection.Description)
-	plan.CloudProvider = types.StringValue(mutation.UpdatePolicyCollection.Collection.Provider)
-	plan.AutoUpdate = types.BoolValue(mutation.UpdatePolicyCollection.Collection.AutoUpdate)
-	plan.System = types.BoolValue(mutation.UpdatePolicyCollection.Collection.System)
-	plan.Repository = types.StringValue(mutation.UpdatePolicyCollection.Collection.Repository)
+	input := api.PolicyCollectionUpdateInput{
+		UUID:        plan.UUID.ValueString(),
+		Name:        plan.Name.ValueString(),
+		Provider:    provider,
+		Description: plan.Description.ValueStringPointer(),
+		AutoUpdate:  plan.AutoUpdate.ValueBoolPointer(),
+	}
 
+	policyCollection, err := r.api.PolicyCollection.Update(ctx, input)
+	if err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
+		return
+	}
+
+	updatePolicyCollectionModel(&plan, policyCollection)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *policyCollectionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state policyCollectionResourceModel
+	var state models.PolicyCollectionResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// GraphQL mutation
-	var mutation struct {
-		RemovePolicyCollection struct {
-			Collection struct {
-				UUID string
-			}
-		} `graphql:"removePolicyCollection(uuid: $uuid)"`
-	}
-
-	variables := map[string]any{
-		"uuid": graphql.String(state.UUID.ValueString()),
-	}
-
-	err := r.client.Mutate(ctx, &mutation, variables)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete policy collection, got error: %s", err))
+	if err := r.api.PolicyCollection.Delete(ctx, state.UUID.ValueString()); err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }
 
 func (r *policyCollectionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// GraphQL query to get policy collection by UUID
-	var query struct {
-		PolicyCollection struct {
-			ID          string
-			UUID        string
-			Name        string
-			Description string
-			Provider    string
-			AutoUpdate  bool
-			System      bool
-			Repository  string
-		} `graphql:"policyCollection(uuid: $uuid)"`
-	}
-
-	variables := map[string]any{
-		"uuid": graphql.String(req.ID),
-	}
-
-	err := r.client.Query(ctx, &query, variables)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"Error Reading Policy Collection",
-			fmt.Sprintf("Could not read policy collection with UUID %s: %s", req.ID, err),
-		)
-		return
-	}
-
-	if query.PolicyCollection.UUID == "" {
-		resp.Diagnostics.AddError(
-			"Policy Collection Not Found",
-			fmt.Sprintf("No policy collection found with UUID %s", req.ID),
-		)
-		return
-	}
-
-	// Set the imported attributes
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), query.PolicyCollection.ID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), query.PolicyCollection.UUID)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), query.PolicyCollection.Name)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("description"), query.PolicyCollection.Description)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), query.PolicyCollection.Provider)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("auto_update"), query.PolicyCollection.AutoUpdate)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("system"), query.PolicyCollection.System)...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("repository"), query.PolicyCollection.Repository)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
 }
 
-type AddPolicyCollectionInput struct {
-	Name        string          `json:"name"`
-	Provider    string          `json:"provider"`
-	Description graphql.String  `json:"description,omitempty"`
-	AutoUpdate  graphql.Boolean `json:"autoUpdate,omitempty"`
-}
-
-type UpdatePolicyCollectionInput struct {
-	UUID        string          `json:"uuid"`
-	Name        graphql.String  `json:"name,omitempty"`
-	Provider    graphql.String  `json:"provider,omitempty"`
-	Description graphql.String  `json:"description,omitempty"`
-	AutoUpdate  graphql.Boolean `json:"autoUpdate,omitempty"`
+func updatePolicyCollectionModel(m *models.PolicyCollectionResource, policyCollection api.PolicyCollection) {
+	m.ID = types.StringValue(policyCollection.ID)
+	m.UUID = types.StringValue(policyCollection.UUID)
+	m.Name = types.StringValue(policyCollection.Name)
+	m.Description = tftypes.NullableString(policyCollection.Description)
+	m.CloudProvider = types.StringValue(string(policyCollection.Provider))
+	m.AutoUpdate = types.BoolValue(policyCollection.AutoUpdate)
+	m.System = types.BoolValue(policyCollection.System)
+	m.Dynamic = types.BoolValue(policyCollection.IsDynamic)
+	m.RepositoryUUID = tftypes.NullableString(policyCollection.RepositoryConfig.UUID)
 }
