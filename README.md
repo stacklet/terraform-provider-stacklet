@@ -5,7 +5,7 @@ This Terraform Provider allows you to interact with Stacklet's GraphQL API to ma
 ## Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) >= 1.0
-- [Go](https://golang.org/doc/install) >= 1.21
+- [Go](https://golang.org/doc/install) >= 1.24.2
 
 ## Building The Provider
 
