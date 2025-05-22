@@ -2,7 +2,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -12,11 +11,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hasura/go-graphql-client"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
@@ -102,20 +101,11 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 }
 
 func (r *bindingResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if req.ProviderData == nil {
-		return
+	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
+		helpers.AddDiagError(&resp.Diagnostics, err)
+	} else if pd != nil {
+		r.api = pd.API
 	}
-
-	client, ok := req.ProviderData.(*graphql.Client)
-	if !ok {
-		resp.Diagnostics.AddError(
-			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *graphql.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
-		)
-		return
-	}
-
-	r.api = api.New(client)
 }
 
 func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {

@@ -88,5 +88,5 @@ resource "stacklet_account" "tencent_prod" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import stacklet_account.example $clour_provider:$key
+terraform import stacklet_account.example $cloud_provider:$key
 ```

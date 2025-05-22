@@ -17,6 +17,7 @@ import (
 	"github.com/hasura/go-graphql-client"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/datasources"
+	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/resources"
 )
 
@@ -150,13 +151,10 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 		},
 	}
 
-	// Create a new Stacklet client using the configuration values
-	client := graphql.NewClient(creds.endpoint, httpClient)
-
-	// Make the Stacklet client available during DataSource and Resource
-	// type Configure methods.
-	resp.DataSourceData = client
-	resp.ResourceData = client
+	// Make provider data accessible to the Configure method of resources and data sources
+	providerData := providerdata.New(graphql.NewClient(creds.endpoint, httpClient))
+	resp.ResourceData = providerData
+	resp.DataSourceData = providerData
 
 	tflog.Info(ctx, "Configured Stacklet client", map[string]any{"success": true})
 }
