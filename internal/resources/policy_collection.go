@@ -122,7 +122,7 @@ func (r *policyCollectionResource) Create(ctx context.Context, req resource.Crea
 	input := api.PolicyCollectionCreateInput{
 		Name:        plan.Name.ValueString(),
 		Provider:    api.CloudProvider(plan.CloudProvider.ValueString()),
-		Description: api.NullableString(plan.Description),
+		Description: plan.Description.ValueStringPointer(),
 		AutoUpdate:  plan.AutoUpdate.ValueBoolPointer(),
 	}
 	policyCollection, err := r.api.PolicyCollection.Create(ctx, input)

@@ -45,26 +45,6 @@ func (cp CloudProvider) String() string {
 	return string(cp)
 }
 
-// NullableString converts a types.String to a string pointer which can be null.
-func NullableString(s types.String) *string {
-	if s.IsNull() {
-		return nil
-	}
-
-	str := s.ValueString()
-	return &str
-}
-
-// NullableBool converts a types.Bool to a bool pointer which can be null.
-func NullableBool(b types.Bool) *bool {
-	if b.IsNull() {
-		return nil
-	}
-
-	bv := b.ValueBool()
-	return &bv
-}
-
 // StringsList concerts a types.List to a list of strings.
 func StringsList(l types.List) []string {
 	if l.IsNull() || l.IsUnknown() {

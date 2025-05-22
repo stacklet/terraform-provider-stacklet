@@ -118,11 +118,11 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		Name:            plan.Name.ValueString(),
 		Key:             plan.Key.ValueString(),
 		Provider:        api.CloudProvider(plan.CloudProvider.ValueString()),
-		ShortName:       api.NullableString(plan.ShortName),
-		Description:     api.NullableString(plan.Description),
-		Email:           api.NullableString(plan.Email),
-		SecurityContext: api.NullableString(plan.SecurityContext),
-		Variables:       api.NullableString(plan.Variables),
+		ShortName:       plan.ShortName.ValueStringPointer(),
+		Description:     plan.Description.ValueStringPointer(),
+		Email:           plan.Email.ValueStringPointer(),
+		SecurityContext: plan.SecurityContext.ValueStringPointer(),
+		Variables:       plan.Variables.ValueStringPointer(),
 	}
 	account, err := r.api.Account.Create(ctx, input)
 	if err != nil {
@@ -166,12 +166,12 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 	input := api.AccountUpdateInput{
 		Key:             plan.Key.ValueString(),
 		Provider:        api.CloudProvider(plan.CloudProvider.ValueString()),
-		Name:            api.NullableString(plan.Name),
-		ShortName:       api.NullableString(plan.ShortName),
-		Description:     api.NullableString(plan.Description),
-		Email:           api.NullableString(plan.Email),
-		SecurityContext: api.NullableString(plan.SecurityContext),
-		Variables:       api.NullableString(plan.Variables),
+		Name:            plan.Name.ValueStringPointer(),
+		ShortName:       plan.ShortName.ValueStringPointer(),
+		Description:     plan.Description.ValueStringPointer(),
+		Email:           plan.Email.ValueStringPointer(),
+		SecurityContext: plan.SecurityContext.ValueStringPointer(),
+		Variables:       plan.Variables.ValueStringPointer(),
 	}
 
 	account, err := r.api.Account.Update(ctx, input)

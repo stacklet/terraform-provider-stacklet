@@ -161,14 +161,14 @@ func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequ
 
 	// Create remote from plan and config.
 	auth := api.NewRepositoryConfigAuthInput()
-	auth.SetAuthUser(api.NullableString(plan.AuthUser))
-	auth.SetAuthToken(api.NullableString(config.AuthTokenWO))
-	auth.SetSSHPrivateKey(api.NullableString(config.SSHPrivateKeyWO))
-	auth.SetSSHPassphrase(api.NullableString(config.SSHPassphraseWO))
+	auth.SetAuthUser(plan.AuthUser.ValueStringPointer())
+	auth.SetAuthToken(config.AuthTokenWO.ValueStringPointer())
+	auth.SetSSHPrivateKey(config.SSHPrivateKeyWO.ValueStringPointer())
+	auth.SetSSHPassphrase(config.SSHPassphraseWO.ValueStringPointer())
 	input := api.RepositoryCreateInput{
 		Name:        plan.Name.ValueString(),
 		URL:         plan.URL.ValueString(),
-		Description: api.NullableString(plan.Description),
+		Description: plan.Description.ValueStringPointer(),
 		Auth:        auth,
 	}
 	repo, err := r.api.Repository.Create(ctx, input)
@@ -218,25 +218,25 @@ func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 
 	// Determine which auth fields need to be updated.
 	auth := api.NewRepositoryConfigAuthInput()
-	auth.SetAuthUser(api.NullableString(plan.AuthUser))
+	auth.SetAuthUser(plan.AuthUser.ValueStringPointer())
 	if state.AuthTokenWOVersion != plan.AuthTokenWOVersion {
 		state.AuthTokenWOVersion = plan.AuthTokenWOVersion
-		auth.SetAuthToken(api.NullableString(config.AuthTokenWO))
+		auth.SetAuthToken(config.AuthTokenWO.ValueStringPointer())
 	}
 	if state.SSHPrivateKeyWOVersion != plan.SSHPrivateKeyWOVersion {
 		state.SSHPrivateKeyWOVersion = plan.SSHPrivateKeyWOVersion
-		auth.SetSSHPrivateKey(api.NullableString(config.SSHPrivateKeyWO))
+		auth.SetSSHPrivateKey(config.SSHPrivateKeyWO.ValueStringPointer())
 	}
 	if state.SSHPassphraseWOVersion != plan.SSHPassphraseWOVersion {
 		state.SSHPassphraseWOVersion = plan.SSHPassphraseWOVersion
-		auth.SetSSHPassphrase(api.NullableString(config.SSHPassphraseWO))
+		auth.SetSSHPassphrase(config.SSHPassphraseWO.ValueStringPointer())
 	}
 
 	// Update remote according to the combined grand plan.
 	input := api.RepositoryUpdateInput{
 		UUID:        plan.UUID.ValueString(),
 		Name:        plan.Name.ValueString(),
-		Description: api.NullableString(plan.Description),
+		Description: plan.Description.ValueStringPointer(),
 		Auth:        auth,
 	}
 	repo, err := r.api.Repository.Update(ctx, input)
