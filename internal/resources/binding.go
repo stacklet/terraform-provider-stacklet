@@ -116,11 +116,11 @@ func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 	input := api.BindingCreateInput{
 		Name:        plan.Name.ValueString(),
-		Description: api.NullableString(plan.Description),
+		Description: plan.Description.ValueStringPointer(),
 		AutoDeploy:  plan.AutoDeploy.ValueBool(),
-		Schedule:    api.NullableString(plan.Schedule),
+		Schedule:    plan.Schedule.ValueStringPointer(),
 		ExecutionConfig: api.BindingExecutionConfig{
-			Variables: api.NullableString(plan.Variables),
+			Variables: plan.Variables.ValueStringPointer(),
 		},
 		AccountGroupUUID:     plan.AccountGroupUUID.ValueString(),
 		PolicyCollectionUUID: plan.PolicyCollectionUUID.ValueString(),
@@ -175,11 +175,11 @@ func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest
 	input := api.BindingUpdateInput{
 		UUID:        plan.UUID.ValueString(),
 		Name:        plan.Name.ValueString(),
-		Description: api.NullableString(plan.Description),
+		Description: plan.Description.ValueStringPointer(),
 		AutoDeploy:  plan.AutoDeploy.ValueBool(),
-		Schedule:    api.NullableString(plan.Schedule),
+		Schedule:    plan.Schedule.ValueStringPointer(),
 		ExecutionConfig: api.BindingExecutionConfig{
-			Variables: api.NullableString(plan.Variables),
+			Variables: plan.Variables.ValueStringPointer(),
 		},
 	}
 

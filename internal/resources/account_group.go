@@ -97,7 +97,7 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 	input := api.AccountGroupCreateInput{
 		Name:        plan.Name.ValueString(),
 		Provider:    plan.CloudProvider.ValueString(),
-		Description: api.NullableString(plan.Description),
+		Description: plan.Description.ValueStringPointer(),
 		Regions:     api.StringsList(plan.Regions),
 	}
 
@@ -141,8 +141,8 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 
 	input := api.AccountGroupUpdateInput{
 		UUID:        plan.UUID.ValueString(),
-		Name:        api.NullableString(plan.Name),
-		Description: api.NullableString(plan.Description),
+		Name:        plan.Name.ValueStringPointer(),
+		Description: plan.Description.ValueStringPointer(),
 		Regions:     api.StringsList(plan.Regions),
 	}
 

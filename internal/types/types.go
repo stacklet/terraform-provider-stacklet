@@ -16,14 +16,6 @@ func NullableString(s *string) types.String {
 	return types.StringValue(*s)
 }
 
-// NullableBool returns the proper type for a nullable boolean.
-func NullableBool(b *bool) types.Bool {
-	if b == nil {
-		return types.BoolNull()
-	}
-	return types.BoolValue(*b)
-}
-
 // StringsList returns a list of values of string type.
 func StringsList(l []string) basetypes.ListValue {
 	sl := make([]attr.Value, len(l))
