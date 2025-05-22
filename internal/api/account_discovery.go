@@ -54,13 +54,21 @@ type AccountDiscoveryAWSInput struct {
 	OrgReadRole   string  `json:"orgReadRole,omitempty"`
 }
 
+func (i AccountDiscoveryAWSInput) GetGraphQLType() string {
+	return "UpsertAWSAccountDiscoveryInput"
+}
+
 // AccountDiscoveryAzureInput is the input to create or update an Azure account discovery.
 type AccountDiscoveryAzureInput struct {
 	Name         string  `json:"name"`
 	Description  *string `json:"description,omitempty"`
-	ClientID     *string `json:"clientID,omitempty"`
+	ClientID     string  `json:"clientID"`
 	ClientSecret *string `json:"clientSecret,omitempty"`
-	TenantID     *string `json:"tenantID,omitempty"`
+	TenantID     string  `json:"tenantID"`
+}
+
+func (i AccountDiscoveryAzureInput) GetGraphQLType() string {
+	return "UpsertAzureAccountDiscoveryInput"
 }
 
 // AccountDiscoveryGCPInput is the input to create or update a GCP account discovery.
