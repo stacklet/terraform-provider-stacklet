@@ -6,6 +6,7 @@ import (
 
 var RESOURCES = []func() resource.Resource{
 	NewAccountDiscoveryAzureResource,
+	NewAccountDiscoveryAWSResource,
 	NewAccountDiscoveryGCPResource,
 	NewAccountGroupMappingResource,
 	NewAccountGroupResource,

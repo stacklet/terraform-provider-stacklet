@@ -49,9 +49,9 @@ type accountDiscoveryGCPConfig struct {
 type AccountDiscoveryAWSInput struct {
 	Name          string  `json:"name"`
 	Description   *string `json:"description,omitempty"`
-	CustodianRole *string `json:"custodianRole,omitempty"`
-	MemberRole    *string `json:"memberRole,omitempty"`
-	OrgReadRole   string  `json:"orgReadRole,omitempty"`
+	CustodianRole string  `json:"custodianRole"`
+	MemberRole    string  `json:"memberRole"`
+	OrgReadRole   string  `json:"orgReadRole"`
 }
 
 func (i AccountDiscoveryAWSInput) GetGraphQLType() string {

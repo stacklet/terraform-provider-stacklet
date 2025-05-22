@@ -1,0 +1,1 @@
+terraform import stacklet_account_discovery_aws.example $name
