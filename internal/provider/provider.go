@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 	"os"
 	"path"
 
@@ -14,8 +13,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/hasura/go-graphql-client"
 
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/datasources"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/resources"
@@ -37,7 +36,7 @@ type stackletProvider struct {
 // stackletProviderModel maps provider schema data to a Go type.
 type stackletProviderModel struct {
 	Endpoint types.String `tfsdk:"endpoint"`
-	ApiKey   types.String `tfsdk:"api_key"`
+	APIKey   types.String `tfsdk:"api_key"`
 }
 
 // New creates a new provider instance.
@@ -106,8 +105,7 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_ENDPOINT environment variable.",
 		)
 	}
-
-	if config.ApiKey.IsUnknown() {
+	if config.APIKey.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
 			tfpath.Root("api_key"),
 			"Unknown Stacklet API Key",
@@ -115,14 +113,12 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_API_KEY environment variable.",
 		)
 	}
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
 	creds := getCredentials(config)
-
-	if creds.endpoint == "" {
+	if creds.Endpoint == "" {
 		resp.Diagnostics.AddAttributeError(
 			tfpath.Root("endpoint"),
 			"Missing Stacklet API Endpoint",
@@ -130,7 +126,7 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 				"Set the endpoint value in the configuration, in the STACKLET_ENDPOINT environment variable, or login via the stacklet-admin CLI first.",
 		)
 	}
-	if creds.apiKey == "" {
+	if creds.APIKey == "" {
 		resp.Diagnostics.AddAttributeError(
 			tfpath.Root("api_key"),
 			"Missing Stacklet API Key",
@@ -138,21 +134,12 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 				"Set the api_key value in the configuration, in the STACKLET_API_KEY environment variable, or login via the stacklet-admin CLI first.",
 		)
 	}
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Create an HTTP client with the authorization header
-	httpClient := &http.Client{
-		Transport: &authTransport{
-			apiKey: creds.apiKey,
-			base:   http.DefaultTransport,
-		},
-	}
-
 	// Make provider data accessible to the Configure method of resources and data sources
-	providerData := providerdata.New(graphql.NewClient(creds.endpoint, httpClient))
+	providerData := providerdata.New(api.NewClient(ctx, creds.Endpoint, creds.APIKey))
 	resp.ResourceData = providerData
 	resp.DataSourceData = providerData
 
@@ -169,41 +156,28 @@ func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resour
 	return resources.RESOURCES
 }
 
-// authTransport is an http.RoundTripper that adds authentication headers.
-type authTransport struct {
-	apiKey string
-	base   http.RoundTripper
-}
-
-// RoundTrip implements the http.RoundTripper interface.
-func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Set("Authorization", t.apiKey)
-	return t.base.RoundTrip(req)
-}
-
 type credentials struct {
-	endpoint string
-	apiKey   string
+	Endpoint string
+	APIKey   string
 }
 
-// - stacklet-admin configuration.
 func getCredentials(config stackletProviderModel) *credentials {
 	creds := credentials{}
 
 	// Lookup provider configuration
 	if !config.Endpoint.IsNull() {
-		creds.endpoint = config.Endpoint.ValueString()
+		creds.Endpoint = config.Endpoint.ValueString()
 	}
-	if !config.ApiKey.IsNull() {
-		creds.apiKey = config.ApiKey.ValueString()
+	if !config.APIKey.IsNull() {
+		creds.APIKey = config.APIKey.ValueString()
 	}
 
 	// Lookup env vars
-	if creds.endpoint == "" {
-		creds.endpoint = os.Getenv("STACKLET_ENDPOINT")
+	if creds.Endpoint == "" {
+		creds.Endpoint = os.Getenv("STACKLET_ENDPOINT")
 	}
-	if creds.apiKey == "" {
-		creds.apiKey = os.Getenv("STACKLET_API_KEY")
+	if creds.APIKey == "" {
+		creds.APIKey = os.Getenv("STACKLET_API_KEY")
 	}
 
 	if homeDir, err := os.UserHomeDir(); err == nil {
@@ -213,13 +187,13 @@ func getCredentials(config stackletProviderModel) *credentials {
 				Api string `json:"api"`
 			}{}
 			if err := json.Unmarshal(content, &config); err == nil {
-				creds.endpoint = config.Api
+				creds.Endpoint = config.Api
 			}
 		}
 
 		credsFile := path.Join(homeDir, ".stacklet", "credentials")
 		if content, err := os.ReadFile(credsFile); err == nil {
-			creds.apiKey = string(content)
+			creds.APIKey = string(content)
 		}
 	}
 
