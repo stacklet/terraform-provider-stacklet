@@ -51,6 +51,9 @@ func (r *accountDiscoveryGCPResource) Schema(_ context.Context, _ resource.Schem
 			"name": schema.StringAttribute{
 				Description: "The unique name of the account discovery configuration.",
 				Required:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"description": schema.StringAttribute{
 				Description: "Human-readable notes about the account discovery configuration.",
