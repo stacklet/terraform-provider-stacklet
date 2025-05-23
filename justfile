@@ -39,6 +39,13 @@ test-record testname:
 docs:
     env -C tools go generate -run=generate-docs
 
+# Update go dependencies
+update-deps-go:
+    go get -u ./...
+    go mod tidy
+    env -C tools go get -u
+    env -C tools go mod tidy
+
 tf_config := '''
 provider_installation {
   dev_overrides {
