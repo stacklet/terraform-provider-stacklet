@@ -91,6 +91,31 @@ jobs:
           sed -i '/^subcategory:/d' docs/index.md
           just lint-docs
 
+  lint-copyright:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Tool versions
+        uses: wistia/parse-tool-versions@v2.1.1
+        with:
+          prefix: TOOL_VERSION_
+
+      - name: Setup Just
+        uses: extractions/setup-just@v3
+        with:
+          just-version: ${{ env.TOOL_VERSION_JUST }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.TOOL_VERSION_GO }}
+
+      - name: Lint
+        run: |
+          just lint-copyright
+
   test:
     runs-on: ubuntu-latest
     steps:
