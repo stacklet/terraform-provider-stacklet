@@ -41,6 +41,9 @@ func (r *accountGroupMappingResource) Schema(_ context.Context, _ resource.Schem
 			"id": schema.StringAttribute{
 				Description: "The ID of the account group mapping.",
 				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"group_uuid": schema.StringAttribute{
 				Description: "The UUID of the account group.",

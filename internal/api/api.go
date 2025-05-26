@@ -8,6 +8,7 @@ import (
 // API provides access to the GraphQL API.
 type API struct {
 	Account                 accountAPI
+	AccountDiscovery        accountDiscoveryAPI
 	AccountGroup            accountGroupAPI
 	AccountGroupMapping     accountGroupMappingAPI
 	Binding                 bindingAPI
@@ -21,6 +22,7 @@ type API struct {
 func New(c *graphql.Client) *API {
 	return &API{
 		Account:                 accountAPI{c},
+		AccountDiscovery:        accountDiscoveryAPI{c},
 		AccountGroup:            accountGroupAPI{c},
 		AccountGroupMapping:     accountGroupMappingAPI{c},
 		Binding:                 bindingAPI{c},

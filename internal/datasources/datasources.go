@@ -7,8 +7,8 @@ import (
 var DATASOURCES = []func() datasource.DataSource{
 	NewAccountDataSource,
 	NewAccountGroupDataSource,
-	NewPolicyDataSource,
-	NewPolicyCollectionDataSource,
 	NewBindingDataSource,
+	NewPolicyCollectionDataSource,
+	NewPolicyDataSource,
 	NewRepositoryDataSource,
 }
