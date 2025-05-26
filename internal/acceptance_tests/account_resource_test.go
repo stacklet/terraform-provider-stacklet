@@ -18,7 +18,11 @@ func TestAccAccountResource(t *testing.T) {
 						description = "Test AWS account"
 						short_name = "test"
 						email = "test@example.com"
-						variables = "{\"environment\": \"test\"}"
+						variables = jsonencode({
+                            environment = "test"
+                        })
+                        security_context_wo = "arn:aws:iam::123456789012:role/stacklet-execution"
+                        security_context_wo_version = "1"
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -28,7 +32,9 @@ func TestAccAccountResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_account.test", "description", "Test AWS account"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "short_name", "test"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "email", "test@example.com"),
-				resource.TestCheckResourceAttr("stacklet_account.test", "variables", "{\"environment\": \"test\"}"),
+				resource.TestCheckResourceAttr("stacklet_account.test", "variables", "{\"environment\":\"test\"}"),
+				// For AWS, passing a role ARN as security_context_wo passes it through as a security_context
+				resource.TestCheckResourceAttr("stacklet_account.test", "security_context", "arn:aws:iam::123456789012:role/stacklet-execution"),
 				resource.TestCheckResourceAttrSet("stacklet_account.test", "id"),
 			),
 		},
@@ -50,7 +56,11 @@ func TestAccAccountResource(t *testing.T) {
 						description = "Updated AWS account"
 						short_name = "test-updated"
 						email = "updated@example.com"
-						variables = "{\"environment\": \"staging\"}"
+						variables = jsonencode({
+                            environment = "staging"
+                        })
+                        security_context_wo = "arn:aws:iam::123456789012:role/stacklet-execution-new"
+                        security_context_wo_version = "2"
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -60,7 +70,8 @@ func TestAccAccountResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_account.test", "description", "Updated AWS account"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "short_name", "test-updated"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "email", "updated@example.com"),
-				resource.TestCheckResourceAttr("stacklet_account.test", "variables", "{\"environment\": \"staging\"}"),
+				resource.TestCheckResourceAttr("stacklet_account.test", "variables", "{\"environment\":\"staging\"}"),
+				resource.TestCheckResourceAttr("stacklet_account.test", "security_context", "arn:aws:iam::123456789012:role/stacklet-execution-new"),
 			),
 		},
 	}

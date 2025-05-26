@@ -112,7 +112,12 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.CloudProvider = types.StringValue(string(account.Provider))
 	data.Path = tftypes.NullableString(account.Path)
 	data.Email = tftypes.NullableString(account.Email)
-	data.Variables = tftypes.NullableString(account.Variables)
-
+	data.SecurityContext = tftypes.NullableString(account.SecurityContext)
+	variablesString, err := tftypes.JSONString(account.Variables)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid content for variables", err.Error())
+		return
+	}
+	data.Variables = variablesString
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

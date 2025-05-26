@@ -225,7 +225,7 @@ func updateBindingModel(m *models.BindingResource, binding api.Binding) diag.Dia
 	m.System = types.BoolValue(binding.System)
 	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 	if err != nil {
-		return diag.NewErrorDiagnostic("Invalid value for 'variables", err.Error())
+		return diag.NewErrorDiagnostic("Invalid content for variables", err.Error())
 	}
 	m.Variables = variablesString
 	return nil

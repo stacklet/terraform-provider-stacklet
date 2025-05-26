@@ -8,16 +8,17 @@ import (
 
 // Account is the data returned by reading account data.
 type Account struct {
-	ID          string
-	Key         string
-	Name        string
-	ShortName   *string
-	Description *string
-	Provider    CloudProvider
-	Path        *string
-	Email       *string
-	Active      bool
-	Variables   *string
+	ID              string
+	Key             string
+	Name            string
+	ShortName       *string
+	Description     *string
+	Provider        CloudProvider
+	Path            *string
+	Email           *string
+	Active          bool
+	SecurityContext *string
+	Variables       *string
 }
 
 // AccountCreateInput is the input for creating an account.
@@ -44,7 +45,7 @@ type AccountUpdateInput struct {
 	ShortName       *string       `json:"shortName"`
 	Description     *string       `json:"description"`
 	Email           *string       `json:"email"`
-	SecurityContext *string       `json:"securityContext"`
+	SecurityContext *string       `json:"securityContext,omitempty"`
 	Variables       *string       `json:"variables"`
 }
 

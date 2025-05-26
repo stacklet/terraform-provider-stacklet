@@ -18,7 +18,9 @@ func TestAccAccountDataSource(t *testing.T) {
 						description = "Test AWS account"
 						short_name = "test"
 						email = "test@example.com"
-						variables = "{\"environment\": \"test\"}"
+						variables = jsonencode({
+                            environment = "test"
+                        })
 					}
 				`,
 		},
@@ -32,7 +34,9 @@ func TestAccAccountDataSource(t *testing.T) {
 						description = "Test AWS account"
 						short_name = "test"
 						email = "test@example.com"
-						variables = "{\"environment\": \"test\"}"
+						variables = jsonencode({
+                            environment = "test"
+                        })
 					}
 
 					data "stacklet_account" "test" {
@@ -47,7 +51,7 @@ func TestAccAccountDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "description", "Test AWS account"),
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "short_name", "test"),
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "email", "test@example.com"),
-				resource.TestCheckResourceAttr("data.stacklet_account.test", "variables", "{\"environment\": \"test\"}"),
+				resource.TestCheckResourceAttr("data.stacklet_account.test", "variables", "{\"environment\":\"test\"}"),
 				resource.TestCheckResourceAttrSet("data.stacklet_account.test", "id"),
 			),
 		},

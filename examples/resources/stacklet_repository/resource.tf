@@ -10,7 +10,7 @@ resource "stacklet_repository" "example_http_auth" {
 
   auth_user             = "some-user"
   auth_token_wo         = "ghp_xxxxxxxxxxxxxxxxxxxx"
-  auth_token_wo_version = 1
+  auth_token_wo_version = "1"
 }
 
 resource "stacklet_repository" "example_ssh_auth" {
@@ -26,7 +26,7 @@ AAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt
 ktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==
 -----END OPENSSH PRIVATE KEY-----
 EOT
-  ssh_private_key_wo_version = 1
+  ssh_private_key_wo_version = "1"
 }
 
 resource "stacklet_repository" "example_codecommit" {
@@ -34,5 +34,5 @@ resource "stacklet_repository" "example_codecommit" {
   url  = "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/example"
 
   auth_token_wo         = "arn:aws:iam::123456789012:role/example-repo-access"
-  auth_token_wo_version = 1
+  auth_token_wo_version = "1"
 }

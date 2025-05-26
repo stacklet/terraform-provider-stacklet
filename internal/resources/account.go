@@ -3,6 +3,7 @@ package resources
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -86,11 +87,21 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "The email contact address for the account.",
 				Optional:    true,
 			},
-			"security_context": schema.StringAttribute{
-				Description: "The security context for the account.",
+			"security_context_wo": schema.StringAttribute{
+				Description: "The input value for the security context for the account.",
 				Optional:    true,
 				Sensitive:   true,
+				WriteOnly:   true,
 			},
+			"security_context_wo_version": schema.StringAttribute{
+				Description: "The version for the security context. Must be changed to update security_context_wo.",
+				Optional:    true,
+			},
+			"security_context": schema.StringAttribute{
+				Description: "The security context for the account, as returned by the API.",
+				Computed:    true,
+			},
+
 			"variables": schema.StringAttribute{
 				Description: "JSON encoded dict of values used for policy templating.",
 				Optional:    true,
@@ -108,8 +119,9 @@ func (r *accountResource) Configure(_ context.Context, req resource.ConfigureReq
 }
 
 func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan models.AccountResource
+	var plan, config models.AccountResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -121,7 +133,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		ShortName:       plan.ShortName.ValueStringPointer(),
 		Description:     plan.Description.ValueStringPointer(),
 		Email:           plan.Email.ValueStringPointer(),
-		SecurityContext: plan.SecurityContext.ValueStringPointer(),
+		SecurityContext: config.SecurityContextWO.ValueStringPointer(),
 		Variables:       plan.Variables.ValueStringPointer(),
 	}
 	account, err := r.api.Account.Create(ctx, input)
@@ -130,7 +142,10 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	updateAccountModel(&plan, account)
+	resp.Diagnostics.Append(updateAccountModel(&plan, account))
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -152,15 +167,25 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	updateAccountModel(&state, account)
+	resp.Diagnostics.Append(updateAccountModel(&state, account))
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
 func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan models.AccountResource
+	var plan, state, config models.AccountResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
+	}
+
+	var securityContext *string
+	if state.SecurityContextWOVersion != plan.SecurityContextWOVersion {
+		securityContext = config.SecurityContextWO.ValueStringPointer()
 	}
 
 	input := api.AccountUpdateInput{
@@ -170,7 +195,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		ShortName:       plan.ShortName.ValueStringPointer(),
 		Description:     plan.Description.ValueStringPointer(),
 		Email:           plan.Email.ValueStringPointer(),
-		SecurityContext: plan.SecurityContext.ValueStringPointer(),
+		SecurityContext: securityContext,
 		Variables:       plan.Variables.ValueStringPointer(),
 	}
 
@@ -180,7 +205,10 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	updateAccountModel(&plan, account)
+	resp.Diagnostics.Append(updateAccountModel(&plan, account))
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -208,7 +236,7 @@ func (r *accountResource) ImportState(ctx context.Context, req resource.ImportSt
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), parts[1])...)
 }
 
-func updateAccountModel(m *models.AccountResource, account api.Account) {
+func updateAccountModel(m *models.AccountResource, account api.Account) diag.Diagnostic {
 	m.ID = types.StringValue(account.ID)
 	m.Key = types.StringValue(account.Key)
 	m.Name = types.StringValue(account.Name)
@@ -217,5 +245,11 @@ func updateAccountModel(m *models.AccountResource, account api.Account) {
 	m.Description = tftypes.NullableString(account.Description)
 	m.Path = tftypes.NullableString(account.Path)
 	m.Email = tftypes.NullableString(account.Email)
-	m.Variables = tftypes.NullableString(account.Variables)
+	m.SecurityContext = tftypes.NullableString(account.SecurityContext)
+	variablesString, err := tftypes.JSONString(account.Variables)
+	if err != nil {
+		return diag.NewErrorDiagnostic("Invalid content for variables", err.Error())
+	}
+	m.Variables = variablesString
+	return nil
 }
