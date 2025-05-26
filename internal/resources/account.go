@@ -158,12 +158,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 	account, err := r.api.Account.Read(ctx, state.CloudProvider.ValueString(), state.Key.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	if account.Key == "" {
-		resp.State.RemoveResource(ctx)
+		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

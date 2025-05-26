@@ -193,11 +193,7 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	// Read remote by UUID.
 	repo, err := r.api.Repository.Read(ctx, state.UUID.ValueString())
 	if err != nil {
-		if _, ok := err.(api.NotFound); ok {
-			resp.State.RemoveResource(ctx)
-		} else {
-			helpers.AddDiagError(&resp.Diagnostics, err)
-		}
+		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

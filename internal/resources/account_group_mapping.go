@@ -97,11 +97,7 @@ func (r *accountGroupMappingResource) Read(ctx context.Context, req resource.Rea
 
 	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, state.AccountKey.ValueString(), state.GroupUUID.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-	}
-
-	if accountGroupMapping.ID == "" {
-		resp.State.RemoveResource(ctx)
+		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

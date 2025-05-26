@@ -149,12 +149,7 @@ func (r *bindingResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 	binding, err := r.api.Binding.Read(ctx, state.UUID.ValueString(), "")
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	if binding.UUID == "" {
-		resp.State.RemoveResource(ctx)
+		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

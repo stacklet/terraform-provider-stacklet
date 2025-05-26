@@ -95,11 +95,6 @@ func (d *policyCollectionDataSource) Read(ctx context.Context, req datasource.Re
 		return
 	}
 
-	if policyCollection.UUID == "" {
-		resp.Diagnostics.AddError("Not Found", "No policy collection found with the specified UUID or name")
-		return
-	}
-
 	data.ID = types.StringValue(policyCollection.ID)
 	data.UUID = types.StringValue(policyCollection.UUID)
 	data.Name = types.StringValue(policyCollection.Name)

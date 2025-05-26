@@ -89,11 +89,6 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	if account_group.UUID == "" {
-		resp.Diagnostics.AddError("Not Found", "No account group found with the specified UUID or name")
-		return
-	}
-
 	data.ID = types.StringValue(account_group.ID)
 	data.UUID = types.StringValue(account_group.UUID)
 	data.Name = types.StringValue(account_group.Name)

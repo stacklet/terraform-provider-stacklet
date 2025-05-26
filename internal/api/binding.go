@@ -76,6 +76,9 @@ func (a bindingAPI) Read(ctx context.Context, uuid string, name string) (Binding
 	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return query.Binding, APIError{"Client error", err.Error()}
 	}
+	if query.Binding.ID == "" {
+		return query.Binding, NotFound{"Binding not found"}
+	}
 
 	return query.Binding, nil
 }

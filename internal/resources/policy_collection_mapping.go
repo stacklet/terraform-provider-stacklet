@@ -107,11 +107,7 @@ func (r *policyCollectionMappingResource) Read(ctx context.Context, req resource
 
 	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Read(ctx, state.CollectionUUID.ValueString(), state.PolicyUUID.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-	}
-
-	if policyCollectionMapping.ID == "" {
-		resp.State.RemoveResource(ctx)
+		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

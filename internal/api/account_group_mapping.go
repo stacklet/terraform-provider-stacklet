@@ -68,7 +68,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 	}
 
 	if len(query.AccountGroup.AccountMappings.Edges) == 0 {
-		return AccountGroupMapping{}, nil
+		return AccountGroupMapping{}, NotFound{"Account group mapping not found"}
 	}
 
 	node := query.AccountGroup.AccountMappings.Edges[0].Node

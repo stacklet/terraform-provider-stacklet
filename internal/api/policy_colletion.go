@@ -62,6 +62,10 @@ func (a policyCollectionAPI) Read(ctx context.Context, uuid string, name string)
 		return query.PolicyCollection, APIError{"Client error", err.Error()}
 	}
 
+	if query.PolicyCollection.ID == "" {
+		return query.PolicyCollection, NotFound{"Policy collection not found"}
+	}
+
 	return query.PolicyCollection, nil
 }
 

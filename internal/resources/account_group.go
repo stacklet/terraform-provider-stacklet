@@ -120,11 +120,7 @@ func (r *accountGroupResource) Read(ctx context.Context, req resource.ReadReques
 
 	account_group, err := r.api.AccountGroup.Read(ctx, state.UUID.ValueString(), "")
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-	if account_group.UUID == "" {
-		resp.State.RemoveResource(ctx)
+		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

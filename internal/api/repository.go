@@ -141,7 +141,7 @@ func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error
 			}
 		}
 		if !q.Conn.PageInfo.HasNextPage {
-			return "", NotFound{"Repository with given URL not found"}
+			return "", NotFound{"Repository not found"}
 		}
 		cursor = q.Conn.PageInfo.EndCursor
 	}

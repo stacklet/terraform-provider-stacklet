@@ -112,6 +112,10 @@ func (a accountDiscoveryAPI) Read(ctx context.Context, name string) (AccountDisc
 		return query.AccountDiscovery, APIError{"Client error", err.Error()}
 	}
 
+	if query.AccountDiscovery.ID == "" {
+		return query.AccountDiscovery, NotFound{"Account discovery not found"}
+	}
+
 	return query.AccountDiscovery, nil
 }
 

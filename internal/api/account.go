@@ -70,8 +70,8 @@ func (a accountAPI) Read(ctx context.Context, cloudProvider string, key string) 
 		return query.Account, APIError{"Client error", err.Error()}
 	}
 
-	if !query.Account.Active {
-		return query.Account, APIError{"Not found", "No active account with specified provider/key found"}
+	if query.Account.ID == "" || !query.Account.Active {
+		return query.Account, NotFound{"Account not found"}
 	}
 
 	return query.Account, nil

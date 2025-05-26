@@ -142,12 +142,7 @@ func (r *accountDiscoveryAWSResource) Read(ctx context.Context, req resource.Rea
 
 	accountDiscovery, err := r.api.AccountDiscovery.Read(ctx, state.Name.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	if accountDiscovery.Name == "" {
-		resp.State.RemoveResource(ctx)
+		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

@@ -42,5 +42,9 @@ func (a policyAPI) Read(ctx context.Context, uuid string, name string, version i
 		return query.Policy, APIError{"Client error", err.Error()}
 	}
 
+	if query.Policy.ID == "" {
+		return query.Policy, NotFound{"Policy not found"}
+	}
+
 	return query.Policy, nil
 }

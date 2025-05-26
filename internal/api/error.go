@@ -18,12 +18,19 @@ func (e APIError) Error() string {
 	return fmt.Sprintf("%s: %s", e.Summary, e.Detail)
 }
 
+// NotFound represents an error raised when an API resource is not found.
 type NotFound struct {
 	Message string
 }
 
+// Summary returns the error summary.
+func (e NotFound) Summary() string {
+	return "Not Found"
+}
+
+// Error returns the error message.
 func (e NotFound) Error() string {
-	return fmt.Sprintf("Not Found: %s", e.Message)
+	return e.Message
 }
 
 func FromProblems(ctx context.Context, problems []Problem) error {

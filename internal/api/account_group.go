@@ -57,6 +57,11 @@ func (a accountGroupAPI) Read(ctx context.Context, uuid string, name string) (Ac
 	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return query.AccountGroup, APIError{"Client error", err.Error()}
 	}
+
+	if query.AccountGroup.ID == "" {
+		return query.AccountGroup, NotFound{"Account group not found"}
+	}
+
 	return query.AccountGroup, nil
 }
 

@@ -74,7 +74,7 @@ func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID str
 		}
 	}
 
-	return PolicyCollectionMapping{}, nil
+	return PolicyCollectionMapping{}, NotFound{"Policy collection not found"}
 }
 
 // Upsert creates or updates a policy collection mapping.

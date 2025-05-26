@@ -125,11 +125,6 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	if policy.UUID == "" {
-		resp.Diagnostics.AddError("Not Found", "No policy found with specified details")
-		return
-	}
-
 	data.ID = types.StringValue(policy.ID)
 	data.UUID = types.StringValue(policy.UUID)
 	data.Name = types.StringValue(policy.Name)

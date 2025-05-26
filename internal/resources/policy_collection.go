@@ -144,12 +144,7 @@ func (r *policyCollectionResource) Read(ctx context.Context, req resource.ReadRe
 
 	policyCollection, err := r.api.PolicyCollection.Read(ctx, state.UUID.ValueString(), "")
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	if policyCollection.UUID == "" {
-		resp.State.RemoveResource(ctx)
+		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

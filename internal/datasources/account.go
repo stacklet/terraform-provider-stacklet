@@ -99,11 +99,6 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 
-	if account.Key == "" {
-		resp.Diagnostics.AddError("Not Found", "No account found with the specified provider and key")
-		return
-	}
-
 	data.ID = types.StringValue(account.ID)
 	data.Key = types.StringValue(account.Key)
 	data.Name = types.StringValue(account.Name)
