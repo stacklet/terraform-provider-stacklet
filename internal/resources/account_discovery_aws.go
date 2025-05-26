@@ -84,7 +84,7 @@ func (r *accountDiscoveryAWSResource) Schema(_ context.Context, _ resource.Schem
 				Required:    true,
 			},
 			"org_id": schema.StringAttribute{
-				Description: "The organizaion ID.",
+				Description: "The organization ID.",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),

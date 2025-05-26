@@ -40,7 +40,7 @@ resource "stacklet_account_discovery_aws" "example" {
 ### Read-Only
 
 - `id` (String) The GraphQL Node ID of the account discovery configuration.
-- `org_id` (String) The organizaion ID.
+- `org_id` (String) The organization ID.
 
 ## Import
 

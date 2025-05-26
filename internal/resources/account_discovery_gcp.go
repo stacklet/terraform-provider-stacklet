@@ -194,7 +194,7 @@ func (r *accountDiscoveryGCPResource) Update(ctx context.Context, req resource.U
 		OrgID:            plan.OrgID.ValueString(),
 		RootFolderIDs:    api.StringsList(plan.RootFolderIDs),
 		ExcludeFolderIDs: api.StringsList(plan.ExcludeFolderIDs),
-		CredentialJSON:   credentialJSON,
+		CredentialJSON:   credentialJSON, // this might be nil, in which case it's not updated
 	}
 	accountDiscovery, err := r.api.AccountDiscovery.UpsertGCP(ctx, input)
 	if err != nil {
