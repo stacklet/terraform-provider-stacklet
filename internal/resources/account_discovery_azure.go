@@ -164,7 +164,6 @@ func (r *accountDiscoveryAzureResource) Update(ctx context.Context, req resource
 
 	var clientSecret *string
 	if state.ClientSecretVersion != plan.ClientSecretVersion {
-		state.ClientSecretVersion = plan.ClientSecretVersion
 		clientSecret = config.ClientSecret.ValueStringPointer()
 	}
 	input := api.AccountDiscoveryAzureInput{

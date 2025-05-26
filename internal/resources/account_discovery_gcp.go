@@ -186,7 +186,6 @@ func (r *accountDiscoveryGCPResource) Update(ctx context.Context, req resource.U
 
 	var credentialJSON *string
 	if state.CredentialJSONVersion != plan.CredentialJSONVersion {
-		state.CredentialJSONVersion = plan.CredentialJSONVersion
 		credentialJSON = config.CredentialJSON.ValueStringPointer()
 	}
 	input := api.AccountDiscoveryGCPInput{
