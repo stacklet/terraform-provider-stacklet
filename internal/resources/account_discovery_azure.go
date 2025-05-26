@@ -80,14 +80,10 @@ func (r *accountDiscoveryAzureResource) Schema(_ context.Context, _ resource.Sch
 				Required:    true,
 			},
 			"client_secret_wo": schema.StringAttribute{
-				Description: "The Azure client secret.",
+				Description: "The Azure client secret. This is not stored in state and is only updated when client_id is changed.",
 				Required:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
-			},
-			"client_secret_wo_version": schema.StringAttribute{
-				Description: "The Azure client secret version. Must be changed to update client_secret_wo",
-				Required:    true,
 			},
 		},
 	}
@@ -112,7 +108,7 @@ func (r *accountDiscoveryAzureResource) Create(ctx context.Context, req resource
 	input := api.AccountDiscoveryAzureInput{
 		Name:         plan.Name.ValueString(),
 		Description:  plan.Description.ValueStringPointer(),
-		ClientID:     plan.ClientID.ValueString(),
+		ClientID:     plan.ClientID.ValueStringPointer(),
 		ClientSecret: config.ClientSecret.ValueStringPointer(),
 		TenantID:     plan.TenantID.ValueString(),
 	}
@@ -158,18 +154,21 @@ func (r *accountDiscoveryAzureResource) Update(ctx context.Context, req resource
 	var plan, config, state models.AccountDiscoveryAzureResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var clientSecret *string
-	if state.ClientSecretVersion != plan.ClientSecretVersion {
+	var clientID, clientSecret *string
+	// ID and secret must be set together, if not they're both left nil in the API call
+	if state.ClientID != plan.ClientID {
+		clientID = plan.ClientID.ValueStringPointer()
 		clientSecret = config.ClientSecret.ValueStringPointer()
 	}
 	input := api.AccountDiscoveryAzureInput{
 		Name:         plan.Name.ValueString(),
 		Description:  plan.Description.ValueStringPointer(),
-		ClientID:     plan.ClientID.ValueString(),
+		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		TenantID:     plan.TenantID.ValueString(),
 	}

@@ -6,12 +6,11 @@ import (
 
 // AccountDiscoveryAzureResource is the model for Azure account discovery resources.
 type AccountDiscoveryAzureResource struct {
-	ID                  types.String `tfsdk:"id"`
-	Name                types.String `tfsdk:"name"`
-	Description         types.String `tfsdk:"description"`
-	Suspended           types.Bool   `tfsdk:"suspended"`
-	ClientID            types.String `tfsdk:"client_id"`
-	TenantID            types.String `tfsdk:"tenant_id"`
-	ClientSecret        types.String `tfsdk:"client_secret_wo"`
-	ClientSecretVersion types.String `tfsdk:"client_secret_wo_version"`
+	ID           types.String `tfsdk:"id"`
+	Name         types.String `tfsdk:"name"`
+	Description  types.String `tfsdk:"description"`
+	Suspended    types.Bool   `tfsdk:"suspended"`
+	ClientID     types.String `tfsdk:"client_id"`
+	TenantID     types.String `tfsdk:"tenant_id"`
+	ClientSecret types.String `tfsdk:"client_secret_wo"`
 }

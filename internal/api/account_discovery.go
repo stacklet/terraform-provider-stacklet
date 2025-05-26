@@ -62,7 +62,7 @@ func (i AccountDiscoveryAWSInput) GetGraphQLType() string {
 type AccountDiscoveryAzureInput struct {
 	Name         string  `json:"name"`
 	Description  *string `json:"description,omitempty"`
-	ClientID     string  `json:"clientID"`
+	ClientID     *string `json:"clientID,omitempty"`
 	ClientSecret *string `json:"clientSecret,omitempty"`
 	TenantID     string  `json:"tenantID"`
 }

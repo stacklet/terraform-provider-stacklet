@@ -180,6 +180,7 @@ func (r *accountDiscoveryGCPResource) Update(ctx context.Context, req resource.U
 	var plan, config, state models.AccountDiscoveryGCPResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}

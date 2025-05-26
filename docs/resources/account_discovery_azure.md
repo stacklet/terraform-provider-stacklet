@@ -14,12 +14,11 @@ Manage an account discovery configuration for Azure.
 
 ```terraform
 resource "stacklet_account_discovery_azure" "example" {
-  name                     = "test-azure"
-  description              = "Azure tenant discovery"
-  tenant_id                = "00000000-0000-0000-0000-000000000000"
-  client_id                = "11111111-1111-1111-1111-111111111111"
-  client_secret_wo         = "your-client-secret"
-  client_secret_wo_version = "1"
+  name             = "test-azure"
+  description      = "Azure tenant discovery"
+  tenant_id        = "00000000-0000-0000-0000-000000000000"
+  client_id        = "11111111-1111-1111-1111-111111111111"
+  client_secret_wo = "your-client-secret"
 }
 ```
 
@@ -31,8 +30,7 @@ resource "stacklet_account_discovery_azure" "example" {
 > **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
 
 - `client_id` (String) The Azure client ID.
-- `client_secret_wo` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The Azure client secret.
-- `client_secret_wo_version` (String) The Azure client secret version. Must be changed to update client_secret_wo
+- `client_secret_wo` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The Azure client secret. This is not stored in state and is only updated when client_id is changed.
 - `name` (String) The unique name of the account discovery configuration.
 - `tenant_id` (String) The Azure tenant ID.
 
