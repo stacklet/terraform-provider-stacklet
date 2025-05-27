@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -106,7 +106,7 @@ func (r *policyCollectionResource) Schema(_ context.Context, _ resource.SchemaRe
 
 func (r *policyCollectionResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		r.api = pd.API
 	}
@@ -127,7 +127,7 @@ func (r *policyCollectionResource) Create(ctx context.Context, req resource.Crea
 	}
 	policyCollection, err := r.api.PolicyCollection.Create(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -144,12 +144,7 @@ func (r *policyCollectionResource) Read(ctx context.Context, req resource.ReadRe
 
 	policyCollection, err := r.api.PolicyCollection.Read(ctx, state.UUID.ValueString(), "")
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	if policyCollection.UUID == "" {
-		resp.State.RemoveResource(ctx)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
@@ -174,7 +169,7 @@ func (r *policyCollectionResource) Update(ctx context.Context, req resource.Upda
 
 	policyCollection, err := r.api.PolicyCollection.Update(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -190,7 +185,7 @@ func (r *policyCollectionResource) Delete(ctx context.Context, req resource.Dele
 	}
 
 	if err := r.api.PolicyCollection.Delete(ctx, state.UUID.ValueString()); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }

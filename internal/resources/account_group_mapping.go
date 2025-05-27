@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
@@ -65,7 +65,7 @@ func (r *accountGroupMappingResource) Schema(_ context.Context, _ resource.Schem
 
 func (r *accountGroupMappingResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		r.api = pd.API
 	}
@@ -80,7 +80,7 @@ func (r *accountGroupMappingResource) Create(ctx context.Context, req resource.C
 
 	mapping, err := r.api.AccountGroupMapping.Create(ctx, plan.AccountKey.ValueString(), plan.GroupUUID.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -97,11 +97,7 @@ func (r *accountGroupMappingResource) Read(ctx context.Context, req resource.Rea
 
 	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, state.AccountKey.ValueString(), state.GroupUUID.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-	}
-
-	if accountGroupMapping.ID == "" {
-		resp.State.RemoveResource(ctx)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
@@ -130,15 +126,15 @@ func (r *accountGroupMappingResource) Delete(ctx context.Context, req resource.D
 	}
 
 	if err := r.api.AccountGroupMapping.Delete(ctx, state.ID.ValueString()); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }
 
 func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	parts, err := helpers.SplitImportID(req.ID, []string{"group_uuid", "account_key"})
+	parts, err := splitImportID(req.ID, []string{"group_uuid", "account_key"})
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 

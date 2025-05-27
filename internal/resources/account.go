@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -112,7 +112,7 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 
 func (r *accountResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		r.api = pd.API
 	}
@@ -138,7 +138,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 	account, err := r.api.Account.Create(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -158,12 +158,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 	account, err := r.api.Account.Read(ctx, state.CloudProvider.ValueString(), state.Key.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	if account.Key == "" {
-		resp.State.RemoveResource(ctx)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
@@ -201,7 +196,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	account, err := r.api.Account.Update(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -220,15 +215,15 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	if err := r.api.Account.Delete(ctx, state.CloudProvider.ValueString(), state.Key.ValueString()); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }
 
 func (r *accountResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	parts, err := helpers.SplitImportID(req.ID, []string{"provider", "key"})
+	parts, err := splitImportID(req.ID, []string{"provider", "key"})
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 

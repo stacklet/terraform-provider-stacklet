@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -144,7 +144,7 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 
 func (r *RepositoryResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		r.api = pd.API
 	}
@@ -173,7 +173,7 @@ func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	repo, err := r.api.Repository.Create(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -193,11 +193,7 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	// Read remote by UUID.
 	repo, err := r.api.Repository.Read(ctx, state.UUID.ValueString())
 	if err != nil {
-		if _, ok := err.(api.NotFound); ok {
-			resp.State.RemoveResource(ctx)
-		} else {
-			helpers.AddDiagError(&resp.Diagnostics, err)
-		}
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
@@ -241,7 +237,7 @@ func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 	repo, err := r.api.Repository.Update(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -265,7 +261,7 @@ func (r *RepositoryResource) Delete(ctx context.Context, req resource.DeleteRequ
 		// behaviour should *NOT* be to implicitly tear down resources not under management.
 	}
 	if err := r.api.Repository.Delete(ctx, input); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }
@@ -273,7 +269,7 @@ func (r *RepositoryResource) Delete(ctx context.Context, req resource.DeleteRequ
 func (r *RepositoryResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	uuid, err := r.api.Repository.FindByURL(ctx, req.ID)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), uuid)...)

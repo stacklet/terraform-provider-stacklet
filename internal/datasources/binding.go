@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -80,7 +80,7 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 
 func (d *bindingDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		d.api = pd.API
 	}
@@ -95,7 +95,7 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	binding, err := d.api.Binding.Read(ctx, data.UUID.ValueString(), data.Name.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 

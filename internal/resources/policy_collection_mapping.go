@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
@@ -69,7 +69,7 @@ func (r *policyCollectionMappingResource) Schema(_ context.Context, _ resource.S
 
 func (r *policyCollectionMappingResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		r.api = pd.API
 	}
@@ -90,7 +90,7 @@ func (r *policyCollectionMappingResource) Create(ctx context.Context, req resour
 	// Note that given this is an upsert operation, if the mapping already exists it will be updated.
 	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Upsert(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -107,11 +107,7 @@ func (r *policyCollectionMappingResource) Read(ctx context.Context, req resource
 
 	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Read(ctx, state.CollectionUUID.ValueString(), state.PolicyUUID.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-	}
-
-	if policyCollectionMapping.ID == "" {
-		resp.State.RemoveResource(ctx)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
@@ -133,7 +129,7 @@ func (r *policyCollectionMappingResource) Update(ctx context.Context, req resour
 	}
 	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Upsert(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -149,15 +145,15 @@ func (r *policyCollectionMappingResource) Delete(ctx context.Context, req resour
 	}
 
 	if err := r.api.PolicyCollectionMapping.Delete(ctx, state.ID.ValueString()); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }
 
 func (r *policyCollectionMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	parts, err := helpers.SplitImportID(req.ID, []string{"collection_uuid", "policy_uuid"})
+	parts, err := splitImportID(req.ID, []string{"collection_uuid", "policy_uuid"})
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 

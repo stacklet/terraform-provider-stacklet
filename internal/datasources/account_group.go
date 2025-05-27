@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -65,7 +65,7 @@ func (d *accountGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 
 func (d *accountGroupDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		d.api = pd.API
 	}
@@ -85,12 +85,7 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 
 	account_group, err := d.api.AccountGroup.Read(ctx, data.UUID.ValueString(), data.Name.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	if account_group.UUID == "" {
-		resp.Diagnostics.AddError("Not Found", "No account group found with the specified UUID or name")
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 

@@ -103,7 +103,7 @@ func (a repositoryAPI) Read(ctx context.Context, uuid string) (Repository, error
 		} `graphql:"repositoryConfig(uuid: $uuid)"`
 	}
 	if err := a.c.Query(ctx, &q, map[string]any{"uuid": uuid}); err != nil {
-		return Repository{}, APIError{"Client error", err.Error()}
+		return Repository{}, NewAPIError(err)
 	}
 	if err := FromProblems(ctx, q.Payload.Problems); err != nil {
 		return Repository{}, err
@@ -130,7 +130,7 @@ func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error
 			} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
 		}
 		if err := a.c.Query(ctx, &q, map[string]any{"cursor": cursor}); err != nil {
-			return "", APIError{"Client error", err.Error()}
+			return "", NewAPIError(err)
 		}
 		if err := FromProblems(ctx, q.Conn.Problems); err != nil {
 			return "", err
@@ -141,7 +141,7 @@ func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error
 			}
 		}
 		if !q.Conn.PageInfo.HasNextPage {
-			return "", NotFound{"Repository with given URL not found"}
+			return "", NotFound{"Repository not found"}
 		}
 		cursor = q.Conn.PageInfo.EndCursor
 	}
@@ -155,7 +155,7 @@ func (a repositoryAPI) Create(ctx context.Context, i RepositoryCreateInput) (Rep
 		} `graphql:"addRepositoryConfig(input: $input)"`
 	}
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
-		return Repository{}, APIError{"Client error", err.Error()}
+		return Repository{}, NewAPIError(err)
 	}
 	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
 		return Repository{}, err
@@ -171,7 +171,7 @@ func (a repositoryAPI) Update(ctx context.Context, i RepositoryUpdateInput) (Rep
 		} `graphql:"updateRepositoryConfig(input: $input)"`
 	}
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
-		return Repository{}, APIError{"Client error", err.Error()}
+		return Repository{}, NewAPIError(err)
 	}
 	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
 		return Repository{}, err
@@ -186,7 +186,7 @@ func (a repositoryAPI) Delete(ctx context.Context, i RepositoryDeleteInput) erro
 		} `graphql:"removeRepositoryConfig(input: $input)"`
 	}
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
-		return APIError{"Client error", err.Error()}
+		return NewAPIError(err)
 	}
 	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
 		return err

@@ -11,7 +11,7 @@ format:
     go fmt ./...
 
 # Run linters
-lint: lint-tf lint-go
+lint: lint-go lint-tf
 
 # Run linters for terraform
 lint-tf:

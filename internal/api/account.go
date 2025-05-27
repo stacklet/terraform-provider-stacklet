@@ -67,11 +67,11 @@ func (a accountAPI) Read(ctx context.Context, cloudProvider string, key string) 
 		"key":      graphql.String(key),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.Account, APIError{"Client error", err.Error()}
+		return query.Account, NewAPIError(err)
 	}
 
-	if !query.Account.Active {
-		return query.Account, APIError{"Not found", "No active account with specified provider/key found"}
+	if query.Account.ID == "" || !query.Account.Active {
+		return query.Account, NotFound{"Account not found"}
 	}
 
 	return query.Account, nil
@@ -86,7 +86,7 @@ func (a accountAPI) Create(ctx context.Context, i AccountCreateInput) (Account, 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.AddAccount.Account, APIError{"Client error", err.Error()}
+		return mutation.AddAccount.Account, NewAPIError(err)
 	}
 
 	return mutation.AddAccount.Account, nil
@@ -101,7 +101,7 @@ func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (Account, 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.UpdateAccount.Account, APIError{"Client error", err.Error()}
+		return mutation.UpdateAccount.Account, NewAPIError(err)
 	}
 
 	return mutation.UpdateAccount.Account, nil
@@ -121,7 +121,7 @@ func (a accountAPI) Delete(ctx context.Context, cloudProvider string, key string
 		"key":      graphql.String(key),
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return APIError{"Client error", err.Error()}
+		return NewAPIError(err)
 	}
 	return nil
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -80,7 +80,7 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 
 func (d *accountDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		d.api = pd.API
 	}
@@ -95,12 +95,7 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	account, err := d.api.Account.Read(ctx, data.CloudProvider.ValueString(), data.Key.ValueString())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	if account.Key == "" {
-		resp.Diagnostics.AddError("Not Found", "No account found with the specified provider and key")
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
