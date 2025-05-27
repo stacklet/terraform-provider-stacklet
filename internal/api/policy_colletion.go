@@ -59,7 +59,7 @@ func (a policyCollectionAPI) Read(ctx context.Context, uuid string, name string)
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.PolicyCollection, APIError{"Client error", err.Error()}
+		return query.PolicyCollection, NewAPIError(err)
 	}
 
 	if query.PolicyCollection.ID == "" {
@@ -78,7 +78,7 @@ func (a policyCollectionAPI) Create(ctx context.Context, i PolicyCollectionCreat
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.AddPolicyCollection.Collection, APIError{"Client error", err.Error()}
+		return mutation.AddPolicyCollection.Collection, NewAPIError(err)
 	}
 	return mutation.AddPolicyCollection.Collection, nil
 }
@@ -92,7 +92,7 @@ func (a policyCollectionAPI) Update(ctx context.Context, i PolicyCollectionUpdat
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.UpdatePolicyCollection.Collection, APIError{"Client error", err.Error()}
+		return mutation.UpdatePolicyCollection.Collection, NewAPIError(err)
 	}
 
 	return mutation.UpdatePolicyCollection.Collection, nil
@@ -111,7 +111,7 @@ func (a policyCollectionAPI) Delete(ctx context.Context, uuid string) error {
 		"uuid": graphql.String(uuid),
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return APIError{"Client error", err.Error()}
+		return NewAPIError(err)
 	}
 	return nil
 }

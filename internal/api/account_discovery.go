@@ -109,7 +109,7 @@ func (a accountDiscoveryAPI) Read(ctx context.Context, name string) (AccountDisc
 	}
 	variables := map[string]any{"name": graphql.String(name)}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.AccountDiscovery, APIError{"Client error", err.Error()}
+		return query.AccountDiscovery, NewAPIError(err)
 	}
 
 	if query.AccountDiscovery.ID == "" {
@@ -128,7 +128,7 @@ func (a accountDiscoveryAPI) UpsertAWS(ctx context.Context, input AccountDiscove
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return mutation.UpsertAWSAccountDiscovery.AccountDiscovery, APIError{"Client error", err.Error()}
+		return mutation.UpsertAWSAccountDiscovery.AccountDiscovery, NewAPIError(err)
 	}
 	return mutation.UpsertAWSAccountDiscovery.AccountDiscovery, nil
 }
@@ -142,7 +142,7 @@ func (a accountDiscoveryAPI) UpsertAzure(ctx context.Context, input AccountDisco
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return mutation.UpsertAzureAccountDiscovery.AccountDiscovery, APIError{"Client error", err.Error()}
+		return mutation.UpsertAzureAccountDiscovery.AccountDiscovery, NewAPIError(err)
 	}
 	return mutation.UpsertAzureAccountDiscovery.AccountDiscovery, nil
 }
@@ -156,7 +156,7 @@ func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscove
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return mutation.UpsertGCPAccountDiscovery.AccountDiscovery, APIError{"Client error", err.Error()}
+		return mutation.UpsertGCPAccountDiscovery.AccountDiscovery, NewAPIError(err)
 	}
 	return mutation.UpsertGCPAccountDiscovery.AccountDiscovery, nil
 }
@@ -179,7 +179,7 @@ func (a accountDiscoveryAPI) UpdateSuspended(ctx context.Context, id string, sus
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return AccountDiscovery{}, APIError{"Client error", err.Error()}
+		return AccountDiscovery{}, NewAPIError(err)
 	}
 
 	return mutation.UpdateAccountDiscoverySchedule.AccountDiscoveries[0], nil

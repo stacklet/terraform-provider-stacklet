@@ -74,7 +74,7 @@ func (a bindingAPI) Read(ctx context.Context, uuid string, name string) (Binding
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.Binding, APIError{"Client error", err.Error()}
+		return query.Binding, NewAPIError(err)
 	}
 	if query.Binding.ID == "" {
 		return query.Binding, NotFound{"Binding not found"}
@@ -92,7 +92,7 @@ func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (Binding, 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.AddBinding.Binding, APIError{"Client error", err.Error()}
+		return mutation.AddBinding.Binding, NewAPIError(err)
 	}
 
 	return mutation.AddBinding.Binding, nil
@@ -107,7 +107,7 @@ func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (Binding, 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.UpdateBinding.Binding, APIError{"Client error", err.Error()}
+		return mutation.UpdateBinding.Binding, NewAPIError(err)
 	}
 
 	return mutation.UpdateBinding.Binding, nil
@@ -126,7 +126,7 @@ func (a bindingAPI) Delete(ctx context.Context, uuid string) error {
 		"uuid": graphql.String(uuid),
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return APIError{"Client error", err.Error()}
+		return NewAPIError(err)
 	}
 	return nil
 }

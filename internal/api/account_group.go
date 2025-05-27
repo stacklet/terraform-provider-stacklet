@@ -55,7 +55,7 @@ func (a accountGroupAPI) Read(ctx context.Context, uuid string, name string) (Ac
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.AccountGroup, APIError{"Client error", err.Error()}
+		return query.AccountGroup, NewAPIError(err)
 	}
 
 	if query.AccountGroup.ID == "" {
@@ -74,7 +74,7 @@ func (a accountGroupAPI) Create(ctx context.Context, i AccountGroupCreateInput) 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.AddAccountGroup.Group, APIError{"Client error", err.Error()}
+		return mutation.AddAccountGroup.Group, NewAPIError(err)
 	}
 
 	return mutation.AddAccountGroup.Group, nil
@@ -89,7 +89,7 @@ func (a accountGroupAPI) Update(ctx context.Context, i AccountGroupUpdateInput) 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.UpdateAccountGroup.Group, APIError{"Client error", err.Error()}
+		return mutation.UpdateAccountGroup.Group, NewAPIError(err)
 	}
 
 	return mutation.UpdateAccountGroup.Group, nil
@@ -106,7 +106,7 @@ func (a accountGroupAPI) Delete(ctx context.Context, uuid string) error {
 	}
 	variables := map[string]any{"uuid": graphql.String(uuid)}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return APIError{"Client error", err.Error()}
+		return NewAPIError(err)
 	}
 	return nil
 }

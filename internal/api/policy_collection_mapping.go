@@ -65,7 +65,7 @@ func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID str
 		"uuid": graphql.String(collectionUUID),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return PolicyCollectionMapping{}, APIError{"Client error", err.Error()}
+		return PolicyCollectionMapping{}, NewAPIError(err)
 	}
 
 	for _, edge := range query.PolicyCollection.PolicyMappings.Edges {
@@ -92,11 +92,7 @@ func (a policyCollectionMappingAPI) Upsert(ctx context.Context, input PolicyColl
 
 	err := a.c.Mutate(ctx, &mutation, variables)
 	if err != nil {
-		return PolicyCollectionMapping{}, APIError{"Client error", err.Error()}
-	}
-
-	if len(mutation.UpsertPolicyCollectionMappings.Mappings) == 0 {
-		return PolicyCollectionMapping{}, APIError{"Create error", "Policy collection mapping not found after creation"}
+		return PolicyCollectionMapping{}, NewAPIError(err)
 	}
 
 	return mutation.UpsertPolicyCollectionMappings.Mappings[0], nil
@@ -117,7 +113,7 @@ func (a policyCollectionMappingAPI) Delete(ctx context.Context, id string) error
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return APIError{"Client error", err.Error()}
+		return NewAPIError(err)
 	}
 	return nil
 }

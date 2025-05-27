@@ -2,20 +2,29 @@ package api
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // APIError represent an error interacting with the API.
 type APIError struct {
-	Summary string
-	Detail  string
+	Kind   string
+	Detail string
+}
+
+// Error returns the error summary message.
+func (e APIError) Summary() string {
+	return e.Kind
 }
 
 // Error returns the error message.
 func (e APIError) Error() string {
-	return fmt.Sprintf("%s: %s", e.Summary, e.Detail)
+	return e.Detail
+}
+
+// newAPIError returns an APIError from an error.
+func NewAPIError(err error) APIError {
+	return APIError{Kind: "API Error", Detail: err.Error()}
 }
 
 // NotFound represents an error raised when an API resource is not found.
@@ -44,7 +53,7 @@ func FromProblems(ctx context.Context, problems []Problem) error {
 	if problems[0].Kind == "NotFound" {
 		return NotFound{problems[0].Message}
 	}
-	return APIError{problems[0].Kind, problems[0].Message}
+	return APIError{Kind: problems[0].Kind, Detail: problems[0].Message}
 }
 
 type Problem struct {

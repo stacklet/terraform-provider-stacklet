@@ -64,7 +64,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 	}
 
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return AccountGroupMapping{}, APIError{"Client error", err.Error()}
+		return AccountGroupMapping{}, NewAPIError(err)
 	}
 
 	if len(query.AccountGroup.AccountMappings.Edges) == 0 {
@@ -101,7 +101,7 @@ func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, g
 
 	err := a.c.Mutate(ctx, &mutation, variables)
 	if err != nil {
-		return AccountGroupMapping{}, APIError{"Client error", err.Error()}
+		return AccountGroupMapping{}, NewAPIError(err)
 	}
 
 	return AccountGroupMapping{
@@ -126,7 +126,7 @@ func (a accountGroupMappingAPI) Delete(ctx context.Context, id string) error {
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return APIError{"Client error", err.Error()}
+		return NewAPIError(err)
 	}
 	return nil
 }
