@@ -84,7 +84,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 // Create creates an account group mapping.
 func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, groupUUID string) (*AccountGroupMapping, error) {
 	var mutation struct {
-		UpsertAccountGroupMappings struct {
+		Payload struct {
 			Mappings []struct {
 				ID string
 			}
@@ -107,7 +107,7 @@ func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, g
 	}
 
 	return &AccountGroupMapping{
-		ID:         mutation.UpsertAccountGroupMappings.Mappings[0].ID,
+		ID:         mutation.Payload.Mappings[0].ID,
 		AccountKey: accountKey,
 		GroupUUID:  groupUUID,
 	}, nil
@@ -116,7 +116,7 @@ func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, g
 // Delete removes an account group mapping.
 func (a accountGroupMappingAPI) Delete(ctx context.Context, id string) error {
 	var mutation struct {
-		RemoveAccountGroupMappings struct {
+		Payload struct {
 			Removed []struct {
 				ID string
 			}

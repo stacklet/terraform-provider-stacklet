@@ -88,7 +88,7 @@ func (a bindingAPI) Read(ctx context.Context, uuid string, name string) (*Bindin
 // Create creates a binding.
 func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (*Binding, error) {
 	var mutation struct {
-		AddBinding struct {
+		Payload struct {
 			Binding Binding
 		} `graphql:"addBinding(input: $input)"`
 	}
@@ -97,13 +97,13 @@ func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (*Binding,
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.AddBinding.Binding, nil
+	return &mutation.Payload.Binding, nil
 }
 
 // Update updates a binding.
 func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (*Binding, error) {
 	var mutation struct {
-		UpdateBinding struct {
+		Payload struct {
 			Binding Binding
 		} `graphql:"updateBinding(input: $input)"`
 	}
@@ -112,13 +112,13 @@ func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (*Binding,
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.UpdateBinding.Binding, nil
+	return &mutation.Payload.Binding, nil
 }
 
 // Delete removes a binding.
 func (a bindingAPI) Delete(ctx context.Context, uuid string) error {
 	var mutation struct {
-		RemoveBinding struct {
+		Payload struct {
 			Binding struct {
 				UUID string
 			}

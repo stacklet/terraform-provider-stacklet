@@ -70,7 +70,7 @@ func (a accountGroupAPI) Read(ctx context.Context, uuid string, name string) (*A
 // Create creates an account group.
 func (a accountGroupAPI) Create(ctx context.Context, i AccountGroupCreateInput) (*AccountGroup, error) {
 	var mutation struct {
-		AddAccountGroup struct {
+		Payload struct {
 			Group AccountGroup
 		} `graphql:"addAccountGroup(input: $input)"`
 	}
@@ -79,13 +79,13 @@ func (a accountGroupAPI) Create(ctx context.Context, i AccountGroupCreateInput) 
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.AddAccountGroup.Group, nil
+	return &mutation.Payload.Group, nil
 }
 
 // Update updates an account group.
 func (a accountGroupAPI) Update(ctx context.Context, i AccountGroupUpdateInput) (*AccountGroup, error) {
 	var mutation struct {
-		UpdateAccountGroup struct {
+		Payload struct {
 			Group AccountGroup
 		} `graphql:"updateAccountGroup(input: $input)"`
 	}
@@ -94,13 +94,13 @@ func (a accountGroupAPI) Update(ctx context.Context, i AccountGroupUpdateInput) 
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.UpdateAccountGroup.Group, nil
+	return &mutation.Payload.Group, nil
 }
 
 // Delete removes an account group.
 func (a accountGroupAPI) Delete(ctx context.Context, uuid string) error {
 	var mutation struct {
-		RemoveAccountGroup struct {
+		Payload struct {
 			Group struct {
 				UUID string
 			}

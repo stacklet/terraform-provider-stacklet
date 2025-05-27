@@ -82,7 +82,7 @@ func (a accountAPI) Read(ctx context.Context, cloudProvider string, key string) 
 // Create creates an account.
 func (a accountAPI) Create(ctx context.Context, i AccountCreateInput) (*Account, error) {
 	var mutation struct {
-		AddAccount struct {
+		Payload struct {
 			Account Account
 		} `graphql:"addAccount(input: $input)"`
 	}
@@ -91,13 +91,13 @@ func (a accountAPI) Create(ctx context.Context, i AccountCreateInput) (*Account,
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.AddAccount.Account, nil
+	return &mutation.Payload.Account, nil
 }
 
 // Update updates an account.
 func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (*Account, error) {
 	var mutation struct {
-		UpdateAccount struct {
+		Payload struct {
 			Account Account
 		} `graphql:"updateAccount(input: $input)"`
 	}
@@ -106,13 +106,13 @@ func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (*Account,
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.UpdateAccount.Account, nil
+	return &mutation.Payload.Account, nil
 }
 
 // Delete removes an account.
 func (a accountAPI) Delete(ctx context.Context, cloudProvider string, key string) error {
 	var mutation struct {
-		RemoveAccount struct {
+		Payload struct {
 			Account struct {
 				Key string
 			}

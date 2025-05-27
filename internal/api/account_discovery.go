@@ -124,7 +124,7 @@ func (a accountDiscoveryAPI) Read(ctx context.Context, name string) (*AccountDis
 // UpsertAWS creates or updates an AWS account discovery.
 func (a accountDiscoveryAPI) UpsertAWS(ctx context.Context, input AccountDiscoveryAWSInput) (*AccountDiscovery, error) {
 	var mutation struct {
-		UpsertAWSAccountDiscovery struct {
+		Payload struct {
 			AccountDiscovery AccountDiscovery
 		} `graphql:"upsertAWSAccountDiscovery(input: $input)"`
 	}
@@ -132,13 +132,13 @@ func (a accountDiscoveryAPI) UpsertAWS(ctx context.Context, input AccountDiscove
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
 		return nil, NewAPIError(err)
 	}
-	return &mutation.UpsertAWSAccountDiscovery.AccountDiscovery, nil
+	return &mutation.Payload.AccountDiscovery, nil
 }
 
 // UpsertAzure creates or updates an Azure account discovery.
 func (a accountDiscoveryAPI) UpsertAzure(ctx context.Context, input AccountDiscoveryAzureInput) (*AccountDiscovery, error) {
 	var mutation struct {
-		UpsertAzureAccountDiscovery struct {
+		Payload struct {
 			AccountDiscovery AccountDiscovery
 		} `graphql:"upsertAzureAccountDiscovery(input: $input)"`
 	}
@@ -146,13 +146,13 @@ func (a accountDiscoveryAPI) UpsertAzure(ctx context.Context, input AccountDisco
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
 		return nil, NewAPIError(err)
 	}
-	return &mutation.UpsertAzureAccountDiscovery.AccountDiscovery, nil
+	return &mutation.Payload.AccountDiscovery, nil
 }
 
 // UpsertGCP creates or updates a GCP account discovery.
 func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscoveryGCPInput) (*AccountDiscovery, error) {
 	var mutation struct {
-		UpsertGCPAccountDiscovery struct {
+		Payload struct {
 			AccountDiscovery AccountDiscovery
 		} `graphql:"upsertGCPAccountDiscovery(input: $input)"`
 	}
@@ -160,13 +160,13 @@ func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscove
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
 		return nil, NewAPIError(err)
 	}
-	return &mutation.UpsertGCPAccountDiscovery.AccountDiscovery, nil
+	return &mutation.Payload.AccountDiscovery, nil
 }
 
 // UpdateSuspended updates the susended flag for an account discovery.
 func (a accountDiscoveryAPI) UpdateSuspended(ctx context.Context, id string, suspended bool) (*AccountDiscovery, error) {
 	var mutation struct {
-		UpdateAccountDiscoverySchedule struct {
+		Payload struct {
 			AccountDiscoveries []AccountDiscovery
 		} `graphql:"updateAccountDiscoverySchedule(input: $input)"`
 	}
@@ -184,5 +184,5 @@ func (a accountDiscoveryAPI) UpdateSuspended(ctx context.Context, id string, sus
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.UpdateAccountDiscoverySchedule.AccountDiscoveries[0], nil
+	return &mutation.Payload.AccountDiscoveries[0], nil
 }
