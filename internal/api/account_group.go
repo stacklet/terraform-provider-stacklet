@@ -47,7 +47,7 @@ type accountGroupAPI struct {
 }
 
 // Read returns data for an account group.
-func (a accountGroupAPI) Read(ctx context.Context, uuid string, name string) (AccountGroup, error) {
+func (a accountGroupAPI) Read(ctx context.Context, uuid string, name string) (*AccountGroup, error) {
 	var query struct {
 		AccountGroup AccountGroup `graphql:"accountGroup(uuid: $uuid, name: $name)"`
 	}
@@ -57,18 +57,18 @@ func (a accountGroupAPI) Read(ctx context.Context, uuid string, name string) (Ac
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.AccountGroup, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
 	if query.AccountGroup.ID == "" {
-		return query.AccountGroup, NotFound{"Account group not found"}
+		return nil, NotFound{"Account group not found"}
 	}
 
-	return query.AccountGroup, nil
+	return &query.AccountGroup, nil
 }
 
 // Create creates an account group.
-func (a accountGroupAPI) Create(ctx context.Context, i AccountGroupCreateInput) (AccountGroup, error) {
+func (a accountGroupAPI) Create(ctx context.Context, i AccountGroupCreateInput) (*AccountGroup, error) {
 	var mutation struct {
 		AddAccountGroup struct {
 			Group AccountGroup
@@ -76,14 +76,14 @@ func (a accountGroupAPI) Create(ctx context.Context, i AccountGroupCreateInput) 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.AddAccountGroup.Group, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.AddAccountGroup.Group, nil
+	return &mutation.AddAccountGroup.Group, nil
 }
 
 // Update updates an account group.
-func (a accountGroupAPI) Update(ctx context.Context, i AccountGroupUpdateInput) (AccountGroup, error) {
+func (a accountGroupAPI) Update(ctx context.Context, i AccountGroupUpdateInput) (*AccountGroup, error) {
 	var mutation struct {
 		UpdateAccountGroup struct {
 			Group AccountGroup
@@ -91,10 +91,10 @@ func (a accountGroupAPI) Update(ctx context.Context, i AccountGroupUpdateInput) 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.UpdateAccountGroup.Group, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.UpdateAccountGroup.Group, nil
+	return &mutation.UpdateAccountGroup.Group, nil
 }
 
 // Delete removes an account group.

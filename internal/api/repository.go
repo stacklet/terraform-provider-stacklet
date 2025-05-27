@@ -97,7 +97,7 @@ type repositoryAPI struct {
 	c *graphql.Client
 }
 
-func (a repositoryAPI) Read(ctx context.Context, uuid string) (Repository, error) {
+func (a repositoryAPI) Read(ctx context.Context, uuid string) (*Repository, error) {
 	var q struct {
 		Payload struct {
 			RepositoryConfig Repository
@@ -105,12 +105,12 @@ func (a repositoryAPI) Read(ctx context.Context, uuid string) (Repository, error
 		} `graphql:"repositoryConfig(uuid: $uuid)"`
 	}
 	if err := a.c.Query(ctx, &q, map[string]any{"uuid": uuid}); err != nil {
-		return Repository{}, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 	if err := FromProblems(ctx, q.Payload.Problems); err != nil {
-		return Repository{}, err
+		return nil, err
 	}
-	return q.Payload.RepositoryConfig, nil
+	return &q.Payload.RepositoryConfig, nil
 }
 
 func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error) {
@@ -149,7 +149,7 @@ func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error
 	}
 }
 
-func (a repositoryAPI) Create(ctx context.Context, i RepositoryCreateInput) (Repository, error) {
+func (a repositoryAPI) Create(ctx context.Context, i RepositoryCreateInput) (*Repository, error) {
 	var m struct {
 		Payload struct {
 			RepositoryConfig Repository
@@ -157,15 +157,15 @@ func (a repositoryAPI) Create(ctx context.Context, i RepositoryCreateInput) (Rep
 		} `graphql:"addRepositoryConfig(input: $input)"`
 	}
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
-		return Repository{}, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
-		return Repository{}, err
+		return nil, err
 	}
-	return m.Payload.RepositoryConfig, nil
+	return &m.Payload.RepositoryConfig, nil
 }
 
-func (a repositoryAPI) Update(ctx context.Context, i RepositoryUpdateInput) (Repository, error) {
+func (a repositoryAPI) Update(ctx context.Context, i RepositoryUpdateInput) (*Repository, error) {
 	var m struct {
 		Payload struct {
 			RepositoryConfig Repository
@@ -173,12 +173,12 @@ func (a repositoryAPI) Update(ctx context.Context, i RepositoryUpdateInput) (Rep
 		} `graphql:"updateRepositoryConfig(input: $input)"`
 	}
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
-		return Repository{}, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
-		return Repository{}, err
+		return nil, err
 	}
-	return m.Payload.RepositoryConfig, nil
+	return &m.Payload.RepositoryConfig, nil
 }
 
 func (a repositoryAPI) Delete(ctx context.Context, i RepositoryDeleteInput) error {

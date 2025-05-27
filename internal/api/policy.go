@@ -31,7 +31,7 @@ type policyAPI struct {
 }
 
 // Read returns data for a policy.
-func (a policyAPI) Read(ctx context.Context, uuid string, name string, version int) (Policy, error) {
+func (a policyAPI) Read(ctx context.Context, uuid string, name string, version int) (*Policy, error) {
 	var query struct {
 		Policy Policy `graphql:"policy(uuid: $uuid, name: $name, version: $version)"`
 	}
@@ -41,12 +41,12 @@ func (a policyAPI) Read(ctx context.Context, uuid string, name string, version i
 		"version": graphql.Int(version),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.Policy, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
 	if query.Policy.ID == "" {
-		return query.Policy, NotFound{"Policy not found"}
+		return nil, NotFound{"Policy not found"}
 	}
 
-	return query.Policy, nil
+	return &query.Policy, nil
 }

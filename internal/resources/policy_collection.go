@@ -196,7 +196,7 @@ func (r *policyCollectionResource) ImportState(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
 }
 
-func updatePolicyCollectionModel(m *models.PolicyCollectionResource, policyCollection api.PolicyCollection) {
+func updatePolicyCollectionModel(m *models.PolicyCollectionResource, policyCollection *api.PolicyCollection) {
 	m.ID = types.StringValue(policyCollection.ID)
 	m.UUID = types.StringValue(policyCollection.UUID)
 	m.Name = types.StringValue(policyCollection.Name)
