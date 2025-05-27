@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,variables}}}:{\"input\":{\"description\":\"Test AWS account\",\"email\":\"test@example.com\",\"key\":\"999999999999\",\"name\":\"test-account-ds\",\"provider\":\"AWS\",\"shortName\":\"test\",\"variables\":\"{\\\"environment\\\": \\\"test\\\"}\"}}": [
+  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}:{\"input\":{\"description\":\"Test AWS account\",\"email\":\"test@example.com\",\"key\":\"999999999999\",\"name\":\"test-account-ds\",\"provider\":\"AWS\",\"shortName\":\"test\",\"variables\":\"{\\\"environment\\\":\\\"test\\\"}\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,variables}}}",
+        "query": "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}",
         "variables": {
           "input": {
             "description": "Test AWS account",
@@ -11,7 +11,7 @@
             "name": "test-account-ds",
             "provider": "AWS",
             "shortName": "test",
-            "variables": "{\"environment\": \"test\"}"
+            "variables": "{\"environment\":\"test\"}"
           }
         }
       },
@@ -27,8 +27,9 @@
               "name": "test-account-ds",
               "path": null,
               "provider": "AWS",
+              "securityContext": "",
               "shortName": "test",
-              "variables": "{\"environment\": \"test\"}"
+              "variables": "{\"environment\":\"test\"}"
             }
           }
         }
@@ -55,10 +56,10 @@
       }
     }
   ],
-  "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,variables}}:{\"key\":\"999999999999\",\"provider\":\"AWS\"}": [
+  "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}:{\"key\":\"999999999999\",\"provider\":\"AWS\"}": [
     {
       "request": {
-        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,variables}}",
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}",
         "variables": {
           "key": "999999999999",
           "provider": "AWS"
@@ -75,15 +76,16 @@
             "name": "test-account-ds",
             "path": null,
             "provider": "AWS",
+            "securityContext": "",
             "shortName": "test",
-            "variables": "{\"environment\": \"test\"}"
+            "variables": "{\"environment\":\"test\"}"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,variables}}",
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}",
         "variables": {
           "key": "999999999999",
           "provider": "AWS"
@@ -100,15 +102,16 @@
             "name": "test-account-ds",
             "path": null,
             "provider": "AWS",
+            "securityContext": "",
             "shortName": "test",
-            "variables": "{\"environment\": \"test\"}"
+            "variables": "{\"environment\":\"test\"}"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,variables}}",
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}",
         "variables": {
           "key": "999999999999",
           "provider": "AWS"
@@ -125,15 +128,16 @@
             "name": "test-account-ds",
             "path": null,
             "provider": "AWS",
+            "securityContext": "",
             "shortName": "test",
-            "variables": "{\"environment\": \"test\"}"
+            "variables": "{\"environment\":\"test\"}"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,variables}}",
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}",
         "variables": {
           "key": "999999999999",
           "provider": "AWS"
@@ -150,15 +154,16 @@
             "name": "test-account-ds",
             "path": null,
             "provider": "AWS",
+            "securityContext": "",
             "shortName": "test",
-            "variables": "{\"environment\": \"test\"}"
+            "variables": "{\"environment\":\"test\"}"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,variables}}",
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}",
         "variables": {
           "key": "999999999999",
           "provider": "AWS"
@@ -175,15 +180,16 @@
             "name": "test-account-ds",
             "path": null,
             "provider": "AWS",
+            "securityContext": "",
             "shortName": "test",
-            "variables": "{\"environment\": \"test\"}"
+            "variables": "{\"environment\":\"test\"}"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,variables}}",
+        "query": "query ($key:String!$provider:CloudProvider!){account(provider: $provider, key: $key){id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}",
         "variables": {
           "key": "999999999999",
           "provider": "AWS"
@@ -200,8 +206,9 @@
             "name": "test-account-ds",
             "path": null,
             "provider": "AWS",
+            "securityContext": "",
             "shortName": "test",
-            "variables": "{\"environment\": \"test\"}"
+            "variables": "{\"environment\":\"test\"}"
           }
         }
       }
