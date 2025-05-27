@@ -1,3 +1,5 @@
+// Copyright (c) 2025 - Stacklet, Inc.
+
 package acceptance_tests
 
 import (

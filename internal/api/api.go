@@ -1,3 +1,5 @@
+// Copyright (c) 2025 - Stacklet, Inc.
+
 // package api provides access to the GraphQL API.
 package api
 
