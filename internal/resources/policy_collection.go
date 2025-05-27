@@ -19,8 +19,8 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
+	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
-	"github.com/stacklet/terraform-provider-stacklet/schemavalidate"
 )
 
 var (
