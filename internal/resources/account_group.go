@@ -120,7 +120,7 @@ func (r *accountGroupResource) Read(ctx context.Context, req resource.ReadReques
 
 	account_group, err := r.api.AccountGroup.Read(ctx, state.UUID.ValueString(), "")
 	if err != nil {
-		errors.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

@@ -97,7 +97,7 @@ func (r *accountGroupMappingResource) Read(ctx context.Context, req resource.Rea
 
 	accountGroupMapping, err := r.api.AccountGroupMapping.Read(ctx, state.AccountKey.ValueString(), state.GroupUUID.ValueString())
 	if err != nil {
-		errors.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

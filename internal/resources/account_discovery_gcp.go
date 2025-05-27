@@ -163,7 +163,7 @@ func (r *accountDiscoveryGCPResource) Read(ctx context.Context, req resource.Rea
 
 	accountDiscovery, err := r.api.AccountDiscovery.Read(ctx, state.Name.ValueString())
 	if err != nil {
-		errors.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

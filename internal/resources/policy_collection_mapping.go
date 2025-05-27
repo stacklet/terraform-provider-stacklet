@@ -107,7 +107,7 @@ func (r *policyCollectionMappingResource) Read(ctx context.Context, req resource
 
 	policyCollectionMapping, err := r.api.PolicyCollectionMapping.Read(ctx, state.CollectionUUID.ValueString(), state.PolicyUUID.ValueString())
 	if err != nil {
-		errors.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 

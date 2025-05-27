@@ -193,7 +193,7 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	// Read remote by UUID.
 	repo, err := r.api.Repository.Read(ctx, state.UUID.ValueString())
 	if err != nil {
-		errors.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
+		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
