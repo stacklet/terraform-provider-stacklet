@@ -60,7 +60,7 @@ func newRecordedTransport(t *testing.T, testName string, wrapped http.RoundTripp
 	}
 }
 
-func (rt *recordedTransport) loadRecordings() error {
+func (rt *recordedTransport) loadRecording() error {
 	if rt.mode == "record" {
 		return nil
 	}
@@ -74,7 +74,7 @@ func (rt *recordedTransport) loadRecordings() error {
 	return json.Unmarshal(data, &rt.recordings)
 }
 
-func (rt *recordedTransport) saveRecordings() error {
+func (rt *recordedTransport) saveRecording() error {
 	if rt.mode != "record" {
 		return nil
 	}

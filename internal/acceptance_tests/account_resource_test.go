@@ -45,8 +45,11 @@ func TestAccAccountResource(t *testing.T) {
 			ResourceName:            "stacklet_account.test",
 			ImportState:             true,
 			ImportStateVerify:       true,
-			ImportStateId:           "AWS:999999999999",
-			ImportStateVerifyIgnore: []string{"security_context"},
+			ImportStateVerifyIgnore: []string{"security_context_wo"},
+			ImportStateIdFunc: importStateIDFuncFromAttrs(
+				"stacklet_account.test.cloud_provider",
+				"stacklet_account.test.key",
+			),
 		},
 		// Update and Read testing
 		{

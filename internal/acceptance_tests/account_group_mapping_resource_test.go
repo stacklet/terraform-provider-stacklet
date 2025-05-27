@@ -3,11 +3,9 @@
 package acceptance_tests
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccAccountGroupMappingResource(t *testing.T) {
@@ -52,13 +50,10 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 			ResourceName:      "stacklet_account_group_mapping.test",
 			ImportState:       true,
 			ImportStateVerify: true,
-			ImportStateIdFunc: func(s *terraform.State) (string, error) {
-				rs, ok := s.RootModule().Resources["stacklet_account_group_mapping.test"]
-				if !ok {
-					return "", fmt.Errorf("resource not found in state")
-				}
-				return fmt.Sprintf("%s:%s", rs.Primary.Attributes["group_uuid"], rs.Primary.Attributes["account_key"]), nil
-			},
+			ImportStateIdFunc: importStateIDFuncFromAttrs(
+				"stacklet_account_group_mapping.test.group_uuid",
+				"stacklet_account_group_mapping.test.account_key",
+			),
 		},
 		// Update and Read testing
 		{
