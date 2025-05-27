@@ -11,7 +11,7 @@ format:
     go fmt ./...
 
 # Run linters
-lint: lint-go lint-tf
+lint: lint-go lint-tf lint-copyright
 
 # Run linters for terraform
 lint-tf:
@@ -27,6 +27,10 @@ lint-go:
 lint-docs:
     env -C tools go generate -run=validate-docs
 
+# Run checker for copyright headers
+lint-copyright:
+    env -C tools go generate -run=validate-copyright
+
 # Run tests
 test *args:
     TF_ACC=1 go test {{ package }} {{ args }}
@@ -38,6 +42,10 @@ test-record testname:
 # Generate provider documentation
 docs:
     env -C tools go generate -run=generate-docs
+
+# Add copyright headers
+copyright:
+    env -C tools go generate -run=generate-copyright
 
 # Update go dependencies
 update-deps-go:

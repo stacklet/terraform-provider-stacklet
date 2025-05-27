@@ -1,3 +1,5 @@
+// Copyright (c) 2025 - Stacklet, Inc.
+
 package api
 
 // FilterElementinput define an element filter input.
