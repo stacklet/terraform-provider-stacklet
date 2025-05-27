@@ -52,7 +52,7 @@ type policyCollectionAPI struct {
 }
 
 // Read returns data for an account.
-func (a policyCollectionAPI) Read(ctx context.Context, uuid string, name string) (PolicyCollection, error) {
+func (a policyCollectionAPI) Read(ctx context.Context, uuid string, name string) (*PolicyCollection, error) {
 	var query struct {
 		PolicyCollection PolicyCollection `graphql:"policyCollection(uuid: $uuid, name: $name)"`
 	}
@@ -61,18 +61,18 @@ func (a policyCollectionAPI) Read(ctx context.Context, uuid string, name string)
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.PolicyCollection, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
 	if query.PolicyCollection.ID == "" {
-		return query.PolicyCollection, NotFound{"Policy collection not found"}
+		return nil, NotFound{"Policy collection not found"}
 	}
 
-	return query.PolicyCollection, nil
+	return &query.PolicyCollection, nil
 }
 
 // Create creates a policy collection.
-func (a policyCollectionAPI) Create(ctx context.Context, i PolicyCollectionCreateInput) (PolicyCollection, error) {
+func (a policyCollectionAPI) Create(ctx context.Context, i PolicyCollectionCreateInput) (*PolicyCollection, error) {
 	var mutation struct {
 		AddPolicyCollection struct {
 			Collection PolicyCollection
@@ -80,13 +80,13 @@ func (a policyCollectionAPI) Create(ctx context.Context, i PolicyCollectionCreat
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.AddPolicyCollection.Collection, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
-	return mutation.AddPolicyCollection.Collection, nil
+	return &mutation.AddPolicyCollection.Collection, nil
 }
 
 // Update updates a policy collection.
-func (a policyCollectionAPI) Update(ctx context.Context, i PolicyCollectionUpdateInput) (PolicyCollection, error) {
+func (a policyCollectionAPI) Update(ctx context.Context, i PolicyCollectionUpdateInput) (*PolicyCollection, error) {
 	var mutation struct {
 		UpdatePolicyCollection struct {
 			Collection PolicyCollection
@@ -94,10 +94,10 @@ func (a policyCollectionAPI) Update(ctx context.Context, i PolicyCollectionUpdat
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.UpdatePolicyCollection.Collection, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.UpdatePolicyCollection.Collection, nil
+	return &mutation.UpdatePolicyCollection.Collection, nil
 }
 
 // Delete removes a policy collection.

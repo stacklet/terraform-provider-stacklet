@@ -277,7 +277,7 @@ func (r *RepositoryResource) ImportState(ctx context.Context, req resource.Impor
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), uuid)...)
 }
 
-func updateRepositoryModel(m *models.RepositoryResource, repo api.Repository) {
+func updateRepositoryModel(m *models.RepositoryResource, repo *api.Repository) {
 	m.ID = types.StringValue(repo.ID)
 	m.UUID = types.StringValue(repo.UUID)
 	m.URL = types.StringValue(repo.URL)

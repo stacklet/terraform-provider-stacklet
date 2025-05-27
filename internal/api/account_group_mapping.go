@@ -45,7 +45,7 @@ type accountGroupMappingAPI struct {
 }
 
 // Read returns data for an account group mapping.
-func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, groupUUID string) (AccountGroupMapping, error) {
+func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, groupUUID string) (*AccountGroupMapping, error) {
 	var query struct {
 		AccountGroup struct {
 			AccountMappings struct {
@@ -66,15 +66,15 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 	}
 
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return AccountGroupMapping{}, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
 	if len(query.AccountGroup.AccountMappings.Edges) == 0 {
-		return AccountGroupMapping{}, NotFound{"Account group mapping not found"}
+		return nil, NotFound{"Account group mapping not found"}
 	}
 
 	node := query.AccountGroup.AccountMappings.Edges[0].Node
-	return AccountGroupMapping{
+	return &AccountGroupMapping{
 		ID:         node.ID,
 		GroupUUID:  groupUUID,
 		AccountKey: accountKey,
@@ -82,7 +82,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 }
 
 // Create creates an account group mapping.
-func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, groupUUID string) (AccountGroupMapping, error) {
+func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, groupUUID string) (*AccountGroupMapping, error) {
 	var mutation struct {
 		UpsertAccountGroupMappings struct {
 			Mappings []struct {
@@ -103,10 +103,10 @@ func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, g
 
 	err := a.c.Mutate(ctx, &mutation, variables)
 	if err != nil {
-		return AccountGroupMapping{}, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return AccountGroupMapping{
+	return &AccountGroupMapping{
 		ID:         mutation.UpsertAccountGroupMappings.Mappings[0].ID,
 		AccountKey: accountKey,
 		GroupUUID:  groupUUID,

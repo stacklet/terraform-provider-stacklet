@@ -60,7 +60,7 @@ type accountAPI struct {
 }
 
 // Read returns data for an account.
-func (a accountAPI) Read(ctx context.Context, cloudProvider string, key string) (Account, error) {
+func (a accountAPI) Read(ctx context.Context, cloudProvider string, key string) (*Account, error) {
 	var query struct {
 		Account Account `graphql:"account(provider: $provider, key: $key)"`
 	}
@@ -69,18 +69,18 @@ func (a accountAPI) Read(ctx context.Context, cloudProvider string, key string) 
 		"key":      graphql.String(key),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.Account, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
 	if query.Account.ID == "" || !query.Account.Active {
-		return query.Account, NotFound{"Account not found"}
+		return nil, NotFound{"Account not found"}
 	}
 
-	return query.Account, nil
+	return &query.Account, nil
 }
 
 // Create creates an account.
-func (a accountAPI) Create(ctx context.Context, i AccountCreateInput) (Account, error) {
+func (a accountAPI) Create(ctx context.Context, i AccountCreateInput) (*Account, error) {
 	var mutation struct {
 		AddAccount struct {
 			Account Account
@@ -88,14 +88,14 @@ func (a accountAPI) Create(ctx context.Context, i AccountCreateInput) (Account, 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.AddAccount.Account, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.AddAccount.Account, nil
+	return &mutation.AddAccount.Account, nil
 }
 
 // Update updates an account.
-func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (Account, error) {
+func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (*Account, error) {
 	var mutation struct {
 		UpdateAccount struct {
 			Account Account
@@ -103,10 +103,10 @@ func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (Account, 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.UpdateAccount.Account, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.UpdateAccount.Account, nil
+	return &mutation.UpdateAccount.Account, nil
 }
 
 // Delete removes an account.

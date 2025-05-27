@@ -171,7 +171,7 @@ func (r *accountGroupResource) ImportState(ctx context.Context, req resource.Imp
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
 }
 
-func updateAccountGroupModel(m *models.AccountGroupResource, account_group api.AccountGroup) {
+func updateAccountGroupModel(m *models.AccountGroupResource, account_group *api.AccountGroup) {
 	m.ID = types.StringValue(account_group.ID)
 	m.UUID = types.StringValue(account_group.UUID)
 	m.Name = types.StringValue(account_group.Name)

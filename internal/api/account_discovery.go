@@ -105,24 +105,24 @@ type accountDiscoveryAPI struct {
 }
 
 // Read returns data for an account discovery.
-func (a accountDiscoveryAPI) Read(ctx context.Context, name string) (AccountDiscovery, error) {
+func (a accountDiscoveryAPI) Read(ctx context.Context, name string) (*AccountDiscovery, error) {
 	var query struct {
 		AccountDiscovery AccountDiscovery `graphql:"accountDiscovery(name: $name)"`
 	}
 	variables := map[string]any{"name": graphql.String(name)}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.AccountDiscovery, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
 	if query.AccountDiscovery.ID == "" {
-		return query.AccountDiscovery, NotFound{"Account discovery not found"}
+		return nil, NotFound{"Account discovery not found"}
 	}
 
-	return query.AccountDiscovery, nil
+	return &query.AccountDiscovery, nil
 }
 
 // UpsertAWS creates or updates an AWS account discovery.
-func (a accountDiscoveryAPI) UpsertAWS(ctx context.Context, input AccountDiscoveryAWSInput) (AccountDiscovery, error) {
+func (a accountDiscoveryAPI) UpsertAWS(ctx context.Context, input AccountDiscoveryAWSInput) (*AccountDiscovery, error) {
 	var mutation struct {
 		UpsertAWSAccountDiscovery struct {
 			AccountDiscovery AccountDiscovery
@@ -130,13 +130,13 @@ func (a accountDiscoveryAPI) UpsertAWS(ctx context.Context, input AccountDiscove
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return mutation.UpsertAWSAccountDiscovery.AccountDiscovery, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
-	return mutation.UpsertAWSAccountDiscovery.AccountDiscovery, nil
+	return &mutation.UpsertAWSAccountDiscovery.AccountDiscovery, nil
 }
 
 // UpsertAzure creates or updates an Azure account discovery.
-func (a accountDiscoveryAPI) UpsertAzure(ctx context.Context, input AccountDiscoveryAzureInput) (AccountDiscovery, error) {
+func (a accountDiscoveryAPI) UpsertAzure(ctx context.Context, input AccountDiscoveryAzureInput) (*AccountDiscovery, error) {
 	var mutation struct {
 		UpsertAzureAccountDiscovery struct {
 			AccountDiscovery AccountDiscovery
@@ -144,13 +144,13 @@ func (a accountDiscoveryAPI) UpsertAzure(ctx context.Context, input AccountDisco
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return mutation.UpsertAzureAccountDiscovery.AccountDiscovery, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
-	return mutation.UpsertAzureAccountDiscovery.AccountDiscovery, nil
+	return &mutation.UpsertAzureAccountDiscovery.AccountDiscovery, nil
 }
 
 // UpsertGCP creates or updates a GCP account discovery.
-func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscoveryGCPInput) (AccountDiscovery, error) {
+func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscoveryGCPInput) (*AccountDiscovery, error) {
 	var mutation struct {
 		UpsertGCPAccountDiscovery struct {
 			AccountDiscovery AccountDiscovery
@@ -158,13 +158,13 @@ func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscove
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return mutation.UpsertGCPAccountDiscovery.AccountDiscovery, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
-	return mutation.UpsertGCPAccountDiscovery.AccountDiscovery, nil
+	return &mutation.UpsertGCPAccountDiscovery.AccountDiscovery, nil
 }
 
 // UpdateSuspended updates the susended flag for an account discovery.
-func (a accountDiscoveryAPI) UpdateSuspended(ctx context.Context, id string, suspended bool) (AccountDiscovery, error) {
+func (a accountDiscoveryAPI) UpdateSuspended(ctx context.Context, id string, suspended bool) (*AccountDiscovery, error) {
 	var mutation struct {
 		UpdateAccountDiscoverySchedule struct {
 			AccountDiscoveries []AccountDiscovery
@@ -181,8 +181,8 @@ func (a accountDiscoveryAPI) UpdateSuspended(ctx context.Context, id string, sus
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return AccountDiscovery{}, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.UpdateAccountDiscoverySchedule.AccountDiscoveries[0], nil
+	return &mutation.UpdateAccountDiscoverySchedule.AccountDiscoveries[0], nil
 }

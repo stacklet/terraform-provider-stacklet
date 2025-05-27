@@ -233,7 +233,7 @@ func (r *accountResource) ImportState(ctx context.Context, req resource.ImportSt
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), parts[1])...)
 }
 
-func updateAccountModel(m *models.AccountResource, account api.Account) diag.Diagnostic {
+func updateAccountModel(m *models.AccountResource, account *api.Account) diag.Diagnostic {
 	m.ID = types.StringValue(account.ID)
 	m.Key = types.StringValue(account.Key)
 	m.Name = types.StringValue(account.Name)

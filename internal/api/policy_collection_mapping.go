@@ -52,7 +52,7 @@ type policyCollectionMappingAPI struct {
 }
 
 // Read returns data for a policy collection mapping.
-func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID string, policyUUID string) (PolicyCollectionMapping, error) {
+func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID string, policyUUID string) (*PolicyCollectionMapping, error) {
 	var query struct {
 		PolicyCollection struct {
 			PolicyMappings struct {
@@ -67,20 +67,20 @@ func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID str
 		"uuid": graphql.String(collectionUUID),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return PolicyCollectionMapping{}, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
 	for _, edge := range query.PolicyCollection.PolicyMappings.Edges {
 		if edge.Node.Policy.UUID == policyUUID {
-			return edge.Node, nil
+			return &edge.Node, nil
 		}
 	}
 
-	return PolicyCollectionMapping{}, NotFound{"Policy collection not found"}
+	return nil, NotFound{"Policy collection not found"}
 }
 
 // Upsert creates or updates a policy collection mapping.
-func (a policyCollectionMappingAPI) Upsert(ctx context.Context, input PolicyCollectionMappingInput) (PolicyCollectionMapping, error) {
+func (a policyCollectionMappingAPI) Upsert(ctx context.Context, input PolicyCollectionMappingInput) (*PolicyCollectionMapping, error) {
 	var mutation struct {
 		UpsertPolicyCollectionMappings struct {
 			Mappings []PolicyCollectionMapping
@@ -94,10 +94,10 @@ func (a policyCollectionMappingAPI) Upsert(ctx context.Context, input PolicyColl
 
 	err := a.c.Mutate(ctx, &mutation, variables)
 	if err != nil {
-		return PolicyCollectionMapping{}, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.UpsertPolicyCollectionMappings.Mappings[0], nil
+	return &mutation.UpsertPolicyCollectionMappings.Mappings[0], nil
 }
 
 // Delete removes a policy collection mapping.

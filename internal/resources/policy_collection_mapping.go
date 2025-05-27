@@ -163,7 +163,7 @@ func (r *policyCollectionMappingResource) ImportState(ctx context.Context, req r
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("policy_uuid"), parts[1])...)
 }
 
-func updatePolicyCollectionMappingModel(m *models.PolicyCollectionMappingResource, policyCollectionMapping api.PolicyCollectionMapping) {
+func updatePolicyCollectionMappingModel(m *models.PolicyCollectionMappingResource, policyCollectionMapping *api.PolicyCollectionMapping) {
 	m.ID = types.StringValue(policyCollectionMapping.ID)
 	m.CollectionUUID = types.StringValue(policyCollectionMapping.Collection.UUID)
 	m.PolicyUUID = types.StringValue(policyCollectionMapping.Policy.UUID)

@@ -193,7 +193,7 @@ func (r *accountDiscoveryAzureResource) ImportState(ctx context.Context, req res
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
 }
 
-func updateAccountDiscoveryAzureModel(m *models.AccountDiscoveryAzureResource, accountDiscovery api.AccountDiscovery) {
+func updateAccountDiscoveryAzureModel(m *models.AccountDiscoveryAzureResource, accountDiscovery *api.AccountDiscovery) {
 	m.ID = types.StringValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
 	m.Description = tftypes.NullableString(accountDiscovery.Description)

@@ -210,7 +210,7 @@ func (r *bindingResource) ImportState(ctx context.Context, req resource.ImportSt
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
 }
 
-func updateBindingModel(m *models.BindingResource, binding api.Binding) diag.Diagnostic {
+func updateBindingModel(m *models.BindingResource, binding *api.Binding) diag.Diagnostic {
 	m.ID = types.StringValue(binding.ID)
 	m.UUID = types.StringValue(binding.UUID)
 	m.Name = types.StringValue(binding.Name)

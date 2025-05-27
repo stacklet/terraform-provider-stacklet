@@ -144,7 +144,7 @@ func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resou
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), parts[1])...)
 }
 
-func updateAccountGroupMappingModel(m *models.AccountGroupMappingResource, accountGroupMapping api.AccountGroupMapping) {
+func updateAccountGroupMappingModel(m *models.AccountGroupMappingResource, accountGroupMapping *api.AccountGroupMapping) {
 	m.ID = types.StringValue(accountGroupMapping.ID)
 	m.GroupUUID = types.StringValue(accountGroupMapping.GroupUUID)
 	m.AccountKey = types.StringValue(accountGroupMapping.AccountKey)

@@ -67,7 +67,7 @@ type bindingAPI struct {
 }
 
 // Read returns data for a binding.
-func (a bindingAPI) Read(ctx context.Context, uuid string, name string) (Binding, error) {
+func (a bindingAPI) Read(ctx context.Context, uuid string, name string) (*Binding, error) {
 	var query struct {
 		Binding Binding `graphql:"binding(uuid: $uuid, name: $name)"`
 	}
@@ -76,17 +76,17 @@ func (a bindingAPI) Read(ctx context.Context, uuid string, name string) (Binding
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return query.Binding, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 	if query.Binding.ID == "" {
-		return query.Binding, NotFound{"Binding not found"}
+		return nil, NotFound{"Binding not found"}
 	}
 
-	return query.Binding, nil
+	return &query.Binding, nil
 }
 
 // Create creates a binding.
-func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (Binding, error) {
+func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (*Binding, error) {
 	var mutation struct {
 		AddBinding struct {
 			Binding Binding
@@ -94,14 +94,14 @@ func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (Binding, 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.AddBinding.Binding, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.AddBinding.Binding, nil
+	return &mutation.AddBinding.Binding, nil
 }
 
 // Update updates a binding.
-func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (Binding, error) {
+func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (*Binding, error) {
 	var mutation struct {
 		UpdateBinding struct {
 			Binding Binding
@@ -109,10 +109,10 @@ func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (Binding, 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return mutation.UpdateBinding.Binding, NewAPIError(err)
+		return nil, NewAPIError(err)
 	}
 
-	return mutation.UpdateBinding.Binding, nil
+	return &mutation.UpdateBinding.Binding, nil
 }
 
 // Delete removes a binding.

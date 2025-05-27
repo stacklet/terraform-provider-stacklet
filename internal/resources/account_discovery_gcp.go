@@ -218,7 +218,7 @@ func (r *accountDiscoveryGCPResource) ImportState(ctx context.Context, req resou
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
 }
 
-func updateAccountDiscoveryGCPModel(m *models.AccountDiscoveryGCPResource, accountDiscovery api.AccountDiscovery) {
+func updateAccountDiscoveryGCPModel(m *models.AccountDiscoveryGCPResource, accountDiscovery *api.AccountDiscovery) {
 	m.ID = types.StringValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
 	m.Description = tftypes.NullableString(accountDiscovery.Description)
