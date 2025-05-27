@@ -82,7 +82,7 @@ func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID str
 // Upsert creates or updates a policy collection mapping.
 func (a policyCollectionMappingAPI) Upsert(ctx context.Context, input PolicyCollectionMappingInput) (*PolicyCollectionMapping, error) {
 	var mutation struct {
-		UpsertPolicyCollectionMappings struct {
+		Payload struct {
 			Mappings []PolicyCollectionMapping
 		} `graphql:"upsertPolicyCollectionMappings(input: $input)"`
 	}
@@ -97,13 +97,13 @@ func (a policyCollectionMappingAPI) Upsert(ctx context.Context, input PolicyColl
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.UpsertPolicyCollectionMappings.Mappings[0], nil
+	return &mutation.Payload.Mappings[0], nil
 }
 
 // Delete removes a policy collection mapping.
 func (a policyCollectionMappingAPI) Delete(ctx context.Context, id string) error {
 	var mutation struct {
-		RemovePolicyCollectionMappings struct {
+		Payload struct {
 			Removed []struct {
 				ID string
 			}

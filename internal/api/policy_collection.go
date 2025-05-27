@@ -74,7 +74,7 @@ func (a policyCollectionAPI) Read(ctx context.Context, uuid string, name string)
 // Create creates a policy collection.
 func (a policyCollectionAPI) Create(ctx context.Context, i PolicyCollectionCreateInput) (*PolicyCollection, error) {
 	var mutation struct {
-		AddPolicyCollection struct {
+		Payload struct {
 			Collection PolicyCollection
 		} `graphql:"addPolicyCollection(input: $input)"`
 	}
@@ -82,13 +82,13 @@ func (a policyCollectionAPI) Create(ctx context.Context, i PolicyCollectionCreat
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
 		return nil, NewAPIError(err)
 	}
-	return &mutation.AddPolicyCollection.Collection, nil
+	return &mutation.Payload.Collection, nil
 }
 
 // Update updates a policy collection.
 func (a policyCollectionAPI) Update(ctx context.Context, i PolicyCollectionUpdateInput) (*PolicyCollection, error) {
 	var mutation struct {
-		UpdatePolicyCollection struct {
+		Payload struct {
 			Collection PolicyCollection
 		} `graphql:"updatePolicyCollection(input: $input)"`
 	}
@@ -97,13 +97,13 @@ func (a policyCollectionAPI) Update(ctx context.Context, i PolicyCollectionUpdat
 		return nil, NewAPIError(err)
 	}
 
-	return &mutation.UpdatePolicyCollection.Collection, nil
+	return &mutation.Payload.Collection, nil
 }
 
 // Delete removes a policy collection.
 func (a policyCollectionAPI) Delete(ctx context.Context, uuid string) error {
 	var mutation struct {
-		RemovePolicyCollection struct {
+		Payload struct {
 			Collection struct {
 				UUID string
 			}
