@@ -1,4 +1,4 @@
-package helpers
+package resources
 
 import (
 	"fmt"
@@ -21,8 +21,8 @@ func (e ImportIDError) Summary() string {
 	return "Invalid import ID"
 }
 
-// SplitImportID splits an import ID into expected components.
-func SplitImportID(id string, parts []string) ([]string, error) {
+// splitImportID splits an import ID into expected components.
+func splitImportID(id string, parts []string) ([]string, error) {
 	idParts := strings.Split(id, ":")
 	if len(idParts) != len(parts) {
 		return nil, ImportIDError{parts: parts}

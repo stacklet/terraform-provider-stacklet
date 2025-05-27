@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -96,7 +96,7 @@ func (r *accountDiscoveryAWSResource) Schema(_ context.Context, _ resource.Schem
 
 func (r *accountDiscoveryAWSResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		r.api = pd.API
 	}
@@ -119,13 +119,13 @@ func (r *accountDiscoveryAWSResource) Create(ctx context.Context, req resource.C
 	}
 	accountDiscovery, err := r.api.AccountDiscovery.UpsertAWS(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
 	accountDiscovery, err = r.api.AccountDiscovery.UpdateSuspended(ctx, accountDiscovery.ID, plan.Suspended.ValueBool())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -142,7 +142,7 @@ func (r *accountDiscoveryAWSResource) Read(ctx context.Context, req resource.Rea
 
 	accountDiscovery, err := r.api.AccountDiscovery.Read(ctx, state.Name.ValueString())
 	if err != nil {
-		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
+		errors.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
@@ -166,13 +166,13 @@ func (r *accountDiscoveryAWSResource) Update(ctx context.Context, req resource.U
 	}
 	accountDiscovery, err := r.api.AccountDiscovery.UpsertAWS(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
 	accountDiscovery, err = r.api.AccountDiscovery.UpdateSuspended(ctx, accountDiscovery.ID, plan.Suspended.ValueBool())
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 

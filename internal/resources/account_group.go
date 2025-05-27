@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/helpers"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -81,7 +81,7 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 
 func (r *accountGroupResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		r.api = pd.API
 	}
@@ -103,7 +103,7 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 
 	account_group, err := r.api.AccountGroup.Create(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -120,7 +120,7 @@ func (r *accountGroupResource) Read(ctx context.Context, req resource.ReadReques
 
 	account_group, err := r.api.AccountGroup.Read(ctx, state.UUID.ValueString(), "")
 	if err != nil {
-		helpers.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
+		errors.HandleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
@@ -144,7 +144,7 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 
 	account_group, err := r.api.AccountGroup.Update(ctx, input)
 	if err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
@@ -160,7 +160,7 @@ func (r *accountGroupResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 
 	if err := r.api.AccountGroup.Delete(ctx, state.UUID.ValueString()); err != nil {
-		helpers.AddDiagError(&resp.Diagnostics, err)
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 }

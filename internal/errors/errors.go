@@ -1,4 +1,4 @@
-package helpers
+package errors
 
 import (
 	"context"
@@ -7,8 +7,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
+
+// DiagError represents an error that gets reported in a Diagnostic.
+type DiagError interface {
+	error
+
+	// Summary returns the error summary
+	Summary() string
+}
 
 // HandleAPIError handles errors returned from the API.
 func HandleAPIError(ctx context.Context, state *tfsdk.State, diag *diag.Diagnostics, err error) {
@@ -21,16 +28,9 @@ func HandleAPIError(ctx context.Context, state *tfsdk.State, diag *diag.Diagnost
 
 // AddDiagError adds an error to the diagnostics.
 func AddDiagError(diag *diag.Diagnostics, err error) {
-	switch e := err.(type) {
-	case api.APIError:
-		diag.AddError(e.Summary, e.Detail)
-	case api.NotFound:
+	if e, ok := err.(DiagError); ok {
 		diag.AddError(e.Summary(), e.Error())
-	case providerdata.ProviderDataError:
-		diag.AddError(e.Summary(), e.Error())
-	case ImportIDError:
-		diag.AddError(e.Summary(), e.Error())
-	default:
+	} else {
 		diag.AddError("Error", e.Error())
 	}
 }
