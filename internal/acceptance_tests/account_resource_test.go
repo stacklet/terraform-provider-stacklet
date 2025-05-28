@@ -14,11 +14,11 @@ func TestAccAccountResource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account" "test" {
-						name = "test-account"
+						name = "{{.Prefix}}-account"
 						key = "999999999999"
 						cloud_provider = "AWS"
 						description = "Test AWS account"
-						short_name = "test"
+						short_name = "{{.Prefix}}-account"
 						email = "test@example.com"
 						variables = jsonencode({
                             environment = "test"
@@ -28,11 +28,11 @@ func TestAccAccountResource(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_account.test", "name", "test-account"),
+				resource.TestCheckResourceAttr("stacklet_account.test", "name", prefixName("account")),
 				resource.TestCheckResourceAttr("stacklet_account.test", "key", "999999999999"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "description", "Test AWS account"),
-				resource.TestCheckResourceAttr("stacklet_account.test", "short_name", "test"),
+				resource.TestCheckResourceAttr("stacklet_account.test", "short_name", prefixName("account")),
 				resource.TestCheckResourceAttr("stacklet_account.test", "email", "test@example.com"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "variables", "{\"environment\":\"test\"}"),
 				// For AWS, passing a role ARN as security_context_wo passes it through as a security_context
@@ -55,11 +55,11 @@ func TestAccAccountResource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account" "test" {
-						name = "test-account-updated"
+						name = "{{.Prefix}}-account-updated"
 						key = "999999999999"
 						cloud_provider = "AWS"
 						description = "Updated AWS account"
-						short_name = "test-updated"
+						short_name = "{{.Prefix}}-account-updated"
 						email = "updated@example.com"
 						variables = jsonencode({
                             environment = "staging"
@@ -69,11 +69,11 @@ func TestAccAccountResource(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_account.test", "name", "test-account-updated"),
+				resource.TestCheckResourceAttr("stacklet_account.test", "name", prefixName("account-updated")),
 				resource.TestCheckResourceAttr("stacklet_account.test", "key", "999999999999"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "description", "Updated AWS account"),
-				resource.TestCheckResourceAttr("stacklet_account.test", "short_name", "test-updated"),
+				resource.TestCheckResourceAttr("stacklet_account.test", "short_name", prefixName("account-updated")),
 				resource.TestCheckResourceAttr("stacklet_account.test", "email", "updated@example.com"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "variables", "{\"environment\":\"staging\"}"),
 				resource.TestCheckResourceAttr("stacklet_account.test", "security_context", "arn:aws:iam::123456789012:role/stacklet-execution-new"),

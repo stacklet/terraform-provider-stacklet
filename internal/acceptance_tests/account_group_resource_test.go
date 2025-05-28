@@ -14,14 +14,14 @@ func TestAccAccountGroupResource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account_group" "test" {
-						name = "test-group"
+						name = "{{.Prefix}}-group"
 						description = "Test account group"
 						cloud_provider = "AWS"
 						regions = ["us-east-1"]
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", "test-group"),
+				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("group")),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "description", "Test account group"),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "regions.0", "us-east-1"),
@@ -39,14 +39,14 @@ func TestAccAccountGroupResource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account_group" "test" {
-						name = "test-group-updated"
+						name = "{{.Prefix}}-group-updated"
 						description = "Updated account group"
 						cloud_provider = "AWS"
 						regions = ["us-east-1", "us-east-2"]
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", "test-group-updated"),
+				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("group-updated")),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "description", "Updated account group"),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "regions.0", "us-east-1"),

@@ -14,20 +14,20 @@ func TestAccBindingResource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account_group" "test" {
-						name = "test-binding-group"
+						name = "{{.Prefix}}-binding-group"
 						description = "Test account group for binding"
 						cloud_provider = "AWS"
 						regions = ["us-east-1"]
 					}
 
 					resource "stacklet_policy_collection" "test" {
-						name = "test-binding-collection"
+						name = "{{.Prefix}}-binding-collection"
 						description = "Test policy collection for binding"
 						cloud_provider = "AWS"
 					}
 
 					resource "stacklet_binding" "test" {
-						name = "test-binding"
+						name = "{{.Prefix}}-binding"
 						description = "Test binding"
 						account_group_uuid = stacklet_account_group.test.uuid
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
@@ -40,7 +40,7 @@ func TestAccBindingResource(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_binding.test", "name", "test-binding"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "name", prefixName("binding")),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Test binding"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "account_group_uuid"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "policy_collection_uuid"),
@@ -61,20 +61,20 @@ func TestAccBindingResource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account_group" "test" {
-						name = "test-binding-group"
+						name = "{{.Prefix}}-binding-group"
 						description = "Test account group for binding"
 						cloud_provider = "AWS"
 						regions = ["us-east-1", "us-east-2"]
 					}
 
 					resource "stacklet_policy_collection" "test" {
-						name = "test-binding-collection"
+						name = "{{.Prefix}}-binding-collection"
 						description = "Test policy collection for binding"
 						cloud_provider = "AWS"
 					}
 
 					resource "stacklet_binding" "test" {
-						name = "test-binding-updated"
+						name = "{{.Prefix}}-binding-updated"
 						description = "Updated test binding"
 						account_group_uuid = stacklet_account_group.test.uuid
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
@@ -87,7 +87,7 @@ func TestAccBindingResource(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_binding.test", "name", "test-binding-updated"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "name", prefixName("binding-updated")),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Updated test binding"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "account_group_uuid"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "policy_collection_uuid"),

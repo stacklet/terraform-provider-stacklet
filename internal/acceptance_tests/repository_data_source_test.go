@@ -16,7 +16,7 @@ func TestAccRepositoryDataSource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_repository" "test" {
-						name = "test-repo-ds"
+						name = "{{.Prefix}}-repo-ds"
 						url = "https://github.com/test-org/test-repo"
 						description = "Test repository"
 					}
@@ -24,7 +24,7 @@ func TestAccRepositoryDataSource(t *testing.T) {
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_repository.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_repository.test", "uuid"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "name", "test-repo-ds"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("repo-ds")),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Test repository"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "auth_token"),
@@ -45,7 +45,7 @@ func TestAccRepositoryDataSource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_repository" "test" {
-						name = "test-repo-ds"
+						name = "{{.Prefix}}-repo-ds"
 						url = "https://github.com/test-org/test-repo"
 						description = "Test repository"
 					}
@@ -60,7 +60,7 @@ func TestAccRepositoryDataSource(t *testing.T) {
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				// Check resource attributes
-				resource.TestCheckResourceAttr("stacklet_repository.test", "name", "test-repo-ds"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("repo-ds")),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Test repository"),
 				// Check data source attributes match exactly

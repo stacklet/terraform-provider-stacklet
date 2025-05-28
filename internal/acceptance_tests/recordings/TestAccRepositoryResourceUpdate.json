@@ -1,5 +1,5 @@
 {
-  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":null,\"authUser\":\"\",\"sshPassphrase\":null,\"sshPrivateKey\":null},\"description\":\"Real test repository\",\"name\":\"real-test-repo\",\"url\":\"https://github.com/test-org/real-test-repo\"}}": [
+  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":null,\"authUser\":\"\",\"sshPassphrase\":null,\"sshPrivateKey\":null},\"description\":\"Real test repository\",\"name\":\"test-real-repo\",\"url\":\"https://github.com/test-org/test-real-repo\"}}": [
     {
       "request": {
         "query": "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
@@ -12,8 +12,8 @@
               "sshPrivateKey": null
             },
             "description": "Real test repository",
-            "name": "real-test-repo",
-            "url": "https://github.com/test-org/real-test-repo"
+            "name": "test-real-repo",
+            "url": "https://github.com/test-org/test-real-repo"
           }
         }
       },
@@ -31,9 +31,9 @@
               },
               "description": "Real test repository",
               "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI4MGVlNjg3MS02OTg4LTQ4YmMtYTc1Zi1jZWQxYzZjOWFhMTEiXQ==",
-              "name": "real-test-repo",
+              "name": "test-real-repo",
               "system": false,
-              "url": "https://github.com/test-org/real-test-repo",
+              "url": "https://github.com/test-org/test-real-repo",
               "uuid": "80ee6871-6988-48bc-a75f-ced1c6c9aa11",
               "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/d7c33577-4189-46e6-9590-c7d1e5383680"
             }
@@ -125,7 +125,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRepositoryConfigInput!){updateRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authUser\":\"\"},\"description\":\"Real test repository\",\"name\":\"real-test-repo\",\"uuid\":\"b38d8d57-aeaa-427c-8f84-7a1d25e87558\"}}": [
+  "mutation ($input:UpdateRepositoryConfigInput!){updateRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authUser\":\"\"},\"description\":\"Real test repository\",\"name\":\"test-real-repo\",\"uuid\":\"b38d8d57-aeaa-427c-8f84-7a1d25e87558\"}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRepositoryConfigInput!){updateRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
@@ -135,7 +135,7 @@
               "authUser": ""
             },
             "description": "Real test repository",
-            "name": "real-test-repo",
+            "name": "test-real-repo",
             "uuid": "b38d8d57-aeaa-427c-8f84-7a1d25e87558"
           }
         }
@@ -154,7 +154,7 @@
               },
               "description": "Real test repository",
               "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJiMzhkOGQ1Ny1hZWFhLTQyN2MtOGY4NC03YTFkMjVlODc1NTgiXQ==",
-              "name": "real-test-repo",
+              "name": "test-real-repo",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "b38d8d57-aeaa-427c-8f84-7a1d25e87558",
@@ -187,9 +187,9 @@
               },
               "description": "Real test repository",
               "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICI4MGVlNjg3MS02OTg4LTQ4YmMtYTc1Zi1jZWQxYzZjOWFhMTEiXQ==",
-              "name": "real-test-repo",
+              "name": "test-real-repo",
               "system": false,
-              "url": "https://github.com/test-org/real-test-repo",
+              "url": "https://github.com/test-org/test-real-repo",
               "uuid": "80ee6871-6988-48bc-a75f-ced1c6c9aa11",
               "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/d7c33577-4189-46e6-9590-c7d1e5383680"
             }
@@ -282,7 +282,7 @@
               },
               "description": "Real test repository",
               "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJiMzhkOGQ1Ny1hZWFhLTQyN2MtOGY4NC03YTFkMjVlODc1NTgiXQ==",
-              "name": "real-test-repo",
+              "name": "test-real-repo",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "b38d8d57-aeaa-427c-8f84-7a1d25e87558",
@@ -313,7 +313,7 @@
               },
               "description": "Real test repository",
               "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJiMzhkOGQ1Ny1hZWFhLTQyN2MtOGY4NC03YTFkMjVlODc1NTgiXQ==",
-              "name": "real-test-repo",
+              "name": "test-real-repo",
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "b38d8d57-aeaa-427c-8f84-7a1d25e87558",

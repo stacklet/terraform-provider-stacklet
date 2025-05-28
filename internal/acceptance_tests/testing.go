@@ -3,10 +3,13 @@
 package acceptance_tests
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
+	"text/template"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
@@ -45,6 +48,21 @@ func importStateIDFuncFromAttrs(attrs ...string) resource.ImportStateIdFunc {
 
 // runRecordedAccTest runs an acceptance test, with the specified name and steps.
 func runRecordedAccTest(t *testing.T, testName string, testSteps []resource.TestStep) {
+	setupHTTPTransport(t, testName)
+	renderConfigs(t, testSteps)
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"stacklet": func() (tfprotov6.ProviderServer, error) {
+				p := provider.New("test")()
+				return providerserver.NewProtocol6WithError(p)()
+			},
+		},
+		Steps: testSteps,
+	})
+}
+
+func setupHTTPTransport(t *testing.T, testName string) {
 	rt := newRecordedTransport(t, testName, http.DefaultTransport)
 	if err := rt.loadRecording(); err != nil {
 		t.Errorf("failed to load recording: %v", err)
@@ -60,14 +78,54 @@ func runRecordedAccTest(t *testing.T, testName string, testSteps []resource.Test
 			t.Errorf("failed to save recording: %v", err)
 		}
 	})
+}
 
-	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"stacklet": func() (tfprotov6.ProviderServer, error) {
-				p := provider.New("test")()
-				return providerserver.NewProtocol6WithError(p)()
-			},
-		},
-		Steps: testSteps,
-	})
+// configData holds the test configuration data.
+type configData struct {
+	Prefix string
+}
+
+func getConfigData() configData {
+	return configData{
+		Prefix: getenv("TF_ACC_PREFIX", "test"),
+	}
+}
+
+func getenv(name, fallback string) string {
+	value := os.Getenv(name)
+	if value == "" {
+		return fallback
+	}
+	return value
+}
+
+func renderConfigs(t *testing.T, testSteps []resource.TestStep) {
+	data := getConfigData()
+	for i, step := range testSteps {
+		if step.Config != "" {
+			config, err := renderConfig(step.Config, data)
+			if err != nil {
+				t.Errorf("failed to render config: %v", err)
+			}
+			step.Config = config
+			testSteps[i] = step
+		}
+	}
+}
+
+func renderConfig(config string, data configData) (string, error) {
+	t, err := template.New("config").Parse(config)
+	if err != nil {
+		return "", err
+	}
+
+	wr := bytes.Buffer{}
+	if err := t.Execute(&wr, data); err != nil {
+		return "", err
+	}
+	return wr.String(), nil
+}
+
+func prefixName(name string) string {
+	return fmt.Sprintf("%s-%s", getConfigData().Prefix, name)
 }

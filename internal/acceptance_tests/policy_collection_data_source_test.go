@@ -13,7 +13,7 @@ func TestAccPolicyCollectionDataSource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_policy_collection" "test" {
-						name = "test-collection-ds"
+						name = "{{.Prefix}}-collection-ds"
 						description = "Test policy collection"
 						cloud_provider = "AWS"
 					}
@@ -23,7 +23,7 @@ func TestAccPolicyCollectionDataSource(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("data.stacklet_policy_collection.test", "name", "test-collection-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_policy_collection.test", "name", prefixName("collection-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_policy_collection.test", "description", "Test policy collection"),
 				resource.TestCheckResourceAttr("data.stacklet_policy_collection.test", "cloud_provider", "AWS"),
 			),
