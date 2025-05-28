@@ -31,13 +31,17 @@ lint-docs:
 lint-copyright:
     env -C tools go generate -run=validate-copyright
 
-# Run tests
+# Run tests using recorded API requests/responses.
 test *args:
     TF_ACC=1 go test {{ package }} {{ args }}
 
+# Run tests against a live deployment. Requires real STACKLET_ENDPOINT and STACKLET_API_KEY or logged in stacklet-admin.
+test-live *args:
+    TF_ACC_MODE=live just test -count=1 {{ args }}
+    
 # Record API request/responses for an acceptance test. Requires real STACKLET_ENDPOINT and STACKLET_API_KEY or logged in stacklet-admin.
 test-record testname:
-    TF_ACC_RECORD=1 just test -run {{ testname }}
+    TF_ACC_MODE=record just test -count=1 -run {{ testname }}
 
 # Generate provider documentation
 docs:

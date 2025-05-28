@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"slices"
 	"strings"
 	"testing"
 	"text/template"
@@ -18,6 +19,22 @@ import (
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/provider"
 )
+
+const (
+	TestModeRecord = "record"
+	TestModeReplay = "replay"
+	TestModeLive   = "live"
+)
+
+// testMode returns the test mode.
+func testMode() string {
+	mode := getenv("TF_ACC_MODE", TestModeReplay)
+	modes := []string{TestModeRecord, TestModeReplay, TestModeLive}
+	if !slices.Contains(modes, mode) {
+		panic(fmt.Errorf("invalid TF_ACC_MODE, must be one of %v", modes))
+	}
+	return mode
+}
 
 // importStateIDFuncFromAttrs returns an ImportStateIdFunc that creates an
 // import ID from resource attributes. Each attribute is in the form
@@ -63,7 +80,13 @@ func runRecordedAccTest(t *testing.T, testName string, testSteps []resource.Test
 }
 
 func setupHTTPTransport(t *testing.T, testName string) {
-	rt := newRecordedTransport(t, testName, http.DefaultTransport)
+	mode := testMode()
+	if mode == TestModeLive {
+		return // nothing to set up for live runs
+	}
+
+	rt := newRecordedTransport(t, testName, mode, http.DefaultTransport)
+
 	if err := rt.loadRecording(); err != nil {
 		t.Errorf("failed to load recording: %v", err)
 	}
