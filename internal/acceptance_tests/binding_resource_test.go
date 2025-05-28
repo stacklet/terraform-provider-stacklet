@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccBindingResource(t *testing.T) {
@@ -56,10 +55,7 @@ func TestAccBindingResource(t *testing.T) {
 			ResourceName:      "stacklet_binding.test",
 			ImportState:       true,
 			ImportStateVerify: true,
-			ImportStateIdFunc: func(s *terraform.State) (string, error) {
-				r := s.RootModule().Resources["stacklet_binding.test"]
-				return r.Primary.Attributes["uuid"], nil
-			},
+			ImportStateIdFunc: importStateIDFuncFromAttrs("stacklet_binding.test.uuid"),
 		},
 		// Update and Read testing
 		{

@@ -44,7 +44,7 @@ func TestAccRepositoryResourceAttrs(t *testing.T) {
 			ResourceName:      "stacklet_repository.test",
 			ImportState:       true,
 			ImportStateVerify: true,
-			ImportStateId:     "https://github.com/test-org/test-repo",
+			ImportStateIdFunc: importStateIDFuncFromAttrs("stacklet_repository.test.url"),
 		},
 	}
 	runRecordedAccTest(t, "TestAccRepositoryResourceAttrs", steps)

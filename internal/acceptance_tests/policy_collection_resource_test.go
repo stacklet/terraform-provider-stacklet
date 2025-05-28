@@ -3,11 +3,9 @@
 package acceptance_tests
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccPolicyCollectionResource(t *testing.T) {
@@ -32,13 +30,7 @@ func TestAccPolicyCollectionResource(t *testing.T) {
 			ResourceName:      "stacklet_policy_collection.test",
 			ImportState:       true,
 			ImportStateVerify: true,
-			ImportStateIdFunc: func(s *terraform.State) (string, error) {
-				rs, ok := s.RootModule().Resources["stacklet_policy_collection.test"]
-				if !ok {
-					return "", fmt.Errorf("resource not found in state")
-				}
-				return rs.Primary.Attributes["uuid"], nil
-			},
+			ImportStateIdFunc: importStateIDFuncFromAttrs("stacklet_policy_collection.test.uuid"),
 		},
 		// Update and Read testing
 		{

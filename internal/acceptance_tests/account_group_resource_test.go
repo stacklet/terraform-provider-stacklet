@@ -33,7 +33,7 @@ func TestAccAccountGroupResource(t *testing.T) {
 			ResourceName:      "stacklet_account_group.test",
 			ImportState:       true,
 			ImportStateVerify: true,
-			ImportStateId:     "d9784826-dba3-4bb1-8df3-3dd60c8983e1",
+			ImportStateIdFunc: importStateIDFuncFromAttrs("stacklet_account_group.test.uuid"),
 		},
 		// Update and Read testing
 		{
