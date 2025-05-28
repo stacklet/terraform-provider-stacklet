@@ -14,11 +14,11 @@ func TestAccAccountDataSource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account" "test" {
-						name = "test-account-ds"
+						name = "{{.Prefix}}-account-ds"
 						key = "999999999999"
 						cloud_provider = "AWS"
 						description = "Test AWS account"
-						short_name = "test"
+						short_name = "{{.Prefix}}-account-ds"
 						email = "test@example.com"
 						variables = jsonencode({
                             environment = "test"
@@ -30,11 +30,11 @@ func TestAccAccountDataSource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account" "test" {
-						name = "test-account-ds"
+						name = "{{.Prefix}}-account-ds"
 						key = "999999999999"
 						cloud_provider = "AWS"
 						description = "Test AWS account"
-						short_name = "test"
+						short_name = "{{.Prefix}}-account-ds"
 						email = "test@example.com"
 						variables = jsonencode({
                             environment = "test"
@@ -47,11 +47,11 @@ func TestAccAccountDataSource(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("data.stacklet_account.test", "name", "test-account-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_account.test", "name", prefixName("account-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "key", "999999999999"),
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "description", "Test AWS account"),
-				resource.TestCheckResourceAttr("data.stacklet_account.test", "short_name", "test"),
+				resource.TestCheckResourceAttr("data.stacklet_account.test", "short_name", prefixName("account-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "email", "test@example.com"),
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "variables", "{\"environment\":\"test\"}"),
 				resource.TestCheckResourceAttrSet("data.stacklet_account.test", "id"),

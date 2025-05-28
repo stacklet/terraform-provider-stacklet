@@ -1,5 +1,5 @@
 {
-  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}:{\"input\":{\"description\":\"Test AWS account\",\"email\":\"test@example.com\",\"key\":\"999999999999\",\"name\":\"test-account-ds\",\"provider\":\"AWS\",\"shortName\":\"test\",\"variables\":\"{\\\"environment\\\":\\\"test\\\"}\"}}": [
+  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}:{\"input\":{\"description\":\"Test AWS account\",\"email\":\"test@example.com\",\"key\":\"999999999999\",\"name\":\"test-account-ds\",\"provider\":\"AWS\",\"shortName\":\"test-account-ds\",\"variables\":\"{\\\"environment\\\":\\\"test\\\"}\"}}": [
     {
       "request": {
         "query": "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}",
@@ -10,7 +10,7 @@
             "key": "999999999999",
             "name": "test-account-ds",
             "provider": "AWS",
-            "shortName": "test",
+            "shortName": "test-account-ds",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -28,7 +28,7 @@
               "path": null,
               "provider": "AWS",
               "securityContext": "",
-              "shortName": "test",
+              "shortName": "test-account-ds",
               "variables": "{\"environment\":\"test\"}"
             }
           }
@@ -77,7 +77,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "",
-            "shortName": "test",
+            "shortName": "test-account-ds",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -103,7 +103,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "",
-            "shortName": "test",
+            "shortName": "test-account-ds",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -129,7 +129,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "",
-            "shortName": "test",
+            "shortName": "test-account-ds",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -155,7 +155,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "",
-            "shortName": "test",
+            "shortName": "test-account-ds",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -181,7 +181,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "",
-            "shortName": "test",
+            "shortName": "test-account-ds",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -207,7 +207,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "",
-            "shortName": "test",
+            "shortName": "test-account-ds",
             "variables": "{\"environment\":\"test\"}"
           }
         }

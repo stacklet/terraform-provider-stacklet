@@ -16,10 +16,9 @@ import (
 )
 
 type recordedTransport struct {
-	recordings map[string][]recording
-	// lock around modifications of recordings
-	recordingsLock sync.Mutex
-	mode           string // "record" or "replay"
+	recordings     map[string][]recording
+	recordingsLock sync.Mutex // lock around modifications of recordings
+	mode           string     // test run mode
 	t              *testing.T
 	testName       string
 	wrapped        http.RoundTripper
@@ -42,14 +41,8 @@ type graphqlResponse struct {
 	} `json:"errors,omitempty"`
 }
 
-func newRecordedTransport(t *testing.T, testName string, wrapped http.RoundTripper) *recordedTransport {
-	mode := "replay"
-	if os.Getenv("TF_ACC_RECORD") != "" {
-		mode = "record"
-		t.Logf("Recording mode enabled for test: %s", testName)
-	} else {
-		t.Logf("Replay mode enabled for test: %s", testName)
-	}
+func newRecordedTransport(t *testing.T, testName string, mode string, wrapped http.RoundTripper) *recordedTransport {
+	t.Logf("%s mode enabled for test: %s", mode, testName)
 
 	return &recordedTransport{
 		recordings: make(map[string][]recording),
@@ -61,7 +54,7 @@ func newRecordedTransport(t *testing.T, testName string, wrapped http.RoundTripp
 }
 
 func (rt *recordedTransport) loadRecording() error {
-	if rt.mode == "record" {
+	if rt.mode != TestModeReplay {
 		return nil
 	}
 
@@ -75,7 +68,7 @@ func (rt *recordedTransport) loadRecording() error {
 }
 
 func (rt *recordedTransport) saveRecording() error {
-	if rt.mode != "record" {
+	if rt.mode != TestModeRecord {
 		return nil
 	}
 
@@ -132,7 +125,7 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 		key = fmt.Sprintf("%s:%s", key, string(varsJSON))
 	}
 
-	if rt.mode == "record" {
+	if rt.mode == TestModeRecord {
 		rt.t.Logf("Recording request with query: %s - %v", gqlReq.Query, gqlReq.Variables)
 
 		// Make the real request with the original body

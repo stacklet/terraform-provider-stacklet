@@ -15,14 +15,14 @@ func TestAccRepositoryResourceAttrs(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "test-repo"
+						name = "{{.Prefix}}-repo"
 						description = "Test repository"
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_repository.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_repository.test", "uuid"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "name", "test-repo"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("repo")),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Test repository"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "system", "false"),
@@ -56,13 +56,13 @@ func TestAccRepositoryResourceUpdate(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "test-repo"
+						name = "{{.Prefix}}-repo"
 						description = "Test repository"
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "name", "test-repo"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("repo")),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Test repository"),
 			),
 		},
@@ -70,21 +70,21 @@ func TestAccRepositoryResourceUpdate(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "real-test-repo"
+						name = "{{.Prefix}}-real-repo"
 						description = "Real test repository"
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "name", "real-test-repo"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("real-repo")),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Real test repository"),
 			),
 		},
 		{
 			Config: `
 					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/real-test-repo"
-						name = "real-test-repo"
+						url = "https://github.com/test-org/test-real-repo"
+						name = "{{.Prefix}}-real-repo"
 						description = "Real test repository"
 					}
 				`,
@@ -94,8 +94,8 @@ func TestAccRepositoryResourceUpdate(t *testing.T) {
 				},
 			},
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/real-test-repo"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "name", "real-test-repo"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-real-repo"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("real-repo")),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Real test repository"),
 			),
 		},
@@ -109,7 +109,7 @@ func TestAccRepositoryResourceHTTPAuthSet(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "test-repo"
+						name = "{{.Prefix}}-repo"
 
 					}
 				`,
@@ -124,7 +124,7 @@ func TestAccRepositoryResourceHTTPAuthSet(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "test-repo"
+						name = "{{.Prefix}}-repo"
 
 						auth_token_wo = "secret"
 					}
@@ -140,7 +140,7 @@ func TestAccRepositoryResourceHTTPAuthSet(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "test-repo"
+						name = "{{.Prefix}}-repo"
 
 						auth_user = "bill"
 						auth_token_wo = "secret"
@@ -164,7 +164,7 @@ func TestAccRepositoryResourceHTTPAuthClear(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "test-repo"
+						name = "{{.Prefix}}-repo"
 
 						auth_user = "bill"
 						auth_token_wo = "secret"
@@ -182,7 +182,7 @@ func TestAccRepositoryResourceHTTPAuthClear(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "test-repo"
+						name = "{{.Prefix}}-repo"
 
 						auth_user = "bill"
 						auth_token_wo = "different-secret"
@@ -200,7 +200,7 @@ func TestAccRepositoryResourceHTTPAuthClear(t *testing.T) {
 			Config: `
 					resource "stacklet_repository" "test" {
 						url = "https://github.com/test-org/test-repo"
-						name = "test-repo"
+						name = "{{.Prefix}}-repo"
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -221,7 +221,7 @@ func TestAccRepositoryResourceSSHUpdate(t *testing.T) {
 			Config: `
 resource "stacklet_repository" "test" {
 	url = "ssh://git@github.com/stacklet/test-repo"
-	name = "test-repo"
+	name = "{{.Prefix}}-repo"
 
 	ssh_private_key_wo = <<EOT
 -----BEGIN OPENSSH PRIVATE KEY-----
@@ -250,7 +250,7 @@ EOT
 			Config: `
 resource "stacklet_repository" "test" {
 	url = "ssh://git@github.com/stacklet/test-repo"
-	name = "test-repo"
+	name = "{{.Prefix}}-repo"
 
 	ssh_private_key_wo = "ignore-because-version-unchanged"
 	ssh_private_key_wo_version = 1
@@ -269,7 +269,7 @@ resource "stacklet_repository" "test" {
 			Config: `
 resource "stacklet_repository" "test" {
 	url = "ssh://git@github.com/stacklet/test-repo"
-	name = "test-repo"
+	name = "{{.Prefix}}-repo"
 
 	ssh_private_key_wo = <<EOT
 -----BEGIN OPENSSH PRIVATE KEY-----
@@ -301,7 +301,7 @@ EOT
 			Config: `
 resource "stacklet_repository" "test" {
 	url = "ssh://git@github.com/stacklet/test-repo"
-	name = "test-repo"
+	name = "{{.Prefix}}-repo"
 
 	ssh_private_key_wo = <<EOT
 -----BEGIN OPENSSH PRIVATE KEY-----

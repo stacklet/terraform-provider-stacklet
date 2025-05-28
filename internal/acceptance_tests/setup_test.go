@@ -14,7 +14,8 @@ func TestMain(m *testing.M) {
 }
 
 func ensureVars() {
-	if os.Getenv("TF_ACC") == "" || os.Getenv("TF_ACC_RECORD") != "" {
+	// Only set vars when running tests in replay mode.
+	if os.Getenv("TF_ACC") == "" || testMode() != TestModeReplay {
 		return
 	}
 

@@ -17,19 +17,19 @@ func TestAccPolicyDataSource(t *testing.T) {
                     }
 
                     data "stacklet_policy" "p2" {
-                      uuid = "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7"
+                      uuid = data.stacklet_policy.p1.uuid
                     }
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.stacklet_policy.p1", "name", "cost-aws:aws-elb-unattached-inform"),
 				resource.TestCheckResourceAttr("data.stacklet_policy.p1", "cloud_provider", "AWS"),
-				resource.TestCheckResourceAttr("data.stacklet_policy.p1", "version", "1"),
+				resource.TestCheckResourceAttrSet("data.stacklet_policy.p1", "version"),
 				resource.TestCheckResourceAttrSet("data.stacklet_policy.p1", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_policy.p1", "description"),
-
-				resource.TestCheckResourceAttr("data.stacklet_policy.p2", "name", "cost-aws:aws-rds-rightsize-disk-inform"),
+				// The same policy, but obtained via UUID.
+				resource.TestCheckResourceAttr("data.stacklet_policy.p2", "name", "cost-aws:aws-elb-unattached-inform"),
 				resource.TestCheckResourceAttr("data.stacklet_policy.p2", "cloud_provider", "AWS"),
-				resource.TestCheckResourceAttr("data.stacklet_policy.p2", "version", "1"),
+				resource.TestCheckResourceAttrSet("data.stacklet_policy.p2", "version"),
 				resource.TestCheckResourceAttrSet("data.stacklet_policy.p2", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_policy.p2", "description"),
 			),

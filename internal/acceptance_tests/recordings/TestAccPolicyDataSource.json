@@ -1,11 +1,11 @@
 {
-  "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}:{\"name\":\"\",\"uuid\":\"bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7\",\"version\":0}": [
+  "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}:{\"name\":\"\",\"uuid\":\"2a07c561-d1b0-4cb6-ad81-22013d2daf6e\",\"version\":0}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
         "variables": {
           "name": "",
-          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+          "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
           "version": 0
         }
       },
@@ -13,20 +13,20 @@
         "data": {
           "policy": {
             "category": [
-              "cost/efficiency/reservations"
+              "cost/waste/lifecycle"
             ],
-            "description": "RDS storage is a significant component of the pricing of RDS instances. \nSince storage autoscaling can be implemented, over provisioning storage \nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\n",
-            "id": "WyJwb2xpY3kiLCAiYmQyN2ZmYjQtMmQ3ZS00MmJmLWE3YjMtNThlZGNiNzI4NGE3IiwgIjEiXQ==",
+            "description": "Identify ELBs with no instances attached. These load balancers should be\ninvestigated and deleted if they are no longer in use.\n",
+            "id": "WyJwb2xpY3kiLCAiMmEwN2M1NjEtZDFiMC00Y2I2LWFkODEtMjIwMTNkMmRhZjZlIiwgIjEiXQ==",
             "mode": "pull",
-            "name": "cost-aws:aws-rds-rightsize-disk-inform",
-            "path": "aws/aws-rds-rightsize-disk.yaml",
+            "name": "cost-aws:aws-elb-unattached-inform",
+            "path": "aws/aws-elb-unattached.yaml",
             "provider": "AWS",
-            "resourceType": "aws.rds",
-            "source": "{\"description\": \"Identify RDS instances with more than 40% free storage for sustained \\nperiods of time.\\n\", \"filters\": [{\"and\": [{\"days\": 14, \"name\": \"FreeStorageSpace\", \"op\": \"greater-than\", \"type\": \"metrics\", \"value\": 10}, {\"attr-multiplier\": 1073741824, \"days\": 14, \"name\": \"FreeStorageSpace\", \"op\": \"greater-than\", \"percent-attr\": \"AllocatedStorage\", \"type\": \"metrics\", \"value\": 40}]}], \"metadata\": {\"autoremediable\": false, \"category\": [\"cost/efficiency/reservations\"], \"classification\": [{\"pillar\": \"finops\", \"scope\": \"rightsizing\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.2.3\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"RDS storage is a significant component of the pricing of RDS instances. \\nSince storage autoscaling can be implemented, over provisioning storage \\nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIOPS.StorageTypes.html\", \"description\": \"Replace the instance by another with less storage then add storage\\nautoscaling.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 5, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-rightsize-disk-inform\", \"resource\": \"aws.rds\"}",
-            "sourceYAML": "policies:\n- name: aws-rds-rightsize-disk-inform\n  resource: aws.rds\n  description: Identify RDS instances with more than 40% free storage for sustained  periods\n    of time.\n  metadata:\n    autoremediable: false\n    category:\n    - cost/efficiency/reservations\n    classification:\n    - pillar: finops\n      scope: rightsizing\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.2.3\n      version: 1.0.0\n    creator: Stacklet\n    long-description: RDS storage is a significant component of the pricing of RDS\n      instances.  Since storage autoscaling can be implemented, over provisioning\n      storage  should be avoided. This policy identifies RDS instances that have a\n      high probability of being overprovisioned.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Replace the instance by another with less storage then add storage\n          autoscaling.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIOPS.StorageTypes.html\n        performance_opportunity: 0\n        saving_opportunity: 5\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - and:\n    - name: FreeStorageSpace\n      type: metrics\n      days: 14\n      op: greater-than\n      value: 10\n    - name: FreeStorageSpace\n      type: metrics\n      attr-multiplier: 1073741824\n      days: 14\n      op: greater-than\n      percent-attr: AllocatedStorage\n      value: 40\n",
+            "resourceType": "aws.elb",
+            "source": "{\"description\": \"Identify unattached ELBs.\\n\", \"filters\": [{\"Instances\": []}], \"metadata\": {\"autoremediable\": true, \"category\": [\"cost/waste/lifecycle\"], \"classification\": [{\"pillar\": \"finops\", \"scope\": \"lifecycle\", \"segment\": \"waste\", \"severity\": \"medium\"}], \"compliance\": [{\"control-mappings\": [\"3.4.3\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify ELBs with no instances attached. These load balancers should be\\ninvestigated and deleted if they are no longer in use.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-getting-started.html\", \"description\": \"Review and delete classic ELBs that are temporarily or no longer in\\nuse.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/elb.html#aws-elb-actions-delete\", \"description\": \"Deletes classic ELBs identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"medium\", \"remediation_risk\": \"low\", \"severity\": \"medium\"}, \"name\": \"aws-elb-unattached-inform\", \"resource\": \"aws.elb\"}",
+            "sourceYAML": "policies:\n- name: aws-elb-unattached-inform\n  resource: aws.elb\n  description: Identify unattached ELBs.\n  metadata:\n    autoremediable: true\n    category:\n    - cost/waste/lifecycle\n    classification:\n    - pillar: finops\n      scope: lifecycle\n      segment: waste\n      severity: medium\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 3.4.3\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify ELBs with no instances attached. These load balancers\n      should be investigated and deleted if they are no longer in use.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and delete classic ELBs that are temporarily or no longer\n          in use.\n        type: link\n        content: https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-getting-started.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes classic ELBs identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/elb.html#aws-elb-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: medium\n    remediation_risk: low\n    severity: medium\n  filters:\n  - Instances: []\n",
             "system": true,
-            "unqualifiedName": "aws-rds-rightsize-disk-inform",
-            "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+            "unqualifiedName": "aws-elb-unattached-inform",
+            "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
             "version": 1
           }
         }
@@ -37,7 +37,7 @@
         "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
         "variables": {
           "name": "",
-          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+          "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
           "version": 0
         }
       },
@@ -45,20 +45,20 @@
         "data": {
           "policy": {
             "category": [
-              "cost/efficiency/reservations"
+              "cost/waste/lifecycle"
             ],
-            "description": "RDS storage is a significant component of the pricing of RDS instances. \nSince storage autoscaling can be implemented, over provisioning storage \nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\n",
-            "id": "WyJwb2xpY3kiLCAiYmQyN2ZmYjQtMmQ3ZS00MmJmLWE3YjMtNThlZGNiNzI4NGE3IiwgIjEiXQ==",
+            "description": "Identify ELBs with no instances attached. These load balancers should be\ninvestigated and deleted if they are no longer in use.\n",
+            "id": "WyJwb2xpY3kiLCAiMmEwN2M1NjEtZDFiMC00Y2I2LWFkODEtMjIwMTNkMmRhZjZlIiwgIjEiXQ==",
             "mode": "pull",
-            "name": "cost-aws:aws-rds-rightsize-disk-inform",
-            "path": "aws/aws-rds-rightsize-disk.yaml",
+            "name": "cost-aws:aws-elb-unattached-inform",
+            "path": "aws/aws-elb-unattached.yaml",
             "provider": "AWS",
-            "resourceType": "aws.rds",
-            "source": "{\"description\": \"Identify RDS instances with more than 40% free storage for sustained \\nperiods of time.\\n\", \"filters\": [{\"and\": [{\"days\": 14, \"name\": \"FreeStorageSpace\", \"op\": \"greater-than\", \"type\": \"metrics\", \"value\": 10}, {\"attr-multiplier\": 1073741824, \"days\": 14, \"name\": \"FreeStorageSpace\", \"op\": \"greater-than\", \"percent-attr\": \"AllocatedStorage\", \"type\": \"metrics\", \"value\": 40}]}], \"metadata\": {\"autoremediable\": false, \"category\": [\"cost/efficiency/reservations\"], \"classification\": [{\"pillar\": \"finops\", \"scope\": \"rightsizing\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.2.3\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"RDS storage is a significant component of the pricing of RDS instances. \\nSince storage autoscaling can be implemented, over provisioning storage \\nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIOPS.StorageTypes.html\", \"description\": \"Replace the instance by another with less storage then add storage\\nautoscaling.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 5, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-rightsize-disk-inform\", \"resource\": \"aws.rds\"}",
-            "sourceYAML": "policies:\n- name: aws-rds-rightsize-disk-inform\n  resource: aws.rds\n  description: Identify RDS instances with more than 40% free storage for sustained  periods\n    of time.\n  metadata:\n    autoremediable: false\n    category:\n    - cost/efficiency/reservations\n    classification:\n    - pillar: finops\n      scope: rightsizing\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.2.3\n      version: 1.0.0\n    creator: Stacklet\n    long-description: RDS storage is a significant component of the pricing of RDS\n      instances.  Since storage autoscaling can be implemented, over provisioning\n      storage  should be avoided. This policy identifies RDS instances that have a\n      high probability of being overprovisioned.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Replace the instance by another with less storage then add storage\n          autoscaling.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIOPS.StorageTypes.html\n        performance_opportunity: 0\n        saving_opportunity: 5\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - and:\n    - name: FreeStorageSpace\n      type: metrics\n      days: 14\n      op: greater-than\n      value: 10\n    - name: FreeStorageSpace\n      type: metrics\n      attr-multiplier: 1073741824\n      days: 14\n      op: greater-than\n      percent-attr: AllocatedStorage\n      value: 40\n",
+            "resourceType": "aws.elb",
+            "source": "{\"description\": \"Identify unattached ELBs.\\n\", \"filters\": [{\"Instances\": []}], \"metadata\": {\"autoremediable\": true, \"category\": [\"cost/waste/lifecycle\"], \"classification\": [{\"pillar\": \"finops\", \"scope\": \"lifecycle\", \"segment\": \"waste\", \"severity\": \"medium\"}], \"compliance\": [{\"control-mappings\": [\"3.4.3\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify ELBs with no instances attached. These load balancers should be\\ninvestigated and deleted if they are no longer in use.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-getting-started.html\", \"description\": \"Review and delete classic ELBs that are temporarily or no longer in\\nuse.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/elb.html#aws-elb-actions-delete\", \"description\": \"Deletes classic ELBs identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"medium\", \"remediation_risk\": \"low\", \"severity\": \"medium\"}, \"name\": \"aws-elb-unattached-inform\", \"resource\": \"aws.elb\"}",
+            "sourceYAML": "policies:\n- name: aws-elb-unattached-inform\n  resource: aws.elb\n  description: Identify unattached ELBs.\n  metadata:\n    autoremediable: true\n    category:\n    - cost/waste/lifecycle\n    classification:\n    - pillar: finops\n      scope: lifecycle\n      segment: waste\n      severity: medium\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 3.4.3\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify ELBs with no instances attached. These load balancers\n      should be investigated and deleted if they are no longer in use.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and delete classic ELBs that are temporarily or no longer\n          in use.\n        type: link\n        content: https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-getting-started.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes classic ELBs identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/elb.html#aws-elb-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: medium\n    remediation_risk: low\n    severity: medium\n  filters:\n  - Instances: []\n",
             "system": true,
-            "unqualifiedName": "aws-rds-rightsize-disk-inform",
-            "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+            "unqualifiedName": "aws-elb-unattached-inform",
+            "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
             "version": 1
           }
         }
@@ -69,7 +69,7 @@
         "query": "query ($name:String!$uuid:String!$version:Int!){policy(uuid: $uuid, name: $name, version: $version){id,uuid,name,description,provider,version,category,mode,resourceType,path,source,sourceYAML,system,unqualifiedName}}",
         "variables": {
           "name": "",
-          "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+          "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
           "version": 0
         }
       },
@@ -77,20 +77,20 @@
         "data": {
           "policy": {
             "category": [
-              "cost/efficiency/reservations"
+              "cost/waste/lifecycle"
             ],
-            "description": "RDS storage is a significant component of the pricing of RDS instances. \nSince storage autoscaling can be implemented, over provisioning storage \nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\n",
-            "id": "WyJwb2xpY3kiLCAiYmQyN2ZmYjQtMmQ3ZS00MmJmLWE3YjMtNThlZGNiNzI4NGE3IiwgIjEiXQ==",
+            "description": "Identify ELBs with no instances attached. These load balancers should be\ninvestigated and deleted if they are no longer in use.\n",
+            "id": "WyJwb2xpY3kiLCAiMmEwN2M1NjEtZDFiMC00Y2I2LWFkODEtMjIwMTNkMmRhZjZlIiwgIjEiXQ==",
             "mode": "pull",
-            "name": "cost-aws:aws-rds-rightsize-disk-inform",
-            "path": "aws/aws-rds-rightsize-disk.yaml",
+            "name": "cost-aws:aws-elb-unattached-inform",
+            "path": "aws/aws-elb-unattached.yaml",
             "provider": "AWS",
-            "resourceType": "aws.rds",
-            "source": "{\"description\": \"Identify RDS instances with more than 40% free storage for sustained \\nperiods of time.\\n\", \"filters\": [{\"and\": [{\"days\": 14, \"name\": \"FreeStorageSpace\", \"op\": \"greater-than\", \"type\": \"metrics\", \"value\": 10}, {\"attr-multiplier\": 1073741824, \"days\": 14, \"name\": \"FreeStorageSpace\", \"op\": \"greater-than\", \"percent-attr\": \"AllocatedStorage\", \"type\": \"metrics\", \"value\": 40}]}], \"metadata\": {\"autoremediable\": false, \"category\": [\"cost/efficiency/reservations\"], \"classification\": [{\"pillar\": \"finops\", \"scope\": \"rightsizing\", \"segment\": \"efficiency\", \"severity\": \"high\"}], \"compliance\": [{\"control-mappings\": [\"1.2.3\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"RDS storage is a significant component of the pricing of RDS instances. \\nSince storage autoscaling can be implemented, over provisioning storage \\nshould be avoided. This policy identifies RDS instances that have a high probability of being overprovisioned.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIOPS.StorageTypes.html\", \"description\": \"Replace the instance by another with less storage then add storage\\nautoscaling.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 5, \"type\": \"link\"}]}, \"remediation_effort\": \"high\", \"remediation_risk\": \"high\", \"severity\": \"high\"}, \"name\": \"aws-rds-rightsize-disk-inform\", \"resource\": \"aws.rds\"}",
-            "sourceYAML": "policies:\n- name: aws-rds-rightsize-disk-inform\n  resource: aws.rds\n  description: Identify RDS instances with more than 40% free storage for sustained  periods\n    of time.\n  metadata:\n    autoremediable: false\n    category:\n    - cost/efficiency/reservations\n    classification:\n    - pillar: finops\n      scope: rightsizing\n      segment: efficiency\n      severity: high\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 1.2.3\n      version: 1.0.0\n    creator: Stacklet\n    long-description: RDS storage is a significant component of the pricing of RDS\n      instances.  Since storage autoscaling can be implemented, over provisioning\n      storage  should be avoided. This policy identifies RDS instances that have a\n      high probability of being overprovisioned.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Replace the instance by another with less storage then add storage\n          autoscaling.\n        type: link\n        content: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIOPS.StorageTypes.html\n        performance_opportunity: 0\n        saving_opportunity: 5\n    remediation_effort: high\n    remediation_risk: high\n    severity: high\n  filters:\n  - and:\n    - name: FreeStorageSpace\n      type: metrics\n      days: 14\n      op: greater-than\n      value: 10\n    - name: FreeStorageSpace\n      type: metrics\n      attr-multiplier: 1073741824\n      days: 14\n      op: greater-than\n      percent-attr: AllocatedStorage\n      value: 40\n",
+            "resourceType": "aws.elb",
+            "source": "{\"description\": \"Identify unattached ELBs.\\n\", \"filters\": [{\"Instances\": []}], \"metadata\": {\"autoremediable\": true, \"category\": [\"cost/waste/lifecycle\"], \"classification\": [{\"pillar\": \"finops\", \"scope\": \"lifecycle\", \"segment\": \"waste\", \"severity\": \"medium\"}], \"compliance\": [{\"control-mappings\": [\"3.4.3\"], \"type\": \"Cost\", \"version\": \"1.0.0\"}], \"creator\": \"Stacklet\", \"long-description\": \"Identify ELBs with no instances attached. These load balancers should be\\ninvestigated and deleted if they are no longer in use.\\n\", \"recommended_actions\": {\"remediation\": [{\"content\": \"https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-getting-started.html\", \"description\": \"Review and delete classic ELBs that are temporarily or no longer in\\nuse.\\n\", \"name\": \"AWS Docs\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}, {\"content\": \"https://cloudcustodian.io/docs/aws/resources/elb.html#aws-elb-actions-delete\", \"description\": \"Deletes classic ELBs identified by the policy filters.\\n\", \"name\": \"Policy Action\", \"performance_opportunity\": 0, \"saving_opportunity\": 100, \"type\": \"link\"}]}, \"remediation_effort\": \"medium\", \"remediation_risk\": \"low\", \"severity\": \"medium\"}, \"name\": \"aws-elb-unattached-inform\", \"resource\": \"aws.elb\"}",
+            "sourceYAML": "policies:\n- name: aws-elb-unattached-inform\n  resource: aws.elb\n  description: Identify unattached ELBs.\n  metadata:\n    autoremediable: true\n    category:\n    - cost/waste/lifecycle\n    classification:\n    - pillar: finops\n      scope: lifecycle\n      segment: waste\n      severity: medium\n    compliance:\n    - type: Cost\n      control-mappings:\n      - 3.4.3\n      version: 1.0.0\n    creator: Stacklet\n    long-description: Identify ELBs with no instances attached. These load balancers\n      should be investigated and deleted if they are no longer in use.\n    recommended_actions:\n      remediation:\n      - name: AWS Docs\n        description: Review and delete classic ELBs that are temporarily or no longer\n          in use.\n        type: link\n        content: https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-getting-started.html\n        performance_opportunity: 0\n        saving_opportunity: 100\n      - name: Policy Action\n        description: Deletes classic ELBs identified by the policy filters.\n        type: link\n        content: https://cloudcustodian.io/docs/aws/resources/elb.html#aws-elb-actions-delete\n        performance_opportunity: 0\n        saving_opportunity: 100\n    remediation_effort: medium\n    remediation_risk: low\n    severity: medium\n  filters:\n  - Instances: []\n",
             "system": true,
-            "unqualifiedName": "aws-rds-rightsize-disk-inform",
-            "uuid": "bd27ffb4-2d7e-42bf-a7b3-58edcb7284a7",
+            "unqualifiedName": "aws-elb-unattached-inform",
+            "uuid": "2a07c561-d1b0-4cb6-ad81-22013d2daf6e",
             "version": 1
           }
         }

@@ -22,7 +22,7 @@ func TestAccPolicyCollectionMappingResource(t *testing.T) {
 					}
 
 					resource "stacklet_policy_collection" "test" {
-						name = "test-collection-mapping"
+						name = "{{.Prefix}}-collection-mapping"
 						description = "Test policy collection"
 						cloud_provider = "AWS"
 					}
@@ -61,7 +61,7 @@ func TestAccPolicyCollectionMappingResource(t *testing.T) {
 					}
 
 					resource "stacklet_policy_collection" "test" {
-						name = "test-collection-mapping"
+						name = "{{.Prefix}}-collection-mapping"
 						description = "Test policy collection"
 						cloud_provider = "AWS"
 					}

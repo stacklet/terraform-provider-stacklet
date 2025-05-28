@@ -14,20 +14,20 @@ func TestAccBindingDataSource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account_group" "test" {
-						name = "test-binding-ds-group"
+						name = "{{.Prefix}}-binding-ds-group"
 						description = "Test account group for binding data source"
 						cloud_provider = "AWS"
 						regions = ["us-east-1"]
 					}
 
 					resource "stacklet_policy_collection" "test" {
-						name = "test-binding-ds-collection"
+						name = "{{.Prefix}}-binding-ds-collection"
 						description = "Test policy collection for binding data source"
 						cloud_provider = "AWS"
 					}
 
 					resource "stacklet_binding" "test" {
-						name = "test-binding-ds"
+						name = "{{.Prefix}}-binding-ds"
 						description = "Test binding for data source"
 						account_group_uuid = stacklet_account_group.test.uuid
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
@@ -51,7 +51,7 @@ func TestAccBindingDataSource(t *testing.T) {
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				// Verify lookup by name
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "name", "test-binding-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "name", prefixName("binding-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "description", "Test binding for data source"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "account_group_uuid"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "policy_collection_uuid"),
@@ -61,7 +61,7 @@ func TestAccBindingDataSource(t *testing.T) {
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "uuid"),
 
 				// Verify lookup by UUID
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "name", "test-binding-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "name", prefixName("binding-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "description", "Test binding for data source"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "account_group_uuid"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "policy_collection_uuid"),

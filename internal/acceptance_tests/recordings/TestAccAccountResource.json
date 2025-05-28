@@ -1,5 +1,5 @@
 {
-  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}:{\"input\":{\"description\":\"Test AWS account\",\"email\":\"test@example.com\",\"key\":\"999999999999\",\"name\":\"test-account\",\"provider\":\"AWS\",\"securityContext\":\"arn:aws:iam::123456789012:role/stacklet-execution\",\"shortName\":\"test\",\"variables\":\"{\\\"environment\\\":\\\"test\\\"}\"}}": [
+  "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}:{\"input\":{\"description\":\"Test AWS account\",\"email\":\"test@example.com\",\"key\":\"999999999999\",\"name\":\"test-account\",\"provider\":\"AWS\",\"securityContext\":\"arn:aws:iam::123456789012:role/stacklet-execution\",\"shortName\":\"test-account\",\"variables\":\"{\\\"environment\\\":\\\"test\\\"}\"}}": [
     {
       "request": {
         "query": "mutation ($input:AccountInput!){addAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}",
@@ -11,7 +11,7 @@
             "name": "test-account",
             "provider": "AWS",
             "securityContext": "arn:aws:iam::123456789012:role/stacklet-execution",
-            "shortName": "test",
+            "shortName": "test-account",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -29,7 +29,7 @@
               "path": null,
               "provider": "AWS",
               "securityContext": "arn:aws:iam::123456789012:role/stacklet-execution",
-              "shortName": "test",
+              "shortName": "test-account",
               "variables": "{\"environment\":\"test\"}"
             }
           }
@@ -37,7 +37,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateAccountInput!){updateAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}:{\"input\":{\"description\":\"Updated AWS account\",\"email\":\"updated@example.com\",\"key\":\"999999999999\",\"name\":\"test-account-updated\",\"provider\":\"AWS\",\"securityContext\":\"arn:aws:iam::123456789012:role/stacklet-execution-new\",\"shortName\":\"test-updated\",\"variables\":\"{\\\"environment\\\":\\\"staging\\\"}\"}}": [
+  "mutation ($input:UpdateAccountInput!){updateAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}:{\"input\":{\"description\":\"Updated AWS account\",\"email\":\"updated@example.com\",\"key\":\"999999999999\",\"name\":\"test-account-updated\",\"provider\":\"AWS\",\"securityContext\":\"arn:aws:iam::123456789012:role/stacklet-execution-new\",\"shortName\":\"test-account-updated\",\"variables\":\"{\\\"environment\\\":\\\"staging\\\"}\"}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateAccountInput!){updateAccount(input: $input){account{id,key,name,shortName,description,provider,path,email,active,securityContext,variables}}}",
@@ -49,7 +49,7 @@
             "name": "test-account-updated",
             "provider": "AWS",
             "securityContext": "arn:aws:iam::123456789012:role/stacklet-execution-new",
-            "shortName": "test-updated",
+            "shortName": "test-account-updated",
             "variables": "{\"environment\":\"staging\"}"
           }
         }
@@ -67,7 +67,7 @@
               "path": null,
               "provider": "AWS",
               "securityContext": "arn:aws:iam::123456789012:role/stacklet-execution-new",
-              "shortName": "test-updated",
+              "shortName": "test-account-updated",
               "variables": "{\"environment\":\"staging\"}"
             }
           }
@@ -116,7 +116,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "arn:aws:iam::123456789012:role/stacklet-execution",
-            "shortName": "test",
+            "shortName": "test-account",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -142,7 +142,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "arn:aws:iam::123456789012:role/stacklet-execution",
-            "shortName": "test",
+            "shortName": "test-account",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -168,7 +168,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "arn:aws:iam::123456789012:role/stacklet-execution",
-            "shortName": "test",
+            "shortName": "test-account",
             "variables": "{\"environment\":\"test\"}"
           }
         }
@@ -194,7 +194,7 @@
             "path": null,
             "provider": "AWS",
             "securityContext": "arn:aws:iam::123456789012:role/stacklet-execution-new",
-            "shortName": "test-updated",
+            "shortName": "test-account-updated",
             "variables": "{\"environment\":\"staging\"}"
           }
         }

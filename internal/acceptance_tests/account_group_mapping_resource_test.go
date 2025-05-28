@@ -14,21 +14,21 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account" "test1" {
-						name = "test-account-1"
+						name = "{{.Prefix}}-account-1"
 						key = "111111111111"
 						cloud_provider = "AWS"
 						description = "Test AWS account 1"
 					}
 
 					resource "stacklet_account" "test2" {
-						name = "test-account-2"
+						name = "{{.Prefix}}-account-2"
 						key = "222222222222"
 						cloud_provider = "AWS"
 						description = "Test AWS account 2"
 					}
 
 					resource "stacklet_account_group" "test" {
-						name = "test-group-mappings"
+						name = "{{.Prefix}}-group-mappings"
 						description = "Test account group"
 						cloud_provider = "AWS"
 						regions = ["us-east-1"]
@@ -59,21 +59,21 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account" "test1" {
-						name = "test-account-1"
+						name = "{{.Prefix}}-account-1"
 						key = "111111111111"
 						cloud_provider = "AWS"
 						description = "Test AWS account 1"
 					}
 
 					resource "stacklet_account" "test2" {
-						name = "test-account-2"
+						name = "{{.Prefix}}-account-2"
 						key = "222222222222"
 						cloud_provider = "AWS"
 						description = "Test AWS account 2"
 					}
 
 					resource "stacklet_account_group" "test" {
-						name = "test-group-mappings"
+						name = "{{.Prefix}}-group-mappings"
 						description = "Test account group"
 						cloud_provider = "AWS"
 						regions = ["us-east-1"]

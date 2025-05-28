@@ -13,7 +13,7 @@ func TestAccAccountGroupDataSource(t *testing.T) {
 		{
 			Config: `
 					resource "stacklet_account_group" "test" {
-						name = "test-group-ds"
+						name = "{{.Prefix}}-group-ds"
 						description = "Test account group"
 						cloud_provider = "AWS"
 						regions = ["us-east-1"]
@@ -24,7 +24,7 @@ func TestAccAccountGroupDataSource(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("data.stacklet_account_group.test", "name", "test-group-ds"),
+				resource.TestCheckResourceAttr("data.stacklet_account_group.test", "name", prefixName("group-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_account_group.test", "description", "Test account group"),
 				resource.TestCheckResourceAttr("data.stacklet_account_group.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttr("data.stacklet_account_group.test", "regions.0", "us-east-1"),

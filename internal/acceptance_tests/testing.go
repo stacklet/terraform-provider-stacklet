@@ -3,10 +3,14 @@
 package acceptance_tests
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
+	"os"
+	"slices"
 	"strings"
 	"testing"
+	"text/template"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
@@ -15,6 +19,22 @@ import (
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/provider"
 )
+
+const (
+	TestModeRecord = "record"
+	TestModeReplay = "replay"
+	TestModeLive   = "live"
+)
+
+// testMode returns the test mode.
+func testMode() string {
+	mode := getenv("TF_ACC_MODE", TestModeReplay)
+	modes := []string{TestModeRecord, TestModeReplay, TestModeLive}
+	if !slices.Contains(modes, mode) {
+		panic(fmt.Errorf("invalid TF_ACC_MODE, must be one of %v", modes))
+	}
+	return mode
+}
 
 // importStateIDFuncFromAttrs returns an ImportStateIdFunc that creates an
 // import ID from resource attributes. Each attribute is in the form
@@ -45,7 +65,28 @@ func importStateIDFuncFromAttrs(attrs ...string) resource.ImportStateIdFunc {
 
 // runRecordedAccTest runs an acceptance test, with the specified name and steps.
 func runRecordedAccTest(t *testing.T, testName string, testSteps []resource.TestStep) {
-	rt := newRecordedTransport(t, testName, http.DefaultTransport)
+	setupHTTPTransport(t, testName)
+	renderConfigs(t, testSteps)
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"stacklet": func() (tfprotov6.ProviderServer, error) {
+				p := provider.New("test")()
+				return providerserver.NewProtocol6WithError(p)()
+			},
+		},
+		Steps: testSteps,
+	})
+}
+
+func setupHTTPTransport(t *testing.T, testName string) {
+	mode := testMode()
+	if mode == TestModeLive {
+		return // nothing to set up for live runs
+	}
+
+	rt := newRecordedTransport(t, testName, mode, http.DefaultTransport)
+
 	if err := rt.loadRecording(); err != nil {
 		t.Errorf("failed to load recording: %v", err)
 	}
@@ -60,14 +101,54 @@ func runRecordedAccTest(t *testing.T, testName string, testSteps []resource.Test
 			t.Errorf("failed to save recording: %v", err)
 		}
 	})
+}
 
-	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"stacklet": func() (tfprotov6.ProviderServer, error) {
-				p := provider.New("test")()
-				return providerserver.NewProtocol6WithError(p)()
-			},
-		},
-		Steps: testSteps,
-	})
+// configData holds the test configuration data.
+type configData struct {
+	Prefix string
+}
+
+func getConfigData() configData {
+	return configData{
+		Prefix: getenv("TF_ACC_PREFIX", "test"),
+	}
+}
+
+func getenv(name, fallback string) string {
+	value := os.Getenv(name)
+	if value == "" {
+		return fallback
+	}
+	return value
+}
+
+func renderConfigs(t *testing.T, testSteps []resource.TestStep) {
+	data := getConfigData()
+	for i, step := range testSteps {
+		if step.Config != "" {
+			config, err := renderConfig(step.Config, data)
+			if err != nil {
+				t.Errorf("failed to render config: %v", err)
+			}
+			step.Config = config
+			testSteps[i] = step
+		}
+	}
+}
+
+func renderConfig(config string, data configData) (string, error) {
+	t, err := template.New("config").Parse(config)
+	if err != nil {
+		return "", err
+	}
+
+	wr := bytes.Buffer{}
+	if err := t.Execute(&wr, data); err != nil {
+		return "", err
+	}
+	return wr.String(), nil
+}
+
+func prefixName(name string) string {
+	return fmt.Sprintf("%s-%s", getConfigData().Prefix, name)
 }
