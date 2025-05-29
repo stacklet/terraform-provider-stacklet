@@ -13,7 +13,7 @@ Manages a policy collection.
 ## Example Usage
 
 ```terraform
-# Create an AWS policy collection
+# Create a policy collection
 resource "stacklet_policy_collection" "aws_security" {
   name           = "aws-security-policies"
   cloud_provider = "AWS"
@@ -21,20 +21,19 @@ resource "stacklet_policy_collection" "aws_security" {
   auto_update    = true
 }
 
-# Create an Azure policy collection
-resource "stacklet_policy_collection" "azure_compliance" {
-  name           = "azure-compliance-policies"
-  cloud_provider = "Azure"
-  description    = "Compliance policies for Azure resources"
-  auto_update    = false
+data "stacklet_repository" "policies" {
+  url = "ssh://git@example.com/my-policies.git"
 }
 
-# Create a GCP policy collection
-resource "stacklet_policy_collection" "gcp_cost" {
-  name           = "gcp-cost-policies"
-  cloud_provider = "GCP"
-  description    = "Cost optimization policies for GCP resources"
+# Create a dynamic policy collection
+resource "stacklet_policy_collection" "policies" {
+  name           = "my-aws-policies"
+  cloud_provider = "AWS"
   auto_update    = true
+  dynamic_config = {
+    repository_uuid = data.stacklet_repository.policies.uuid
+    branch_name     = "aws"
+  }
 }
 ```
 
@@ -50,14 +49,31 @@ resource "stacklet_policy_collection" "gcp_cost" {
 
 - `auto_update` (Boolean) Whether the policy collection automatically updates policy versions.
 - `description` (String) The description of the policy collection.
+- `dynamic_config` (Attributes) Configuration for dynamic behavior. (see [below for nested schema](#nestedatt--dynamic_config))
 
 ### Read-Only
 
 - `dynamic` (Boolean) Whether this is a dynamic policy collection.
 - `id` (String) The GraphQL Node ID of the policy collection.
-- `repository_uuid` (String) The UUID of the repository the collection is linked to, if dynamic.
 - `system` (Boolean) Whether this is a system policy collection.
 - `uuid` (String) The UUID of the policy collection.
+
+<a id="nestedatt--dynamic_config"></a>
+### Nested Schema for `dynamic_config`
+
+Required:
+
+- `repository_uuid` (String) The UUID of the repository the collection is linked to.
+
+Optional:
+
+- `branch_name` (String) The repository branch from which policies are imported.
+- `policy_directories` (List of String) Optional list of subdirectory to limit the scan to.
+- `policy_file_suffixes` (List of String) Optional list of suffixes for policy files to limit the scan to.
+
+Read-Only:
+
+- `namespace` (String) The namespace for policies from the repository.
 
 ## Import
 

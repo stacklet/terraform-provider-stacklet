@@ -27,6 +27,14 @@ type Repository struct {
 	}
 }
 
+// RepositoryView is the data returned by reading repository view data.
+type RepositoryView struct {
+	Namespace         string
+	BranchName        string
+	PolicyDirectories []string
+	PolicyFileSuffix  []string
+}
+
 // RepositoryConfigAuthInput exists to allow us to set only the fields we want to
 // change in this type, which matches the expectations of the API and is much more
 // clear to casual inspection than exacting use of `omitempty` struct tags.

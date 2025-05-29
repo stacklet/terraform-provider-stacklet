@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection\",\"name\":\"test-collection-ds\",\"provider\":\"AWS\"}}": [
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection\",\"name\":\"test-collection-ds\",\"provider\":\"AWS\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}}",
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
         "variables": {
           "input": {
             "autoUpdate": false,
@@ -18,45 +18,46 @@
             "collection": {
               "autoUpdate": false,
               "description": "Test policy collection",
-              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5M2MwNjRhYi1hMTk0LTRjM2MtODBlZi01NmM5N2YyOTc2M2MiXQ==",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlYjFlZTJjOC0xOTE1LTRjZWQtOThlOS0xZTBhY2I1MThjZDEiXQ==",
               "isDynamic": false,
               "name": "test-collection-ds",
               "provider": "AWS",
               "repositoryConfig": null,
+              "repositoryView": null,
               "system": false,
-              "uuid": "93c064ab-a194-4c3c-80ef-56c97f29763c"
+              "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
             }
           }
         }
       }
     }
   ],
-  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"93c064ab-a194-4c3c-80ef-56c97f29763c\"}": [
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"eb1ee2c8-1915-4ced-98e9-1e0acb518cd1\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
         "variables": {
-          "uuid": "93c064ab-a194-4c3c-80ef-56c97f29763c"
+          "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
         }
       },
       "response": {
         "data": {
           "removePolicyCollection": {
             "collection": {
-              "uuid": "93c064ab-a194-4c3c-80ef-56c97f29763c"
+              "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
             }
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}:{\"name\":\"test-collection-ds\",\"uuid\":\"\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"eb1ee2c8-1915-4ced-98e9-1e0acb518cd1\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
-          "name": "test-collection-ds",
-          "uuid": ""
+          "name": "",
+          "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
         }
       },
       "response": {
@@ -64,73 +65,26 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5M2MwNjRhYi1hMTk0LTRjM2MtODBlZi01NmM5N2YyOTc2M2MiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlYjFlZTJjOC0xOTE1LTRjZWQtOThlOS0xZTBhY2I1MThjZDEiXQ==",
             "isDynamic": false,
             "name": "test-collection-ds",
             "provider": "AWS",
             "repositoryConfig": null,
+            "repositoryView": null,
             "system": false,
-            "uuid": "93c064ab-a194-4c3c-80ef-56c97f29763c"
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
-        "variables": {
-          "name": "test-collection-ds",
-          "uuid": ""
-        }
-      },
-      "response": {
-        "data": {
-          "policyCollection": {
-            "autoUpdate": false,
-            "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5M2MwNjRhYi1hMTk0LTRjM2MtODBlZi01NmM5N2YyOTc2M2MiXQ==",
-            "isDynamic": false,
-            "name": "test-collection-ds",
-            "provider": "AWS",
-            "repositoryConfig": null,
-            "system": false,
-            "uuid": "93c064ab-a194-4c3c-80ef-56c97f29763c"
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
-        "variables": {
-          "name": "test-collection-ds",
-          "uuid": ""
-        }
-      },
-      "response": {
-        "data": {
-          "policyCollection": {
-            "autoUpdate": false,
-            "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5M2MwNjRhYi1hMTk0LTRjM2MtODBlZi01NmM5N2YyOTc2M2MiXQ==",
-            "isDynamic": false,
-            "name": "test-collection-ds",
-            "provider": "AWS",
-            "repositoryConfig": null,
-            "system": false,
-            "uuid": "93c064ab-a194-4c3c-80ef-56c97f29763c"
+            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}:{\"name\":\"\",\"uuid\":\"93c064ab-a194-4c3c-80ef-56c97f29763c\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"test-collection-ds\",\"uuid\":\"\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
-          "name": "",
-          "uuid": "93c064ab-a194-4c3c-80ef-56c97f29763c"
+          "name": "test-collection-ds",
+          "uuid": ""
         }
       },
       "response": {
@@ -138,13 +92,64 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5M2MwNjRhYi1hMTk0LTRjM2MtODBlZi01NmM5N2YyOTc2M2MiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlYjFlZTJjOC0xOTE1LTRjZWQtOThlOS0xZTBhY2I1MThjZDEiXQ==",
             "isDynamic": false,
             "name": "test-collection-ds",
             "provider": "AWS",
             "repositoryConfig": null,
+            "repositoryView": null,
             "system": false,
-            "uuid": "93c064ab-a194-4c3c-80ef-56c97f29763c"
+            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "variables": {
+          "name": "test-collection-ds",
+          "uuid": ""
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlYjFlZTJjOC0xOTE1LTRjZWQtOThlOS0xZTBhY2I1MThjZDEiXQ==",
+            "isDynamic": false,
+            "name": "test-collection-ds",
+            "provider": "AWS",
+            "repositoryConfig": null,
+            "repositoryView": null,
+            "system": false,
+            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "variables": {
+          "name": "test-collection-ds",
+          "uuid": ""
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlYjFlZTJjOC0xOTE1LTRjZWQtOThlOS0xZTBhY2I1MThjZDEiXQ==",
+            "isDynamic": false,
+            "name": "test-collection-ds",
+            "provider": "AWS",
+            "repositoryConfig": null,
+            "repositoryView": null,
+            "system": false,
+            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
           }
         }
       }

@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection\",\"name\":\"test-collection-mapping\",\"provider\":\"AWS\"}}": [
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection\",\"name\":\"test-collection-mapping\",\"provider\":\"AWS\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}}",
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
         "variables": {
           "input": {
             "autoUpdate": false,
@@ -18,27 +18,28 @@
             "collection": {
               "autoUpdate": false,
               "description": "Test policy collection",
-              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI3NDQ4NmJhNS1lNDcwLTQ3ZTgtODVkOC02MGZhOTNkYjA0ZGIiXQ==",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJhYTU4ZTkxNi1hMGE3LTRmNzMtOGRkMy02ZTVhMzY1MmRmYTciXQ==",
               "isDynamic": false,
               "name": "test-collection-mapping",
               "provider": "AWS",
               "repositoryConfig": null,
+              "repositoryView": null,
               "system": false,
-              "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+              "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==\"]}}": [
+  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}",
         "variables": {
           "input": {
             "ids": [
-              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
+              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
             ]
           }
         }
@@ -48,7 +49,7 @@
           "removePolicyCollectionMappings": {
             "removed": [
               {
-                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
               }
             ]
           }
@@ -56,14 +57,14 @@
       }
     }
   ],
-  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==\"]}}": [
+  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}",
         "variables": {
           "input": {
             "ids": [
-              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
+              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
             ]
           }
         }
@@ -73,7 +74,7 @@
           "removePolicyCollectionMappings": {
             "removed": [
               {
-                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
               }
             ]
           }
@@ -81,7 +82,7 @@
       }
     }
   ],
-  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"74486ba5-e470-47e8-85d8-60fa93db04db\",\"policyUUID\":\"0ee44f79-0c23-4b46-9d76-3d4bdfd32392\",\"policyVersion\":1}]}}": [
+  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7\",\"policyUUID\":\"0ee44f79-0c23-4b46-9d76-3d4bdfd32392\",\"policyVersion\":1}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}",
@@ -89,7 +90,7 @@
           "input": {
             "mappings": [
               {
-                "collectionUUID": "74486ba5-e470-47e8-85d8-60fa93db04db",
+                "collectionUUID": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7",
                 "policyUUID": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
                 "policyVersion": 1
               }
@@ -103,9 +104,9 @@
             "mappings": [
               {
                 "collection": {
-                  "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+                  "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
                 },
-                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
                 "policy": {
                   "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
                   "version": 1
@@ -117,7 +118,7 @@
       }
     }
   ],
-  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"74486ba5-e470-47e8-85d8-60fa93db04db\",\"policyUUID\":\"382c1cbd-9942-4ec4-ae48-ae0c303188eb\",\"policyVersion\":1}]}}": [
+  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7\",\"policyUUID\":\"382c1cbd-9942-4ec4-ae48-ae0c303188eb\",\"policyVersion\":1}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}",
@@ -125,7 +126,7 @@
           "input": {
             "mappings": [
               {
-                "collectionUUID": "74486ba5-e470-47e8-85d8-60fa93db04db",
+                "collectionUUID": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7",
                 "policyUUID": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
                 "policyVersion": 1
               }
@@ -139,9 +140,9 @@
             "mappings": [
               {
                 "collection": {
-                  "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+                  "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
                 },
-                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
                 "policy": {
                   "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
                   "version": 1
@@ -153,19 +154,19 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"74486ba5-e470-47e8-85d8-60fa93db04db\"}": [
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
         "variables": {
-          "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+          "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
         }
       },
       "response": {
         "data": {
           "removePolicyCollection": {
             "collection": {
-              "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+              "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
             }
           }
         }
@@ -638,13 +639,13 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}:{\"name\":\"\",\"uuid\":\"74486ba5-e470-47e8-85d8-60fa93db04db\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+          "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
         }
       },
       "response": {
@@ -652,23 +653,24 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI3NDQ4NmJhNS1lNDcwLTQ3ZTgtODVkOC02MGZhOTNkYjA0ZGIiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJhYTU4ZTkxNi1hMGE3LTRmNzMtOGRkMy02ZTVhMzY1MmRmYTciXQ==",
             "isDynamic": false,
             "name": "test-collection-mapping",
             "provider": "AWS",
             "repositoryConfig": null,
+            "repositoryView": null,
             "system": false,
-            "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+            "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+          "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
         }
       },
       "response": {
@@ -676,23 +678,24 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI3NDQ4NmJhNS1lNDcwLTQ3ZTgtODVkOC02MGZhOTNkYjA0ZGIiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJhYTU4ZTkxNi1hMGE3LTRmNzMtOGRkMy02ZTVhMzY1MmRmYTciXQ==",
             "isDynamic": false,
             "name": "test-collection-mapping",
             "provider": "AWS",
             "repositoryConfig": null,
+            "repositoryView": null,
             "system": false,
-            "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+            "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+          "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
         }
       },
       "response": {
@@ -700,24 +703,25 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI3NDQ4NmJhNS1lNDcwLTQ3ZTgtODVkOC02MGZhOTNkYjA0ZGIiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJhYTU4ZTkxNi1hMGE3LTRmNzMtOGRkMy02ZTVhMzY1MmRmYTciXQ==",
             "isDynamic": false,
             "name": "test-collection-mapping",
             "provider": "AWS",
             "repositoryConfig": null,
+            "repositoryView": null,
             "system": false,
-            "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+            "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
           }
         }
       }
     }
   ],
-  "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}:{\"uuid\":\"74486ba5-e470-47e8-85d8-60fa93db04db\"}": [
+  "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}:{\"uuid\":\"aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7\"}": [
     {
       "request": {
         "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}",
         "variables": {
-          "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+          "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
         }
       },
       "response": {
@@ -728,9 +732,9 @@
                 {
                   "node": {
                     "collection": {
-                      "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+                      "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
                     },
-                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
                     "policy": {
                       "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
                       "version": 1
@@ -747,7 +751,7 @@
       "request": {
         "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}",
         "variables": {
-          "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+          "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
         }
       },
       "response": {
@@ -758,9 +762,9 @@
                 {
                   "node": {
                     "collection": {
-                      "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+                      "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
                     },
-                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
                     "policy": {
                       "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
                       "version": 1
@@ -777,7 +781,7 @@
       "request": {
         "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}",
         "variables": {
-          "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+          "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
         }
       },
       "response": {
@@ -788,9 +792,9 @@
                 {
                   "node": {
                     "collection": {
-                      "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+                      "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
                     },
-                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
                     "policy": {
                       "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
                       "version": 1
@@ -807,7 +811,7 @@
       "request": {
         "query": "query ($uuid:String!){policyCollection(uuid: $uuid){policyMappings{edges{node{id,policy{uuid,version},collection{uuid}}}}}}",
         "variables": {
-          "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+          "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
         }
       },
       "response": {
@@ -818,9 +822,9 @@
                 {
                   "node": {
                     "collection": {
-                      "uuid": "74486ba5-e470-47e8-85d8-60fa93db04db"
+                      "uuid": "aa58e916-a0a7-4f73-8dd3-6e5a3652dfa7"
                     },
-                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjc0NDg2YmE1LWU0NzAtNDdlOC04NWQ4LTYwZmE5M2RiMDRkYiIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImFhNThlOTE2LWEwYTctNGY3My04ZGQzLTZlNWEzNjUyZGZhNyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
                     "policy": {
                       "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
                       "version": 1

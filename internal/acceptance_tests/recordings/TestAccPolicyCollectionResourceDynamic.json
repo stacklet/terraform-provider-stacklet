@@ -1,0 +1,392 @@
+{
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":true,\"description\":\"Dynamic policy collection\",\"name\":\"test-collection-dynamic\",\"provider\":\"AWS\",\"repositoryUUID\":\"b6870189-0801-45d2-ac75-172bc96f8154\",\"repositoryView\":{\"branchName\":\"\",\"policyDirectories\":null,\"policyFileSuffix\":null}}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "variables": {
+          "input": {
+            "autoUpdate": true,
+            "description": "Dynamic policy collection",
+            "name": "test-collection-dynamic",
+            "provider": "AWS",
+            "repositoryUUID": "b6870189-0801-45d2-ac75-172bc96f8154",
+            "repositoryView": {
+              "branchName": "",
+              "policyDirectories": null,
+              "policyFileSuffix": null
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addPolicyCollection": {
+            "collection": {
+              "autoUpdate": true,
+              "description": "Dynamic policy collection",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZmU2ZmUwMS03NTY4LTQ4NTItODU2YS0yODQ3OTBkZDU0MDMiXQ==",
+              "isDynamic": true,
+              "name": "test-collection-dynamic",
+              "provider": "AWS",
+              "repositoryConfig": {
+                "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+              },
+              "repositoryView": {
+                "branchName": null,
+                "namespace": "e96d4d20-2684-4209-8268-c500194782b8",
+                "policyDirectories": null,
+                "policyFileSuffix": [
+                  ".yaml",
+                  ".yml"
+                ]
+              },
+              "system": false,
+              "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":null,\"authUser\":\"\",\"sshPassphrase\":null,\"sshPrivateKey\":null},\"name\":\"test-repo\",\"url\":\"https://github.com/test-org/test-repo\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "auth": {
+              "authToken": null,
+              "authUser": "",
+              "sshPassphrase": null,
+              "sshPrivateKey": null
+            },
+            "name": "test-repo",
+            "url": "https://github.com/test-org/test-repo"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addRepositoryConfig": {
+            "problems": [],
+            "repositoryConfig": {
+              "auth": {
+                "authUser": null,
+                "hasAuthToken": false,
+                "hasSshPassphrase": false,
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
+              },
+              "description": null,
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJiNjg3MDE4OS0wODAxLTQ1ZDItYWM3NS0xNzJiYzk2ZjgxNTQiXQ==",
+              "name": "test-repo",
+              "system": false,
+              "url": "https://github.com/test-org/test-repo",
+              "uuid": "b6870189-0801-45d2-ac75-172bc96f8154",
+              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemoveRepositoryConfigInput!){removeRepositoryConfig(input: $input){problems{__typename,message}}}:{\"input\":{\"cascade\":false,\"uuid\":\"b6870189-0801-45d2-ac75-172bc96f8154\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemoveRepositoryConfigInput!){removeRepositoryConfig(input: $input){problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "cascade": false,
+            "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removeRepositoryConfig": {
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":true,\"description\":\"Dynamic policy collection updated\",\"name\":\"test-collection-dynamic\",\"provider\":\"AWS\",\"repositoryView\":{\"branchName\":\"\",\"policyDirectories\":[\"dir1\",\"dir2\"],\"policyFileSuffix\":[\".yaml\"]},\"uuid\":\"ffe6fe01-7568-4852-856a-284790dd5403\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "variables": {
+          "input": {
+            "autoUpdate": true,
+            "description": "Dynamic policy collection updated",
+            "name": "test-collection-dynamic",
+            "provider": "AWS",
+            "repositoryView": {
+              "branchName": "",
+              "policyDirectories": [
+                "dir1",
+                "dir2"
+              ],
+              "policyFileSuffix": [
+                ".yaml"
+              ]
+            },
+            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updatePolicyCollection": {
+            "collection": {
+              "autoUpdate": true,
+              "description": "Dynamic policy collection updated",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZmU2ZmUwMS03NTY4LTQ4NTItODU2YS0yODQ3OTBkZDU0MDMiXQ==",
+              "isDynamic": true,
+              "name": "test-collection-dynamic",
+              "provider": "AWS",
+              "repositoryConfig": {
+                "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+              },
+              "repositoryView": {
+                "branchName": null,
+                "namespace": "e96d4d20-2684-4209-8268-c500194782b8",
+                "policyDirectories": [
+                  "dir1",
+                  "dir2"
+                ],
+                "policyFileSuffix": [
+                  ".yaml"
+                ]
+              },
+              "system": false,
+              "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"ffe6fe01-7568-4852-856a-284790dd5403\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
+        "variables": {
+          "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+        }
+      },
+      "response": {
+        "data": {
+          "removePolicyCollection": {
+            "collection": {
+              "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"ffe6fe01-7568-4852-856a-284790dd5403\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "variables": {
+          "name": "",
+          "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": true,
+            "description": "Dynamic policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZmU2ZmUwMS03NTY4LTQ4NTItODU2YS0yODQ3OTBkZDU0MDMiXQ==",
+            "isDynamic": true,
+            "name": "test-collection-dynamic",
+            "provider": "AWS",
+            "repositoryConfig": {
+              "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+            },
+            "repositoryView": {
+              "branchName": null,
+              "namespace": "e96d4d20-2684-4209-8268-c500194782b8",
+              "policyDirectories": null,
+              "policyFileSuffix": [
+                ".yaml",
+                ".yml"
+              ]
+            },
+            "system": false,
+            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "variables": {
+          "name": "",
+          "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": true,
+            "description": "Dynamic policy collection",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZmU2ZmUwMS03NTY4LTQ4NTItODU2YS0yODQ3OTBkZDU0MDMiXQ==",
+            "isDynamic": true,
+            "name": "test-collection-dynamic",
+            "provider": "AWS",
+            "repositoryConfig": {
+              "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+            },
+            "repositoryView": {
+              "branchName": null,
+              "namespace": "e96d4d20-2684-4209-8268-c500194782b8",
+              "policyDirectories": null,
+              "policyFileSuffix": [
+                ".yaml",
+                ".yml"
+              ]
+            },
+            "system": false,
+            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "variables": {
+          "name": "",
+          "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": true,
+            "description": "Dynamic policy collection updated",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJmZmU2ZmUwMS03NTY4LTQ4NTItODU2YS0yODQ3OTBkZDU0MDMiXQ==",
+            "isDynamic": true,
+            "name": "test-collection-dynamic",
+            "provider": "AWS",
+            "repositoryConfig": {
+              "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+            },
+            "repositoryView": {
+              "branchName": null,
+              "namespace": "e96d4d20-2684-4209-8268-c500194782b8",
+              "policyDirectories": [
+                "dir1",
+                "dir2"
+              ],
+              "policyFileSuffix": [
+                ".yaml"
+              ]
+            },
+            "system": false,
+            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"uuid\":\"b6870189-0801-45d2-ac75-172bc96f8154\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "variables": {
+          "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+        }
+      },
+      "response": {
+        "data": {
+          "repositoryConfig": {
+            "problems": [],
+            "repositoryConfig": {
+              "auth": {
+                "authUser": null,
+                "hasAuthToken": false,
+                "hasSshPassphrase": false,
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
+              },
+              "description": null,
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJiNjg3MDE4OS0wODAxLTQ1ZDItYWM3NS0xNzJiYzk2ZjgxNTQiXQ==",
+              "name": "test-repo",
+              "system": false,
+              "url": "https://github.com/test-org/test-repo",
+              "uuid": "b6870189-0801-45d2-ac75-172bc96f8154",
+              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "variables": {
+          "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+        }
+      },
+      "response": {
+        "data": {
+          "repositoryConfig": {
+            "problems": [],
+            "repositoryConfig": {
+              "auth": {
+                "authUser": null,
+                "hasAuthToken": false,
+                "hasSshPassphrase": false,
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
+              },
+              "description": null,
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJiNjg3MDE4OS0wODAxLTQ1ZDItYWM3NS0xNzJiYzk2ZjgxNTQiXQ==",
+              "name": "test-repo",
+              "system": false,
+              "url": "https://github.com/test-org/test-repo",
+              "uuid": "b6870189-0801-45d2-ac75-172bc96f8154",
+              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "variables": {
+          "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
+        }
+      },
+      "response": {
+        "data": {
+          "repositoryConfig": {
+            "problems": [],
+            "repositoryConfig": {
+              "auth": {
+                "authUser": null,
+                "hasAuthToken": false,
+                "hasSshPassphrase": false,
+                "hasSshPrivateKey": false,
+                "sshPublicKey": null
+              },
+              "description": null,
+              "id": "WyJyZXBvc2l0b3J5X2NvbmZpZyIsICJiNjg3MDE4OS0wODAxLTQ1ZDItYWM3NS0xNzJiYzk2ZjgxNTQiXQ==",
+              "name": "test-repo",
+              "system": false,
+              "url": "https://github.com/test-org/test-repo",
+              "uuid": "b6870189-0801-45d2-ac75-172bc96f8154",
+              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
