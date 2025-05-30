@@ -110,11 +110,13 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 	var gqlReq graphqlRequest
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
+		req.Body.Close()
 		return nil, fmt.Errorf("failed to read request body: %v", err)
 	}
 	req.Body = io.NopCloser(bytes.NewReader(body)) // Reset the body for future reads
 
 	if err := json.Unmarshal(body, &gqlReq); err != nil {
+		req.Body.Close()
 		return nil, fmt.Errorf("failed to decode request body: %v", err)
 	}
 

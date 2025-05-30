@@ -14,15 +14,13 @@ import (
 
 // ProviderData holds shared data for available in requests.
 type ProviderData struct {
-	API           *api.API
-	GraphQLClient *graphql.Client // XXX todo remove once all are migrated
+	API *api.API
 }
 
 // New returns a new ProviderData.
 func New(client *graphql.Client) *ProviderData {
 	return &ProviderData{
-		GraphQLClient: client,
-		API:           api.New(client),
+		API: api.New(client),
 	}
 }
 
