@@ -11,16 +11,13 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/provider"
 )
 
-var (
-	// these will be set by the goreleaser configuration
-	// to appropriate values for the compiled binary.
-	version string = "dev"
-)
+// Set by goreleaser during compilation.
+var version string = "dev"
 
 func main() {
 	var debug bool
 
-	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")
+	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with debugger support")
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
@@ -28,9 +25,7 @@ func main() {
 		Debug:   debug,
 	}
 
-	err := providerserver.Serve(context.Background(), provider.New(version), opts)
-
-	if err != nil {
+	if err := providerserver.Serve(context.Background(), provider.New(version), opts); err != nil {
 		log.Fatal(err.Error())
 	}
 }

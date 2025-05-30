@@ -6,9 +6,10 @@ project {
   copyright_year   = 2025
 
   header_ignore = [
-    "go.*",
-    "examples/**",
     ".github/**",
-    ".golangci.yml",
+    ".golangci.yaml",
+    ".goreleaser.yaml",
+    "examples/**",
+    "go.*",
   ]
 }
