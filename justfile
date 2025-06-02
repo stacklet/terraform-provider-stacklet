@@ -2,13 +2,18 @@ package := "./internal/..."
 
 # Build the provider
 build:
-    go mod download
     go build -o terraform-provider-stacklet
 
 # Format code
-format:
+format: format-go format-tf
+
+# Format terraform code
+format-tf:
     terraform fmt -recursive
-    go fmt ./...
+
+# Format golang code
+format-go:
+    go fmt ./...    
 
 # Run linters
 lint: lint-go lint-tf lint-copyright

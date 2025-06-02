@@ -60,10 +60,6 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Description: "The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).",
 				Computed:    true,
 			},
-			"variables": schema.StringAttribute{
-				Description: "JSON-encoded dictionary of values used for policy templating.",
-				Computed:    true,
-			},
 			"account_group_uuid": schema.StringAttribute{
 				Description: "The UUID of the account group this binding applies to.",
 				Computed:    true,
@@ -75,6 +71,16 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 			"system": schema.BoolAttribute{
 				Description: "Whether this is a system binding.",
 				Computed:    true,
+			},
+			"execution_config": schema.SingleNestedAttribute{
+				Description: "Binding execution configuration.",
+				Computed:    true,
+				Attributes: map[string]schema.Attribute{
+					"variables": schema.StringAttribute{
+						Description: "JSON-encoded dictionary of values used for policy templating.",
+						Computed:    true,
+					},
+				},
 			},
 		},
 	}
@@ -110,12 +116,23 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.AccountGroupUUID = types.StringValue(binding.AccountGroup.UUID)
 	data.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
 	data.System = types.BoolValue(binding.System)
-	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid content for variables", err.Error())
-		return
-	}
-	data.Variables = variablesString
 
+	executionConfig, diags := tftypes.ObjectValue(
+		ctx,
+		binding.ExecutionConfig,
+		func() (*models.BindingExecutionConfig, error) {
+			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
+			if err != nil {
+				return nil, err
+			}
+
+			return &models.BindingExecutionConfig{
+				Variables: variablesString,
+			}, nil
+		},
+	)
+	data.ExecutionConfig = executionConfig
+
+	resp.Diagnostics.Append(diags...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
