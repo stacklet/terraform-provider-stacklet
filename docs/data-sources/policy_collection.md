@@ -38,6 +38,17 @@ data "stacklet_policy_collection" "by_name" {
 - `cloud_provider` (String) The cloud provider for the policy collection.
 - `description` (String) The description of the policy collection.
 - `dynamic` (Boolean) Whether this is a dynamic policy collection.
+- `dynamic_config` (Attributes) Configuration for dynamic behavior. (see [below for nested schema](#nestedatt--dynamic_config))
 - `id` (String) The GraphQL Node ID of the policy collection.
-- `repository_uuid` (String) The UUID of the repository the collection is linked to, if dynamic.
 - `system` (Boolean) Whether this is a system policy collection.
+
+<a id="nestedatt--dynamic_config"></a>
+### Nested Schema for `dynamic_config`
+
+Read-Only:
+
+- `branch_name` (String) The repository branch from which policies are imported.
+- `namespace` (String) The namespace for policies from the repository.
+- `policy_directories` (List of String) Optional list of subdirectory to limit the scan to.
+- `policy_file_suffixes` (List of String) Optional list of suffixes for policy files to limit the scan to.
+- `repository_uuid` (String) The UUID of the repository the collection is linked to.

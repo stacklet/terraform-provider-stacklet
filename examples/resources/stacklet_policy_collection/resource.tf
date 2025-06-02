@@ -1,4 +1,4 @@
-# Create an AWS policy collection
+# Create a policy collection
 resource "stacklet_policy_collection" "aws_security" {
   name           = "aws-security-policies"
   cloud_provider = "AWS"
@@ -6,18 +6,17 @@ resource "stacklet_policy_collection" "aws_security" {
   auto_update    = true
 }
 
-# Create an Azure policy collection
-resource "stacklet_policy_collection" "azure_compliance" {
-  name           = "azure-compliance-policies"
-  cloud_provider = "Azure"
-  description    = "Compliance policies for Azure resources"
-  auto_update    = false
+data "stacklet_repository" "policies" {
+  url = "ssh://git@example.com/my-policies.git"
 }
 
-# Create a GCP policy collection
-resource "stacklet_policy_collection" "gcp_cost" {
-  name           = "gcp-cost-policies"
-  cloud_provider = "GCP"
-  description    = "Cost optimization policies for GCP resources"
+# Create a dynamic policy collection
+resource "stacklet_policy_collection" "policies" {
+  name           = "my-aws-policies"
+  cloud_provider = "AWS"
   auto_update    = true
+  dynamic_config = {
+    repository_uuid = data.stacklet_repository.policies.uuid
+    branch_name     = "aws"
+  }
 }

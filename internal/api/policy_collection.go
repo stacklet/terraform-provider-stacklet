@@ -21,14 +21,24 @@ type PolicyCollection struct {
 	RepositoryConfig struct {
 		UUID *string
 	}
+	RepositoryView *RepositoryView
+}
+
+type RepositoryViewConfig struct {
+	Namespace         string
+	BranchName        string
+	PolicyDirectories []string
+	PolicyFileSuffix  []string
 }
 
 // PolicyCollectionCreateInput is the input to create a policy collection.
 type PolicyCollectionCreateInput struct {
-	Name        string        `json:"name"`
-	Provider    CloudProvider `json:"provider"`
-	Description *string       `json:"description,omitempty"`
-	AutoUpdate  *bool         `json:"autoUpdate,omitempty"`
+	Name           string               `json:"name"`
+	Provider       CloudProvider        `json:"provider"`
+	Description    *string              `json:"description,omitempty"`
+	AutoUpdate     *bool                `json:"autoUpdate,omitempty"`
+	RepositoryUUID *string              `json:"repositoryUUID,omitempty"`
+	RepositoryView *RepositoryViewInput `json:"repositoryView,omitempty"`
 }
 
 func (i PolicyCollectionCreateInput) GetGraphQLType() string {
@@ -36,15 +46,23 @@ func (i PolicyCollectionCreateInput) GetGraphQLType() string {
 }
 
 type PolicyCollectionUpdateInput struct {
-	UUID        string        `json:"uuid"`
-	Name        string        `json:"name"`
-	Provider    CloudProvider `json:"provider"`
-	Description *string       `json:"description"`
-	AutoUpdate  *bool         `json:"autoUpdate"`
+	UUID           string               `json:"uuid"`
+	Name           string               `json:"name"`
+	Provider       CloudProvider        `json:"provider"`
+	Description    *string              `json:"description"`
+	AutoUpdate     *bool                `json:"autoUpdate"`
+	RepositoryView *RepositoryViewInput `json:"repositoryView,omitempty"`
 }
 
 func (i PolicyCollectionUpdateInput) GetGraphQLType() string {
 	return "UpdatePolicyCollectionInput"
+}
+
+// RepositoryViewInput is the input for a repository view configuration in a policy collection.
+type RepositoryViewInput struct {
+	BranchName        *string  `json:"branchName"`
+	PolicyDirectories []string `json:"policyDirectories"`
+	PolicyFileSuffix  []string `json:"policyFileSuffix"`
 }
 
 type policyCollectionAPI struct {
