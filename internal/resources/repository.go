@@ -180,7 +180,7 @@ func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	// Update plan from response and save into state.
-	updateRepositoryModel(&plan, repo)
+	r.updateRepositoryModel(&plan, repo)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -200,7 +200,7 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 
 	// Update state from response.
-	updateRepositoryModel(&state, repo)
+	r.updateRepositoryModel(&state, repo)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -244,7 +244,7 @@ func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 
 	// Merge response into state.
-	updateRepositoryModel(&state, repo)
+	r.updateRepositoryModel(&state, repo)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -277,7 +277,7 @@ func (r *RepositoryResource) ImportState(ctx context.Context, req resource.Impor
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), uuid)...)
 }
 
-func updateRepositoryModel(m *models.RepositoryResource, repo *api.Repository) {
+func (r RepositoryResource) updateRepositoryModel(m *models.RepositoryResource, repo *api.Repository) {
 	m.ID = types.StringValue(repo.ID)
 	m.UUID = types.StringValue(repo.UUID)
 	m.URL = types.StringValue(repo.URL)

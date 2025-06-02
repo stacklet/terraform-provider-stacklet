@@ -164,7 +164,7 @@ func (r *policyCollectionResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	repositoryUUID, repositoryView, diags := r.getDynamicDetails(ctx, plan)
+	repositoryUUID, repositoryView, diags := r.getDynamicDetails(ctx, plan.DynamicConfig)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -185,7 +185,7 @@ func (r *policyCollectionResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	resp.Diagnostics.Append(updatePolicyCollectionModel(ctx, &plan, policyCollection)...)
+	resp.Diagnostics.Append(r.updatePolicyCollectionModel(ctx, &plan, policyCollection)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -202,7 +202,7 @@ func (r *policyCollectionResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	resp.Diagnostics.Append(updatePolicyCollectionModel(ctx, &state, policyCollection)...)
+	resp.Diagnostics.Append(r.updatePolicyCollectionModel(ctx, &state, policyCollection)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -214,7 +214,7 @@ func (r *policyCollectionResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	_, repositoryView, diags := r.getDynamicDetails(ctx, plan)
+	_, repositoryView, diags := r.getDynamicDetails(ctx, plan.DynamicConfig)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -235,7 +235,7 @@ func (r *policyCollectionResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	resp.Diagnostics.Append(updatePolicyCollectionModel(ctx, &plan, policyCollection)...)
+	resp.Diagnostics.Append(r.updatePolicyCollectionModel(ctx, &plan, policyCollection)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -256,14 +256,14 @@ func (r *policyCollectionResource) ImportState(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
 }
 
-func (r policyCollectionResource) getDynamicDetails(ctx context.Context, plan models.PolicyCollectionResource) (*string, *api.RepositoryViewInput, diag.Diagnostics) {
+func (r policyCollectionResource) getDynamicDetails(ctx context.Context, planDynamicConfig types.Object) (*string, *api.RepositoryViewInput, diag.Diagnostics) {
 	var uuid *string
 	var view *api.RepositoryViewInput
 	var diags diag.Diagnostics
 
-	if !plan.DynamicConfig.IsNull() {
+	if !planDynamicConfig.IsNull() {
 		var dynamicConfig models.PolicyCollectionDynamicConfig
-		diags = plan.DynamicConfig.As(ctx, &dynamicConfig, basetypes.ObjectAsOptions{})
+		diags = planDynamicConfig.As(ctx, &dynamicConfig, basetypes.ObjectAsOptions{})
 		uuid = dynamicConfig.RepositoryUUID.ValueStringPointer()
 		view = &api.RepositoryViewInput{
 			BranchName:        dynamicConfig.BranchName.ValueStringPointer(),
@@ -275,7 +275,7 @@ func (r policyCollectionResource) getDynamicDetails(ctx context.Context, plan mo
 	return uuid, view, diags
 }
 
-func updatePolicyCollectionModel(ctx context.Context, m *models.PolicyCollectionResource, policyCollection *api.PolicyCollection) diag.Diagnostics {
+func (r policyCollectionResource) updatePolicyCollectionModel(ctx context.Context, m *models.PolicyCollectionResource, policyCollection *api.PolicyCollection) diag.Diagnostics {
 	m.ID = types.StringValue(policyCollection.ID)
 	m.UUID = types.StringValue(policyCollection.UUID)
 	m.Name = types.StringValue(policyCollection.Name)
@@ -285,24 +285,19 @@ func updatePolicyCollectionModel(ctx context.Context, m *models.PolicyCollection
 	m.System = types.BoolValue(policyCollection.System)
 	m.Dynamic = types.BoolValue(policyCollection.IsDynamic)
 
-	attrTypes := models.PolicyCollectionDynamicConfig{}.AttributeTypes()
-	var config basetypes.ObjectValue
-	var diags diag.Diagnostics
-	if policyCollection.RepositoryView == nil {
-		config = basetypes.NewObjectNull(attrTypes)
-	} else {
-		config, diags = basetypes.NewObjectValueFrom(
-			ctx,
-			attrTypes,
-			models.PolicyCollectionDynamicConfig{
+	dynamicConfig, diags := tftypes.ObjectValue(
+		ctx,
+		policyCollection.RepositoryView,
+		func() (models.PolicyCollectionDynamicConfig, error) {
+			return models.PolicyCollectionDynamicConfig{
 				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
 				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),
 				BranchName:         types.StringValue(policyCollection.RepositoryView.BranchName),
 				PolicyDirectories:  tftypes.StringsList(policyCollection.RepositoryView.PolicyDirectories),
 				PolicyFileSuffixes: tftypes.StringsList(policyCollection.RepositoryView.PolicyFileSuffix),
-			},
-		)
-	}
-	m.DynamicConfig = config
+			}, nil
+		},
+	)
+	m.DynamicConfig = dynamicConfig
 	return diags
 }

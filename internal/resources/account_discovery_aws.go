@@ -131,7 +131,7 @@ func (r *accountDiscoveryAWSResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	updateAccountDiscoveryAWSModel(&plan, accountDiscovery)
+	r.updateAccountDiscoveryAWSModel(&plan, accountDiscovery)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -148,7 +148,7 @@ func (r *accountDiscoveryAWSResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	updateAccountDiscoveryAWSModel(&state, accountDiscovery)
+	r.updateAccountDiscoveryAWSModel(&state, accountDiscovery)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -178,7 +178,7 @@ func (r *accountDiscoveryAWSResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	updateAccountDiscoveryAWSModel(&plan, accountDiscovery)
+	r.updateAccountDiscoveryAWSModel(&plan, accountDiscovery)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -190,7 +190,7 @@ func (r *accountDiscoveryAWSResource) ImportState(ctx context.Context, req resou
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
 }
 
-func updateAccountDiscoveryAWSModel(m *models.AccountDiscoveryAWSResource, accountDiscovery *api.AccountDiscovery) {
+func (r accountDiscoveryAWSResource) updateAccountDiscoveryAWSModel(m *models.AccountDiscoveryAWSResource, accountDiscovery *api.AccountDiscovery) {
 	m.ID = types.StringValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
 	m.Description = tftypes.NullableString(accountDiscovery.Description)

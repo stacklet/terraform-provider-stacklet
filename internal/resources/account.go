@@ -144,7 +144,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(updateAccountModel(&plan, account))
+	resp.Diagnostics.Append(r.updateAccountModel(&plan, account))
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -164,7 +164,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	resp.Diagnostics.Append(updateAccountModel(&state, account))
+	resp.Diagnostics.Append(r.updateAccountModel(&state, account))
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -202,7 +202,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(updateAccountModel(&plan, account))
+	resp.Diagnostics.Append(r.updateAccountModel(&plan, account))
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -233,7 +233,7 @@ func (r *accountResource) ImportState(ctx context.Context, req resource.ImportSt
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), parts[1])...)
 }
 
-func updateAccountModel(m *models.AccountResource, account *api.Account) diag.Diagnostic {
+func (r accountResource) updateAccountModel(m *models.AccountResource, account *api.Account) diag.Diagnostic {
 	m.ID = types.StringValue(account.ID)
 	m.Key = types.StringValue(account.Key)
 	m.Name = types.StringValue(account.Name)

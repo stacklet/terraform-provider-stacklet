@@ -3,9 +3,11 @@
 package types
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -43,4 +45,24 @@ func JSONString(s *string) (types.String, error) {
 		return types.StringNull(), err
 	}
 	return types.StringValue(string(newString)), nil
+}
+
+type WithAttributes interface {
+	AttributeTypes() map[string]attr.Type
+}
+
+// ObjectValue reutrns a basetypes.ObjectVvalue from a type.
+func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, construct func() (Type, error)) (basetypes.ObjectValue, diag.Diagnostics) {
+	var empty Type
+	var diags diag.Diagnostics
+	attrTypes := empty.AttributeTypes()
+	if v == nil {
+		return basetypes.NewObjectNull(attrTypes), diags
+	}
+	obj, err := construct()
+	if err != nil {
+		diags.AddError("Object conversion error", err.Error())
+		return basetypes.NewObjectNull(attrTypes), diags
+	}
+	return basetypes.NewObjectValueFrom(ctx, attrTypes, obj)
 }

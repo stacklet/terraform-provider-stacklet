@@ -86,7 +86,7 @@ func (r *accountGroupMappingResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	updateAccountGroupMappingModel(&plan, mapping)
+	r.updateAccountGroupMappingModel(&plan, mapping)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -103,7 +103,7 @@ func (r *accountGroupMappingResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	updateAccountGroupMappingModel(&state, accountGroupMapping)
+	r.updateAccountGroupMappingModel(&state, accountGroupMapping)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -144,7 +144,7 @@ func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resou
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), parts[1])...)
 }
 
-func updateAccountGroupMappingModel(m *models.AccountGroupMappingResource, accountGroupMapping *api.AccountGroupMapping) {
+func (r accountGroupMappingResource) updateAccountGroupMappingModel(m *models.AccountGroupMappingResource, accountGroupMapping *api.AccountGroupMapping) {
 	m.ID = types.StringValue(accountGroupMapping.ID)
 	m.GroupUUID = types.StringValue(accountGroupMapping.GroupUUID)
 	m.AccountKey = types.StringValue(accountGroupMapping.AccountKey)

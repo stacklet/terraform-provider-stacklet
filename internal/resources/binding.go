@@ -135,7 +135,7 @@ func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(updateBindingModel(&plan, binding))
+	resp.Diagnostics.Append(r.updateBindingModel(&plan, binding))
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -155,7 +155,7 @@ func (r *bindingResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	resp.Diagnostics.Append(updateBindingModel(&state, binding))
+	resp.Diagnostics.Append(r.updateBindingModel(&state, binding))
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -186,7 +186,7 @@ func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(updateBindingModel(&plan, binding))
+	resp.Diagnostics.Append(r.updateBindingModel(&plan, binding))
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -210,7 +210,7 @@ func (r *bindingResource) ImportState(ctx context.Context, req resource.ImportSt
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
 }
 
-func updateBindingModel(m *models.BindingResource, binding *api.Binding) diag.Diagnostic {
+func (r bindingResource) updateBindingModel(m *models.BindingResource, binding *api.Binding) diag.Diagnostic {
 	m.ID = types.StringValue(binding.ID)
 	m.UUID = types.StringValue(binding.UUID)
 	m.Name = types.StringValue(binding.Name)
