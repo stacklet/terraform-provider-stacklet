@@ -7,9 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -132,26 +130,20 @@ func (d *policyCollectionDataSource) Read(ctx context.Context, req datasource.Re
 	data.System = types.BoolValue(policyCollection.System)
 	data.Dynamic = types.BoolValue(policyCollection.IsDynamic)
 
-	attrTypes := models.PolicyCollectionDynamicConfig{}.AttributeTypes()
-	var config basetypes.ObjectValue
-	var diags diag.Diagnostics
-	if policyCollection.RepositoryView == nil {
-		config = basetypes.NewObjectNull(attrTypes)
-	} else {
-		config, diags = basetypes.NewObjectValueFrom(
-			ctx,
-			attrTypes,
-			models.PolicyCollectionDynamicConfig{
+	dynamicConfig, diags := tftypes.ObjectValue(
+		ctx,
+		policyCollection.RepositoryView,
+		func() (models.PolicyCollectionDynamicConfig, error) {
+			return models.PolicyCollectionDynamicConfig{
 				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
 				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),
 				BranchName:         types.StringValue(policyCollection.RepositoryView.BranchName),
 				PolicyDirectories:  tftypes.StringsList(policyCollection.RepositoryView.PolicyDirectories),
 				PolicyFileSuffixes: tftypes.StringsList(policyCollection.RepositoryView.PolicyFileSuffix),
-			},
-		)
-	}
-	data.DynamicConfig = config
-
+			}, nil
+		},
+	)
+	data.DynamicConfig = dynamicConfig
 	resp.Diagnostics.Append(diags...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

@@ -152,7 +152,7 @@ func (r *accountDiscoveryGCPResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	updateAccountDiscoveryGCPModel(&plan, accountDiscovery)
+	r.updateAccountDiscoveryGCPModel(&plan, accountDiscovery)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -169,7 +169,7 @@ func (r *accountDiscoveryGCPResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	updateAccountDiscoveryGCPModel(&state, accountDiscovery)
+	r.updateAccountDiscoveryGCPModel(&state, accountDiscovery)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -206,7 +206,7 @@ func (r *accountDiscoveryGCPResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	updateAccountDiscoveryGCPModel(&plan, accountDiscovery)
+	r.updateAccountDiscoveryGCPModel(&plan, accountDiscovery)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -218,7 +218,7 @@ func (r *accountDiscoveryGCPResource) ImportState(ctx context.Context, req resou
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
 }
 
-func updateAccountDiscoveryGCPModel(m *models.AccountDiscoveryGCPResource, accountDiscovery *api.AccountDiscovery) {
+func (r accountDiscoveryGCPResource) updateAccountDiscoveryGCPModel(m *models.AccountDiscoveryGCPResource, accountDiscovery *api.AccountDiscovery) {
 	m.ID = types.StringValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
 	m.Description = tftypes.NullableString(accountDiscovery.Description)
