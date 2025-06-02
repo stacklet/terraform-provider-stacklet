@@ -133,8 +133,8 @@ func (d *policyCollectionDataSource) Read(ctx context.Context, req datasource.Re
 	dynamicConfig, diags := tftypes.ObjectValue(
 		ctx,
 		policyCollection.RepositoryView,
-		func() (models.PolicyCollectionDynamicConfig, error) {
-			return models.PolicyCollectionDynamicConfig{
+		func() (*models.PolicyCollectionDynamicConfig, error) {
+			return &models.PolicyCollectionDynamicConfig{
 				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
 				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),
 				BranchName:         types.StringValue(policyCollection.RepositoryView.BranchName),

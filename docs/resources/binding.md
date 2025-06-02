@@ -31,10 +31,12 @@ resource "stacklet_binding" "example" {
   auto_deploy = true
   schedule    = "rate(12 hours)"
 
-  variables = jsonencode({
-    environment = "development"
-    severity    = "medium"
-  })
+  execution_config = {
+    variables = jsonencode({
+      environment = "development"
+      severity    = "medium"
+    })
+  }
 }
 ```
 
@@ -51,14 +53,21 @@ resource "stacklet_binding" "example" {
 
 - `auto_deploy` (Boolean) Whether the binding should automatically deploy when the policy collection changes.
 - `description` (String) A description of the binding.
+- `execution_config` (Attributes) Binding execution configuration. (see [below for nested schema](#nestedatt--execution_config))
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
-- `variables` (String) JSON-encoded dictionary of values used for policy templating.
 
 ### Read-Only
 
 - `id` (String) The GraphQL Node ID of the binding.
 - `system` (Boolean) Whether the binding is a system one. Always false for resources.
 - `uuid` (String) The UUID of the binding.
+
+<a id="nestedatt--execution_config"></a>
+### Nested Schema for `execution_config`
+
+Optional:
+
+- `variables` (String) JSON-encoded dictionary of values used for policy templating.
 
 ## Import
 

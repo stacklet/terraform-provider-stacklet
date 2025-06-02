@@ -16,8 +16,10 @@ resource "stacklet_binding" "example" {
   auto_deploy = true
   schedule    = "rate(12 hours)"
 
-  variables = jsonencode({
-    environment = "development"
-    severity    = "medium"
-  })
+  execution_config = {
+    variables = jsonencode({
+      environment = "development"
+      severity    = "medium"
+    })
+  }
 }

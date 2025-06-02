@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -75,10 +76,6 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).",
 				Optional:    true,
 			},
-			"variables": schema.StringAttribute{
-				Description: "JSON-encoded dictionary of values used for policy templating.",
-				Optional:    true,
-			},
 			"account_group_uuid": schema.StringAttribute{
 				Description: "The UUID of the account group this binding applies to.",
 				Required:    true,
@@ -98,6 +95,16 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Computed:    true,
 				Default:     booldefault.StaticBool(false),
 			},
+			"execution_config": schema.SingleNestedAttribute{
+				Description: "Binding execution configuration.",
+				Optional:    true,
+				Attributes: map[string]schema.Attribute{
+					"variables": schema.StringAttribute{
+						Description: "JSON-encoded dictionary of values used for policy templating.",
+						Optional:    true,
+					},
+				},
+			},
 		},
 	}
 }
@@ -111,19 +118,25 @@ func (r *bindingResource) Configure(_ context.Context, req resource.ConfigureReq
 }
 
 func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan models.BindingResource
+	var plan, config models.BindingResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	executionConfig, diags := r.getExecutionConfig(ctx, plan.ExecutionConfig)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	input := api.BindingCreateInput{
-		Name:        plan.Name.ValueString(),
-		Description: plan.Description.ValueStringPointer(),
-		AutoDeploy:  plan.AutoDeploy.ValueBool(),
-		Schedule:    plan.Schedule.ValueStringPointer(),
-		ExecutionConfig: api.BindingExecutionConfig{
-			Variables: plan.Variables.ValueStringPointer(),
-		},
+		Name:                 plan.Name.ValueString(),
+		Description:          plan.Description.ValueStringPointer(),
+		AutoDeploy:           plan.AutoDeploy.ValueBool(),
+		Schedule:             plan.Schedule.ValueStringPointer(),
+		ExecutionConfig:      executionConfig,
 		AccountGroupUUID:     plan.AccountGroupUUID.ValueString(),
 		PolicyCollectionUUID: plan.PolicyCollectionUUID.ValueString(),
 		Deploy:               true,
@@ -135,7 +148,7 @@ func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateBindingModel(&plan, binding))
+	resp.Diagnostics.Append(r.updateBindingModel(ctx, &plan, &config, binding)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -155,7 +168,7 @@ func (r *bindingResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateBindingModel(&state, binding))
+	resp.Diagnostics.Append(r.updateBindingModel(ctx, &state, nil, binding)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -163,21 +176,25 @@ func (r *bindingResource) Read(ctx context.Context, req resource.ReadRequest, re
 }
 
 func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan models.BindingResource
+	var plan, config models.BindingResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
+	executionConfig, diags := r.getExecutionConfig(ctx, plan.ExecutionConfig)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	input := api.BindingUpdateInput{
-		UUID:        plan.UUID.ValueString(),
-		Name:        plan.Name.ValueString(),
-		Description: plan.Description.ValueStringPointer(),
-		AutoDeploy:  plan.AutoDeploy.ValueBool(),
-		Schedule:    plan.Schedule.ValueStringPointer(),
-		ExecutionConfig: api.BindingExecutionConfig{
-			Variables: plan.Variables.ValueStringPointer(),
-		},
+		UUID:            plan.UUID.ValueString(),
+		Name:            plan.Name.ValueString(),
+		Description:     plan.Description.ValueStringPointer(),
+		AutoDeploy:      plan.AutoDeploy.ValueBool(),
+		Schedule:        plan.Schedule.ValueStringPointer(),
+		ExecutionConfig: executionConfig,
 	}
 
 	binding, err := r.api.Binding.Update(ctx, input)
@@ -186,7 +203,7 @@ func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateBindingModel(&plan, binding))
+	resp.Diagnostics.Append(r.updateBindingModel(ctx, &plan, &config, binding)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -210,7 +227,22 @@ func (r *bindingResource) ImportState(ctx context.Context, req resource.ImportSt
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
 }
 
-func (r bindingResource) updateBindingModel(m *models.BindingResource, binding *api.Binding) diag.Diagnostic {
+func (r bindingResource) getExecutionConfig(ctx context.Context, planExecutionConfig types.Object) (*api.BindingExecutionConfig, diag.Diagnostics) {
+	var config *api.BindingExecutionConfig
+	var diags diag.Diagnostics
+
+	if !planExecutionConfig.IsNull() {
+		var executionConfig models.BindingExecutionConfig
+		diags = planExecutionConfig.As(ctx, &executionConfig, basetypes.ObjectAsOptions{})
+		config = &api.BindingExecutionConfig{
+			Variables: executionConfig.Variables.ValueStringPointer(),
+		}
+	}
+
+	return config, diags
+}
+
+func (r bindingResource) updateBindingModel(ctx context.Context, m *models.BindingResource, config *models.BindingResource, binding *api.Binding) diag.Diagnostics {
 	m.ID = types.StringValue(binding.ID)
 	m.UUID = types.StringValue(binding.UUID)
 	m.Name = types.StringValue(binding.Name)
@@ -220,10 +252,27 @@ func (r bindingResource) updateBindingModel(m *models.BindingResource, binding *
 	m.AccountGroupUUID = types.StringValue(binding.AccountGroup.UUID)
 	m.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
 	m.System = types.BoolValue(binding.System)
-	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
-	if err != nil {
-		return diag.NewErrorDiagnostic("Invalid content for variables", err.Error())
-	}
-	m.Variables = variablesString
-	return nil
+
+	executionConfig, diags := tftypes.ObjectValue(
+		ctx,
+		binding.ExecutionConfig,
+		func() (*models.BindingExecutionConfig, error) {
+			if binding.ExecutionConfig.Variables == nil {
+				if config == nil || config.ExecutionConfig.IsNull() {
+					return nil, nil
+				}
+				return &models.BindingExecutionConfig{}, nil
+			}
+			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
+			if err != nil {
+				return nil, err
+			}
+
+			return &models.BindingExecutionConfig{
+				Variables: variablesString,
+			}, nil
+		},
+	)
+	m.ExecutionConfig = executionConfig
+	return diags
 }

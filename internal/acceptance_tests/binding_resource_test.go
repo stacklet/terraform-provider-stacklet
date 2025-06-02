@@ -33,10 +33,12 @@ func TestAccBindingResource(t *testing.T) {
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
 						auto_deploy = true
 						schedule = "rate(1 hour)"
-						variables = jsonencode({
-							environment = "test"
-							region = "us-east-1"
-						})
+						execution_config = {
+							variables = jsonencode({
+								environment = "test"
+								region = "us-east-1"
+							})
+						}
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -48,6 +50,7 @@ func TestAccBindingResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(1 hour)"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
 			),
 		},
 		// ImportState testing
@@ -80,10 +83,12 @@ func TestAccBindingResource(t *testing.T) {
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
 						auto_deploy = false
 						schedule = "rate(2 hours)"
-						variables = jsonencode({
-							environment = "staging"
-							region = "us-west-2"
-						})
+						execution_config = {
+							variables = jsonencode({
+								environment = "staging"
+								region = "us-west-2"
+							})
+						}
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -95,6 +100,7 @@ func TestAccBindingResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(2 hours)"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.variables", "{\"environment\":\"staging\",\"region\":\"us-west-2\"}"),
 			),
 		},
 	}
