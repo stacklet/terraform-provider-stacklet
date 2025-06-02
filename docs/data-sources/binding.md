@@ -29,6 +29,7 @@ data "stacklet_binding" "by_name" {
 
 ### Optional
 
+- `execution_config` (Attributes) Binding execution configuration. (see [below for nested schema](#nestedatt--execution_config))
 - `name` (String) The name of the binding.
 - `uuid` (String) The UUID of the binding.
 
@@ -37,7 +38,6 @@ data "stacklet_binding" "by_name" {
 - `account_group_uuid` (String) The UUID of the account group this binding applies to.
 - `auto_deploy` (Boolean) Whether the binding automatically deploys when the policy collection changes.
 - `description` (String) The description of the binding.
-- `execution_config` (Attributes) Binding execution configuration. (see [below for nested schema](#nestedatt--execution_config))
 - `id` (String) The GraphQL Node ID of the binding.
 - `policy_collection_uuid` (String) The UUID of the policy collection this binding applies.
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
@@ -46,6 +46,7 @@ data "stacklet_binding" "by_name" {
 <a id="nestedatt--execution_config"></a>
 ### Nested Schema for `execution_config`
 
-Read-Only:
+Optional:
 
+- `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
 - `variables` (String) JSON-encoded dictionary of values used for policy templating.

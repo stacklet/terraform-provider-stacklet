@@ -74,10 +74,17 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 			},
 			"execution_config": schema.SingleNestedAttribute{
 				Description: "Binding execution configuration.",
+				Optional:    true,
 				Computed:    true,
 				Attributes: map[string]schema.Attribute{
+					"dry_run": schema.BoolAttribute{
+						Description: "Whether the binding is run in with action disabled (in information mode).",
+						Optional:    true,
+						Computed:    true,
+					},
 					"variables": schema.StringAttribute{
 						Description: "JSON-encoded dictionary of values used for policy templating.",
+						Optional:    true,
 						Computed:    true,
 					},
 				},
@@ -119,14 +126,19 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	executionConfig, diags := tftypes.ObjectValue(
 		ctx,
-		binding.ExecutionConfig,
+		&binding.ExecutionConfig,
 		func() (*models.BindingExecutionConfig, error) {
 			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 			if err != nil {
 				return nil, err
 			}
+			dryRun := types.BoolValue(false)
+			if binding.ExecutionConfig.DryRun != nil {
+				dryRun = types.BoolValue(binding.ExecutionConfig.DryRun.Default)
+			}
 
 			return &models.BindingExecutionConfig{
+				DryRun:    dryRun,
 				Variables: variablesString,
 			}, nil
 		},

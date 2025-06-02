@@ -17,6 +17,7 @@ resource "stacklet_binding" "example" {
   schedule    = "rate(12 hours)"
 
   execution_config = {
+    dry_run = true
     variables = jsonencode({
       environment = "development"
       severity    = "medium"
