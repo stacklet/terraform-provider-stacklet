@@ -51,7 +51,7 @@ type WithAttributes interface {
 	AttributeTypes() map[string]attr.Type
 }
 
-// ObjecTvalue reutrns a basetypes.ObjectVvalue from a type.
+// ObjectValue reutrns a basetypes.ObjectVvalue from a type.
 func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, construct func() (Type, error)) (basetypes.ObjectValue, diag.Diagnostics) {
 	var empty Type
 	var diags diag.Diagnostics
