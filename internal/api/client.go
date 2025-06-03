@@ -5,7 +5,6 @@ package api
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"io"
 	"net/http"
 	"os"
@@ -52,7 +51,7 @@ type logTransport struct {
 }
 
 func (t *logTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	var reqBody, respBody map[string]any
+	var reqBody, respBody string
 	var err error
 
 	// Decode the request before performing it since it will otherwise consume the body
@@ -69,6 +68,7 @@ func (t *logTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		map[string]any{
 			"req_method": req.Method,
 			"req_url":    req.URL.String(),
+			"req_body":   reqBody,
 		},
 	)
 
@@ -97,48 +97,30 @@ func (t *logTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	return resp, reqErr
 }
 
-func decodeRequestBody(req *http.Request) (map[string]any, error) {
+func decodeRequestBody(req *http.Request) (string, error) {
 	if req.Body == nil || req.Body == http.NoBody {
-		return nil, nil
+		return "", nil
 	}
 
-	payload, contentBytes, err := decodeBody(req.Body)
+	content, err := io.ReadAll(req.Body)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	req.Body = io.NopCloser(bytes.NewReader(contentBytes))
+	req.Body = io.NopCloser(bytes.NewReader(content))
 
-	return payload, nil
+	return string(content), nil
 }
 
-func decodeResponseBody(resp *http.Response) (map[string]any, error) {
+func decodeResponseBody(resp *http.Response) (string, error) {
 	if resp.Body == nil || resp.Body == http.NoBody {
-		return nil, nil
+		return "", nil
 	}
 
-	payload, contentBytes, err := decodeBody(resp.Body)
+	content, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	resp.Body = io.NopCloser(bytes.NewReader(contentBytes))
+	resp.Body = io.NopCloser(bytes.NewReader(content))
 
-	return payload, nil
-}
-
-func decodeBody(body io.ReadCloser) (map[string]any, []byte, error) {
-	var err error
-
-	var content []byte
-	if content, err = io.ReadAll(body); err != nil {
-		return nil, content, err
-	}
-
-	var payload map[string]any
-	if content != nil {
-		if err = json.Unmarshal(content, &payload); err != nil {
-			return nil, content, err
-		}
-	}
-	return payload, content, nil
-
+	return string(content), nil
 }
