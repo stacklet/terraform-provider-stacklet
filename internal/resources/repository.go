@@ -21,24 +21,24 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &RepositoryResource{}
-var _ resource.ResourceWithConfigure = &RepositoryResource{}
-var _ resource.ResourceWithImportState = &RepositoryResource{}
+var _ resource.Resource = &repositoryResource{}
+var _ resource.ResourceWithConfigure = &repositoryResource{}
+var _ resource.ResourceWithImportState = &repositoryResource{}
 
 func NewRepositoryResource() resource.Resource {
-	return &RepositoryResource{}
+	return &repositoryResource{}
 }
 
-// RepositoryResource defines the resource implementation.
-type RepositoryResource struct {
+// repositoryResource defines the resource implementation.
+type repositoryResource struct {
 	api *api.API
 }
 
-func (r *RepositoryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *repositoryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_repository"
 }
 
-func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Manages a Stacklet repository.",
 		Attributes: map[string]schema.Attribute{
@@ -144,7 +144,7 @@ func (r *RepositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 	}
 }
 
-func (r *RepositoryResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *repositoryResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
@@ -152,7 +152,7 @@ func (r *RepositoryResource) Configure(ctx context.Context, req resource.Configu
 	}
 }
 
-func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *repositoryResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	// Read plan and config.
 	var plan, config models.RepositoryResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -184,7 +184,7 @@ func (r *RepositoryResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
-func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *repositoryResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	// Read known state.
 	var state models.RepositoryResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
@@ -204,7 +204,7 @@ func (r *RepositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
-func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *repositoryResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	// Read everything.
 	var plan, state, config models.RepositoryResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -248,7 +248,7 @@ func (r *RepositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
-func (r *RepositoryResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *repositoryResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	// Read state
 	var data models.RepositoryResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -268,7 +268,7 @@ func (r *RepositoryResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 }
 
-func (r *RepositoryResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *repositoryResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	uuid, err := r.api.Repository.FindByURL(ctx, req.ID)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
@@ -277,7 +277,7 @@ func (r *RepositoryResource) ImportState(ctx context.Context, req resource.Impor
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), uuid)...)
 }
 
-func (r RepositoryResource) updateRepositoryModel(m *models.RepositoryResource, repo *api.Repository) {
+func (r repositoryResource) updateRepositoryModel(m *models.RepositoryResource, repo *api.Repository) {
 	m.ID = types.StringValue(repo.ID)
 	m.UUID = types.StringValue(repo.UUID)
 	m.URL = types.StringValue(repo.URL)
