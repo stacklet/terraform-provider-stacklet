@@ -28,13 +28,35 @@ type Binding struct {
 
 // ExecutionConfig holds the execution configuration for a binding.
 type BindingExecutionConfig struct {
-	DryRun    *BindingExecutionConfigDryRun `json:"dryRun"`
-	Variables *string                       `json:"variables"`
+	DryRun          *BindingExecutionConfigDryRun          `json:"dryRun"`
+	SecurityContext *BindingExecutionConfigSecurityContext `json:"securityContext"`
+	Variables       *string                                `json:"variables"`
+}
+
+// DryRunDefault returns the dry run default value.
+func (c BindingExecutionConfig) DryRunDefault() bool {
+	if c.DryRun == nil {
+		return false
+	}
+	return c.DryRun.Default
+}
+
+// SecurityContextDefault returns the security context default, or nil if not set.
+func (c BindingExecutionConfig) SecurityContextDefault() *string {
+	if c.SecurityContext == nil {
+		return nil
+	}
+	return &c.SecurityContext.Default
 }
 
 // BindingExecutionConfigDryRun holds the dry run confiuration for a binding execution config.
 type BindingExecutionConfigDryRun struct {
 	Default bool `json:"default"`
+}
+
+// BindingExecutionConfigSecurityCotnext holds the security context configuration for a binding execution config.
+type BindingExecutionConfigSecurityContext struct {
+	Default string `json:"default"`
 }
 
 // BindingCreateInput is the input for creating a binding.

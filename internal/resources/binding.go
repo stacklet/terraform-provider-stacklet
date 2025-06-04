@@ -105,6 +105,21 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 						Computed:    true,
 						Default:     booldefault.StaticBool(false),
 					},
+					"security_context": schema.StringAttribute{
+						Description: "The binding execution security context.",
+						Optional:    true,
+						Computed:    true,
+					},
+					"security_context_wo": schema.StringAttribute{
+						Description: "The input value for the security context for the execution configuration.",
+						Optional:    true,
+						Sensitive:   true,
+						WriteOnly:   true,
+					},
+					"security_context_wo_version": schema.StringAttribute{
+						Description: "The version for the security context. Must be changed to update security_context_wo.",
+						Optional:    true,
+					},
 					"variables": schema.StringAttribute{
 						Description: "JSON-encoded dictionary of values used for policy templating.",
 						Optional:    true,
@@ -131,7 +146,7 @@ func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	executionConfig, diags := r.getExecutionConfig(ctx, plan.ExecutionConfig)
+	executionConfig, diags := r.getCreateExecutionConfig(ctx, plan.ExecutionConfig, config.ExecutionConfig)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -182,14 +197,15 @@ func (r *bindingResource) Read(ctx context.Context, req resource.ReadRequest, re
 }
 
 func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, config models.BindingResource
+	var plan, state, config models.BindingResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	executionConfig, diags := r.getExecutionConfig(ctx, plan.ExecutionConfig)
+	executionConfig, diags := r.getUpdateExecutionConfig(ctx, plan.ExecutionConfig, state.ExecutionConfig, config.ExecutionConfig)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -233,28 +249,91 @@ func (r *bindingResource) ImportState(ctx context.Context, req resource.ImportSt
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
 }
 
-func (r bindingResource) getExecutionConfig(ctx context.Context, planExecutionConfig types.Object) (api.BindingExecutionConfig, diag.Diagnostics) {
+func (r bindingResource) getCreateExecutionConfig(ctx context.Context, plan, config types.Object) (api.BindingExecutionConfig, diag.Diagnostics) {
 	var executionConfig api.BindingExecutionConfig
 	var diags diag.Diagnostics
 
-	var configObj models.BindingExecutionConfig
-	if !planExecutionConfig.IsNull() {
-		diags.Append(planExecutionConfig.As(ctx, &configObj, basetypes.ObjectAsOptions{})...)
-
-		var dryRun *api.BindingExecutionConfigDryRun
-		if !configObj.DryRun.IsNull() {
-			dryRun = &api.BindingExecutionConfigDryRun{Default: configObj.DryRun.ValueBool()}
-		}
-		executionConfig = api.BindingExecutionConfig{
-			DryRun:    dryRun,
-			Variables: configObj.Variables.ValueStringPointer(),
-		}
+	if plan.IsNull() {
+		return executionConfig, diags
 	}
 
-	return executionConfig, diags
+	var planObj, configObj models.BindingResourceExecutionConfig
+	diags.Append(plan.As(ctx, &planObj, basetypes.ObjectAsOptions{})...)
+	diags.Append(config.As(ctx, &configObj, basetypes.ObjectAsOptions{})...)
+	if diags.HasError() {
+		return executionConfig, diags
+	}
+
+	var dryRun *api.BindingExecutionConfigDryRun
+	if !planObj.DryRun.IsNull() {
+		dryRun = &api.BindingExecutionConfigDryRun{Default: planObj.DryRun.ValueBool()}
+	}
+	return api.BindingExecutionConfig{
+		DryRun:          dryRun,
+		SecurityContext: &api.BindingExecutionConfigSecurityContext{Default: configObj.SecurityContextWO.ValueString()},
+		Variables:       planObj.Variables.ValueStringPointer(),
+	}, diags
 }
 
-func (r bindingResource) updateBindingModel(ctx context.Context, m *models.BindingResource, config *models.BindingResource, binding *api.Binding) diag.Diagnostics {
+func (r bindingResource) getUpdateExecutionConfig(ctx context.Context, plan, state, config types.Object) (api.BindingExecutionConfig, diag.Diagnostics) {
+	var executionConfig api.BindingExecutionConfig
+	var diags diag.Diagnostics
+
+	if plan.IsNull() {
+		return executionConfig, diags
+	}
+
+	m, d := r.getExecutionConfigModels(ctx, plan, state, config)
+	diags.Append(d...)
+	if diags.HasError() {
+		return executionConfig, diags
+	}
+
+	var dryRun *api.BindingExecutionConfigDryRun
+	if !m.Plan.DryRun.IsNull() {
+		dryRun = &api.BindingExecutionConfigDryRun{Default: m.Plan.DryRun.ValueBool()}
+	}
+	var securityContext string
+	if m.State.SecurityContextWOVersion == m.Plan.SecurityContextWOVersion {
+		// if no change happened, send the value we got from the API as a
+		// result of the previous change. Not sending a value makes the API
+		// unset it.
+		securityContext = m.State.SecurityContext.ValueString()
+	} else {
+		securityContext = m.Config.SecurityContextWO.ValueString()
+	}
+
+	return api.BindingExecutionConfig{
+		DryRun:          dryRun,
+		SecurityContext: &api.BindingExecutionConfigSecurityContext{Default: securityContext},
+		Variables:       m.Plan.Variables.ValueStringPointer(),
+	}, diags
+}
+
+type bindingExecutionConfigModels struct {
+	Plan   models.BindingResourceExecutionConfig
+	State  models.BindingResourceExecutionConfig
+	Config models.BindingResourceExecutionConfig
+}
+
+func (r bindingResource) getExecutionConfigModels(ctx context.Context, plan, state, config types.Object) (bindingExecutionConfigModels, diag.Diagnostics) {
+	var models bindingExecutionConfigModels
+	var diags diag.Diagnostics
+	if !plan.IsNull() {
+		diags.Append(plan.As(ctx, &models.Plan, basetypes.ObjectAsOptions{})...)
+	}
+	if !state.IsNull() {
+		diags.Append(state.As(ctx, &models.State, basetypes.ObjectAsOptions{})...)
+	}
+	if !config.IsNull() {
+		diags.Append(config.As(ctx, &models.Config, basetypes.ObjectAsOptions{})...)
+	}
+	return models, diags
+}
+
+func (r bindingResource) updateBindingModel(ctx context.Context, m, config *models.BindingResource, binding *api.Binding) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	m.ID = types.StringValue(binding.ID)
 	m.UUID = types.StringValue(binding.UUID)
 	m.Name = types.StringValue(binding.Name)
@@ -265,10 +344,10 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 	m.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
 	m.System = types.BoolValue(binding.System)
 
-	executionConfig, diags := tftypes.ObjectValue(
+	executionConfig, d := tftypes.ObjectValue(
 		ctx,
 		&(binding.ExecutionConfig),
-		func() (*models.BindingExecutionConfig, error) {
+		func() (*models.BindingResourceExecutionConfig, error) {
 			empty := api.BindingExecutionConfig{}
 			if binding.ExecutionConfig == empty {
 				// requested config was null
@@ -276,26 +355,37 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 					return nil, nil
 				}
 				// requested config was empty
-				return &models.BindingExecutionConfig{
-					DryRun:    types.BoolValue(false),
-					Variables: types.StringNull(),
+				return &models.BindingResourceExecutionConfig{
+					DryRun:          types.BoolValue(false),
+					SecurityContext: types.StringNull(),
+					Variables:       types.StringNull(),
 				}, nil
 			}
-			variables, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
+
+			var curModel models.BindingResourceExecutionConfig
+			if !m.ExecutionConfig.IsNull() {
+				diags.Append(m.ExecutionConfig.As(ctx, &curModel, basetypes.ObjectAsOptions{})...)
+			}
+
+			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 			if err != nil {
 				return nil, err
 			}
-			dryRun := types.BoolValue(false)
-			if binding.ExecutionConfig.DryRun != nil {
-				dryRun = types.BoolValue(binding.ExecutionConfig.DryRun.Default)
+			// the API returns an empty dict for null or empty string, don't
+			// modify the expected value in that case
+			if variablesString.ValueString() == "{}" {
+				variablesString = curModel.Variables
 			}
 
-			return &models.BindingExecutionConfig{
-				DryRun:    dryRun,
-				Variables: variables,
+			return &models.BindingResourceExecutionConfig{
+				DryRun:                   types.BoolValue(binding.ExecutionConfig.DryRunDefault()),
+				SecurityContext:          tftypes.NullableString(binding.ExecutionConfig.SecurityContextDefault()),
+				SecurityContextWOVersion: curModel.SecurityContextWOVersion,
+				Variables:                variablesString,
 			}, nil
 		},
 	)
 	m.ExecutionConfig = executionConfig
+	diags.Append(d...)
 	return diags
 }
