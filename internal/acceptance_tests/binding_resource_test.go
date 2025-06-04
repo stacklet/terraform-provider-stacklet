@@ -50,6 +50,7 @@ func TestAccBindingResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(1 hour)"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.dry_run", "false"),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
 			),
 		},
@@ -84,6 +85,7 @@ func TestAccBindingResource(t *testing.T) {
 						auto_deploy = false
 						schedule = "rate(2 hours)"
 						execution_config = {
+							dry_run = true
 							variables = jsonencode({
 								environment = "staging"
 								region = "us-west-2"
@@ -100,6 +102,7 @@ func TestAccBindingResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(2 hours)"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.dry_run", "true"),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.variables", "{\"environment\":\"staging\",\"region\":\"us-west-2\"}"),
 			),
 		},

@@ -34,6 +34,7 @@ func TestAccBindingDataSource(t *testing.T) {
 						auto_deploy = true
 						schedule = "rate(1 hour)"
 						execution_config = {
+							dry_run = true
 							variables = jsonencode({
 								environment = "test"
 								region = "us-east-1"
@@ -61,6 +62,7 @@ func TestAccBindingDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "schedule", "rate(1 hour)"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "uuid"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "execution_config.dry_run", "true"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "execution_config.variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
 
 				// Verify lookup by UUID
@@ -72,6 +74,7 @@ func TestAccBindingDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "schedule", "rate(1 hour)"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "uuid"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "execution_config.dry_run", "true"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "execution_config.variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
 			),
 		},

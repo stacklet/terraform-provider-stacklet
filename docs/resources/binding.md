@@ -32,6 +32,7 @@ resource "stacklet_binding" "example" {
   schedule    = "rate(12 hours)"
 
   execution_config = {
+    dry_run = true
     variables = jsonencode({
       environment = "development"
       severity    = "medium"
@@ -67,6 +68,7 @@ resource "stacklet_binding" "example" {
 
 Optional:
 
+- `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
 - `variables` (String) JSON-encoded dictionary of values used for policy templating.
 
 ## Import

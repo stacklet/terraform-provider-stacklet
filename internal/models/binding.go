@@ -26,11 +26,13 @@ type BindingDataSource BindingResource
 
 // BindingExecutionConfig is the model for the execution config for a binding.
 type BindingExecutionConfig struct {
+	DryRun    types.Bool   `tfsdk:"dry_run"`
 	Variables types.String `tfsdk:"variables"`
 }
 
 func (c BindingExecutionConfig) AttributeTypes() map[string]attr.Type {
 	return map[string]attr.Type{
+		"dry_run":   types.BoolType,
 		"variables": types.StringType,
 	}
 }
