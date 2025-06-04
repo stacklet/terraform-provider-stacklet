@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccBindingResource(t *testing.T) {
+func TestAccBindingExecutionConfigResource(t *testing.T) {
 	steps := []resource.TestStep{
 		// Create and Read testing
 		{
@@ -31,24 +31,23 @@ func TestAccBindingResource(t *testing.T) {
 						description = "Test binding"
 						account_group_uuid = stacklet_account_group.test.uuid
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
-						auto_deploy = true
-						schedule = "rate(1 hour)"
+					}
+
+					resource "stacklet_binding_execution_config" "test" {
+						binding_uuid = stacklet_binding.test.uuid
+						dry_run = true
+						variables = jsonencode({env="staging"})
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_binding.test", "name", prefixName("binding")),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Test binding"),
-				resource.TestCheckResourceAttrSet("stacklet_binding.test", "account_group_uuid"),
-				resource.TestCheckResourceAttrSet("stacklet_binding.test", "policy_collection_uuid"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "auto_deploy", "true"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(1 hour)"),
-				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
-				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+				resource.TestCheckResourceAttrSet("stacklet_binding_execution_config.test", "binding_uuid"),
+				resource.TestCheckResourceAttr("stacklet_binding_execution_config.test", "dry_run", "true"),
+				resource.TestCheckResourceAttr("stacklet_binding_execution_config.test", "variables", "{\"env\":\"staging\"}"),
 			),
 		},
 		// ImportState testing
 		{
-			ResourceName:      "stacklet_binding.test",
+			ResourceName:      "stacklet_binding_execution_config.test",
 			ImportState:       true,
 			ImportStateVerify: true,
 			ImportStateIdFunc: importStateIDFuncFromAttrs("stacklet_binding.test.uuid"),
@@ -60,7 +59,7 @@ func TestAccBindingResource(t *testing.T) {
 						name = "{{.Prefix}}-binding-group"
 						description = "Test account group for binding"
 						cloud_provider = "AWS"
-						regions = ["us-east-1", "us-east-2"]
+						regions = ["us-east-1"]
 					}
 
 					resource "stacklet_policy_collection" "test" {
@@ -70,25 +69,22 @@ func TestAccBindingResource(t *testing.T) {
 					}
 
 					resource "stacklet_binding" "test" {
-						name = "{{.Prefix}}-binding-updated"
-						description = "Updated test binding"
+						name = "{{.Prefix}}-binding"
+						description = "Test binding"
 						account_group_uuid = stacklet_account_group.test.uuid
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
-						auto_deploy = false
-						schedule = "rate(2 hours)"
+					}
+
+					resource "stacklet_binding_execution_config" "test" {
+						binding_uuid = stacklet_binding.test.uuid
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_binding.test", "name", prefixName("binding-updated")),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Updated test binding"),
-				resource.TestCheckResourceAttrSet("stacklet_binding.test", "account_group_uuid"),
-				resource.TestCheckResourceAttrSet("stacklet_binding.test", "policy_collection_uuid"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "auto_deploy", "false"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(2 hours)"),
-				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
-				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+				resource.TestCheckResourceAttrSet("stacklet_binding_execution_config.test", "binding_uuid"),
+				resource.TestCheckResourceAttr("stacklet_binding_execution_config.test", "dry_run", "false"),
+				resource.TestCheckNoResourceAttr("stacklet_binding_execution_config.test", "variables"),
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccBindingResource", steps)
+	runRecordedAccTest(t, "TestAccBindingExecutionConfigResource", steps)
 }

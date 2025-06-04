@@ -3,7 +3,6 @@
 package models
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -18,21 +17,7 @@ type BindingResource struct {
 	AccountGroupUUID     types.String `tfsdk:"account_group_uuid"`
 	PolicyCollectionUUID types.String `tfsdk:"policy_collection_uuid"`
 	System               types.Bool   `tfsdk:"system"`
-	ExecutionConfig      types.Object `tfsdk:"execution_config"`
 }
 
 // BindingDataSource is the model for a binding data source.
 type BindingDataSource BindingResource
-
-// BindingExecutionConfig is the model for the execution config for a binding.
-type BindingExecutionConfig struct {
-	DryRun    types.Bool   `tfsdk:"dry_run"`
-	Variables types.String `tfsdk:"variables"`
-}
-
-func (c BindingExecutionConfig) AttributeTypes() map[string]attr.Type {
-	return map[string]attr.Type{
-		"dry_run":   types.BoolType,
-		"variables": types.StringType,
-	}
-}

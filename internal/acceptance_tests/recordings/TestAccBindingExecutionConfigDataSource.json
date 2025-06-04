@@ -1,0 +1,391 @@
+{
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}:{\"input\":{\"description\":\"Test account group for binding\",\"name\":\"test-binding-group\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}",
+        "variables": {
+          "input": {
+            "description": "Test account group for binding",
+            "name": "test-binding-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccountGroup": {
+            "group": {
+              "description": "Test account group for binding",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjlkYzA2YmYyLTAzNDgtNGJkNy04ODZhLWFjMTMwYmZmODJkYyJd",
+              "name": "test-binding-group",
+              "provider": "AWS",
+              "regions": [
+                "us-east-1"
+              ],
+              "uuid": "9dc06bf2-0348-4bd7-886a-ac130bff82dc"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},system}}}:{\"input\":{\"accountGroupUUID\":\"9dc06bf2-0348-4bd7-886a-ac130bff82dc\",\"autoDeploy\":true,\"deploy\":true,\"description\":\"Test binding\",\"name\":\"test-binding\",\"policyCollectionUUID\":\"90bd7e0b-d2f8-4735-8372-2c525b35ba45\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},system}}}",
+        "variables": {
+          "input": {
+            "accountGroupUUID": "9dc06bf2-0348-4bd7-886a-ac130bff82dc",
+            "autoDeploy": true,
+            "deploy": true,
+            "description": "Test binding",
+            "name": "test-binding",
+            "policyCollectionUUID": "90bd7e0b-d2f8-4735-8372-2c525b35ba45"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addBinding": {
+            "binding": {
+              "accountGroup": {
+                "uuid": "9dc06bf2-0348-4bd7-886a-ac130bff82dc"
+              },
+              "autoDeploy": true,
+              "description": "Test binding",
+              "id": "WyJiaW5kaW5nIiwgIjVkZWIwZTVmLWU5ZTYtNDJjMi1iYjc1LWZiOTg0MmI5NzA3ZiJd",
+              "name": "test-binding",
+              "policyCollection": {
+                "uuid": "90bd7e0b-d2f8-4735-8372-2c525b35ba45"
+              },
+              "schedule": null,
+              "system": false,
+              "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection for binding\",\"name\":\"test-binding-collection\",\"provider\":\"AWS\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "variables": {
+          "input": {
+            "autoUpdate": false,
+            "description": "Test policy collection for binding",
+            "name": "test-binding-collection",
+            "provider": "AWS"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addPolicyCollection": {
+            "collection": {
+              "autoUpdate": false,
+              "description": "Test policy collection for binding",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5MGJkN2UwYi1kMmY4LTQ3MzUtODM3Mi0yYzUyNWIzNWJhNDUiXQ==",
+              "isDynamic": false,
+              "name": "test-binding-collection",
+              "provider": "AWS",
+              "repositoryConfig": null,
+              "repositoryView": null,
+              "system": false,
+              "uuid": "90bd7e0b-d2f8-4735-8372-2c525b35ba45"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{executionConfig{dryRun{default},variables}}}}:{\"input\":{\"executionConfig\":{\"dryRun\":null,\"variables\":null},\"uuid\":\"5deb0e5f-e9e6-42c2-bb75-fb9842b9707f\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{executionConfig{dryRun{default},variables}}}}",
+        "variables": {
+          "input": {
+            "executionConfig": {
+              "dryRun": null,
+              "variables": null
+            },
+            "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateBinding": {
+            "binding": {
+              "executionConfig": {
+                "dryRun": null,
+                "variables": null
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{executionConfig{dryRun{default},variables}}}}:{\"input\":{\"executionConfig\":{\"dryRun\":{\"default\":true},\"variables\":\"{\\\"env\\\":\\\"staging\\\"}\"},\"uuid\":\"5deb0e5f-e9e6-42c2-bb75-fb9842b9707f\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{executionConfig{dryRun{default},variables}}}}",
+        "variables": {
+          "input": {
+            "executionConfig": {
+              "dryRun": {
+                "default": true
+              },
+              "variables": "{\"env\":\"staging\"}"
+            },
+            "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateBinding": {
+            "binding": {
+              "executionConfig": {
+                "dryRun": {
+                  "default": true
+                },
+                "variables": "{\"env\": \"staging\"}"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"9dc06bf2-0348-4bd7-886a-ac130bff82dc\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
+        "variables": {
+          "uuid": "9dc06bf2-0348-4bd7-886a-ac130bff82dc"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccountGroup": {
+            "group": {
+              "uuid": "9dc06bf2-0348-4bd7-886a-ac130bff82dc"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}:{\"uuid\":\"5deb0e5f-e9e6-42c2-bb75-fb9842b9707f\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}",
+        "variables": {
+          "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+        }
+      },
+      "response": {
+        "data": {
+          "removeBinding": {
+            "binding": {
+              "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"90bd7e0b-d2f8-4735-8372-2c525b35ba45\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
+        "variables": {
+          "uuid": "90bd7e0b-d2f8-4735-8372-2c525b35ba45"
+        }
+      },
+      "response": {
+        "data": {
+          "removePolicyCollection": {
+            "collection": {
+              "uuid": "90bd7e0b-d2f8-4735-8372-2c525b35ba45"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"9dc06bf2-0348-4bd7-886a-ac130bff82dc\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
+        "variables": {
+          "name": "",
+          "uuid": "9dc06bf2-0348-4bd7-886a-ac130bff82dc"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test account group for binding",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjlkYzA2YmYyLTAzNDgtNGJkNy04ODZhLWFjMTMwYmZmODJkYyJd",
+            "name": "test-binding-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "9dc06bf2-0348-4bd7-886a-ac130bff82dc"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},system}}:{\"name\":\"\",\"uuid\":\"5deb0e5f-e9e6-42c2-bb75-fb9842b9707f\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},system}}",
+        "variables": {
+          "name": "",
+          "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+        }
+      },
+      "response": {
+        "data": {
+          "binding": {
+            "accountGroup": {
+              "uuid": "9dc06bf2-0348-4bd7-886a-ac130bff82dc"
+            },
+            "autoDeploy": true,
+            "description": "Test binding",
+            "id": "WyJiaW5kaW5nIiwgIjVkZWIwZTVmLWU5ZTYtNDJjMi1iYjc1LWZiOTg0MmI5NzA3ZiJd",
+            "name": "test-binding",
+            "policyCollection": {
+              "uuid": "90bd7e0b-d2f8-4735-8372-2c525b35ba45"
+            },
+            "schedule": null,
+            "system": false,
+            "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"90bd7e0b-d2f8-4735-8372-2c525b35ba45\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "variables": {
+          "name": "",
+          "uuid": "90bd7e0b-d2f8-4735-8372-2c525b35ba45"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection for binding",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5MGJkN2UwYi1kMmY4LTQ3MzUtODM3Mi0yYzUyNWIzNWJhNDUiXQ==",
+            "isDynamic": false,
+            "name": "test-binding-collection",
+            "provider": "AWS",
+            "repositoryConfig": null,
+            "repositoryView": null,
+            "system": false,
+            "uuid": "90bd7e0b-d2f8-4735-8372-2c525b35ba45"
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:String!){binding(uuid: $uuid){id,executionConfig{dryRun{default},variables}}}:{\"uuid\":\"5deb0e5f-e9e6-42c2-bb75-fb9842b9707f\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:String!){binding(uuid: $uuid){id,executionConfig{dryRun{default},variables}}}",
+        "variables": {
+          "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+        }
+      },
+      "response": {
+        "data": {
+          "binding": {
+            "executionConfig": {
+              "dryRun": {
+                "default": true
+              },
+              "variables": "{\"env\": \"staging\"}"
+            },
+            "id": "WyJiaW5kaW5nIiwgIjVkZWIwZTVmLWU5ZTYtNDJjMi1iYjc1LWZiOTg0MmI5NzA3ZiJd"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){binding(uuid: $uuid){id,executionConfig{dryRun{default},variables}}}",
+        "variables": {
+          "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+        }
+      },
+      "response": {
+        "data": {
+          "binding": {
+            "executionConfig": {
+              "dryRun": {
+                "default": true
+              },
+              "variables": "{\"env\": \"staging\"}"
+            },
+            "id": "WyJiaW5kaW5nIiwgIjVkZWIwZTVmLWU5ZTYtNDJjMi1iYjc1LWZiOTg0MmI5NzA3ZiJd"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){binding(uuid: $uuid){id,executionConfig{dryRun{default},variables}}}",
+        "variables": {
+          "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+        }
+      },
+      "response": {
+        "data": {
+          "binding": {
+            "executionConfig": {
+              "dryRun": {
+                "default": true
+              },
+              "variables": "{\"env\": \"staging\"}"
+            },
+            "id": "WyJiaW5kaW5nIiwgIjVkZWIwZTVmLWU5ZTYtNDJjMi1iYjc1LWZiOTg0MmI5NzA3ZiJd"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:String!){binding(uuid: $uuid){id,executionConfig{dryRun{default},variables}}}",
+        "variables": {
+          "uuid": "5deb0e5f-e9e6-42c2-bb75-fb9842b9707f"
+        }
+      },
+      "response": {
+        "data": {
+          "binding": {
+            "executionConfig": {
+              "dryRun": {
+                "default": true
+              },
+              "variables": "{\"env\": \"staging\"}"
+            },
+            "id": "WyJiaW5kaW5nIiwgIjVkZWIwZTVmLWU5ZTYtNDJjMi1iYjc1LWZiOTg0MmI5NzA3ZiJd"
+          }
+        }
+      }
+    }
+  ]
+}

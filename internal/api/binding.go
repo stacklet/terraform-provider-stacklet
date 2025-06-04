@@ -22,31 +22,18 @@ type Binding struct {
 	PolicyCollection struct {
 		UUID string
 	}
-	ExecutionConfig BindingExecutionConfig
-	System          bool
-}
-
-// ExecutionConfig holds the execution configuration for a binding.
-type BindingExecutionConfig struct {
-	DryRun    *BindingExecutionConfigDryRun `json:"dryRun"`
-	Variables *string                       `json:"variables"`
-}
-
-// BindingExecutionConfigDryRun holds the dry run confiuration for a binding execution config.
-type BindingExecutionConfigDryRun struct {
-	Default bool `json:"default"`
+	System bool
 }
 
 // BindingCreateInput is the input for creating a binding.
 type BindingCreateInput struct {
-	Name                 string                 `json:"name"`
-	Description          *string                `json:"description,omitempty"`
-	AutoDeploy           bool                   `json:"autoDeploy"`
-	Schedule             *string                `json:"schedule,omitempty"`
-	ExecutionConfig      BindingExecutionConfig `json:"executionConfig"`
-	AccountGroupUUID     string                 `json:"accountGroupUUID"`
-	PolicyCollectionUUID string                 `json:"policyCollectionUUID"`
-	Deploy               bool                   `json:"deploy"`
+	Name                 string  `json:"name"`
+	Description          *string `json:"description,omitempty"`
+	AutoDeploy           bool    `json:"autoDeploy"`
+	Schedule             *string `json:"schedule,omitempty"`
+	AccountGroupUUID     string  `json:"accountGroupUUID"`
+	PolicyCollectionUUID string  `json:"policyCollectionUUID"`
+	Deploy               bool    `json:"deploy"`
 }
 
 func (i BindingCreateInput) GetGraphQLType() string {
@@ -54,12 +41,11 @@ func (i BindingCreateInput) GetGraphQLType() string {
 }
 
 type BindingUpdateInput struct {
-	UUID            string                 `json:"uuid"`
-	Name            string                 `json:"name"`
-	Description     *string                `json:"description"`
-	AutoDeploy      bool                   `json:"autoDeploy"`
-	Schedule        *string                `json:"schedule"`
-	ExecutionConfig BindingExecutionConfig `json:"executionConfig"`
+	UUID        string  `json:"uuid"`
+	Name        string  `json:"name"`
+	Description *string `json:"description"`
+	AutoDeploy  bool    `json:"autoDeploy"`
+	Schedule    *string `json:"schedule"`
 }
 
 func (i BindingUpdateInput) GetGraphQLType() string {

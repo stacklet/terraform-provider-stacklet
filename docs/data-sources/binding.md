@@ -29,7 +29,6 @@ data "stacklet_binding" "by_name" {
 
 ### Optional
 
-- `execution_config` (Attributes) Binding execution configuration. (see [below for nested schema](#nestedatt--execution_config))
 - `name` (String) The name of the binding.
 - `uuid` (String) The UUID of the binding.
 
@@ -42,11 +41,3 @@ data "stacklet_binding" "by_name" {
 - `policy_collection_uuid` (String) The UUID of the policy collection this binding applies.
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
 - `system` (Boolean) Whether this is a system binding.
-
-<a id="nestedatt--execution_config"></a>
-### Nested Schema for `execution_config`
-
-Optional:
-
-- `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
-- `variables` (String) JSON-encoded dictionary of values used for policy templating.

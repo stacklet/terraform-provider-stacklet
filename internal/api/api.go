@@ -14,6 +14,7 @@ type API struct {
 	AccountGroup            accountGroupAPI
 	AccountGroupMapping     accountGroupMappingAPI
 	Binding                 bindingAPI
+	BindingExecutionConfig  bindingExecutionConfigAPI
 	Policy                  policyAPI
 	PolicyCollection        policyCollectionAPI
 	PolicyCollectionMapping policyCollectionMappingAPI
@@ -28,6 +29,7 @@ func New(c *graphql.Client) *API {
 		AccountGroup:            accountGroupAPI{c},
 		AccountGroupMapping:     accountGroupMappingAPI{c},
 		Binding:                 bindingAPI{c},
+		BindingExecutionConfig:  bindingExecutionConfigAPI{c},
 		Policy:                  policyAPI{c},
 		PolicyCollection:        policyCollectionAPI{c},
 		PolicyCollectionMapping: policyCollectionMappingAPI{c},

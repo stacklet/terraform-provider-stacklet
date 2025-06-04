@@ -1,0 +1,1 @@
+terraform import stacket_binding_execution_config.example $binding_uuid
