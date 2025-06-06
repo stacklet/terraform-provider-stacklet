@@ -24,15 +24,36 @@ type BindingResource struct {
 // BindingDataSource is the model for a binding data source.
 type BindingDataSource BindingResource
 
-// BindingExecutionConfig is the model for the execution config for a binding.
-type BindingExecutionConfig struct {
-	DryRun    types.Bool   `tfsdk:"dry_run"`
-	Variables types.String `tfsdk:"variables"`
+// BindingReourceExecutionConfig is the model for the execution config for a binding data source.
+type BindingResourceExecutionConfig struct {
+	DryRun                   types.Bool   `tfsdk:"dry_run"`
+	SecurityContext          types.String `tfsdk:"security_context"`
+	SecurityContextWO        types.String `tfsdk:"security_context_wo"`
+	SecurityContextWOVersion types.String `tfsdk:"security_context_wo_version"`
+	Variables                types.String `tfsdk:"variables"`
 }
 
-func (c BindingExecutionConfig) AttributeTypes() map[string]attr.Type {
+func (c BindingResourceExecutionConfig) AttributeTypes() map[string]attr.Type {
 	return map[string]attr.Type{
-		"dry_run":   types.BoolType,
-		"variables": types.StringType,
+		"dry_run":                     types.BoolType,
+		"security_context":            types.StringType,
+		"security_context_wo":         types.StringType,
+		"security_context_wo_version": types.StringType,
+		"variables":                   types.StringType,
+	}
+}
+
+// BindingDataSourceExecutionConfig is the model for the execution config for a binding data source.
+type BindingDataSourceExecutionConfig struct {
+	DryRun          types.Bool   `tfsdk:"dry_run"`
+	SecurityContext types.String `tfsdk:"security_context"`
+	Variables       types.String `tfsdk:"variables"`
+}
+
+func (c BindingDataSourceExecutionConfig) AttributeTypes() map[string]attr.Type {
+	return map[string]attr.Type{
+		"dry_run":          types.BoolType,
+		"security_context": types.StringType,
+		"variables":        types.StringType,
 	}
 }

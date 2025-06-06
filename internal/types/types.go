@@ -55,17 +55,21 @@ type WithAttributes interface {
 func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, construct func() (*Type, error)) (basetypes.ObjectValue, diag.Diagnostics) {
 	var empty Type
 	var diags diag.Diagnostics
-	attrTypes := empty.AttributeTypes()
 	if v == nil {
-		return basetypes.NewObjectNull(attrTypes), diags
+		return NullObject(empty), diags
 	}
 	objPtr, err := construct()
 	if err != nil {
 		diags.AddError("Object conversion error", err.Error())
-		return basetypes.NewObjectNull(attrTypes), diags
+		return NullObject(empty), diags
 	}
 	if objPtr == nil {
-		return basetypes.NewObjectNull(attrTypes), diags
+		return NullObject(empty), diags
 	}
-	return basetypes.NewObjectValueFrom(ctx, attrTypes, *objPtr)
+	return basetypes.NewObjectValueFrom(ctx, empty.AttributeTypes(), *objPtr)
+}
+
+// NullObject returns a basetype.ObjectValue for the provided type with empty values.
+func NullObject(t WithAttributes) basetypes.ObjectValue {
+	return basetypes.NewObjectNull(t.AttributeTypes())
 }

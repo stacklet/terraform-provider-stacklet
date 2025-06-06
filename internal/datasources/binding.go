@@ -82,6 +82,11 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 						Optional:    true,
 						Computed:    true,
 					},
+					"security_context": schema.StringAttribute{
+						Description: "The binding execution security context.",
+						Optional:    true,
+						Computed:    true,
+					},
 					"variables": schema.StringAttribute{
 						Description: "JSON-encoded dictionary of values used for policy templating.",
 						Optional:    true,
@@ -127,19 +132,16 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	executionConfig, diags := tftypes.ObjectValue(
 		ctx,
 		&binding.ExecutionConfig,
-		func() (*models.BindingExecutionConfig, error) {
+		func() (*models.BindingDataSourceExecutionConfig, error) {
 			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 			if err != nil {
 				return nil, err
 			}
-			dryRun := types.BoolValue(false)
-			if binding.ExecutionConfig.DryRun != nil {
-				dryRun = types.BoolValue(binding.ExecutionConfig.DryRun.Default)
-			}
 
-			return &models.BindingExecutionConfig{
-				DryRun:    dryRun,
-				Variables: variablesString,
+			return &models.BindingDataSourceExecutionConfig{
+				DryRun:          types.BoolValue(binding.ExecutionConfig.DryRunDefault()),
+				SecurityContext: tftypes.NullableString(binding.ExecutionConfig.SecurityContextDefault()),
+				Variables:       variablesString,
 			}, nil
 		},
 	)

@@ -69,6 +69,9 @@ resource "stacklet_binding" "example" {
 Optional:
 
 - `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
+- `security_context` (String) The binding execution security context.
+- `security_context_wo` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The input value for the security context for the execution configuration.
+- `security_context_wo_version` (String) The version for the security context. Must be changed to update security_context_wo.
 - `variables` (String) JSON-encoded dictionary of values used for policy templating.
 
 ## Import

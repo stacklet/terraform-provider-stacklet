@@ -49,4 +49,5 @@ data "stacklet_binding" "by_name" {
 Optional:
 
 - `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
+- `security_context` (String) The binding execution security context.
 - `variables` (String) JSON-encoded dictionary of values used for policy templating.
