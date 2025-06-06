@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
@@ -133,7 +134,7 @@ func (d *policyCollectionDataSource) Read(ctx context.Context, req datasource.Re
 	dynamicConfig, diags := tftypes.ObjectValue(
 		ctx,
 		policyCollection.RepositoryView,
-		func() (*models.PolicyCollectionDynamicConfig, error) {
+		func() (*models.PolicyCollectionDynamicConfig, diag.Diagnostics) {
 			return &models.PolicyCollectionDynamicConfig{
 				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
 				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),

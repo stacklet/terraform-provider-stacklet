@@ -288,7 +288,7 @@ func (r policyCollectionResource) updatePolicyCollectionModel(ctx context.Contex
 	dynamicConfig, diags := tftypes.ObjectValue(
 		ctx,
 		policyCollection.RepositoryView,
-		func() (*models.PolicyCollectionDynamicConfig, error) {
+		func() (*models.PolicyCollectionDynamicConfig, diag.Diagnostics) {
 			return &models.PolicyCollectionDynamicConfig{
 				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
 				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),

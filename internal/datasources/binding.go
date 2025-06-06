@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
@@ -132,17 +133,19 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	executionConfig, diags := tftypes.ObjectValue(
 		ctx,
 		&binding.ExecutionConfig,
-		func() (*models.BindingDataSourceExecutionConfig, error) {
+		func() (*models.BindingDataSourceExecutionConfig, diag.Diagnostics) {
+			var diags diag.Diagnostics
 			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 			if err != nil {
-				return nil, err
+				errors.AddDiagError(&diags, err)
+				return nil, diags
 			}
 
 			return &models.BindingDataSourceExecutionConfig{
 				DryRun:          types.BoolValue(binding.ExecutionConfig.DryRunDefault()),
 				SecurityContext: tftypes.NullableString(binding.ExecutionConfig.SecurityContextDefault()),
 				Variables:       variablesString,
-			}, nil
+			}, diags
 		},
 	)
 	data.ExecutionConfig = executionConfig
