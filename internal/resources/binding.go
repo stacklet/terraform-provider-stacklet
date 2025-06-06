@@ -347,19 +347,20 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m, config *mode
 	executionConfig, d := tftypes.ObjectValue(
 		ctx,
 		&(binding.ExecutionConfig),
-		func() (*models.BindingResourceExecutionConfig, error) {
+		func() (*models.BindingResourceExecutionConfig, diag.Diagnostics) {
+			var diags diag.Diagnostics
 			empty := api.BindingExecutionConfig{}
 			if binding.ExecutionConfig == empty {
 				// requested config was null
 				if config == nil || config.ExecutionConfig.IsNull() {
-					return nil, nil
+					return nil, diags
 				}
 				// requested config was empty
 				return &models.BindingResourceExecutionConfig{
 					DryRun:          types.BoolValue(false),
 					SecurityContext: types.StringNull(),
 					Variables:       types.StringNull(),
-				}, nil
+				}, diags
 			}
 
 			var curModel models.BindingResourceExecutionConfig
@@ -369,7 +370,8 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m, config *mode
 
 			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 			if err != nil {
-				return nil, err
+				errors.AddDiagError(&diags, err)
+				return nil, diags
 			}
 			// the API returns an empty dict for null or empty string, don't
 			// modify the expected value in that case
@@ -382,7 +384,7 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m, config *mode
 				SecurityContext:          tftypes.NullableString(binding.ExecutionConfig.SecurityContextDefault()),
 				SecurityContextWOVersion: curModel.SecurityContextWOVersion,
 				Variables:                variablesString,
-			}, nil
+			}, diags
 		},
 	)
 	m.ExecutionConfig = executionConfig

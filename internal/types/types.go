@@ -52,15 +52,15 @@ type WithAttributes interface {
 }
 
 // ObjectValue returns a basetypes.ObjectValue from a type.
-func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, construct func() (*Type, error)) (basetypes.ObjectValue, diag.Diagnostics) {
+func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, construct func() (*Type, diag.Diagnostics)) (basetypes.ObjectValue, diag.Diagnostics) {
 	var empty Type
 	var diags diag.Diagnostics
 	if v == nil {
 		return NullObject(empty), diags
 	}
-	objPtr, err := construct()
-	if err != nil {
-		diags.AddError("Object conversion error", err.Error())
+	objPtr, d := construct()
+	diags.Append(d...)
+	if diags.HasError() {
 		return NullObject(empty), diags
 	}
 	if objPtr == nil {
