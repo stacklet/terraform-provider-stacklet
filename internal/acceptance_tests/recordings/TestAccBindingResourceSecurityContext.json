@@ -19,32 +19,33 @@
           "addAccountGroup": {
             "group": {
               "description": "Test account group for binding",
-              "id": "WyJhY2NvdW50LWdyb3VwIiwgImEzZDE0NWJiLTBiMTItNGRlMS04NjYwLWE3MWNlNjdhNmZjOCJd",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjAwZTljODg5LTNlZTUtNGM4NC1iZmMxLWViMDA1MTc4MjlmNCJd",
               "name": "test-binding-group",
               "provider": "AWS",
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+              "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}}:{\"input\":{\"accountGroupUUID\":\"a3d145bb-0b12-4de1-8660-a71ce67a6fc8\",\"autoDeploy\":true,\"deploy\":true,\"description\":\"Test binding\",\"executionConfig\":{\"dryRun\":{\"default\":false},\"securityContext\":{\"default\":\"arn:aws:iam::123456789012:role/test-role\"},\"variables\":null},\"name\":\"test-binding\",\"policyCollectionUUID\":\"28ca6d42-f0b6-46ac-a7a6-a76977bca6a8\"}}": [
+  "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}}:{\"input\":{\"accountGroupUUID\":\"00e9c889-3ee5-4c84-bfc1-eb00517829f4\",\"autoDeploy\":true,\"deploy\":true,\"description\":\"Test binding\",\"executionConfig\":{\"dryRun\":null,\"resourceLimits\":{\"default\":null},\"securityContext\":{\"default\":\"arn:aws:iam::123456789012:role/test-role\"},\"variables\":null},\"name\":\"test-binding\",\"policyCollectionUUID\":\"422c572c-ac98-454b-bac9-c92c3acf4ef7\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}}",
+        "query": "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}}",
         "variables": {
           "input": {
-            "accountGroupUUID": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8",
+            "accountGroupUUID": "00e9c889-3ee5-4c84-bfc1-eb00517829f4",
             "autoDeploy": true,
             "deploy": true,
             "description": "Test binding",
             "executionConfig": {
-              "dryRun": {
-                "default": false
+              "dryRun": null,
+              "resourceLimits": {
+                "default": null
               },
               "securityContext": {
                 "default": "arn:aws:iam::123456789012:role/test-role"
@@ -52,7 +53,7 @@
               "variables": null
             },
             "name": "test-binding",
-            "policyCollectionUUID": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+            "policyCollectionUUID": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
           }
         }
       },
@@ -61,25 +62,26 @@
           "addBinding": {
             "binding": {
               "accountGroup": {
-                "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+                "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
               },
               "autoDeploy": true,
               "description": "Test binding",
               "executionConfig": {
                 "dryRun": null,
+                "resourceLimits": null,
                 "securityContext": {
                   "default": "arn:aws:iam::123456789012:role/test-role"
                 },
                 "variables": "{}"
               },
-              "id": "WyJiaW5kaW5nIiwgImJiNjlkNTMxLTU3YjgtNDhiYy05MTk0LWY5NGVhNzY5NDI2MCJd",
+              "id": "WyJiaW5kaW5nIiwgIjM3NmVmZjk0LTU3ODEtNDNlMC1iMjcxLTQwMDFmOTY2ZDk1NiJd",
               "name": "test-binding",
               "policyCollection": {
-                "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+                "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
               },
               "schedule": null,
               "system": false,
-              "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+              "uuid": "376eff94-5781-43e0-b271-4001f966d956"
             }
           }
         }
@@ -105,24 +107,24 @@
             "collection": {
               "autoUpdate": false,
               "description": "Test policy collection for binding",
-              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICIyOGNhNmQ0Mi1mMGI2LTQ2YWMtYTdhNi1hNzY5NzdiY2E2YTgiXQ==",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0MjJjNTcyYy1hYzk4LTQ1NGItYmFjOS1jOTJjM2FjZjRlZjciXQ==",
               "isDynamic": false,
               "name": "test-binding-collection",
               "provider": "AWS",
               "repositoryConfig": null,
               "repositoryView": null,
               "system": false,
-              "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+              "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}}:{\"input\":{\"autoDeploy\":true,\"description\":\"Test binding\",\"executionConfig\":{\"dryRun\":{\"default\":true},\"securityContext\":{\"default\":\"arn:aws:iam::123456789012:role/new-role\"},\"variables\":null},\"name\":\"test-binding\",\"schedule\":null,\"uuid\":\"bb69d531-57b8-48bc-9194-f94ea7694260\"}}": [
+  "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}}:{\"input\":{\"autoDeploy\":true,\"description\":\"Test binding\",\"executionConfig\":{\"dryRun\":{\"default\":true},\"resourceLimits\":{\"default\":null},\"securityContext\":{\"default\":\"arn:aws:iam::123456789012:role/new-role\"},\"variables\":null},\"name\":\"test-binding\",\"schedule\":null,\"uuid\":\"376eff94-5781-43e0-b271-4001f966d956\"}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}}",
+        "query": "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}}",
         "variables": {
           "input": {
             "autoDeploy": true,
@@ -130,6 +132,9 @@
             "executionConfig": {
               "dryRun": {
                 "default": true
+              },
+              "resourceLimits": {
+                "default": null
               },
               "securityContext": {
                 "default": "arn:aws:iam::123456789012:role/new-role"
@@ -138,7 +143,7 @@
             },
             "name": "test-binding",
             "schedule": null,
-            "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+            "uuid": "376eff94-5781-43e0-b271-4001f966d956"
           }
         }
       },
@@ -147,7 +152,7 @@
           "updateBinding": {
             "binding": {
               "accountGroup": {
-                "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+                "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
               },
               "autoDeploy": true,
               "description": "Test binding",
@@ -155,29 +160,30 @@
                 "dryRun": {
                   "default": true
                 },
+                "resourceLimits": null,
                 "securityContext": {
                   "default": "arn:aws:iam::123456789012:role/new-role"
                 },
                 "variables": "{}"
               },
-              "id": "WyJiaW5kaW5nIiwgImJiNjlkNTMxLTU3YjgtNDhiYy05MTk0LWY5NGVhNzY5NDI2MCJd",
+              "id": "WyJiaW5kaW5nIiwgIjM3NmVmZjk0LTU3ODEtNDNlMC1iMjcxLTQwMDFmOTY2ZDk1NiJd",
               "name": "test-binding",
               "policyCollection": {
-                "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+                "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
               },
               "schedule": null,
               "system": false,
-              "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+              "uuid": "376eff94-5781-43e0-b271-4001f966d956"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}}:{\"input\":{\"autoDeploy\":true,\"description\":\"Test binding\",\"executionConfig\":{\"dryRun\":{\"default\":true},\"securityContext\":{\"default\":\"arn:aws:iam::123456789012:role/test-role\"},\"variables\":null},\"name\":\"test-binding\",\"schedule\":null,\"uuid\":\"bb69d531-57b8-48bc-9194-f94ea7694260\"}}": [
+  "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}}:{\"input\":{\"autoDeploy\":true,\"description\":\"Test binding\",\"executionConfig\":{\"dryRun\":{\"default\":true},\"resourceLimits\":{\"default\":null},\"securityContext\":{\"default\":\"arn:aws:iam::123456789012:role/test-role\"},\"variables\":null},\"name\":\"test-binding\",\"schedule\":null,\"uuid\":\"376eff94-5781-43e0-b271-4001f966d956\"}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}}",
+        "query": "mutation ($input:UpdateBindingInput!){updateBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}}",
         "variables": {
           "input": {
             "autoDeploy": true,
@@ -186,6 +192,9 @@
               "dryRun": {
                 "default": true
               },
+              "resourceLimits": {
+                "default": null
+              },
               "securityContext": {
                 "default": "arn:aws:iam::123456789012:role/test-role"
               },
@@ -193,7 +202,7 @@
             },
             "name": "test-binding",
             "schedule": null,
-            "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+            "uuid": "376eff94-5781-43e0-b271-4001f966d956"
           }
         }
       },
@@ -202,7 +211,7 @@
           "updateBinding": {
             "binding": {
               "accountGroup": {
-                "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+                "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
               },
               "autoDeploy": true,
               "description": "Test binding",
@@ -210,102 +219,103 @@
                 "dryRun": {
                   "default": true
                 },
+                "resourceLimits": null,
                 "securityContext": {
                   "default": "arn:aws:iam::123456789012:role/test-role"
                 },
                 "variables": "{}"
               },
-              "id": "WyJiaW5kaW5nIiwgImJiNjlkNTMxLTU3YjgtNDhiYy05MTk0LWY5NGVhNzY5NDI2MCJd",
+              "id": "WyJiaW5kaW5nIiwgIjM3NmVmZjk0LTU3ODEtNDNlMC1iMjcxLTQwMDFmOTY2ZDk1NiJd",
               "name": "test-binding",
               "policyCollection": {
-                "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+                "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
               },
               "schedule": null,
               "system": false,
-              "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+              "uuid": "376eff94-5781-43e0-b271-4001f966d956"
             }
           }
         }
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"a3d145bb-0b12-4de1-8660-a71ce67a6fc8\"}": [
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"00e9c889-3ee5-4c84-bfc1-eb00517829f4\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
         "variables": {
-          "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+          "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
         }
       },
       "response": {
         "data": {
           "removeAccountGroup": {
             "group": {
-              "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+              "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
             }
           }
         }
       }
     }
   ],
-  "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}:{\"uuid\":\"bb69d531-57b8-48bc-9194-f94ea7694260\"}": [
+  "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}:{\"uuid\":\"376eff94-5781-43e0-b271-4001f966d956\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}",
         "variables": {
-          "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+          "uuid": "376eff94-5781-43e0-b271-4001f966d956"
         }
       },
       "response": {
         "data": {
           "removeBinding": {
             "binding": {
-              "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+              "uuid": "376eff94-5781-43e0-b271-4001f966d956"
             }
           }
         }
       }
     }
   ],
-  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"28ca6d42-f0b6-46ac-a7a6-a76977bca6a8\"}": [
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"422c572c-ac98-454b-bac9-c92c3acf4ef7\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
         "variables": {
-          "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+          "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
         }
       },
       "response": {
         "data": {
           "removePolicyCollection": {
             "collection": {
-              "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+              "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
             }
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"a3d145bb-0b12-4de1-8660-a71ce67a6fc8\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"00e9c889-3ee5-4c84-bfc1-eb00517829f4\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+          "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group for binding",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImEzZDE0NWJiLTBiMTItNGRlMS04NjYwLWE3MWNlNjdhNmZjOCJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjAwZTljODg5LTNlZTUtNGM4NC1iZmMxLWViMDA1MTc4MjlmNCJd",
             "name": "test-binding-group",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+            "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
           }
         }
       }
@@ -315,20 +325,20 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+          "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group for binding",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImEzZDE0NWJiLTBiMTItNGRlMS04NjYwLWE3MWNlNjdhNmZjOCJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjAwZTljODg5LTNlZTUtNGM4NC1iZmMxLWViMDA1MTc4MjlmNCJd",
             "name": "test-binding-group",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+            "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
           }
         }
       }
@@ -338,20 +348,20 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+          "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group for binding",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImEzZDE0NWJiLTBiMTItNGRlMS04NjYwLWE3MWNlNjdhNmZjOCJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjAwZTljODg5LTNlZTUtNGM4NC1iZmMxLWViMDA1MTc4MjlmNCJd",
             "name": "test-binding-group",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+            "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
           }
         }
       }
@@ -361,20 +371,20 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+          "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group for binding",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImEzZDE0NWJiLTBiMTItNGRlMS04NjYwLWE3MWNlNjdhNmZjOCJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjAwZTljODg5LTNlZTUtNGM4NC1iZmMxLWViMDA1MTc4MjlmNCJd",
             "name": "test-binding-group",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+            "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
           }
         }
       }
@@ -384,109 +394,111 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+          "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group for binding",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImEzZDE0NWJiLTBiMTItNGRlMS04NjYwLWE3MWNlNjdhNmZjOCJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjAwZTljODg5LTNlZTUtNGM4NC1iZmMxLWViMDA1MTc4MjlmNCJd",
             "name": "test-binding-group",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+            "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}:{\"name\":\"\",\"uuid\":\"bb69d531-57b8-48bc-9194-f94ea7694260\"}": [
+  "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}:{\"name\":\"\",\"uuid\":\"376eff94-5781-43e0-b271-4001f966d956\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}",
+        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}",
         "variables": {
           "name": "",
-          "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+          "uuid": "376eff94-5781-43e0-b271-4001f966d956"
         }
       },
       "response": {
         "data": {
           "binding": {
             "accountGroup": {
-              "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+              "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
             },
             "autoDeploy": true,
             "description": "Test binding",
             "executionConfig": {
               "dryRun": null,
+              "resourceLimits": null,
               "securityContext": {
                 "default": "arn:aws:iam::123456789012:role/test-role"
               },
               "variables": "{}"
             },
-            "id": "WyJiaW5kaW5nIiwgImJiNjlkNTMxLTU3YjgtNDhiYy05MTk0LWY5NGVhNzY5NDI2MCJd",
+            "id": "WyJiaW5kaW5nIiwgIjM3NmVmZjk0LTU3ODEtNDNlMC1iMjcxLTQwMDFmOTY2ZDk1NiJd",
             "name": "test-binding",
             "policyCollection": {
-              "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+              "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
             },
             "schedule": null,
             "system": false,
-            "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+            "uuid": "376eff94-5781-43e0-b271-4001f966d956"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}",
+        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}",
         "variables": {
           "name": "",
-          "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+          "uuid": "376eff94-5781-43e0-b271-4001f966d956"
         }
       },
       "response": {
         "data": {
           "binding": {
             "accountGroup": {
-              "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+              "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
             },
             "autoDeploy": true,
             "description": "Test binding",
             "executionConfig": {
               "dryRun": null,
+              "resourceLimits": null,
               "securityContext": {
                 "default": "arn:aws:iam::123456789012:role/test-role"
               },
               "variables": "{}"
             },
-            "id": "WyJiaW5kaW5nIiwgImJiNjlkNTMxLTU3YjgtNDhiYy05MTk0LWY5NGVhNzY5NDI2MCJd",
+            "id": "WyJiaW5kaW5nIiwgIjM3NmVmZjk0LTU3ODEtNDNlMC1iMjcxLTQwMDFmOTY2ZDk1NiJd",
             "name": "test-binding",
             "policyCollection": {
-              "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+              "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
             },
             "schedule": null,
             "system": false,
-            "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+            "uuid": "376eff94-5781-43e0-b271-4001f966d956"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}",
+        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}",
         "variables": {
           "name": "",
-          "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+          "uuid": "376eff94-5781-43e0-b271-4001f966d956"
         }
       },
       "response": {
         "data": {
           "binding": {
             "accountGroup": {
-              "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+              "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
             },
             "autoDeploy": true,
             "description": "Test binding",
@@ -494,36 +506,37 @@
               "dryRun": {
                 "default": true
               },
+              "resourceLimits": null,
               "securityContext": {
                 "default": "arn:aws:iam::123456789012:role/test-role"
               },
               "variables": "{}"
             },
-            "id": "WyJiaW5kaW5nIiwgImJiNjlkNTMxLTU3YjgtNDhiYy05MTk0LWY5NGVhNzY5NDI2MCJd",
+            "id": "WyJiaW5kaW5nIiwgIjM3NmVmZjk0LTU3ODEtNDNlMC1iMjcxLTQwMDFmOTY2ZDk1NiJd",
             "name": "test-binding",
             "policyCollection": {
-              "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+              "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
             },
             "schedule": null,
             "system": false,
-            "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+            "uuid": "376eff94-5781-43e0-b271-4001f966d956"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}",
+        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}",
         "variables": {
           "name": "",
-          "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+          "uuid": "376eff94-5781-43e0-b271-4001f966d956"
         }
       },
       "response": {
         "data": {
           "binding": {
             "accountGroup": {
-              "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+              "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
             },
             "autoDeploy": true,
             "description": "Test binding",
@@ -531,36 +544,37 @@
               "dryRun": {
                 "default": true
               },
+              "resourceLimits": null,
               "securityContext": {
                 "default": "arn:aws:iam::123456789012:role/test-role"
               },
               "variables": "{}"
             },
-            "id": "WyJiaW5kaW5nIiwgImJiNjlkNTMxLTU3YjgtNDhiYy05MTk0LWY5NGVhNzY5NDI2MCJd",
+            "id": "WyJiaW5kaW5nIiwgIjM3NmVmZjk0LTU3ODEtNDNlMC1iMjcxLTQwMDFmOTY2ZDk1NiJd",
             "name": "test-binding",
             "policyCollection": {
-              "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+              "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
             },
             "schedule": null,
             "system": false,
-            "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+            "uuid": "376eff94-5781-43e0-b271-4001f966d956"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},securityContext{default},variables},system}}",
+        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth}},securityContext{default},variables},system}}",
         "variables": {
           "name": "",
-          "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+          "uuid": "376eff94-5781-43e0-b271-4001f966d956"
         }
       },
       "response": {
         "data": {
           "binding": {
             "accountGroup": {
-              "uuid": "a3d145bb-0b12-4de1-8660-a71ce67a6fc8"
+              "uuid": "00e9c889-3ee5-4c84-bfc1-eb00517829f4"
             },
             "autoDeploy": true,
             "description": "Test binding",
@@ -568,31 +582,32 @@
               "dryRun": {
                 "default": true
               },
+              "resourceLimits": null,
               "securityContext": {
                 "default": "arn:aws:iam::123456789012:role/new-role"
               },
               "variables": "{}"
             },
-            "id": "WyJiaW5kaW5nIiwgImJiNjlkNTMxLTU3YjgtNDhiYy05MTk0LWY5NGVhNzY5NDI2MCJd",
+            "id": "WyJiaW5kaW5nIiwgIjM3NmVmZjk0LTU3ODEtNDNlMC1iMjcxLTQwMDFmOTY2ZDk1NiJd",
             "name": "test-binding",
             "policyCollection": {
-              "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+              "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
             },
             "schedule": null,
             "system": false,
-            "uuid": "bb69d531-57b8-48bc-9194-f94ea7694260"
+            "uuid": "376eff94-5781-43e0-b271-4001f966d956"
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"28ca6d42-f0b6-46ac-a7a6-a76977bca6a8\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"422c572c-ac98-454b-bac9-c92c3acf4ef7\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+          "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
         }
       },
       "response": {
@@ -600,14 +615,14 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection for binding",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICIyOGNhNmQ0Mi1mMGI2LTQ2YWMtYTdhNi1hNzY5NzdiY2E2YTgiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0MjJjNTcyYy1hYzk4LTQ1NGItYmFjOS1jOTJjM2FjZjRlZjciXQ==",
             "isDynamic": false,
             "name": "test-binding-collection",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+            "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
           }
         }
       }
@@ -617,7 +632,7 @@
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+          "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
         }
       },
       "response": {
@@ -625,14 +640,14 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection for binding",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICIyOGNhNmQ0Mi1mMGI2LTQ2YWMtYTdhNi1hNzY5NzdiY2E2YTgiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0MjJjNTcyYy1hYzk4LTQ1NGItYmFjOS1jOTJjM2FjZjRlZjciXQ==",
             "isDynamic": false,
             "name": "test-binding-collection",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+            "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
           }
         }
       }
@@ -642,7 +657,7 @@
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+          "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
         }
       },
       "response": {
@@ -650,14 +665,14 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection for binding",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICIyOGNhNmQ0Mi1mMGI2LTQ2YWMtYTdhNi1hNzY5NzdiY2E2YTgiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0MjJjNTcyYy1hYzk4LTQ1NGItYmFjOS1jOTJjM2FjZjRlZjciXQ==",
             "isDynamic": false,
             "name": "test-binding-collection",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+            "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
           }
         }
       }
@@ -667,7 +682,7 @@
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+          "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
         }
       },
       "response": {
@@ -675,14 +690,14 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection for binding",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICIyOGNhNmQ0Mi1mMGI2LTQ2YWMtYTdhNi1hNzY5NzdiY2E2YTgiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0MjJjNTcyYy1hYzk4LTQ1NGItYmFjOS1jOTJjM2FjZjRlZjciXQ==",
             "isDynamic": false,
             "name": "test-binding-collection",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+            "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
           }
         }
       }
@@ -692,7 +707,7 @@
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+          "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
         }
       },
       "response": {
@@ -700,14 +715,14 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection for binding",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICIyOGNhNmQ0Mi1mMGI2LTQ2YWMtYTdhNi1hNzY5NzdiY2E2YTgiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI0MjJjNTcyYy1hYzk4LTQ1NGItYmFjOS1jOTJjM2FjZjRlZjciXQ==",
             "isDynamic": false,
             "name": "test-binding-collection",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "28ca6d42-f0b6-46ac-a7a6-a76977bca6a8"
+            "uuid": "422c572c-ac98-454b-bac9-c92c3acf4ef7"
           }
         }
       }

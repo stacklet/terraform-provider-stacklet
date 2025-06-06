@@ -29,9 +29,12 @@ data "stacklet_binding" "by_name" {
 
 ### Optional
 
-- `execution_config` (Attributes) Binding execution configuration. (see [below for nested schema](#nestedatt--execution_config))
+- `default_resource_limits` (Attributes) Default limits for binding execution. (see [below for nested schema](#nestedatt--default_resource_limits))
+- `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
 - `name` (String) The name of the binding.
+- `security_context` (String) The binding execution security context.
 - `uuid` (String) The UUID of the binding.
+- `variables` (String) JSON-encoded dictionary of values used for policy templating.
 
 ### Read-Only
 
@@ -43,11 +46,11 @@ data "stacklet_binding" "by_name" {
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
 - `system` (Boolean) Whether this is a system binding.
 
-<a id="nestedatt--execution_config"></a>
-### Nested Schema for `execution_config`
+<a id="nestedatt--default_resource_limits"></a>
+### Nested Schema for `default_resource_limits`
 
 Optional:
 
-- `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
-- `security_context` (String) The binding execution security context.
-- `variables` (String) JSON-encoded dictionary of values used for policy templating.
+- `max_count` (Number) Max count of affected resources.
+- `max_percentage` (Number) Max percentage of affected resources.
+- `requires_both` (Boolean) If set, only applies limits when both thresholds are exceeded.

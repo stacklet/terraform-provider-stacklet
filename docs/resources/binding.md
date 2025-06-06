@@ -31,13 +31,16 @@ resource "stacklet_binding" "example" {
   auto_deploy = true
   schedule    = "rate(12 hours)"
 
-  execution_config = {
-    dry_run = true
-    variables = jsonencode({
-      environment = "development"
-      severity    = "medium"
-    })
+  dry_run = true
+  default_resource_limits = {
+    max_count      = 200
+    max_percentage = 20.0
+    requires_both  = true
   }
+  variables = jsonencode({
+    environment = "development"
+    severity    = "medium"
+  })
 }
 ```
 
@@ -52,10 +55,17 @@ resource "stacklet_binding" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `auto_deploy` (Boolean) Whether the binding should automatically deploy when the policy collection changes.
+- `default_resource_limits` (Attributes) Default limits for binding execution. (see [below for nested schema](#nestedatt--default_resource_limits))
 - `description` (String) A description of the binding.
-- `execution_config` (Attributes) Binding execution configuration. (see [below for nested schema](#nestedatt--execution_config))
+- `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
+- `security_context` (String) The binding execution security context.
+- `security_context_wo` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The input value for the security context for the execution configuration.
+- `security_context_wo_version` (String) The version for the security context. Must be changed to update security_context_wo.
+- `variables` (String) JSON-encoded dictionary of values used for policy templating.
 
 ### Read-Only
 
@@ -63,16 +73,14 @@ resource "stacklet_binding" "example" {
 - `system` (Boolean) Whether the binding is a system one. Always false for resources.
 - `uuid` (String) The UUID of the binding.
 
-<a id="nestedatt--execution_config"></a>
-### Nested Schema for `execution_config`
+<a id="nestedatt--default_resource_limits"></a>
+### Nested Schema for `default_resource_limits`
 
 Optional:
 
-- `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
-- `security_context` (String) The binding execution security context.
-- `security_context_wo` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The input value for the security context for the execution configuration.
-- `security_context_wo_version` (String) The version for the security context. Must be changed to update security_context_wo.
-- `variables` (String) JSON-encoded dictionary of values used for policy templating.
+- `max_count` (Number) Max count of affected resources.
+- `max_percentage` (Number) Max percentage of affected resources.
+- `requires_both` (Boolean) If set, only applies limits when both thresholds are exceeded.
 
 ## Import
 

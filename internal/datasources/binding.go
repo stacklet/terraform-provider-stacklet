@@ -73,27 +73,42 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Description: "Whether this is a system binding.",
 				Computed:    true,
 			},
-			"execution_config": schema.SingleNestedAttribute{
-				Description: "Binding execution configuration.",
+			"dry_run": schema.BoolAttribute{
+				Description: "Whether the binding is run in with action disabled (in information mode).",
+				Optional:    true,
+				Computed:    true,
+			},
+			"default_resource_limits": schema.SingleNestedAttribute{
+				Description: "Default limits for binding execution.",
 				Optional:    true,
 				Computed:    true,
 				Attributes: map[string]schema.Attribute{
-					"dry_run": schema.BoolAttribute{
-						Description: "Whether the binding is run in with action disabled (in information mode).",
+					"max_count": schema.Int32Attribute{
+						Description: "Max count of affected resources.",
 						Optional:    true,
 						Computed:    true,
 					},
-					"security_context": schema.StringAttribute{
-						Description: "The binding execution security context.",
+					"max_percentage": schema.Float32Attribute{
+						Description: "Max percentage of affected resources.",
 						Optional:    true,
 						Computed:    true,
 					},
-					"variables": schema.StringAttribute{
-						Description: "JSON-encoded dictionary of values used for policy templating.",
+					"requires_both": schema.BoolAttribute{
+						Description: "If set, only applies limits when both thresholds are exceeded.",
 						Optional:    true,
 						Computed:    true,
 					},
 				},
+			},
+			"security_context": schema.StringAttribute{
+				Description: "The binding execution security context.",
+				Optional:    true,
+				Computed:    true,
+			},
+			"variables": schema.StringAttribute{
+				Description: "JSON-encoded dictionary of values used for policy templating.",
+				Optional:    true,
+				Computed:    true,
 			},
 		},
 	}
@@ -129,27 +144,32 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.AccountGroupUUID = types.StringValue(binding.AccountGroup.UUID)
 	data.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
 	data.System = types.BoolValue(binding.System)
+	data.DryRun = tftypes.NullableBool(binding.DryRun())
+	data.SecurityContext = tftypes.NullableString(binding.SecurityContext())
 
-	executionConfig, diags := tftypes.ObjectValue(
+	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid content for variables", err.Error())
+		return
+	}
+	data.Variables = variablesString
+
+	defLimit := binding.DefaultResourceLimits()
+	defaultLimits, diags := tftypes.ObjectValue(
 		ctx,
-		&binding.ExecutionConfig,
-		func() (*models.BindingDataSourceExecutionConfig, diag.Diagnostics) {
-			var diags diag.Diagnostics
-			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
-			if err != nil {
-				errors.AddDiagError(&diags, err)
-				return nil, diags
-			}
-
-			return &models.BindingDataSourceExecutionConfig{
-				DryRun:          types.BoolValue(binding.ExecutionConfig.DryRunDefault()),
-				SecurityContext: tftypes.NullableString(binding.ExecutionConfig.SecurityContextDefault()),
-				Variables:       variablesString,
-			}, diags
+		defLimit,
+		func() (*models.BindingExecutionConfigResourceLimit, diag.Diagnostics) {
+			return &models.BindingExecutionConfigResourceLimit{
+				MaxCount:      tftypes.NullableInt(defLimit.MaxCount),
+				MaxPercentage: tftypes.NullableFloat(defLimit.MaxPercentage),
+				RequiresBoth:  types.BoolValue(defLimit.RequiresBoth),
+			}, nil
 		},
 	)
-	data.ExecutionConfig = executionConfig
-
 	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	data.DefaultResourceLimits = defaultLimits
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

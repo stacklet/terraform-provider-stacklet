@@ -26,27 +26,39 @@ type Binding struct {
 	System          bool
 }
 
+// DryRun returns the dryRun value for a binding execution config.
+func (b Binding) DryRun() *bool {
+	if b.ExecutionConfig.DryRun == nil {
+		return nil
+	}
+	return &b.ExecutionConfig.DryRun.Default
+}
+
+// SecurityContext returns the securityContext value for a binding execution config.
+func (b Binding) SecurityContext() *string {
+	if b.ExecutionConfig.SecurityContext == nil {
+		return nil
+	}
+	return &b.ExecutionConfig.SecurityContext.Default
+}
+
+// DefaultResourceLimitss returns the default resource limits value for a binding execution config.
+func (b Binding) DefaultResourceLimits() *BindingExecutionConfigResourceLimit {
+	if b.ExecutionConfig.ResourceLimits == nil {
+		return nil
+	}
+	if b.ExecutionConfig.ResourceLimits.Default == nil {
+		return nil
+	}
+	return b.ExecutionConfig.ResourceLimits.Default
+}
+
 // ExecutionConfig holds the execution configuration for a binding.
 type BindingExecutionConfig struct {
 	DryRun          *BindingExecutionConfigDryRun          `json:"dryRun"`
+	ResourceLimits  *BindingExecutionConfigResourceLimits  `json:"resourceLimits"`
 	SecurityContext *BindingExecutionConfigSecurityContext `json:"securityContext"`
 	Variables       *string                                `json:"variables"`
-}
-
-// DryRunDefault returns the dry run default value.
-func (c BindingExecutionConfig) DryRunDefault() bool {
-	if c.DryRun == nil {
-		return false
-	}
-	return c.DryRun.Default
-}
-
-// SecurityContextDefault returns the security context default, or nil if not set.
-func (c BindingExecutionConfig) SecurityContextDefault() *string {
-	if c.SecurityContext == nil {
-		return nil
-	}
-	return &c.SecurityContext.Default
 }
 
 // BindingExecutionConfigDryRun holds the dry run confiuration for a binding execution config.
@@ -57,6 +69,18 @@ type BindingExecutionConfigDryRun struct {
 // BindingExecutionConfigSecurityCotnext holds the security context configuration for a binding execution config.
 type BindingExecutionConfigSecurityContext struct {
 	Default string `json:"default"`
+}
+
+// BindingExecutionConfigResourceLimits holds the resource limits configuration for a binding execution config.
+type BindingExecutionConfigResourceLimits struct {
+	Default *BindingExecutionConfigResourceLimit `json:"default"`
+}
+
+// BindingExecutionConfigResourceLimit holds resource limits for a binding execution config.
+type BindingExecutionConfigResourceLimit struct {
+	MaxCount      *int     `json:"maxCount,omitempty"`
+	MaxPercentage *float32 `json:"maxPercentage,omitempty"`
+	RequiresBoth  bool     `json:"requiresBoth"`
 }
 
 // BindingCreateInput is the input for creating a binding.
