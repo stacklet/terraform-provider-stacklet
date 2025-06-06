@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -83,6 +84,35 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 						Optional:    true,
 						Computed:    true,
 					},
+					"resource_limits": schema.SingleNestedAttribute{
+						Description: "Resource limits to apply for binding execution.",
+						Optional:    true,
+						Computed:    true,
+						Attributes: map[string]schema.Attribute{
+							"default": schema.SingleNestedAttribute{
+								Description: "Default limits for binding execution.",
+								Optional:    true,
+								Computed:    true,
+								Attributes: map[string]schema.Attribute{
+									"max_count": schema.Int32Attribute{
+										Description: "Max count of affected resources.",
+										Optional:    true,
+										Computed:    true,
+									},
+									"max_percentage": schema.Float32Attribute{
+										Description: "Max percentage of affected resources.",
+										Optional:    true,
+										Computed:    true,
+									},
+									"requires_both": schema.BoolAttribute{
+										Description: "If set, only applies limits when both thresholds are exceeded.",
+										Optional:    true,
+										Computed:    true,
+									},
+								},
+							},
+						},
+					},
 					"security_context": schema.StringAttribute{
 						Description: "The binding execution security context.",
 						Optional:    true,
@@ -141,8 +171,15 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 				return nil, diags
 			}
 
+			resourceLimits, dd := d.getExecutionConfigResourceLimits(ctx, binding.ExecutionConfig.ResourceLimits)
+			diags.Append(dd...)
+			if diags.HasError() {
+				return nil, diags
+			}
+
 			return &models.BindingDataSourceExecutionConfig{
 				DryRun:          types.BoolValue(binding.ExecutionConfig.DryRunDefault()),
+				ResourceLimits:  resourceLimits,
 				SecurityContext: tftypes.NullableString(binding.ExecutionConfig.SecurityContextDefault()),
 				Variables:       variablesString,
 			}, diags
@@ -152,4 +189,34 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	resp.Diagnostics.Append(diags...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (d bindingDataSource) getExecutionConfigResourceLimits(ctx context.Context, c *api.BindingExecutionConfigResourceLimits) (basetypes.ObjectValue, diag.Diagnostics) {
+	return tftypes.ObjectValue(
+		ctx,
+		c,
+		func() (*models.BindingExecutionConfigResourceLimits, diag.Diagnostics) {
+			var diags diag.Diagnostics
+
+			defaultLimit, dd := tftypes.ObjectValue(
+				ctx,
+				c.Default,
+				func() (*models.BindingExecutionConfigResourceLimit, diag.Diagnostics) {
+					return &models.BindingExecutionConfigResourceLimit{
+						MaxCount:      tftypes.NullableInt(c.Default.MaxCount),
+						MaxPercentage: tftypes.NullableFloat(c.Default.MaxPercentage),
+						RequiresBoth:  types.BoolValue(c.Default.RequiresBoth),
+					}, nil
+				},
+			)
+			diags.Append(dd...)
+			if diags.HasError() {
+				return nil, diags
+			}
+
+			return &models.BindingExecutionConfigResourceLimits{
+				Default: defaultLimit,
+			}, diags
+		},
+	)
 }

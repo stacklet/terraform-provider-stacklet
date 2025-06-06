@@ -248,3 +248,75 @@ func TestAccBindingResourceExecutionConfigSecurityContext(t *testing.T) {
 	}
 	runRecordedAccTest(t, "TestAccBindingResourceExecutionConfigSecurityContext", steps)
 }
+
+func TestAccBindingResourceExecutionConfigResourceLimitsDefault(t *testing.T) {
+	steps := []resource.TestStep{
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-binding-group"
+						description = "Test account group for binding"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+
+					resource "stacklet_policy_collection" "test" {
+						name = "{{.Prefix}}-binding-collection"
+						description = "Test policy collection for binding"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "test" {
+						name = "{{.Prefix}}-binding"
+						description = "Test binding"
+						account_group_uuid = stacklet_account_group.test.uuid
+						policy_collection_uuid = stacklet_policy_collection.test.uuid
+						execution_config = {
+							resource_limits = {}
+						}
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckNoResourceAttr("stacklet_binding.test", "execution_config.resource_limits.default"),
+			),
+		},
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-binding-group"
+						description = "Test account group for binding"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+
+					resource "stacklet_policy_collection" "test" {
+						name = "{{.Prefix}}-binding-collection"
+						description = "Test policy collection for binding"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "test" {
+						name = "{{.Prefix}}-binding"
+						description = "Test binding"
+						account_group_uuid = stacklet_account_group.test.uuid
+						policy_collection_uuid = stacklet_policy_collection.test.uuid
+						execution_config = {
+							resource_limits = {
+								default = {
+									max_count = 100
+									max_percentage = 20.1
+									requires_both = true
+								}
+							}
+						}
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.resource_limits.default.max_count", "100"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.resource_limits.default.max_percentage", "20.1"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.resource_limits.default.requires_both", "true"),
+			),
+		},
+	}
+	runRecordedAccTest(t, "TestAccBindingResourceExecutionConfigResourceLimitsDefault", steps)
+}

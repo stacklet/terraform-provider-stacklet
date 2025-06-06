@@ -105,6 +105,32 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 						Computed:    true,
 						Default:     booldefault.StaticBool(false),
 					},
+					"resource_limits": schema.SingleNestedAttribute{
+						Description: "Resource limits to apply for binding execution.",
+						Optional:    true,
+						Attributes: map[string]schema.Attribute{
+							"default": schema.SingleNestedAttribute{
+								Description: "Default limits for binding execution.",
+								Optional:    true,
+								Attributes: map[string]schema.Attribute{
+									"max_count": schema.Int32Attribute{
+										Description: "Max count of affected resources.",
+										Optional:    true,
+									},
+									"max_percentage": schema.Float32Attribute{
+										Description: "Max percentage of affected resources.",
+										Optional:    true,
+									},
+									"requires_both": schema.BoolAttribute{
+										Description: "If set, only applies limits when both thresholds are exceeded.",
+										Optional:    true,
+										Computed:    true,
+										Default:     booldefault.StaticBool(false),
+									},
+								},
+							},
+						},
+					},
 					"security_context": schema.StringAttribute{
 						Description: "The binding execution security context.",
 						Optional:    true,
@@ -268,8 +294,35 @@ func (r bindingResource) getCreateExecutionConfig(ctx context.Context, plan, con
 	if !planObj.DryRun.IsNull() {
 		dryRun = &api.BindingExecutionConfigDryRun{Default: planObj.DryRun.ValueBool()}
 	}
+
+	var resourceLimits *api.BindingExecutionConfigResourceLimits
+	if !planObj.ResourceLimits.IsNull() {
+		resourceLimits = &api.BindingExecutionConfigResourceLimits{}
+
+		var limitsObj models.BindingExecutionConfigResourceLimits
+		diags.Append(planObj.ResourceLimits.As(ctx, &limitsObj, basetypes.ObjectAsOptions{})...)
+		if diags.HasError() {
+			return executionConfig, diags
+		}
+
+		if !limitsObj.Default.IsNull() {
+			var defaultObj models.BindingExecutionConfigResourceLimit
+			diags.Append(limitsObj.Default.As(ctx, &defaultObj, basetypes.ObjectAsOptions{})...)
+			if diags.HasError() {
+				return executionConfig, diags
+			}
+
+			resourceLimits.Default = &api.BindingExecutionConfigResourceLimit{
+				MaxCount:      api.NullableInt(defaultObj.MaxCount),
+				MaxPercentage: defaultObj.MaxPercentage.ValueFloat32Pointer(),
+				RequiresBoth:  defaultObj.RequiresBoth.ValueBool(),
+			}
+		}
+	}
+
 	return api.BindingExecutionConfig{
 		DryRun:          dryRun,
+		ResourceLimits:  resourceLimits,
 		SecurityContext: &api.BindingExecutionConfigSecurityContext{Default: configObj.SecurityContextWO.ValueString()},
 		Variables:       planObj.Variables.ValueStringPointer(),
 	}, diags
@@ -293,6 +346,32 @@ func (r bindingResource) getUpdateExecutionConfig(ctx context.Context, plan, sta
 	if !m.Plan.DryRun.IsNull() {
 		dryRun = &api.BindingExecutionConfigDryRun{Default: m.Plan.DryRun.ValueBool()}
 	}
+
+	var resourceLimits *api.BindingExecutionConfigResourceLimits
+	if !m.Plan.ResourceLimits.IsNull() {
+		resourceLimits = &api.BindingExecutionConfigResourceLimits{}
+
+		var limitsObj models.BindingExecutionConfigResourceLimits
+		diags.Append(m.Plan.ResourceLimits.As(ctx, &limitsObj, basetypes.ObjectAsOptions{})...)
+		if diags.HasError() {
+			return executionConfig, diags
+		}
+
+		if !limitsObj.Default.IsNull() {
+			var defaultObj models.BindingExecutionConfigResourceLimit
+			diags.Append(limitsObj.Default.As(ctx, &defaultObj, basetypes.ObjectAsOptions{})...)
+			if diags.HasError() {
+				return executionConfig, diags
+			}
+
+			resourceLimits.Default = &api.BindingExecutionConfigResourceLimit{
+				MaxCount:      api.NullableInt(defaultObj.MaxCount),
+				MaxPercentage: defaultObj.MaxPercentage.ValueFloat32Pointer(),
+				RequiresBoth:  defaultObj.RequiresBoth.ValueBool(),
+			}
+		}
+	}
+
 	var securityContext string
 	if m.State.SecurityContextWOVersion == m.Plan.SecurityContextWOVersion {
 		// if no change happened, send the value we got from the API as a
@@ -305,6 +384,7 @@ func (r bindingResource) getUpdateExecutionConfig(ctx context.Context, plan, sta
 
 	return api.BindingExecutionConfig{
 		DryRun:          dryRun,
+		ResourceLimits:  resourceLimits,
 		SecurityContext: &api.BindingExecutionConfigSecurityContext{Default: securityContext},
 		Variables:       m.Plan.Variables.ValueStringPointer(),
 	}, diags
@@ -331,6 +411,35 @@ func (r bindingResource) getExecutionConfigModels(ctx context.Context, plan, sta
 	return models, diags
 }
 
+func (r bindingResource) getExecutionConfigResourceLimits(ctx context.Context, c *api.BindingExecutionConfigResourceLimits) (basetypes.ObjectValue, diag.Diagnostics) {
+	return tftypes.ObjectValue(
+		ctx,
+		c,
+		func() (*models.BindingExecutionConfigResourceLimits, diag.Diagnostics) {
+			var diags diag.Diagnostics
+			defaultLimit, d := tftypes.ObjectValue(
+				ctx,
+				c.Default,
+				func() (*models.BindingExecutionConfigResourceLimit, diag.Diagnostics) {
+					return &models.BindingExecutionConfigResourceLimit{
+						MaxCount:      tftypes.NullableInt(c.Default.MaxCount),
+						MaxPercentage: tftypes.NullableFloat(c.Default.MaxPercentage),
+						RequiresBoth:  types.BoolValue(c.Default.RequiresBoth),
+					}, nil
+				},
+			)
+			diags.Append(d...)
+			if diags.HasError() {
+				return nil, diags
+			}
+
+			return &models.BindingExecutionConfigResourceLimits{
+				Default: defaultLimit,
+			}, diags
+		},
+	)
+}
+
 func (r bindingResource) updateBindingModel(ctx context.Context, m, config *models.BindingResource, binding *api.Binding) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -349,29 +458,73 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m, config *mode
 		&(binding.ExecutionConfig),
 		func() (*models.BindingResourceExecutionConfig, diag.Diagnostics) {
 			var diags diag.Diagnostics
-			empty := api.BindingExecutionConfig{}
-			if binding.ExecutionConfig == empty {
-				// requested config was null
-				if config == nil || config.ExecutionConfig.IsNull() {
-					return nil, diags
-				}
-				// requested config was empty
-				return &models.BindingResourceExecutionConfig{
-					DryRun:          types.BoolValue(false),
-					SecurityContext: types.StringNull(),
-					Variables:       types.StringNull(),
-				}, diags
+			rl, d := basetypes.NewObjectValueFrom(
+				ctx,
+				models.BindingExecutionConfigResourceLimits{}.AttributeTypes(),
+				models.BindingExecutionConfigResourceLimits{
+					Default: tftypes.NullObject(models.BindingExecutionConfigResourceLimit{}),
+				},
+			)
+			diags.Append(d...)
+			if diags.HasError() {
+				return nil, diags
+			}
+			executionConfig := models.BindingResourceExecutionConfig{
+				DryRun:                   types.BoolValue(false),
+				ResourceLimits:           rl,
+				SecurityContext:          types.StringNull(),
+				SecurityContextWO:        types.StringNull(),
+				SecurityContextWOVersion: types.StringNull(),
+				Variables:                types.StringNull(),
+			}
+			if m.ExecutionConfig.IsNull() {
+				return &executionConfig, diags
 			}
 
 			var curModel models.BindingResourceExecutionConfig
-			if !m.ExecutionConfig.IsNull() {
-				diags.Append(m.ExecutionConfig.As(ctx, &curModel, basetypes.ObjectAsOptions{})...)
+			diags.Append(m.ExecutionConfig.As(ctx, &curModel, basetypes.ObjectAsOptions{})...)
+			if diags.HasError() {
+				return &executionConfig, diags
+			}
+			var curConfig models.BindingResourceExecutionConfig
+			if config != nil && !config.ExecutionConfig.IsNull() {
+				diags.Append(config.ExecutionConfig.As(ctx, &curConfig, basetypes.ObjectAsOptions{})...)
+				if diags.HasError() {
+					return &executionConfig, diags
+				}
+			}
+
+			if (binding.ExecutionConfig == api.BindingExecutionConfig{}) {
+				// requested config was null
+				if config == nil || config.ExecutionConfig.IsNull() {
+					return &executionConfig, diags
+				}
+
+				// requested config was empty
+				var emptyLimits *api.BindingExecutionConfigResourceLimits
+				if !curConfig.ResourceLimits.IsNull() {
+					var curLimits models.BindingExecutionConfigResourceLimits
+					diags.Append(curConfig.ResourceLimits.As(ctx, &curLimits, basetypes.ObjectAsOptions{})...)
+					if diags.HasError() {
+						return &executionConfig, diags
+					}
+					var emptyDefault *api.BindingExecutionConfigResourceLimit
+					if !curLimits.Default.IsNull() {
+						emptyDefault = &api.BindingExecutionConfigResourceLimit{}
+					}
+					emptyLimits = &api.BindingExecutionConfigResourceLimits{Default: emptyDefault}
+				}
+				emptyResourceLimits, d := r.getExecutionConfigResourceLimits(ctx, emptyLimits)
+				diags.Append(d...)
+				executionConfig.ResourceLimits = emptyResourceLimits
+
+				return &executionConfig, diags
 			}
 
 			variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 			if err != nil {
 				errors.AddDiagError(&diags, err)
-				return nil, diags
+				return &executionConfig, diags
 			}
 			// the API returns an empty dict for null or empty string, don't
 			// modify the expected value in that case
@@ -379,8 +532,15 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m, config *mode
 				variablesString = curModel.Variables
 			}
 
+			resourceLimits, d := r.getExecutionConfigResourceLimits(ctx, binding.ExecutionConfig.ResourceLimits)
+			diags.Append(d...)
+			if diags.HasError() {
+				return nil, diags
+			}
+
 			return &models.BindingResourceExecutionConfig{
 				DryRun:                   types.BoolValue(binding.ExecutionConfig.DryRunDefault()),
+				ResourceLimits:           resourceLimits,
 				SecurityContext:          tftypes.NullableString(binding.ExecutionConfig.SecurityContextDefault()),
 				SecurityContextWOVersion: curModel.SecurityContextWOVersion,
 				Variables:                variablesString,

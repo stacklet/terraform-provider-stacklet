@@ -29,6 +29,7 @@ type Binding struct {
 // ExecutionConfig holds the execution configuration for a binding.
 type BindingExecutionConfig struct {
 	DryRun          *BindingExecutionConfigDryRun          `json:"dryRun"`
+	ResourceLimits  *BindingExecutionConfigResourceLimits  `json:"resourceLimits"`
 	SecurityContext *BindingExecutionConfigSecurityContext `json:"securityContext"`
 	Variables       *string                                `json:"variables"`
 }
@@ -57,6 +58,18 @@ type BindingExecutionConfigDryRun struct {
 // BindingExecutionConfigSecurityCotnext holds the security context configuration for a binding execution config.
 type BindingExecutionConfigSecurityContext struct {
 	Default string `json:"default"`
+}
+
+// BindingExecutionConfigResourceLimits holds the resource limits configuration for a binding execution config.
+type BindingExecutionConfigResourceLimits struct {
+	Default *BindingExecutionConfigResourceLimit `json:"default"`
+}
+
+// BindingExecutionConfigResourceLimit holds resource limits for a binding execution config.
+type BindingExecutionConfigResourceLimit struct {
+	MaxCount      *int     `json:"maxCount,omitempty"`
+	MaxPercentage *float32 `json:"maxPercentage,omitempty"`
+	RequiresBoth  bool     `json:"requiresBoth"`
 }
 
 // BindingCreateInput is the input for creating a binding.

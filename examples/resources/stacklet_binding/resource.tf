@@ -18,6 +18,13 @@ resource "stacklet_binding" "example" {
 
   execution_config = {
     dry_run = true
+    resource_limits = {
+      default = {
+        max_count      = 200
+        max_percentage = 20.0
+        requires_both  = true
+      }
+    }
     variables = jsonencode({
       environment = "development"
       severity    = "medium"

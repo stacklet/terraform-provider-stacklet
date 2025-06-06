@@ -49,5 +49,22 @@ data "stacklet_binding" "by_name" {
 Optional:
 
 - `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
+- `resource_limits` (Attributes) Resource limits to apply for binding execution. (see [below for nested schema](#nestedatt--execution_config--resource_limits))
 - `security_context` (String) The binding execution security context.
 - `variables` (String) JSON-encoded dictionary of values used for policy templating.
+
+<a id="nestedatt--execution_config--resource_limits"></a>
+### Nested Schema for `execution_config.resource_limits`
+
+Optional:
+
+- `default` (Attributes) Default limits for binding execution. (see [below for nested schema](#nestedatt--execution_config--resource_limits--default))
+
+<a id="nestedatt--execution_config--resource_limits--default"></a>
+### Nested Schema for `execution_config.resource_limits.default`
+
+Optional:
+
+- `max_count` (Number) Max count of affected resources.
+- `max_percentage` (Number) Max percentage of affected resources.
+- `requires_both` (Boolean) If set, only applies limits when both thresholds are exceeded.

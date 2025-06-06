@@ -20,6 +20,22 @@ func NullableString(s *string) types.String {
 	return types.StringValue(*s)
 }
 
+// NullableInt returns the proper type for a nullable integer.
+func NullableInt(i *int) types.Int32 {
+	if i == nil {
+		return types.Int32Null()
+	}
+	return types.Int32Value(int32(*i))
+}
+
+// NullableFloat returns the proper type for a nullable float.
+func NullableFloat(f *float32) types.Float32 {
+	if f == nil {
+		return types.Float32Null()
+	}
+	return types.Float32Value(*f)
+}
+
 // StringsList returns a list of values of string type.
 func StringsList(l []string) basetypes.ListValue {
 	sl := make([]attr.Value, len(l))
@@ -60,10 +76,7 @@ func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, 
 	}
 	objPtr, d := construct()
 	diags.Append(d...)
-	if diags.HasError() {
-		return NullObject(empty), diags
-	}
-	if objPtr == nil {
+	if diags.HasError() || objPtr == nil {
 		return NullObject(empty), diags
 	}
 	return basetypes.NewObjectValueFrom(ctx, empty.AttributeTypes(), *objPtr)
