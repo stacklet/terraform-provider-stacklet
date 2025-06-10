@@ -54,6 +54,23 @@ func TestAccAccountGroupResource(t *testing.T) {
 				resource.TestCheckResourceAttrSet("stacklet_account_group.test", "uuid"),
 			),
 		},
+		//
+		{
+			Config: `
+					resource "stacklet_account_group" "different" {
+						name = "{{.Prefix}}-another"
+						description = "Different account group"
+						cloud_provider = "Azure"
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_account_group.different", "name", prefixName("another")),
+				resource.TestCheckResourceAttr("stacklet_account_group.different", "description", "Different account group"),
+				resource.TestCheckResourceAttr("stacklet_account_group.different", "cloud_provider", "Azure"),
+				resource.TestCheckResourceAttr("stacklet_account_group.different", "regions.#", "0"),
+				resource.TestCheckResourceAttrSet("stacklet_account_group.different", "uuid"),
+			),
+		},
 	}
 	runRecordedAccTest(t, "TestAccAccountGroupResource", steps)
 }
