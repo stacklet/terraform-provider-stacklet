@@ -106,18 +106,22 @@ func (rt *recordedTransport) saveRecording() error {
 }
 
 func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	// on errors, return an empty response, as returning nil causes
+	// http.Client.Do to traceback.
+	emptyResp := &http.Response{}
+
 	// Read the request body
 	var gqlReq graphqlRequest
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		req.Body.Close()
-		return nil, fmt.Errorf("failed to read request body: %v", err)
+		return emptyResp, fmt.Errorf("failed to read request body: %v", err)
 	}
 	req.Body = io.NopCloser(bytes.NewReader(body)) // Reset the body for future reads
 
 	if err := json.Unmarshal(body, &gqlReq); err != nil {
 		req.Body.Close()
-		return nil, fmt.Errorf("failed to decode request body: %v", err)
+		return emptyResp, fmt.Errorf("failed to decode request body: %v", err)
 	}
 
 	// Create a key that includes both the query and variables
@@ -134,22 +138,22 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 		req.Body = io.NopCloser(bytes.NewReader(body))
 		resp, err := rt.wrapped.RoundTrip(req)
 		if err != nil {
-			return nil, err
+			return emptyResp, err
 		}
 
 		// Read and store the response body
 		respBody, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return nil, fmt.Errorf("failed to read response body: %v", err)
+			return emptyResp, fmt.Errorf("failed to read response body: %v", err)
 		}
 		if err := resp.Body.Close(); err != nil {
-			return nil, err
+			return emptyResp, err
 		}
 
 		// Parse the response
 		var gqlResp graphqlResponse
 		if err := json.Unmarshal(respBody, &gqlResp); err != nil {
-			return nil, fmt.Errorf("failed to decode response body: %v", err)
+			return emptyResp, fmt.Errorf("failed to decode response body: %v", err)
 		}
 
 		// Record the interaction
@@ -170,7 +174,7 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 	rt.recordingsLock.Lock()
 	recs, ok := rt.recordings[key]
 	if !ok || len(recs) == 0 {
-		return nil, fmt.Errorf("no recording found for query: %s", key)
+		return emptyResp, fmt.Errorf("no recording found for query: %s", key)
 	}
 	rt.t.Logf("Recording found with key: %s", key)
 
@@ -181,7 +185,7 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 
 	// Check that the recording matches
 	if gqlReq.Query != rec.Request.Query || !reflect.DeepEqual(gqlReq.Variables, rec.Request.Variables) {
-		return nil, fmt.Errorf(`
+		return emptyResp, fmt.Errorf(`
 Request doesn't match expected one:
 -- query
 got     : %s
@@ -195,7 +199,7 @@ expected: %v`,
 	// Create response
 	respBody, err := json.Marshal(rec.Response)
 	if err != nil {
-		return nil, fmt.Errorf("failed to marshal recorded response: %v", err)
+		return emptyResp, fmt.Errorf("failed to marshal recorded response: %v", err)
 	}
 
 	return &http.Response{
