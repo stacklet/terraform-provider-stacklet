@@ -78,7 +78,7 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Optional:    true,
 				Computed:    true,
 			},
-			"default_resource_limits": schema.SingleNestedAttribute{
+			"resource_limits": schema.SingleNestedAttribute{
 				Description: "Default limits for binding execution.",
 				Optional:    true,
 				Computed:    true,
@@ -170,6 +170,6 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	data.DefaultResourceLimits = defaultLimits
+	data.ResourceLimits = defaultLimits
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

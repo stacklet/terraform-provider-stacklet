@@ -32,7 +32,7 @@ resource "stacklet_binding" "example" {
   schedule    = "rate(12 hours)"
 
   dry_run = true
-  default_resource_limits = {
+  resource_limits = {
     max_count      = 200
     max_percentage = 20.0
     requires_both  = true
@@ -58,9 +58,9 @@ resource "stacklet_binding" "example" {
 > **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
 
 - `auto_deploy` (Boolean) Whether the binding should automatically deploy when the policy collection changes.
-- `default_resource_limits` (Attributes) Default limits for binding execution. (see [below for nested schema](#nestedatt--default_resource_limits))
 - `description` (String) A description of the binding.
 - `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
+- `resource_limits` (Attributes) Default limits for binding execution. (see [below for nested schema](#nestedatt--resource_limits))
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
 - `security_context` (String) The binding execution security context.
 - `security_context_wo` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The input value for the security context for the execution configuration.
@@ -73,8 +73,8 @@ resource "stacklet_binding" "example" {
 - `system` (Boolean) Whether the binding is a system one. Always false for resources.
 - `uuid` (String) The UUID of the binding.
 
-<a id="nestedatt--default_resource_limits"></a>
-### Nested Schema for `default_resource_limits`
+<a id="nestedatt--resource_limits"></a>
+### Nested Schema for `resource_limits`
 
 Optional:
 

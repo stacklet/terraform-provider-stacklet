@@ -17,7 +17,7 @@ resource "stacklet_binding" "example" {
   schedule    = "rate(12 hours)"
 
   dry_run = true
-  default_resource_limits = {
+  resource_limits = {
     max_count      = 200
     max_percentage = 20.0
     requires_both  = true

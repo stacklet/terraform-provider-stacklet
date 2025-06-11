@@ -207,7 +207,7 @@ func TestAccBindingResourceSecurityContext(t *testing.T) {
 	runRecordedAccTest(t, "TestAccBindingResourceSecurityContext", steps)
 }
 
-func TestAccBindingResourceDefaultResourceLimits(t *testing.T) {
+func TestAccBindingResourceResourceLimits(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
@@ -232,7 +232,7 @@ func TestAccBindingResourceDefaultResourceLimits(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckNoResourceAttr("stacklet_binding.test", "default_resource_limits"),
+				resource.TestCheckNoResourceAttr("stacklet_binding.test", "resource_limits"),
 			),
 		},
 		// Attribute is set, but empty
@@ -256,13 +256,13 @@ func TestAccBindingResourceDefaultResourceLimits(t *testing.T) {
 						description = "Test binding"
 						account_group_uuid = stacklet_account_group.test.uuid
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
-						default_resource_limits = {}
+						resource_limits = {}
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckNoResourceAttr("stacklet_binding.test", "default_resource_limits.max_count"),
-				resource.TestCheckNoResourceAttr("stacklet_binding.test", "default_resource_limits.max_percentage"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "default_resource_limits.requires_both", "false"),
+				resource.TestCheckNoResourceAttr("stacklet_binding.test", "resource_limits.max_count"),
+				resource.TestCheckNoResourceAttr("stacklet_binding.test", "resource_limits.max_percentage"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "resource_limits.requires_both", "false"),
 			),
 		},
 		{
@@ -285,7 +285,7 @@ func TestAccBindingResourceDefaultResourceLimits(t *testing.T) {
 						description = "Test binding"
 						account_group_uuid = stacklet_account_group.test.uuid
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
-						default_resource_limits = {
+						resource_limits = {
 							max_count = 100
 							max_percentage = 20.1
 							requires_both = true
@@ -293,11 +293,11 @@ func TestAccBindingResourceDefaultResourceLimits(t *testing.T) {
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_binding.test", "default_resource_limits.max_count", "100"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "default_resource_limits.max_percentage", "20.1"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "default_resource_limits.requires_both", "true"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "resource_limits.max_count", "100"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "resource_limits.max_percentage", "20.1"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "resource_limits.requires_both", "true"),
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccBindingResourceDefaultResourceLimits", steps)
+	runRecordedAccTest(t, "TestAccBindingResourceResourceLimits", steps)
 }

@@ -100,7 +100,7 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "Whether the binding is run in with action disabled (in information mode).",
 				Optional:    true,
 			},
-			"default_resource_limits": schema.SingleNestedAttribute{
+			"resource_limits": schema.SingleNestedAttribute{
 				Description: "Default limits for binding execution.",
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
@@ -293,7 +293,7 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 	m.Variables = variablesString
 
 	var defaultLimits types.Object
-	if binding.DefaultResourceLimits() == nil && !m.DefaultResourceLimits.IsNull() {
+	if binding.DefaultResourceLimits() == nil && !m.ResourceLimits.IsNull() {
 		var d diag.Diagnostics
 		// if default resource limits are set in the config but empty, apply default
 		def := models.BindingExecutionConfigResourceLimit{RequiresBoth: types.BoolValue(false)}
@@ -315,7 +315,7 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 		)
 		diags.Append(d...)
 	}
-	m.DefaultResourceLimits = defaultLimits
+	m.ResourceLimits = defaultLimits
 	return diags
 }
 
@@ -329,9 +329,9 @@ func (r bindingResource) getCreateExecutionConfig(ctx context.Context, plan, con
 		securityContext = &api.BindingExecutionConfigSecurityContext{Default: config.SecurityContextWO.ValueString()}
 	}
 	var defaultResourceLimits *api.BindingExecutionConfigResourceLimit
-	if !plan.DefaultResourceLimits.IsNull() {
+	if !plan.ResourceLimits.IsNull() {
 		var defLimitsObj models.BindingExecutionConfigResourceLimit
-		if diags := plan.DefaultResourceLimits.As(ctx, &defLimitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := plan.ResourceLimits.As(ctx, &defLimitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
 			return api.BindingExecutionConfig{}, diags
 		}
 		defaultResourceLimits = &api.BindingExecutionConfigResourceLimit{
@@ -371,9 +371,9 @@ func (r bindingResource) getUpdateExecutionConfig(ctx context.Context, plan, sta
 	}
 
 	var defaultResourceLimits *api.BindingExecutionConfigResourceLimit
-	if !plan.DefaultResourceLimits.IsNull() {
+	if !plan.ResourceLimits.IsNull() {
 		var defLimitsObj models.BindingExecutionConfigResourceLimit
-		if diags := plan.DefaultResourceLimits.As(ctx, &defLimitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := plan.ResourceLimits.As(ctx, &defLimitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
 			return api.BindingExecutionConfig{}, diags
 		}
 		defaultResourceLimits = &api.BindingExecutionConfigResourceLimit{
