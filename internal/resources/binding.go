@@ -4,6 +4,7 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -453,6 +454,7 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m, config *mode
 	m.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
 	m.System = types.BoolValue(binding.System)
 
+	fmt.Printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX UP %+v\n", binding)
 	executionConfig, d := tftypes.ObjectValue(
 		ctx,
 		&(binding.ExecutionConfig),
@@ -487,6 +489,7 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m, config *mode
 				return &executionConfig, diags
 			}
 			var curConfig models.BindingResourceExecutionConfig
+			fmt.Println("XXXXXXXXXXXXXXXXXXXXXXXXX CONF", config)
 			if config != nil && !config.ExecutionConfig.IsNull() {
 				diags.Append(config.ExecutionConfig.As(ctx, &curConfig, basetypes.ObjectAsOptions{})...)
 				if diags.HasError() {
@@ -547,6 +550,7 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m, config *mode
 			}, diags
 		},
 	)
+	fmt.Printf("XXXXXXXXXXXXXXXXXXXXXXXX EC %+v\n", executionConfig)
 	m.ExecutionConfig = executionConfig
 	diags.Append(d...)
 	return diags

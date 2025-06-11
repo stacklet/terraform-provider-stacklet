@@ -33,12 +33,6 @@ func TestAccBindingResource(t *testing.T) {
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
 						auto_deploy = true
 						schedule = "rate(1 hour)"
-						execution_config = {
-							variables = jsonencode({
-								environment = "test"
-								region = "us-east-1"
-							})
-						}
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -50,10 +44,6 @@ func TestAccBindingResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(1 hour)"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.dry_run", "false"),
-				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
-				resource.TestCheckNoResourceAttr("stacklet_binding.test", "execution_config.security_context_wo_version"),
-				resource.TestCheckNoResourceAttr("stacklet_binding.test", "execution_config.security_context"),
 			),
 		},
 		// ImportState testing
@@ -86,13 +76,6 @@ func TestAccBindingResource(t *testing.T) {
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
 						auto_deploy = false
 						schedule = "rate(2 hours)"
-						execution_config = {
-							dry_run = true
-							variables = jsonencode({
-								environment = "staging"
-								region = "us-west-2"
-							})
-						}
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -104,6 +87,80 @@ func TestAccBindingResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_binding.test", "schedule", "rate(2 hours)"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_binding.test", "uuid"),
+			),
+		},
+	}
+	runRecordedAccTest(t, "TestAccBindingResource", steps)
+}
+
+func TestAccBindingResourceExecutionConfig(t *testing.T) {
+	steps := []resource.TestStep{
+		// Create and Read testing
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-binding-group"
+						description = "Test account group for binding"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+
+					resource "stacklet_policy_collection" "test" {
+						name = "{{.Prefix}}-binding-collection"
+						description = "Test policy collection for binding"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "test" {
+						name = "{{.Prefix}}-binding"
+						description = "Test binding"
+						account_group_uuid = stacklet_account_group.test.uuid
+						policy_collection_uuid = stacklet_policy_collection.test.uuid
+						execution_config = {
+							variables = jsonencode({
+								environment = "test"
+								region = "us-east-1"
+							})
+						}
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.dry_run", "false"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
+				resource.TestCheckNoResourceAttr("stacklet_binding.test", "execution_config.security_context_wo_version"),
+				resource.TestCheckNoResourceAttr("stacklet_binding.test", "execution_config.security_context"),
+			),
+		},
+		// Update and Read testing
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-binding-group"
+						description = "Test account group for binding"
+						cloud_provider = "AWS"
+						regions = ["us-east-1", "us-east-2"]
+					}
+
+					resource "stacklet_policy_collection" "test" {
+						name = "{{.Prefix}}-binding-collection"
+						description = "Test policy collection for binding"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "test" {
+						name = "{{.Prefix}}-binding-updated"
+						account_group_uuid = stacklet_account_group.test.uuid
+						policy_collection_uuid = stacklet_policy_collection.test.uuid
+						execution_config = {
+							dry_run = true
+							variables = jsonencode({
+								environment = "staging"
+								region = "us-west-2"
+							})
+						}
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.dry_run", "true"),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "execution_config.variables", "{\"environment\":\"staging\",\"region\":\"us-west-2\"}"),
 				resource.TestCheckNoResourceAttr("stacklet_binding.test", "execution_config.security_context_wo_version"),
@@ -131,8 +188,6 @@ func TestAccBindingResource(t *testing.T) {
 						description = "Updated test binding"
 						account_group_uuid = stacklet_account_group.test.uuid
 						policy_collection_uuid = stacklet_policy_collection.test.uuid
-						auto_deploy = false
-						schedule = "rate(2 hours)"
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -140,7 +195,7 @@ func TestAccBindingResource(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccBindingResource", steps)
+	runRecordedAccTest(t, "TestAccBindingResourceExecutionConfig", steps)
 }
 
 func TestAccBindingResourceExecutionConfigSecurityContext(t *testing.T) {
