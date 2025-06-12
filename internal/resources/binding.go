@@ -4,7 +4,9 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -101,7 +103,7 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Optional:    true,
 			},
 			"resource_limits": schema.SingleNestedAttribute{
-				Description: "Default limits for binding execution.",
+				Description: "Default resource limits for binding execution.",
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"max_count": schema.Int32Attribute{
@@ -121,6 +123,31 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				},
 				Validators: []validator.Object{
 					bindingResourceLimitsValidator{},
+				},
+			},
+			"policy_resource_limits": schema.MapNestedAttribute{
+				Description: "Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names.",
+				Optional:    true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"max_count": schema.Int32Attribute{
+							Description: "Max count of affected resources.",
+							Optional:    true,
+						},
+						"max_percentage": schema.Float32Attribute{
+							Description: "Max percentage of affected resources.",
+							Optional:    true,
+						},
+						"requires_both": schema.BoolAttribute{
+							Description: "If set, only applies limits when both thresholds are exceeded.",
+							Optional:    true,
+							Computed:    true,
+							Default:     booldefault.StaticBool(false),
+						},
+					},
+					Validators: []validator.Object{
+						bindingResourceLimitsValidator{},
+					},
 				},
 			},
 			"security_context": schema.StringAttribute{
@@ -316,6 +343,25 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 		diags.Append(d...)
 	}
 	m.ResourceLimits = defaultLimits
+
+	pLimits := binding.PolicyResourceLimits()
+	if len(pLimits) == 0 && m.PolicyResourceLimits.IsNull() {
+		// if an empty map was requested for policy limits, set an empty map
+		pLimits = nil
+	}
+	policyLimits, d := tftypes.ObjectMapFromList[models.BindingExecutionConfigResourceLimit](
+		pLimits,
+		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (string, map[string]attr.Value, diag.Diagnostics) {
+			return entry.PolicyName, map[string]attr.Value{
+				"max_count":      tftypes.NullableInt(entry.Limit.MaxCount),
+				"max_percentage": tftypes.NullableFloat(entry.Limit.MaxPercentage),
+				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),
+			}, nil
+		},
+	)
+	diags.Append(d...)
+	m.PolicyResourceLimits = policyLimits
+
 	return diags
 }
 
@@ -324,10 +370,12 @@ func (r bindingResource) getCreateExecutionConfig(ctx context.Context, plan, con
 	if !plan.DryRun.IsNull() {
 		dryRun = &api.BindingExecutionConfigDryRun{Default: plan.DryRun.ValueBool()}
 	}
+
 	var securityContext *api.BindingExecutionConfigSecurityContext
 	if !config.SecurityContextWO.IsNull() {
 		securityContext = &api.BindingExecutionConfigSecurityContext{Default: config.SecurityContextWO.ValueString()}
 	}
+
 	var defaultResourceLimits *api.BindingExecutionConfigResourceLimit
 	if !plan.ResourceLimits.IsNull() {
 		var defLimitsObj models.BindingExecutionConfigResourceLimit
@@ -341,10 +389,43 @@ func (r bindingResource) getCreateExecutionConfig(ctx context.Context, plan, con
 		}
 	}
 
+	policyResourceLimits := []api.BindingExecutionConfigResourceLimitsPolicyOverrides{}
+	if !plan.PolicyResourceLimits.IsNull() {
+		for policyName, elem := range plan.PolicyResourceLimits.Elements() {
+			resourceLimit, ok := elem.(basetypes.ObjectValue)
+			if !ok {
+				var diags diag.Diagnostics
+				diags.AddAttributeError(
+					path.Root(fmt.Sprintf("policy_resource_limits.%s", policyName)),
+					"Invalid limits",
+					"Specified limits object is invalid,",
+				)
+				return api.BindingExecutionConfig{}, diags
+			}
+			var limitsObj models.BindingExecutionConfigResourceLimit
+			if diags := resourceLimit.As(ctx, &limitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
+				return api.BindingExecutionConfig{}, diags
+			}
+
+			policyResourceLimits = append(
+				policyResourceLimits,
+				api.BindingExecutionConfigResourceLimitsPolicyOverrides{
+					PolicyName: policyName,
+					Limit: api.BindingExecutionConfigResourceLimit{
+						MaxCount:      api.NullableInt(limitsObj.MaxCount),
+						MaxPercentage: limitsObj.MaxPercentage.ValueFloat32Pointer(),
+						RequiresBoth:  limitsObj.RequiresBoth.ValueBool(),
+					},
+				},
+			)
+		}
+	}
+
 	return api.BindingExecutionConfig{
 		DryRun: dryRun,
 		ResourceLimits: &api.BindingExecutionConfigResourceLimits{
-			Default: defaultResourceLimits,
+			Default:         defaultResourceLimits,
+			PolicyOverrides: policyResourceLimits,
 		},
 		SecurityContext: securityContext,
 		Variables:       plan.Variables.ValueStringPointer(),
@@ -383,10 +464,43 @@ func (r bindingResource) getUpdateExecutionConfig(ctx context.Context, plan, sta
 		}
 	}
 
+	policyResourceLimits := []api.BindingExecutionConfigResourceLimitsPolicyOverrides{}
+	if !plan.PolicyResourceLimits.IsNull() {
+		for policyName, elem := range plan.PolicyResourceLimits.Elements() {
+			resourceLimit, ok := elem.(basetypes.ObjectValue)
+			if !ok {
+				var diags diag.Diagnostics
+				diags.AddAttributeError(
+					path.Root(fmt.Sprintf("policy_resource_limits.%s", policyName)),
+					"Invalid limits",
+					"Specified limits object is invalid,",
+				)
+				return api.BindingExecutionConfig{}, diags
+			}
+			var limitsObj models.BindingExecutionConfigResourceLimit
+			if diags := resourceLimit.As(ctx, &limitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
+				return api.BindingExecutionConfig{}, diags
+			}
+
+			policyResourceLimits = append(
+				policyResourceLimits,
+				api.BindingExecutionConfigResourceLimitsPolicyOverrides{
+					PolicyName: policyName,
+					Limit: api.BindingExecutionConfigResourceLimit{
+						MaxCount:      api.NullableInt(limitsObj.MaxCount),
+						MaxPercentage: limitsObj.MaxPercentage.ValueFloat32Pointer(),
+						RequiresBoth:  limitsObj.RequiresBoth.ValueBool(),
+					},
+				},
+			)
+		}
+	}
+
 	return api.BindingExecutionConfig{
 		DryRun: dryRun,
 		ResourceLimits: &api.BindingExecutionConfigResourceLimits{
-			Default: defaultResourceLimits,
+			Default:         defaultResourceLimits,
+			PolicyOverrides: policyResourceLimits,
 		},
 		SecurityContext: securityContext,
 		Variables:       plan.Variables.ValueStringPointer(),
