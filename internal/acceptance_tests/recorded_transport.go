@@ -16,12 +16,13 @@ import (
 )
 
 type recordedTransport struct {
-	recordings     map[string][]recording
-	recordingsLock sync.Mutex // lock around modifications of recordings
-	mode           string     // test run mode
-	t              *testing.T
-	testName       string
-	wrapped        http.RoundTripper
+	t          *testing.T
+	testName   string
+	mode       string // test run mode
+	wrapped    http.RoundTripper
+	recChans   map[string](chan recording) // channels returning replayed recordings
+	recordings map[string][]recording
+	recLock    sync.Mutex
 }
 
 type recording struct {
@@ -34,6 +35,15 @@ type graphqlRequest struct {
 	Variables map[string]any `json:"variables,omitempty"`
 }
 
+func (g graphqlRequest) Key() string {
+	key := g.Query
+	if len(g.Variables) > 0 {
+		varsJSON, _ := json.Marshal(g.Variables)
+		key = fmt.Sprintf("%s:%s", key, string(varsJSON))
+	}
+	return key
+}
+
 type graphqlResponse struct {
 	Data   any `json:"data,omitempty"`
 	Errors []struct {
@@ -43,13 +53,13 @@ type graphqlResponse struct {
 
 func newRecordedTransport(t *testing.T, testName string, mode string, wrapped http.RoundTripper) *recordedTransport {
 	t.Logf("%s mode enabled for test: %s", mode, testName)
-
 	return &recordedTransport{
-		recordings: make(map[string][]recording),
-		mode:       mode,
 		t:          t,
 		testName:   testName,
+		mode:       mode,
 		wrapped:    wrapped,
+		recChans:   make(map[string](chan recording)),
+		recordings: make(map[string][]recording),
 	}
 }
 
@@ -64,7 +74,18 @@ func (rt *recordedTransport) loadRecording() error {
 		return fmt.Errorf("failed to read recordings: %v", err)
 	}
 
-	return json.Unmarshal(data, &rt.recordings)
+	recordings := map[string][]recording{}
+	if err := json.Unmarshal(data, &recordings); err != nil {
+		return err
+	}
+	for key, recs := range recordings {
+		ch := make(chan recording, len(recs))
+		for _, rec := range recs {
+			ch <- rec
+		}
+		rt.recChans[key] = ch
+	}
+	return nil
 }
 
 func (rt *recordedTransport) saveRecording() error {
@@ -75,7 +96,6 @@ func (rt *recordedTransport) saveRecording() error {
 	dirname := filepath.Join("recordings")
 	filename := filepath.Join(dirname, rt.testName+".json")
 
-	// Check if directory exists
 	if _, err := os.Stat(dirname); os.IsNotExist(err) {
 		rt.t.Logf("Creating recordings directory: %s", dirname)
 		if err := os.MkdirAll(dirname, 0755); err != nil {
@@ -83,25 +103,18 @@ func (rt *recordedTransport) saveRecording() error {
 		}
 	}
 
-	// Log the current working directory and absolute path
-	cwd, err := os.Getwd()
-	if err == nil {
-		rt.t.Logf("Current working directory: %s", cwd)
-		absPath, err := filepath.Abs(filename)
-		if err == nil {
-			rt.t.Logf("Saving recordings to: %s", absPath)
-		}
+	absPath, err := filepath.Abs(filename)
+	if err != nil {
+		return err
 	}
-
+	rt.t.Logf("Saving recordings to: %s", absPath)
 	data, err := json.MarshalIndent(rt.recordings, "", "  ")
 	if err != nil {
 		return fmt.Errorf("failed to marshal recordings: %v", err)
 	}
-
 	if err := os.WriteFile(filename, data, 0644); err != nil {
 		return fmt.Errorf("failed to write recordings file: %v", err)
 	}
-
 	return nil
 }
 
@@ -117,71 +130,64 @@ func (rt *recordedTransport) RoundTrip(req *http.Request) (*http.Response, error
 		req.Body.Close()
 		return emptyResp, fmt.Errorf("failed to read request body: %v", err)
 	}
-	req.Body = io.NopCloser(bytes.NewReader(body)) // Reset the body for future reads
-
 	if err := json.Unmarshal(body, &gqlReq); err != nil {
 		req.Body.Close()
 		return emptyResp, fmt.Errorf("failed to decode request body: %v", err)
 	}
 
-	// Create a key that includes both the query and variables
-	key := gqlReq.Query
-	if len(gqlReq.Variables) > 0 {
-		varsJSON, _ := json.Marshal(gqlReq.Variables)
-		key = fmt.Sprintf("%s:%s", key, string(varsJSON))
-	}
-
 	if rt.mode == TestModeRecord {
-		rt.t.Logf("Recording request with query: %s - %v", gqlReq.Query, gqlReq.Variables)
+		return rt.processRecordRequest(req, body, gqlReq)
+	}
+	return rt.processReplayRequest(gqlReq)
+}
 
-		// Make the real request with the original body
-		req.Body = io.NopCloser(bytes.NewReader(body))
-		resp, err := rt.wrapped.RoundTrip(req)
-		if err != nil {
-			return emptyResp, err
-		}
+func (rt *recordedTransport) processRecordRequest(req *http.Request, body []byte, gqlReq graphqlRequest) (*http.Response, error) {
+	// on errors, return an empty response, as returning nil causes
+	// http.Client.Do to traceback.
+	emptyResp := &http.Response{}
 
-		// Read and store the response body
-		respBody, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return emptyResp, fmt.Errorf("failed to read response body: %v", err)
-		}
-		if err := resp.Body.Close(); err != nil {
-			return emptyResp, err
-		}
+	rt.t.Logf("Recording request with query: %s - %v", gqlReq.Query, gqlReq.Variables)
 
-		// Parse the response
-		var gqlResp graphqlResponse
-		if err := json.Unmarshal(respBody, &gqlResp); err != nil {
-			return emptyResp, fmt.Errorf("failed to decode response body: %v", err)
-		}
-
-		// Record the interaction
-		rt.recordingsLock.Lock()
-		rt.recordings[key] = append(rt.recordings[key], recording{
-			Request:  gqlReq,
-			Response: gqlResp,
-		})
-		rt.recordingsLock.Unlock()
-
-		// Return the response with a new body reader
-		resp.Body = io.NopCloser(bytes.NewReader(respBody))
-		return resp, nil
+	// Make the real request with the original body
+	req.Body = io.NopCloser(bytes.NewReader(body))
+	resp, err := rt.wrapped.RoundTrip(req)
+	if err != nil {
+		return emptyResp, err
 	}
 
-	// Replay mode
+	// Read and store the response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return emptyResp, fmt.Errorf("failed to read response body: %v", err)
+	}
+	if err := resp.Body.Close(); err != nil {
+		return emptyResp, err
+	}
+
+	// Parse the response
+	var gqlResp graphqlResponse
+	if err := json.Unmarshal(respBody, &gqlResp); err != nil {
+		return emptyResp, fmt.Errorf("failed to decode response body: %v", err)
+	}
+
+	rt.addRecording(recording{Request: gqlReq, Response: gqlResp})
+
+	// Return the response with a new body reader
+	resp.Body = io.NopCloser(bytes.NewReader(respBody))
+	return resp, nil
+}
+
+func (rt *recordedTransport) processReplayRequest(gqlReq graphqlRequest) (*http.Response, error) {
+	// on errors, return an empty response, as returning nil causes
+	// http.Client.Do to traceback.
+	emptyResp := &http.Response{}
+
+	key := gqlReq.Key()
 	rt.t.Logf("Attempting to replay request with query: %s - %v", gqlReq.Query, gqlReq.Variables)
-	rt.recordingsLock.Lock()
-	recs, ok := rt.recordings[key]
-	if !ok || len(recs) == 0 {
-		return emptyResp, fmt.Errorf("no recording found for query: %s", key)
+	rec, err := rt.getRecording(key)
+	if err != nil {
+		return emptyResp, err
 	}
-	rt.t.Logf("Recording found with key: %s", key)
-
-	// Use the first recording and rotate
-	rec := recs[0]
-	rt.recordings[key] = recs[1:]
-	rt.recordingsLock.Unlock()
 
 	// Check that the recording matches
 	if gqlReq.Query != rec.Request.Query || !reflect.DeepEqual(gqlReq.Variables, rec.Request.Variables) {
@@ -207,4 +213,24 @@ expected: %v`,
 		Body:       io.NopCloser(bytes.NewReader(respBody)),
 		Header:     make(http.Header),
 	}, nil
+}
+
+func (rt *recordedTransport) addRecording(r recording) {
+	rt.recLock.Lock()
+	defer rt.recLock.Unlock()
+	key := r.Request.Key()
+	rt.recordings[key] = append(rt.recordings[key], r)
+}
+
+func (rt *recordedTransport) getRecording(key string) (recording, error) {
+	if ch, ok := rt.recChans[key]; ok {
+		select {
+		case rec := <-ch:
+			rt.t.Logf("Recording found with key: %s", key)
+			return rec, nil
+		default:
+			// no recording found in channel, fall out to the error case
+		}
+	}
+	return recording{}, fmt.Errorf("no recording found for query: %s", key)
 }
