@@ -60,3 +60,13 @@ func StringsList(l types.List) []string {
 	}
 	return sl
 }
+
+// NullableInt conerts a types.Int32 to an int that can be null.
+func NullableInt(i types.Int32) *int {
+	if i.IsNull() {
+		return nil
+	}
+
+	v := int(i.ValueInt32())
+	return &v
+}
