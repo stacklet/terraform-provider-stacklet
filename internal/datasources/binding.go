@@ -149,7 +149,7 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid content for variables", err.Error())
+		errors.AddDiagAttributeError(&resp.Diagnostics, "variables", err)
 		return
 	}
 	data.Variables = variablesString
