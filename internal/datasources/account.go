@@ -112,7 +112,7 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.SecurityContext = tftypes.NullableString(account.SecurityContext)
 	variablesString, err := tftypes.JSONString(account.Variables)
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid content for variables", err.Error())
+		errors.AddDiagAttributeError(&resp.Diagnostics, "variables", err)
 		return
 	}
 	data.Variables = variablesString

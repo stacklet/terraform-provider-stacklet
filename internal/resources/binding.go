@@ -282,7 +282,7 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 
 	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 	if err != nil {
-		diags.Append(diag.NewErrorDiagnostic("Invalid content for variables", err.Error()))
+		errors.AddDiagAttributeError(&diags, "variables", err)
 		return diags
 	}
 	// the API returns an empty dict for null or empty string, don't
