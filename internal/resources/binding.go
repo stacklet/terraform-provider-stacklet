@@ -189,7 +189,7 @@ func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	executionConfig, diags := r.getCreateExecutionConfig(ctx, plan, config)
+	executionConfig, diags := r.getExecutionConfig(ctx, plan, config.SecurityContextWO.ValueStringPointer())
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -248,7 +248,17 @@ func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	executionConfig, diags := r.getUpdateExecutionConfig(ctx, plan, state, config)
+	var securityContextString *string
+	if state.SecurityContextWOVersion == plan.SecurityContextWOVersion {
+		// if no change happened, send the value we got from the API as a
+		// result of the previous change. Not sending a value makes the API
+		// unset it.
+		securityContextString = state.SecurityContext.ValueStringPointer()
+	} else {
+		securityContextString = config.SecurityContextWO.ValueStringPointer()
+	}
+
+	executionConfig, diags := r.getExecutionConfig(ctx, plan, securityContextString)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -365,88 +375,13 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 	return diags
 }
 
-func (r bindingResource) getCreateExecutionConfig(ctx context.Context, plan, config models.BindingResource) (api.BindingExecutionConfig, diag.Diagnostics) {
+func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.BindingResource, securityContextString *string) (api.BindingExecutionConfig, diag.Diagnostics) {
 	var dryRun *api.BindingExecutionConfigDryRun
 	if !plan.DryRun.IsNull() {
 		dryRun = &api.BindingExecutionConfigDryRun{Default: plan.DryRun.ValueBool()}
 	}
 
 	var securityContext *api.BindingExecutionConfigSecurityContext
-	if !config.SecurityContextWO.IsNull() {
-		securityContext = &api.BindingExecutionConfigSecurityContext{Default: config.SecurityContextWO.ValueString()}
-	}
-
-	var defaultResourceLimits *api.BindingExecutionConfigResourceLimit
-	if !plan.ResourceLimits.IsNull() {
-		var defLimitsObj models.BindingExecutionConfigResourceLimit
-		if diags := plan.ResourceLimits.As(ctx, &defLimitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
-			return api.BindingExecutionConfig{}, diags
-		}
-		defaultResourceLimits = &api.BindingExecutionConfigResourceLimit{
-			MaxCount:      api.NullableInt(defLimitsObj.MaxCount),
-			MaxPercentage: defLimitsObj.MaxPercentage.ValueFloat32Pointer(),
-			RequiresBoth:  defLimitsObj.RequiresBoth.ValueBool(),
-		}
-	}
-
-	policyResourceLimits := []api.BindingExecutionConfigResourceLimitsPolicyOverrides{}
-	if !plan.PolicyResourceLimits.IsNull() {
-		for policyName, elem := range plan.PolicyResourceLimits.Elements() {
-			resourceLimit, ok := elem.(basetypes.ObjectValue)
-			if !ok {
-				var diags diag.Diagnostics
-				diags.AddAttributeError(
-					path.Root(fmt.Sprintf("policy_resource_limits.%s", policyName)),
-					"Invalid limits",
-					"Specified limits object is invalid,",
-				)
-				return api.BindingExecutionConfig{}, diags
-			}
-			var limitsObj models.BindingExecutionConfigResourceLimit
-			if diags := resourceLimit.As(ctx, &limitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
-				return api.BindingExecutionConfig{}, diags
-			}
-
-			policyResourceLimits = append(
-				policyResourceLimits,
-				api.BindingExecutionConfigResourceLimitsPolicyOverrides{
-					PolicyName: policyName,
-					Limit: api.BindingExecutionConfigResourceLimit{
-						MaxCount:      api.NullableInt(limitsObj.MaxCount),
-						MaxPercentage: limitsObj.MaxPercentage.ValueFloat32Pointer(),
-						RequiresBoth:  limitsObj.RequiresBoth.ValueBool(),
-					},
-				},
-			)
-		}
-	}
-
-	return api.BindingExecutionConfig{
-		DryRun: dryRun,
-		ResourceLimits: &api.BindingExecutionConfigResourceLimits{
-			Default:         defaultResourceLimits,
-			PolicyOverrides: policyResourceLimits,
-		},
-		SecurityContext: securityContext,
-		Variables:       plan.Variables.ValueStringPointer(),
-	}, nil
-}
-
-func (r bindingResource) getUpdateExecutionConfig(ctx context.Context, plan, state, config models.BindingResource) (api.BindingExecutionConfig, diag.Diagnostics) {
-	var dryRun *api.BindingExecutionConfigDryRun
-	if !plan.DryRun.IsNull() {
-		dryRun = &api.BindingExecutionConfigDryRun{Default: plan.DryRun.ValueBool()}
-	}
-	var securityContextString *string
-	var securityContext *api.BindingExecutionConfigSecurityContext
-	if state.SecurityContextWOVersion == plan.SecurityContextWOVersion {
-		// if no change happened, send the value we got from the API as a
-		// result of the previous change. Not sending a value makes the API
-		// unset it.
-		securityContextString = state.SecurityContext.ValueStringPointer()
-	} else {
-		securityContextString = config.SecurityContextWO.ValueStringPointer()
-	}
 	if securityContextString != nil {
 		securityContext = &api.BindingExecutionConfigSecurityContext{Default: *securityContextString}
 	}
