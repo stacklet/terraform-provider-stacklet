@@ -10,6 +10,7 @@ var DATASOURCES = []func() datasource.DataSource{
 	NewAccountDataSource,
 	NewAccountGroupDataSource,
 	NewBindingDataSource,
+	NewPlatformDataSource,
 	NewPolicyCollectionDataSource,
 	NewPolicyDataSource,
 	NewRepositoryDataSource,

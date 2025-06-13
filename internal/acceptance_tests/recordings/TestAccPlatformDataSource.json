@@ -1,0 +1,58 @@
+{
+  "{platform{id,externalID,executionRegions,defaultRole}}": [
+    {
+      "request": {
+        "query": "{platform{id,externalID,executionRegions,defaultRole}}"
+      },
+      "response": {
+        "data": {
+          "platform": {
+            "defaultRole": "admin",
+            "executionRegions": [
+              "eu-north-1",
+              "us-east-1"
+            ],
+            "externalID": "external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2",
+            "id": "WyJwbGF0Zm9ybSJd"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{platform{id,externalID,executionRegions,defaultRole}}"
+      },
+      "response": {
+        "data": {
+          "platform": {
+            "defaultRole": "admin",
+            "executionRegions": [
+              "eu-north-1",
+              "us-east-1"
+            ],
+            "externalID": "external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2",
+            "id": "WyJwbGF0Zm9ybSJd"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{platform{id,externalID,executionRegions,defaultRole}}"
+      },
+      "response": {
+        "data": {
+          "platform": {
+            "defaultRole": "admin",
+            "executionRegions": [
+              "eu-north-1",
+              "us-east-1"
+            ],
+            "externalID": "external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2",
+            "id": "WyJwbGF0Zm9ybSJd"
+          }
+        }
+      }
+    }
+  ]
+}
