@@ -34,6 +34,18 @@ func TestAccBindingDataSource(t *testing.T) {
 						auto_deploy = true
 						schedule = "rate(1 hour)"
 						dry_run = true
+						resource_limits = {
+							max_count = 10
+							max_percentage = 20
+							requires_both = true
+						}
+						policy_resource_limits = {
+							policy = {
+								max_count = 90
+								max_percentage = 50.0
+								requires_both = true
+							}
+						}
 						variables = jsonencode({
 							environment = "test"
 							region = "us-east-1"
@@ -61,6 +73,13 @@ func TestAccBindingDataSource(t *testing.T) {
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_name", "uuid"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "dry_run", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "resource_limits.max_count", "10"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "resource_limits.max_percentage", "20"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "resource_limits.requires_both", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limits.%", "1"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limits.policy.max_count", "90"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limits.policy.max_percentage", "50"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limits.policy.requires_both", "true"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
 				resource.TestCheckNoResourceAttr("data.stacklet_binding.by_name", "security_context"),
 
@@ -74,6 +93,13 @@ func TestAccBindingDataSource(t *testing.T) {
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_binding.by_uuid", "uuid"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "dry_run", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "resource_limits.max_count", "10"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "resource_limits.max_percentage", "20"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "resource_limits.requires_both", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limits.%", "1"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limits.policy.max_count", "90"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limits.policy.max_percentage", "50"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limits.policy.requires_both", "true"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
 				resource.TestCheckNoResourceAttr("data.stacklet_binding.by_uuid", "security_context"),
 			),

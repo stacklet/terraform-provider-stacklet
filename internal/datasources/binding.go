@@ -5,6 +5,7 @@ package datasources
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -79,7 +80,7 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Computed:    true,
 			},
 			"resource_limits": schema.SingleNestedAttribute{
-				Description: "Default limits for binding execution.",
+				Description: "Default resource limits for binding execution.",
 				Optional:    true,
 				Computed:    true,
 				Attributes: map[string]schema.Attribute{
@@ -97,6 +98,30 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 						Description: "If set, only applies limits when both thresholds are exceeded.",
 						Optional:    true,
 						Computed:    true,
+					},
+				},
+			},
+			"policy_resource_limits": schema.MapNestedAttribute{
+				Description: "Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names.",
+				Optional:    true,
+				Computed:    true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"max_count": schema.Int32Attribute{
+							Description: "Max count of affected resources.",
+							Optional:    true,
+							Computed:    true,
+						},
+						"max_percentage": schema.Float32Attribute{
+							Description: "Max percentage of affected resources.",
+							Optional:    true,
+							Computed:    true,
+						},
+						"requires_both": schema.BoolAttribute{
+							Description: "If set, only applies limits when both thresholds are exceeded.",
+							Optional:    true,
+							Computed:    true,
+						},
 					},
 				},
 			},
@@ -171,5 +196,22 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 	data.ResourceLimits = defaultLimits
+
+	policyLimits, diags := tftypes.ObjectMapFromList[models.BindingExecutionConfigResourceLimit](
+		binding.PolicyResourceLimits(),
+		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (string, map[string]attr.Value, diag.Diagnostics) {
+			return entry.PolicyName, map[string]attr.Value{
+				"max_count":      tftypes.NullableInt(entry.Limit.MaxCount),
+				"max_percentage": tftypes.NullableFloat(entry.Limit.MaxPercentage),
+				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),
+			}, nil
+		},
+	)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	data.PolicyResourceLimits = policyLimits
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

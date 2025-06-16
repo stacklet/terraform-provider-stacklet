@@ -51,7 +51,7 @@ func TestAccPolicyCollectionResource(t *testing.T) {
 	runRecordedAccTest(t, "TestAccPolicyCollectionResource", steps)
 }
 
-func TestAccPolicyCollectionResourceDynamic(t *testing.T) {
+func TestAccPolicyCollectionResource_Dynamic(t *testing.T) {
 	steps := []resource.TestStep{
 		// Create and Read testing
 		{
@@ -121,5 +121,5 @@ func TestAccPolicyCollectionResourceDynamic(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccPolicyCollectionResourceDynamic", steps)
+	runRecordedAccTest(t, "TestAccPolicyCollectionResource_Dynamic", steps)
 }

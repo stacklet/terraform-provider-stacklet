@@ -107,7 +107,7 @@ func TestAccBindingResource(t *testing.T) {
 	runRecordedAccTest(t, "TestAccBindingResource", steps)
 }
 
-func TestAccBindingResourceSecurityContext(t *testing.T) {
+func TestAccBindingResource_SecurityContext(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
@@ -204,10 +204,10 @@ func TestAccBindingResourceSecurityContext(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccBindingResourceSecurityContext", steps)
+	runRecordedAccTest(t, "TestAccBindingResource_SecurityContext", steps)
 }
 
-func TestAccBindingResourceResourceLimits(t *testing.T) {
+func TestAccBindingResource_ResourceLimits(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
@@ -299,5 +299,101 @@ func TestAccBindingResourceResourceLimits(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccBindingResourceResourceLimits", steps)
+	runRecordedAccTest(t, "TestAccBindingResource_ResourceLimits", steps)
+}
+
+func TestAccBindingResource_PolicyResourceLimits(t *testing.T) {
+	steps := []resource.TestStep{
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-binding-group"
+						description = "Test account group for binding"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+
+					resource "stacklet_policy_collection" "test" {
+						name = "{{.Prefix}}-binding-collection"
+						description = "Test policy collection for binding"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "test" {
+						name = "{{.Prefix}}-binding"
+						description = "Test binding"
+						account_group_uuid = stacklet_account_group.test.uuid
+						policy_collection_uuid = stacklet_policy_collection.test.uuid
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckNoResourceAttr("stacklet_binding.test", "policy_resource_limits"),
+			),
+		},
+		// Attribute is set, but empty
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-binding-group"
+						description = "Test account group for binding"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+
+					resource "stacklet_policy_collection" "test" {
+						name = "{{.Prefix}}-binding-collection"
+						description = "Test policy collection for binding"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "test" {
+						name = "{{.Prefix}}-binding"
+						description = "Test binding"
+						account_group_uuid = stacklet_account_group.test.uuid
+						policy_collection_uuid = stacklet_policy_collection.test.uuid
+						policy_resource_limits = {}
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_binding.test", "policy_resource_limits.%", "0"),
+			),
+		},
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-binding-group"
+						description = "Test account group for binding"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+
+					resource "stacklet_policy_collection" "test" {
+						name = "{{.Prefix}}-binding-collection"
+						description = "Test policy collection for binding"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "test" {
+						name = "{{.Prefix}}-binding"
+						description = "Test binding"
+						account_group_uuid = stacklet_account_group.test.uuid
+						policy_collection_uuid = stacklet_policy_collection.test.uuid
+						policy_resource_limits = {
+							policy = {
+								max_count = 90
+								max_percentage = 50.0
+								requires_both = true
+							}
+						}
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_binding.test", "policy_resource_limits.%", "1"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "policy_resource_limits.policy.max_count", "90"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "policy_resource_limits.policy.max_percentage", "50"),
+				resource.TestCheckResourceAttr("stacklet_binding.test", "policy_resource_limits.policy.requires_both", "true"),
+			),
+		},
+	}
+	runRecordedAccTest(t, "TestAccBindingResource_PolicyResourceLimits", steps)
 }
