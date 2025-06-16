@@ -20,6 +20,7 @@ type BindingDataSource struct {
 	System               types.Bool   `tfsdk:"system"`
 	DryRun               types.Bool   `tfsdk:"dry_run"`
 	ResourceLimits       types.Object `tfsdk:"resource_limits"`
+	PolicyResourceLimits types.Map    `tfsdk:"policy_resource_limits"`
 	SecurityContext      types.String `tfsdk:"security_context"`
 	Variables            types.String `tfsdk:"variables"`
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
-func TestAccRepositoryResourceAttrs(t *testing.T) {
+func TestAccRepositoryResource_Attrs(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
@@ -47,10 +47,10 @@ func TestAccRepositoryResourceAttrs(t *testing.T) {
 			ImportStateIdFunc: importStateIDFuncFromAttrs("stacklet_repository.test.url"),
 		},
 	}
-	runRecordedAccTest(t, "TestAccRepositoryResourceAttrs", steps)
+	runRecordedAccTest(t, "TestAccRepositoryResource_Attrs", steps)
 }
 
-func TestAccRepositoryResourceUpdate(t *testing.T) {
+func TestAccRepositoryResource_Update(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
@@ -100,10 +100,10 @@ func TestAccRepositoryResourceUpdate(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccRepositoryResourceUpdate", steps)
+	runRecordedAccTest(t, "TestAccRepositoryResource_Update", steps)
 }
 
-func TestAccRepositoryResourceHTTPAuthSet(t *testing.T) {
+func TestAccRepositoryResource_HTTPAuthSet(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
@@ -155,10 +155,10 @@ func TestAccRepositoryResourceHTTPAuthSet(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccRepositoryResourceHTTPAuthSet", steps)
+	runRecordedAccTest(t, "TestAccRepositoryResource_HTTPAuthSet", steps)
 }
 
-func TestAccRepositoryResourceHTTPAuthClear(t *testing.T) {
+func TestAccRepositoryResource_HTTPAuthClear(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
@@ -211,10 +211,10 @@ func TestAccRepositoryResourceHTTPAuthClear(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccRepositoryResourceHTTPAuthClear", steps)
+	runRecordedAccTest(t, "TestAccRepositoryResource_HTTPAuthClear", steps)
 }
 
-func TestAccRepositoryResourceSSHUpdate(t *testing.T) {
+func TestAccRepositoryResource_SSHUpdate(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			// Create with simple SSH config.
@@ -326,5 +326,5 @@ EOT
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccRepositoryResourceSSHAuthUpdate", steps)
+	runRecordedAccTest(t, "TestAccRepositoryResource_SSHAuthUpdate", steps)
 }

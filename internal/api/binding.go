@@ -42,7 +42,7 @@ func (b Binding) SecurityContext() *string {
 	return &b.ExecutionConfig.SecurityContext.Default
 }
 
-// DefaultResourceLimitss returns the default resource limits value for a binding execution config.
+// DefaultResourceLimits returns the default resource limits value for a binding execution config.
 func (b Binding) DefaultResourceLimits() *BindingExecutionConfigResourceLimit {
 	if b.ExecutionConfig.ResourceLimits == nil {
 		return nil
@@ -51,6 +51,14 @@ func (b Binding) DefaultResourceLimits() *BindingExecutionConfigResourceLimit {
 		return nil
 	}
 	return b.ExecutionConfig.ResourceLimits.Default
+}
+
+// PolicyResourceLimits returns the per-policy resource limits value for a binding execution config.
+func (b Binding) PolicyResourceLimits() []BindingExecutionConfigResourceLimitsPolicyOverrides {
+	if b.ExecutionConfig.ResourceLimits == nil {
+		return []BindingExecutionConfigResourceLimitsPolicyOverrides{}
+	}
+	return b.ExecutionConfig.ResourceLimits.PolicyOverrides
 }
 
 // ExecutionConfig holds the execution configuration for a binding.
@@ -73,7 +81,8 @@ type BindingExecutionConfigSecurityContext struct {
 
 // BindingExecutionConfigResourceLimits holds the resource limits configuration for a binding execution config.
 type BindingExecutionConfigResourceLimits struct {
-	Default *BindingExecutionConfigResourceLimit `json:"default"`
+	Default         *BindingExecutionConfigResourceLimit                  `json:"default"`
+	PolicyOverrides []BindingExecutionConfigResourceLimitsPolicyOverrides `json:"policyOverrides"`
 }
 
 // BindingExecutionConfigResourceLimit holds resource limits for a binding execution config.
@@ -81,6 +90,13 @@ type BindingExecutionConfigResourceLimit struct {
 	MaxCount      *int     `json:"maxCount,omitempty"`
 	MaxPercentage *float32 `json:"maxPercentage,omitempty"`
 	RequiresBoth  bool     `json:"requiresBoth"`
+}
+
+// BindingExecutionConfigResourceLimitsPolicyOverrides holds resource limits
+// policy overrides for a binding execution config.
+type BindingExecutionConfigResourceLimitsPolicyOverrides struct {
+	Limit      BindingExecutionConfigResourceLimit `json:"limit"`
+	PolicyName string                              `json:"policyName"`
 }
 
 // BindingCreateInput is the input for creating a binding.
