@@ -39,19 +39,21 @@ resource "stacklet_binding" "example" {
     requires_both  = true
   }
 
-  # map keys are unqualified policy names
-  policy_resource_limits = {
-    policy1 = {
-      max_count = 10
-    }
-    policy2 = {
-      max_percentage = 30.0
-    }
-    policy3 = {
-      max_count      = 20
-      max_percentage = 50.0
-      requires_both  = true
-    }
+  policy_resource_limit {
+    policy_name = "policy1"
+    max_count   = 10
+  }
+
+  policy_resource_limit {
+    policy_name    = "policy2"
+    max_percentage = 30.0
+  }
+
+  policy_resource_limit {
+    policy_name    = "policy3"
+    max_count      = 20
+    max_percentage = 50.0
+    requires_both  = true
   }
 
   variables = jsonencode({
@@ -77,7 +79,7 @@ resource "stacklet_binding" "example" {
 - `auto_deploy` (Boolean) Whether the binding should automatically deploy when the policy collection changes.
 - `description` (String) A description of the binding.
 - `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
-- `policy_resource_limits` (Attributes Map) Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names. (see [below for nested schema](#nestedatt--policy_resource_limits))
+- `policy_resource_limit` (Block List) Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names. (see [below for nested schema](#nestedblock--policy_resource_limit))
 - `resource_limits` (Attributes) Default resource limits for binding execution. (see [below for nested schema](#nestedatt--resource_limits))
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
 - `security_context` (String) The binding execution security context.
@@ -91,8 +93,12 @@ resource "stacklet_binding" "example" {
 - `system` (Boolean) Whether the binding is a system one. Always false for resources.
 - `uuid` (String) The UUID of the binding.
 
-<a id="nestedatt--policy_resource_limits"></a>
-### Nested Schema for `policy_resource_limits`
+<a id="nestedblock--policy_resource_limit"></a>
+### Nested Schema for `policy_resource_limit`
+
+Required:
+
+- `policy_name` (String) Unqualified name of the policy for the limit override.
 
 Optional:
 

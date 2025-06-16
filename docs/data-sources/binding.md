@@ -31,7 +31,7 @@ data "stacklet_binding" "by_name" {
 
 - `dry_run` (Boolean) Whether the binding is run in with action disabled (in information mode).
 - `name` (String) The name of the binding.
-- `policy_resource_limits` (Attributes Map) Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names. (see [below for nested schema](#nestedatt--policy_resource_limits))
+- `policy_resource_limit` (Block List) Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names. (see [below for nested schema](#nestedblock--policy_resource_limit))
 - `resource_limits` (Attributes) Default resource limits for binding execution. (see [below for nested schema](#nestedatt--resource_limits))
 - `security_context` (String) The binding execution security context.
 - `uuid` (String) The UUID of the binding.
@@ -47,13 +47,17 @@ data "stacklet_binding" "by_name" {
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
 - `system` (Boolean) Whether this is a system binding.
 
-<a id="nestedatt--policy_resource_limits"></a>
-### Nested Schema for `policy_resource_limits`
+<a id="nestedblock--policy_resource_limit"></a>
+### Nested Schema for `policy_resource_limit`
 
 Optional:
 
 - `max_count` (Number) Max count of affected resources.
 - `max_percentage` (Number) Max percentage of affected resources.
+
+Read-Only:
+
+- `policy_name` (String) Unqualified name of the policy for the limit override.
 - `requires_both` (Boolean) If set, only applies limits when both thresholds are exceeded.
 
 

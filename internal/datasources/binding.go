@@ -101,12 +101,26 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 					},
 				},
 			},
-			"policy_resource_limits": schema.MapNestedAttribute{
-				Description: "Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names.",
+			"security_context": schema.StringAttribute{
+				Description: "The binding execution security context.",
 				Optional:    true,
 				Computed:    true,
-				NestedObject: schema.NestedAttributeObject{
+			},
+			"variables": schema.StringAttribute{
+				Description: "JSON-encoded dictionary of values used for policy templating.",
+				Optional:    true,
+				Computed:    true,
+			},
+		},
+		Blocks: map[string]schema.Block{
+			"policy_resource_limit": schema.ListNestedBlock{
+				Description: "Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names.",
+				NestedObject: schema.NestedBlockObject{
 					Attributes: map[string]schema.Attribute{
+						"policy_name": schema.StringAttribute{
+							Description: "Unqualified name of the policy for the limit override.",
+							Computed:    true,
+						},
 						"max_count": schema.Int32Attribute{
 							Description: "Max count of affected resources.",
 							Optional:    true,
@@ -119,21 +133,10 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 						},
 						"requires_both": schema.BoolAttribute{
 							Description: "If set, only applies limits when both thresholds are exceeded.",
-							Optional:    true,
 							Computed:    true,
 						},
 					},
 				},
-			},
-			"security_context": schema.StringAttribute{
-				Description: "The binding execution security context.",
-				Optional:    true,
-				Computed:    true,
-			},
-			"variables": schema.StringAttribute{
-				Description: "JSON-encoded dictionary of values used for policy templating.",
-				Optional:    true,
-				Computed:    true,
 			},
 		},
 	}
@@ -197,10 +200,11 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	}
 	data.ResourceLimits = defaultLimits
 
-	policyLimits, diags := tftypes.ObjectMapFromList[models.BindingExecutionConfigResourceLimit](
+	policyLimits, diags := tftypes.ObjectList[models.BindingExecutionConfigPolicyResourceLimit](
 		binding.PolicyResourceLimits(),
-		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (string, map[string]attr.Value, diag.Diagnostics) {
-			return entry.PolicyName, map[string]attr.Value{
+		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (map[string]attr.Value, diag.Diagnostics) {
+			return map[string]attr.Value{
+				"policy_name":    types.StringValue(entry.PolicyName),
 				"max_count":      tftypes.NullableInt(entry.Limit.MaxCount),
 				"max_percentage": tftypes.NullableFloat(entry.Limit.MaxPercentage),
 				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),

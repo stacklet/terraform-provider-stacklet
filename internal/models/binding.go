@@ -20,7 +20,7 @@ type BindingDataSource struct {
 	System               types.Bool   `tfsdk:"system"`
 	DryRun               types.Bool   `tfsdk:"dry_run"`
 	ResourceLimits       types.Object `tfsdk:"resource_limits"`
-	PolicyResourceLimits types.Map    `tfsdk:"policy_resource_limits"`
+	PolicyResourceLimits types.List   `tfsdk:"policy_resource_limit"`
 	SecurityContext      types.String `tfsdk:"security_context"`
 	Variables            types.String `tfsdk:"variables"`
 }
@@ -46,4 +46,17 @@ func (c BindingExecutionConfigResourceLimit) AttributeTypes() map[string]attr.Ty
 		"max_percentage": types.Float32Type,
 		"requires_both":  types.BoolType,
 	}
+}
+
+// BindingExecutionConfigPolicyResourceLimit is the model for a policy resource limit in binding execution config.
+type BindingExecutionConfigPolicyResourceLimit struct {
+	BindingExecutionConfigResourceLimit
+
+	PolicyName types.String `tfsdk:"policy_name"`
+}
+
+func (c BindingExecutionConfigPolicyResourceLimit) AttributeTypes() map[string]attr.Type {
+	m := c.BindingExecutionConfigResourceLimit.AttributeTypes()
+	m["policy_name"] = types.StringType
+	return m
 }
