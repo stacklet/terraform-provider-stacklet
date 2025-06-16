@@ -24,19 +24,21 @@ resource "stacklet_binding" "example" {
     requires_both  = true
   }
 
-  # map keys are unqualified policy names
-  policy_resource_limits = {
-    policy1 = {
-      max_count = 10
-    }
-    policy2 = {
-      max_percentage = 30.0
-    }
-    policy3 = {
-      max_count      = 20
-      max_percentage = 50.0
-      requires_both  = true
-    }
+  policy_resource_limit {
+    policy_name = "policy1"
+    max_count   = 10
+  }
+
+  policy_resource_limit {
+    policy_name    = "policy2"
+    max_percentage = 30.0
+  }
+
+  policy_resource_limit {
+    policy_name    = "policy3"
+    max_count      = 20
+    max_percentage = 50.0
+    requires_both  = true
   }
 
   variables = jsonencode({

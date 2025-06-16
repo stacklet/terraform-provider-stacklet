@@ -39,12 +39,11 @@ func TestAccBindingDataSource(t *testing.T) {
 							max_percentage = 20
 							requires_both = true
 						}
-						policy_resource_limits = {
-							policy = {
-								max_count = 90
-								max_percentage = 50.0
-								requires_both = true
-							}
+						policy_resource_limit {
+							policy_name = "policy"
+							max_count = 90
+							max_percentage = 50.0
+							requires_both = true
 						}
 						variables = jsonencode({
 							environment = "test"
@@ -76,10 +75,11 @@ func TestAccBindingDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "resource_limits.max_count", "10"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "resource_limits.max_percentage", "20"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "resource_limits.requires_both", "true"),
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limits.%", "1"),
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limits.policy.max_count", "90"),
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limits.policy.max_percentage", "50"),
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limits.policy.requires_both", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limit.#", "1"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limit.0.policy_name", "policy"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limit.0.max_count", "90"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limit.0.max_percentage", "50"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "policy_resource_limit.0.requires_both", "true"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
 				resource.TestCheckNoResourceAttr("data.stacklet_binding.by_name", "security_context"),
 
@@ -96,10 +96,11 @@ func TestAccBindingDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "resource_limits.max_count", "10"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "resource_limits.max_percentage", "20"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "resource_limits.requires_both", "true"),
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limits.%", "1"),
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limits.policy.max_count", "90"),
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limits.policy.max_percentage", "50"),
-				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limits.policy.requires_both", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limit.#", "1"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limit.0.policy_name", "policy"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limit.0.max_count", "90"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limit.0.max_percentage", "50"),
+				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "policy_resource_limit.0.requires_both", "true"),
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_uuid", "variables", "{\"environment\":\"test\",\"region\":\"us-east-1\"}"),
 				resource.TestCheckNoResourceAttr("data.stacklet_binding.by_uuid", "security_context"),
 			),

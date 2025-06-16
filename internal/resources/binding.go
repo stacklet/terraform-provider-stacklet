@@ -22,6 +22,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
+	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
@@ -125,31 +126,6 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 					bindingResourceLimitsValidator{},
 				},
 			},
-			"policy_resource_limits": schema.MapNestedAttribute{
-				Description: "Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names.",
-				Optional:    true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"max_count": schema.Int32Attribute{
-							Description: "Max count of affected resources.",
-							Optional:    true,
-						},
-						"max_percentage": schema.Float32Attribute{
-							Description: "Max percentage of affected resources.",
-							Optional:    true,
-						},
-						"requires_both": schema.BoolAttribute{
-							Description: "If set, only applies limits when both thresholds are exceeded.",
-							Optional:    true,
-							Computed:    true,
-							Default:     booldefault.StaticBool(false),
-						},
-					},
-					Validators: []validator.Object{
-						bindingResourceLimitsValidator{},
-					},
-				},
-			},
 			"security_context": schema.StringAttribute{
 				Description: "The binding execution security context.",
 				Optional:    true,
@@ -168,6 +144,39 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"variables": schema.StringAttribute{
 				Description: "JSON-encoded dictionary of values used for policy templating.",
 				Optional:    true,
+			},
+		},
+		Blocks: map[string]schema.Block{
+			"policy_resource_limit": schema.ListNestedBlock{
+				Description: "Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names.",
+				NestedObject: schema.NestedBlockObject{
+					Attributes: map[string]schema.Attribute{
+						"policy_name": schema.StringAttribute{
+							Description: "Unqualified name of the policy for the limit override.",
+							Required:    true,
+						},
+						"max_count": schema.Int32Attribute{
+							Description: "Max count of affected resources.",
+							Optional:    true,
+						},
+						"max_percentage": schema.Float32Attribute{
+							Description: "Max percentage of affected resources.",
+							Optional:    true,
+						},
+						"requires_both": schema.BoolAttribute{
+							Description: "If set, only applies limits when both thresholds are exceeded.",
+							Optional:    true,
+							Computed:    true,
+							Default:     booldefault.StaticBool(false),
+						},
+					},
+					Validators: []validator.Object{
+						bindingResourcePolicyLimitsValidator{},
+					},
+				},
+				Validators: []validator.List{
+					schemavalidate.UniqueStringAttribute("policy_name"),
+				},
 			},
 		},
 	}
@@ -354,15 +363,11 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 	}
 	m.ResourceLimits = defaultLimits
 
-	pLimits := binding.PolicyResourceLimits()
-	if len(pLimits) == 0 && m.PolicyResourceLimits.IsNull() {
-		// if an empty map was requested for policy limits, set an empty map
-		pLimits = nil
-	}
-	policyLimits, d := tftypes.ObjectMapFromList[models.BindingExecutionConfigResourceLimit](
-		pLimits,
-		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (string, map[string]attr.Value, diag.Diagnostics) {
-			return entry.PolicyName, map[string]attr.Value{
+	policyLimits, d := tftypes.ObjectList[models.BindingExecutionConfigPolicyResourceLimit](
+		binding.PolicyResourceLimits(),
+		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (map[string]attr.Value, diag.Diagnostics) {
+			return map[string]attr.Value{
+				"policy_name":    types.StringValue(entry.PolicyName),
 				"max_count":      tftypes.NullableInt(entry.Limit.MaxCount),
 				"max_percentage": tftypes.NullableFloat(entry.Limit.MaxPercentage),
 				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),
@@ -401,18 +406,18 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 
 	policyResourceLimits := []api.BindingExecutionConfigResourceLimitsPolicyOverrides{}
 	if !plan.PolicyResourceLimits.IsNull() {
-		for policyName, elem := range plan.PolicyResourceLimits.Elements() {
+		for i, elem := range plan.PolicyResourceLimits.Elements() {
 			resourceLimit, ok := elem.(basetypes.ObjectValue)
 			if !ok {
 				var diags diag.Diagnostics
 				diags.AddAttributeError(
-					path.Root(fmt.Sprintf("policy_resource_limits.%s", policyName)),
+					path.Root(fmt.Sprintf("policy_resource_limit.%d", i)),
 					"Invalid limits",
-					"Specified limits object is invalid,",
+					"Limits block is invalid,",
 				)
 				return api.BindingExecutionConfig{}, diags
 			}
-			var limitsObj models.BindingExecutionConfigResourceLimit
+			var limitsObj models.BindingExecutionConfigPolicyResourceLimit
 			if diags := resourceLimit.As(ctx, &limitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
 				return api.BindingExecutionConfig{}, diags
 			}
@@ -420,7 +425,7 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 			policyResourceLimits = append(
 				policyResourceLimits,
 				api.BindingExecutionConfigResourceLimitsPolicyOverrides{
-					PolicyName: policyName,
+					PolicyName: limitsObj.PolicyName.ValueString(),
 					Limit: api.BindingExecutionConfigResourceLimit{
 						MaxCount:      api.NullableInt(limitsObj.MaxCount),
 						MaxPercentage: limitsObj.MaxPercentage.ValueFloat32Pointer(),
@@ -442,6 +447,28 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 	}, nil
 }
 
+func bindingExecutionConfigLimitValidateObject(obj models.BindingExecutionConfigResourceLimit, objPath path.Path, diags *diag.Diagnostics) {
+	if obj.MaxCount.IsNull() && obj.MaxPercentage.IsNull() {
+		diags.AddAttributeError(
+			objPath,
+			"Invalid value",
+			"At least one of `max_path` and `max_percentage` must be set",
+		)
+		return
+	}
+
+	if obj.RequiresBoth.IsNull() {
+		return
+	}
+	if obj.RequiresBoth.ValueBool() && (obj.MaxCount.IsNull() || obj.MaxPercentage.IsNull()) {
+		diags.AddAttributeError(
+			objPath.AtName("requires_both"),
+			"Invalid value",
+			"The attribute can be set to true only if both limits are set",
+		)
+	}
+}
+
 type bindingResourceLimitsValidator struct{}
 
 func (m bindingResourceLimitsValidator) Description(ctx context.Context) string {
@@ -461,14 +488,29 @@ func (m bindingResourceLimitsValidator) ValidateObject(ctx context.Context, req 
 		resp.Diagnostics.Append(diags...)
 		return
 	}
-	if obj.RequiresBoth.IsNull() {
+
+	bindingExecutionConfigLimitValidateObject(obj, req.Path, &resp.Diagnostics)
+}
+
+type bindingResourcePolicyLimitsValidator struct{}
+
+func (m bindingResourcePolicyLimitsValidator) Description(ctx context.Context) string {
+	return "Check that policy resource limits overrides for bindings are properly configured."
+}
+
+func (m bindingResourcePolicyLimitsValidator) MarkdownDescription(ctx context.Context) string {
+	return "Check that policy resource limits overrides for bindings are properly configured."
+}
+
+func (m bindingResourcePolicyLimitsValidator) ValidateObject(ctx context.Context, req validator.ObjectRequest, resp *validator.ObjectResponse) {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
-	if obj.RequiresBoth.ValueBool() && (obj.MaxCount.IsNull() || obj.MaxPercentage.IsNull()) {
-		resp.Diagnostics.AddAttributeError(
-			req.Path.AtName("required_both"),
-			"Invalid value",
-			"The attribute can be set to true only if both limits are set",
-		)
+	var obj models.BindingExecutionConfigPolicyResourceLimit
+	if diags := req.ConfigValue.As(ctx, &obj, basetypes.ObjectAsOptions{}); diags.HasError() {
+		resp.Diagnostics.Append(diags...)
+		return
 	}
+
+	bindingExecutionConfigLimitValidateObject(obj.BindingExecutionConfigResourceLimit, req.Path, &resp.Diagnostics)
 }
