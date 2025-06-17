@@ -16,7 +16,7 @@ format-go:
     go fmt ./...    
 
 # Run linters
-lint: lint-go lint-tf lint-copyright
+lint: lint-go lint-tf lint-docs lint-copyright
 
 # Run linters for terraform
 lint-tf:
@@ -28,11 +28,11 @@ lint-go:
     go vet {{ package }}
     golangci-lint run --fix
 
-# Run checker for generated docs
+# Run linter for generated docs
 lint-docs:
     env -C tools go generate -run=validate-docs
 
-# Run checker for copyright headers
+# Run linter for copyright headers
 lint-copyright:
     env -C tools go generate -run=validate-copyright
 
@@ -51,12 +51,14 @@ test-record testname:
 # Generate provider documentation
 docs:
     env -C tools go generate -run=generate-docs
+    # XXX workaround for https://github.com/hashicorp/terraform-plugin-docs/issues/445
+    sed -i '/^subcategory:/d' docs/index.md
 
 # Add copyright headers
 copyright:
     env -C tools go generate -run=generate-copyright
 
-# Update go dependencies
+# Update golang dependencies
 update-deps-go:
     go get -u ./...
     go mod tidy
