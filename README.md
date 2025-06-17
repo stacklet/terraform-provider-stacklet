@@ -1,47 +1,12 @@
 # Terraform Provider for Stacklet
 
-This Terraform Provider allows you to interact with Stacklet's GraphQL API to manage your resources through Infrastructure as Code.
+This Terraform Provider allows you to interact with Stacklet's GraphQL API to
+manage your resources through Infrastructure as Code.
 
-## Requirements
-
-- [Terraform](https://www.terraform.io/downloads.html) >= 1.11
-- [Go](https://golang.org/doc/install) >= 1.24.2
-
-## Building The Provider
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/stacklet/terraform-provider-stacklet.git
-   cd terraform-provider-stacklet
-   ```
-
-2. Build the provider:
-   ```bash
-   just build
-   ```
 
 ## Using the provider
 
-### Local Development
-
-When developing locally, you can use the provider by configuring Terraform to use your local build:
-
-1. Override the provider location for development, by creating a `~/.terraformrc` with the following content:
-
-```terraform
-provider_installation {
-  dev_overrides {
-      "stacklet/stacklet" = "<absolute path to the repository directory>"
-  }
-
-  # For all other providers, install them directly from their origin provider
-  # registries as normal. If you omit this, Terraform will _only_ use the
-  # dev_overrides block, and so no other providers will be available.
-  direct {}
-}
-```
-
-2. Declare the provider in the terraform file
+The provider is configured as follows:
 
 ```terraform
 terraform {
@@ -53,45 +18,30 @@ terraform {
 }
 
 provider "stacklet" {
-  endpoint = "https://api.<myinstance>.stacklet.io/"  # Or use STACKLET_ENDPOINT env var
-  api_key  = "your-api-key"                           # Or use STACKLET_API_KEY env var
+  endpoint = "https://api.<INSTANCE_NAME>.stacklet.io/"
+  api_key  = "<API_KEY>"
 }
 ```
 
-3. Run `terraform plan` or `terraform apply` with the local resources configuration.
+### Environment variables
 
-
-**Note**: `terraform init` must not be run when working with a locally installed provider.
-
-
-#### Debugging the provider
-
-Debug messages and output are not visible when running the provider directly from terraform.
-To enable debug
-
-1. run `./terraform-provider-stacklet -debug`
-
-2. export the `TF_REATTACH_PROVIDERS` variable provided in the output in the shell where `terraform` is run
-
-
-### Environment Variables
-
-The provider can be configured using environment variables:
+As an alternative, endpoint and key can be defined as environment variables:
 
 ```bash
-export STACKLET_ENDPOINT="https://api.<myinstance>.stacklet.io/"
-export STACKLET_API_KEY="your-api-key"
+export STACKLET_ENDPOINT="https://api.<INSTANCE_NAME>.stacklet.io/"
+export STACKLET_API_KEY="<API_KEY>"
 ```
 
-### Login via stacklet-admin CLI
+### Login via `stacklet-admin` CLI
 
-The provider can look up authentication details from the [`stacklet-admin`](https://github.com/stacklet/stacklet-admin) CLI.
+The provider can also look up authentication details from the
+[`stacklet-admin`](https://github.com/stacklet/stacklet-admin) CLI.
 
-After configuring and logging in to the instance via the CLI (`stacklet-admin login`), the provider will be able to connect
-to it.
+After configuring and logging in to the instance via the CLI (`stacklet-admin
+login`), the provider will be able to connect to it without needing to specify
+credentials in the configuration or via environment variables.
 
-
-### Example Terraform
+### Example configuration
 
 Below is a full example of a configuration to create a few resources in Stacklet.
 
@@ -105,8 +55,8 @@ terraform {
 }
 
 provider "stacklet" {
-  endpoint = "https://api.<myinstance>.stacklet.io/"
-  api_key  = "$api_key_here"
+  endpoint = "https://api.<INSTANCE_NAME>.stacklet.io/"
+  api_key  = "<API_KEY>"
 }
 
 data "stacklet_policy_collection" "example" {
@@ -167,3 +117,76 @@ data "stacklet_binding" "binding" {
   name = "AWS Posture"
 }
 ```
+
+
+## Local development
+
+For local development, make sure you have the tools declared in the
+[`.tool-versions`](./.tool-versions) file installed.
+
+### Building the provider
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/stacklet/terraform-provider-stacklet.git
+   cd terraform-provider-stacklet
+   ```
+
+2. Build the provider:
+   ```bash
+   just build
+   ```
+
+### Running locally built provider
+
+To run the locally built copy of the provider, terraform must be configured as
+follows:
+
+1. Override the provider location for development, by creating a
+   `~/.terraformrc` with the following content:
+
+```terraform
+provider_installation {
+  dev_overrides {
+      "stacklet/stacklet" = "<absolute path to the repository directory>"
+  }
+
+  # For all other providers, install them directly from their origin provider
+  # registries as normal. If you omit this, Terraform will _only_ use the
+  # dev_overrides block, and so no other providers will be available.
+  direct {}
+}
+```
+
+2. Declare the provider in your terraform configuration as
+
+```terraform
+terraform {
+  required_providers {
+    stacklet = {
+      source = "stacklet/stacklet"
+    }
+  }
+}
+
+provider "stacklet" {
+  endpoint = "https://api.<INSTANCE_NAME>.stacklet.io/"  # Or set STACKLET_ENDPOINT env var
+  api_key  = "<API_KEY>"                                 # Or set STACKLET_API_KEY env var
+}
+```
+
+3. Run `terraform plan` or `terraform apply` with the local resources configuration.
+
+
+**Note**: `terraform init` must not be run when working with a locally installed provider.
+
+### Debugging
+
+Debug messages and output are not visible when running the provider directly
+from terraform.  To enable debug:
+
+1. Run `./terraform-provider-stacklet -debug` in one terminal.
+
+2. In a separate terminal, export the value for the `TF_REATTACH_PROVIDERS`
+   variable provided in the output of the previous command, and run
+   `terraform`.
