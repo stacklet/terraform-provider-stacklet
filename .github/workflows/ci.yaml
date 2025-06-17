@@ -87,8 +87,6 @@ jobs:
 
       - name: Lint
         run: |
-          # XXX workaround for https://github.com/hashicorp/terraform-plugin-docs/issues/445
-          sed -i '/^subcategory:/d' docs/index.md
           just lint-docs
 
   lint-copyright:
