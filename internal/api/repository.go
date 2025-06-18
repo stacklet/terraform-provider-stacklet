@@ -139,7 +139,8 @@ func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error
 				Problems []Problem
 			} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
 		}
-		if err := a.c.Query(ctx, &q, map[string]any{"cursor": cursor}); err != nil {
+		variables := map[string]any{"cursor": graphql.String(cursor)}
+		if err := a.c.Query(ctx, &q, variables); err != nil {
 			return "", NewAPIError(err)
 		}
 		if err := FromProblems(ctx, q.Conn.Problems); err != nil {
