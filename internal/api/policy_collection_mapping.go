@@ -54,22 +54,21 @@ type policyCollectionMappingAPI struct {
 // Read returns data for a policy collection mapping.
 func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID string, policyUUID string) (*PolicyCollectionMapping, error) {
 	cursor := ""
+	var query struct {
+		PolicyCollection struct {
+			PolicyMappings struct {
+				Edges []struct {
+					Node PolicyCollectionMapping
+				}
+				PageInfo struct {
+					HasNextPage bool
+					EndCursor   string
+				}
+				Problems []Problem
+			} `graphql:"policyMappings(first: 100, after: $cursor)"`
+		} `graphql:"policyCollection(uuid: $uuid)"`
+	}
 	for {
-		var query struct {
-			PolicyCollection struct {
-				PolicyMappings struct {
-					Edges []struct {
-						Node PolicyCollectionMapping
-					}
-					PageInfo struct {
-						HasNextPage bool
-						EndCursor   string
-					}
-					Problems []Problem
-				} `graphql:"policyMappings(first: 100, after: $cursor)"`
-			} `graphql:"policyCollection(uuid: $uuid)"`
-		}
-
 		variables := map[string]any{
 			"uuid":   graphql.String(collectionUUID),
 			"cursor": graphql.String(cursor),

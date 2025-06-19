@@ -123,22 +123,22 @@ func (a repositoryAPI) Read(ctx context.Context, uuid string) (*Repository, erro
 
 func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error) {
 	cursor := ""
+	var q struct {
+		Conn struct {
+			Edges []struct {
+				Node struct {
+					URL  string
+					UUID string
+				}
+			}
+			PageInfo struct {
+				HasNextPage bool
+				EndCursor   string
+			}
+			Problems []Problem
+		} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
+	}
 	for {
-		var q struct {
-			Conn struct {
-				Edges []struct {
-					Node struct {
-						URL  string
-						UUID string
-					}
-				}
-				PageInfo struct {
-					HasNextPage bool
-					EndCursor   string
-				}
-				Problems []Problem
-			} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
-		}
 		variables := map[string]any{"cursor": graphql.String(cursor)}
 		if err := a.c.Query(ctx, &q, variables); err != nil {
 			return "", NewAPIError(err)
