@@ -44,6 +44,7 @@ func (e NotFound) Error() string {
 	return e.Message
 }
 
+// FromProblems returns an error from a list of API problems.
 func FromProblems(ctx context.Context, problems []Problem) error {
 	if len(problems) == 0 {
 		return nil
@@ -58,6 +59,7 @@ func FromProblems(ctx context.Context, problems []Problem) error {
 	return APIError{Kind: problems[0].Kind, Detail: problems[0].Message}
 }
 
+// Problem contains the details for an API query error.
 type Problem struct {
 	Kind    string `graphql:"__typename"`
 	Message string
