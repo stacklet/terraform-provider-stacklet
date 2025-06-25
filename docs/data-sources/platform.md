@@ -22,7 +22,43 @@ data "stacklet_platform" "example" {}
 
 ### Read-Only
 
+- `aws_account_customer_config` (Attributes) Customer configuration for AWS accounts. (see [below for nested schema](#nestedatt--aws_account_customer_config))
+- `aws_org_read_customer_config` (Attributes) Customer configuration for AWS organization read access. (see [below for nested schema](#nestedatt--aws_org_read_customer_config))
 - `default_role` (String) Default role for users.
 - `execution_regions` (List of String) List of regions for which execution is enabled.
 - `external_id` (String) The external ID for the deployment.
 - `id` (String) The GraphQL Node ID.
+
+<a id="nestedatt--aws_account_customer_config"></a>
+### Nested Schema for `aws_account_customer_config`
+
+Read-Only:
+
+- `terraform_module` (Attributes) Terraform module configuration for account setup. (see [below for nested schema](#nestedatt--aws_account_customer_config--terraform_module))
+
+<a id="nestedatt--aws_account_customer_config--terraform_module"></a>
+### Nested Schema for `aws_account_customer_config.terraform_module`
+
+Read-Only:
+
+- `repository_url` (String) Module repository URL.
+- `source` (String) Module source.
+- `variables_json` (String) JSON-encoded variables for module configuration.
+
+
+
+<a id="nestedatt--aws_org_read_customer_config"></a>
+### Nested Schema for `aws_org_read_customer_config`
+
+Read-Only:
+
+- `terraform_module` (Attributes) Terraform module configuration for organization read access setup. (see [below for nested schema](#nestedatt--aws_org_read_customer_config--terraform_module))
+
+<a id="nestedatt--aws_org_read_customer_config--terraform_module"></a>
+### Nested Schema for `aws_org_read_customer_config.terraform_module`
+
+Read-Only:
+
+- `repository_url` (String) Module repository URL.
+- `source` (String) Module source.
+- `variables_json` (String) JSON-encoded variables for module configuration.

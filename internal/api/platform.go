@@ -10,10 +10,24 @@ import (
 
 // Platform is the data returned by reading platform data.
 type Platform struct {
-	ID               string
-	ExternalID       *string `graphql:"externalID"`
-	ExecutionRegions []string
-	DefaultRole      *string
+	ID                       string
+	ExternalID               *string `graphql:"externalID"`
+	ExecutionRegions         []string
+	DefaultRole              *string
+	AWSOrgReadCustomerConfig PlatformCustomerConfig `graphql:"awsOrgReadCustomerConfig"`
+	AWSAccountCustomerConfig PlatformCustomerConfig `graphql:"awsAccountCustomerConfig"`
+}
+
+// PlatformCustomerConfig is the data returned for a customer configuration.
+type PlatformCustomerConfig struct {
+	TerraformModule TerraformModule
+}
+
+// TerraformModule is the data returned for terraform module definitions.
+type TerraformModule struct {
+	RepositoryURL string `graphql:"repositoryURL"`
+	Source        string
+	VariablesJSON string `graphql:"variablesJSON"`
 }
 
 type platformAPI struct {

@@ -20,6 +20,8 @@ func TestAccPlatformDataSource(t *testing.T) {
 				// at least one region is enabled
 				resource.TestCheckResourceAttrSet("data.stacklet_platform.test", "execution_regions.0"),
 				resource.TestCheckResourceAttrSet("data.stacklet_platform.test", "default_role"),
+				resource.TestCheckResourceAttrSet("data.stacklet_platform.test", "aws_account_customer_config.terraform_module.source"),
+				resource.TestCheckResourceAttrSet("data.stacklet_platform.test", "aws_org_read_customer_config.terraform_module.source"),
 			),
 		},
 	}
