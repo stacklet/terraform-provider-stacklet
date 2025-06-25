@@ -317,14 +317,14 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 	m.ID = types.StringValue(binding.ID)
 	m.UUID = types.StringValue(binding.UUID)
 	m.Name = types.StringValue(binding.Name)
-	m.Description = tftypes.NullableString(binding.Description)
+	m.Description = types.StringPointerValue(binding.Description)
 	m.AutoDeploy = types.BoolValue(binding.AutoDeploy)
-	m.Schedule = tftypes.NullableString(binding.Schedule)
+	m.Schedule = types.StringPointerValue(binding.Schedule)
 	m.AccountGroupUUID = types.StringValue(binding.AccountGroup.UUID)
 	m.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
 	m.System = types.BoolValue(binding.System)
-	m.DryRun = tftypes.NullableBool(binding.DryRun())
-	m.SecurityContext = tftypes.NullableString(binding.SecurityContext())
+	m.DryRun = types.BoolPointerValue(binding.DryRun())
+	m.SecurityContext = types.StringPointerValue(binding.SecurityContext())
 
 	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 	if err != nil {
@@ -343,7 +343,7 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 		var d diag.Diagnostics
 		// if default resource limits are set in the config but empty, apply default
 		def := models.BindingExecutionConfigResourceLimit{RequiresBoth: types.BoolValue(false)}
-		defaultLimits, d = basetypes.NewObjectValueFrom(ctx, def.AttributeTypes(), &def)
+		defaultLimits, d = types.ObjectValueFrom(ctx, def.AttributeTypes(), &def)
 		diags.Append(d...)
 	} else {
 		var d diag.Diagnostics
@@ -353,8 +353,8 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 			func() (*models.BindingExecutionConfigResourceLimit, diag.Diagnostics) {
 				l := binding.DefaultResourceLimits()
 				return &models.BindingExecutionConfigResourceLimit{
-					MaxCount:      tftypes.NullableInt(l.MaxCount),
-					MaxPercentage: tftypes.NullableFloat(l.MaxPercentage),
+					MaxCount:      types.Int32PointerValue(l.MaxCount),
+					MaxPercentage: types.Float32PointerValue(l.MaxPercentage),
 					RequiresBoth:  types.BoolValue(l.RequiresBoth),
 				}, nil
 			},
@@ -368,8 +368,8 @@ func (r bindingResource) updateBindingModel(ctx context.Context, m *models.Bindi
 		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"policy_name":    types.StringValue(entry.PolicyName),
-				"max_count":      tftypes.NullableInt(entry.Limit.MaxCount),
-				"max_percentage": tftypes.NullableFloat(entry.Limit.MaxPercentage),
+				"max_count":      types.Int32PointerValue(entry.Limit.MaxCount),
+				"max_percentage": types.Float32PointerValue(entry.Limit.MaxPercentage),
 				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),
 			}, nil
 		},
@@ -398,7 +398,7 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 			return api.BindingExecutionConfig{}, diags
 		}
 		defaultResourceLimits = &api.BindingExecutionConfigResourceLimit{
-			MaxCount:      api.NullableInt(defLimitsObj.MaxCount),
+			MaxCount:      defLimitsObj.MaxCount.ValueInt32Pointer(),
 			MaxPercentage: defLimitsObj.MaxPercentage.ValueFloat32Pointer(),
 			RequiresBoth:  defLimitsObj.RequiresBoth.ValueBool(),
 		}
@@ -427,7 +427,7 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 				api.BindingExecutionConfigResourceLimitsPolicyOverrides{
 					PolicyName: limitsObj.PolicyName.ValueString(),
 					Limit: api.BindingExecutionConfigResourceLimit{
-						MaxCount:      api.NullableInt(limitsObj.MaxCount),
+						MaxCount:      limitsObj.MaxCount.ValueInt32Pointer(),
 						MaxPercentage: limitsObj.MaxPercentage.ValueFloat32Pointer(),
 						RequiresBoth:  limitsObj.RequiresBoth.ValueBool(),
 					},

@@ -125,7 +125,7 @@ func (d *platformDataSource) Read(ctx context.Context, req datasource.ReadReques
 	}
 
 	data.ID = types.StringValue(platform.ID)
-	data.ExternalID = tftypes.NullableString(platform.ExternalID)
+	data.ExternalID = types.StringPointerValue(platform.ExternalID)
 	data.ExecutionRegions = tftypes.StringsList(platform.ExecutionRegions)
 	awsAccountCustomerConfig, diags := d.getCustomerConfig(ctx, platform.AWSAccountCustomerConfig)
 	resp.Diagnostics.Append(diags...)

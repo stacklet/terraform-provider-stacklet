@@ -17,7 +17,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -282,12 +281,12 @@ func (r repositoryResource) updateRepositoryModel(m *models.RepositoryResource, 
 	m.UUID = types.StringValue(repo.UUID)
 	m.URL = types.StringValue(repo.URL)
 	m.Name = types.StringValue(repo.Name)
-	m.Description = tftypes.NullableString(repo.Description)
+	m.Description = types.StringPointerValue(repo.Description)
 	m.System = types.BoolValue(repo.System)
 	m.WebhookURL = types.StringValue(repo.WebhookURL)
-	m.AuthUser = tftypes.NullableString(repo.Auth.AuthUser)
+	m.AuthUser = types.StringPointerValue(repo.Auth.AuthUser)
 	m.HasAuthToken = types.BoolValue(repo.Auth.HasAuthToken)
-	m.SSHPublicKey = tftypes.NullableString(repo.Auth.SSHPublicKey)
+	m.SSHPublicKey = types.StringPointerValue(repo.Auth.SSHPublicKey)
 	m.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
 	m.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
 }

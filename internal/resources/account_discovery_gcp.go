@@ -221,7 +221,7 @@ func (r *accountDiscoveryGCPResource) ImportState(ctx context.Context, req resou
 func (r accountDiscoveryGCPResource) updateAccountDiscoveryGCPModel(m *models.AccountDiscoveryGCPResource, accountDiscovery *api.AccountDiscovery) {
 	m.ID = types.StringValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
-	m.Description = tftypes.NullableString(accountDiscovery.Description)
+	m.Description = types.StringPointerValue(accountDiscovery.Description)
 	m.Suspended = types.BoolValue(accountDiscovery.Schedule.Suspended)
 	m.ClientEmail = types.StringValue(accountDiscovery.Config.GCPConfig.ClientEmail)
 	m.ClientID = types.StringValue(accountDiscovery.Config.GCPConfig.ClientID)

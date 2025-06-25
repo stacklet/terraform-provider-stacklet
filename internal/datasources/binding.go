@@ -166,14 +166,14 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	data.ID = types.StringValue(binding.ID)
 	data.UUID = types.StringValue(binding.UUID)
 	data.Name = types.StringValue(binding.Name)
-	data.Description = tftypes.NullableString(binding.Description)
+	data.Description = types.StringPointerValue(binding.Description)
 	data.AutoDeploy = types.BoolValue(binding.AutoDeploy)
-	data.Schedule = tftypes.NullableString(binding.Schedule)
+	data.Schedule = types.StringPointerValue(binding.Schedule)
 	data.AccountGroupUUID = types.StringValue(binding.AccountGroup.UUID)
 	data.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
 	data.System = types.BoolValue(binding.System)
-	data.DryRun = tftypes.NullableBool(binding.DryRun())
-	data.SecurityContext = tftypes.NullableString(binding.SecurityContext())
+	data.DryRun = types.BoolPointerValue(binding.DryRun())
+	data.SecurityContext = types.StringPointerValue(binding.SecurityContext())
 
 	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
 	if err != nil {
@@ -188,8 +188,8 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		defLimit,
 		func() (*models.BindingExecutionConfigResourceLimit, diag.Diagnostics) {
 			return &models.BindingExecutionConfigResourceLimit{
-				MaxCount:      tftypes.NullableInt(defLimit.MaxCount),
-				MaxPercentage: tftypes.NullableFloat(defLimit.MaxPercentage),
+				MaxCount:      types.Int32PointerValue(defLimit.MaxCount),
+				MaxPercentage: types.Float32PointerValue(defLimit.MaxPercentage),
 				RequiresBoth:  types.BoolValue(defLimit.RequiresBoth),
 			}, nil
 		},
@@ -205,8 +205,8 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"policy_name":    types.StringValue(entry.PolicyName),
-				"max_count":      tftypes.NullableInt(entry.Limit.MaxCount),
-				"max_percentage": tftypes.NullableFloat(entry.Limit.MaxPercentage),
+				"max_count":      types.Int32PointerValue(entry.Limit.MaxCount),
+				"max_percentage": types.Float32PointerValue(entry.Limit.MaxPercentage),
 				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),
 			}, nil
 		},

@@ -18,7 +18,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -196,7 +195,7 @@ func (r *accountDiscoveryAzureResource) ImportState(ctx context.Context, req res
 func (r accountDiscoveryAzureResource) updateAccountDiscoveryAzureModel(m *models.AccountDiscoveryAzureResource, accountDiscovery *api.AccountDiscovery) {
 	m.ID = types.StringValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
-	m.Description = tftypes.NullableString(accountDiscovery.Description)
+	m.Description = types.StringPointerValue(accountDiscovery.Description)
 	m.Suspended = types.BoolValue(accountDiscovery.Schedule.Suspended)
 	m.ClientID = types.StringValue(accountDiscovery.Config.AzureConfig.ClientID)
 	m.TenantID = types.StringValue(accountDiscovery.Config.AzureConfig.TenantID)

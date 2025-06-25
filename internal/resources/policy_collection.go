@@ -279,7 +279,7 @@ func (r policyCollectionResource) updatePolicyCollectionModel(ctx context.Contex
 	m.ID = types.StringValue(policyCollection.ID)
 	m.UUID = types.StringValue(policyCollection.UUID)
 	m.Name = types.StringValue(policyCollection.Name)
-	m.Description = tftypes.NullableString(policyCollection.Description)
+	m.Description = types.StringPointerValue(policyCollection.Description)
 	m.CloudProvider = types.StringValue(string(policyCollection.Provider))
 	m.AutoUpdate = types.BoolValue(policyCollection.AutoUpdate)
 	m.System = types.BoolValue(policyCollection.System)
