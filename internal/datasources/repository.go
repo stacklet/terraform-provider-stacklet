@@ -13,7 +13,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -129,10 +128,10 @@ func (d *repositoryDataSource) Read(ctx context.Context, req datasource.ReadRequ
 	data.URL = types.StringValue(repo.URL)
 	data.Name = types.StringValue(repo.Name)
 	data.WebhookURL = types.StringValue(repo.WebhookURL)
-	data.Description = tftypes.NullableString(repo.Description)
-	data.AuthUser = tftypes.NullableString(repo.Auth.AuthUser)
+	data.Description = types.StringPointerValue(repo.Description)
+	data.AuthUser = types.StringPointerValue(repo.Auth.AuthUser)
 	data.HasAuthToken = types.BoolValue(repo.Auth.HasAuthToken)
-	data.SSHPublicKey = tftypes.NullableString(repo.Auth.SSHPublicKey)
+	data.SSHPublicKey = types.StringPointerValue(repo.Auth.SSHPublicKey)
 	data.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
 	data.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
 	data.System = types.BoolValue(repo.System)

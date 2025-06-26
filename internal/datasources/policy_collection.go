@@ -125,7 +125,7 @@ func (d *policyCollectionDataSource) Read(ctx context.Context, req datasource.Re
 	data.ID = types.StringValue(policyCollection.ID)
 	data.UUID = types.StringValue(policyCollection.UUID)
 	data.Name = types.StringValue(policyCollection.Name)
-	data.Description = tftypes.NullableString(policyCollection.Description)
+	data.Description = types.StringPointerValue(policyCollection.Description)
 	data.CloudProvider = types.StringValue(string(policyCollection.Provider))
 	data.AutoUpdate = types.BoolValue(policyCollection.AutoUpdate)
 	data.System = types.BoolValue(policyCollection.System)

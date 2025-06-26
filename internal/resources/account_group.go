@@ -180,7 +180,7 @@ func (r accountGroupResource) updateAccountGroupModel(m *models.AccountGroupReso
 	m.ID = types.StringValue(account_group.ID)
 	m.UUID = types.StringValue(account_group.UUID)
 	m.Name = types.StringValue(account_group.Name)
-	m.Description = tftypes.NullableString(account_group.Description)
+	m.Description = types.StringPointerValue(account_group.Description)
 	m.CloudProvider = types.StringValue(account_group.Provider)
 	m.Regions = tftypes.StringsList(account_group.Regions)
 }

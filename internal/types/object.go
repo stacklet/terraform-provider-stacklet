@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
@@ -26,7 +27,7 @@ func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, 
 	if diags.HasError() || objPtr == nil {
 		return NullObject(empty), diags
 	}
-	return basetypes.NewObjectValueFrom(ctx, empty.AttributeTypes(), *objPtr)
+	return types.ObjectValueFrom(ctx, empty.AttributeTypes(), *objPtr)
 }
 
 // NullObject returns a basetype.ObjectValue for the provided type with empty values.

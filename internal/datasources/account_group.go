@@ -94,7 +94,7 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 	data.ID = types.StringValue(account_group.ID)
 	data.UUID = types.StringValue(account_group.UUID)
 	data.Name = types.StringValue(account_group.Name)
-	data.Description = tftypes.NullableString(account_group.Description)
+	data.Description = types.StringPointerValue(account_group.Description)
 	data.CloudProvider = types.StringValue(account_group.Provider)
 	data.Regions = tftypes.StringsList(account_group.Regions)
 

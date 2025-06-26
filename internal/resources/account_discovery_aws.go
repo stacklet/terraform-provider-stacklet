@@ -18,7 +18,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -193,7 +192,7 @@ func (r *accountDiscoveryAWSResource) ImportState(ctx context.Context, req resou
 func (r accountDiscoveryAWSResource) updateAccountDiscoveryAWSModel(m *models.AccountDiscoveryAWSResource, accountDiscovery *api.AccountDiscovery) {
 	m.ID = types.StringValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
-	m.Description = tftypes.NullableString(accountDiscovery.Description)
+	m.Description = types.StringPointerValue(accountDiscovery.Description)
 	m.Suspended = types.BoolValue(accountDiscovery.Schedule.Suspended)
 	m.OrgID = types.StringValue(accountDiscovery.Config.AWSConfig.OrgID)
 	m.OrgReadRole = types.StringValue(accountDiscovery.Config.AWSConfig.OrgRole)

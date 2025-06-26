@@ -15,7 +15,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -130,7 +129,7 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	data.ID = types.StringValue(policy.ID)
 	data.UUID = types.StringValue(policy.UUID)
 	data.Name = types.StringValue(policy.Name)
-	data.Description = tftypes.NullableString(policy.Description)
+	data.Description = types.StringPointerValue(policy.Description)
 	data.CloudProvider = types.StringValue(policy.Provider)
 	data.Version = types.Int32Value(int32(policy.Version))
 	category, diag := types.ListValueFrom(ctx, types.StringType, policy.Category)

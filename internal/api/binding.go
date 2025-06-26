@@ -87,7 +87,7 @@ type BindingExecutionConfigResourceLimits struct {
 
 // BindingExecutionConfigResourceLimit holds resource limits for a binding execution config.
 type BindingExecutionConfigResourceLimit struct {
-	MaxCount      *int     `json:"maxCount,omitempty"`
+	MaxCount      *int32   `json:"maxCount,omitempty"`
 	MaxPercentage *float32 `json:"maxPercentage,omitempty"`
 	RequiresBoth  bool     `json:"requiresBoth"`
 }
