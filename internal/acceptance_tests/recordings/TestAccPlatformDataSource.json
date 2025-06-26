@@ -1,0 +1,97 @@
+{
+  "{platform{id,externalID,executionRegions,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}": [
+    {
+      "request": {
+        "query": "{platform{id,externalID,executionRegions,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
+      },
+      "response": {
+        "data": {
+          "platform": {
+            "awsAccountCustomerConfig": {
+              "terraformModule": {
+                "repositoryURL": "https://github.com/stacklet/terraform-aws-onboarding",
+                "source": "github.com/stacklet/terraform-aws-onboarding//access",
+                "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_event_bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/default\", \"stacklet_execution_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-execution\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\"}"
+              }
+            },
+            "awsOrgReadCustomerConfig": {
+              "terraformModule": {
+                "repositoryURL": "https://github.com/stacklet/terraform-aws-onboarding",
+                "source": "github.com/stacklet/terraform-aws-onboarding//org-read",
+                "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\", \"stacklet_platform_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-platform-lambda\"}"
+              }
+            },
+            "executionRegions": [
+              "eu-north-1",
+              "us-east-1"
+            ],
+            "externalID": "external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2",
+            "id": "WyJwbGF0Zm9ybSJd"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{platform{id,externalID,executionRegions,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
+      },
+      "response": {
+        "data": {
+          "platform": {
+            "awsAccountCustomerConfig": {
+              "terraformModule": {
+                "repositoryURL": "https://github.com/stacklet/terraform-aws-onboarding",
+                "source": "github.com/stacklet/terraform-aws-onboarding//access",
+                "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_event_bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/default\", \"stacklet_execution_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-execution\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\"}"
+              }
+            },
+            "awsOrgReadCustomerConfig": {
+              "terraformModule": {
+                "repositoryURL": "https://github.com/stacklet/terraform-aws-onboarding",
+                "source": "github.com/stacklet/terraform-aws-onboarding//org-read",
+                "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\", \"stacklet_platform_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-platform-lambda\"}"
+              }
+            },
+            "executionRegions": [
+              "eu-north-1",
+              "us-east-1"
+            ],
+            "externalID": "external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2",
+            "id": "WyJwbGF0Zm9ybSJd"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{platform{id,externalID,executionRegions,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
+      },
+      "response": {
+        "data": {
+          "platform": {
+            "awsAccountCustomerConfig": {
+              "terraformModule": {
+                "repositoryURL": "https://github.com/stacklet/terraform-aws-onboarding",
+                "source": "github.com/stacklet/terraform-aws-onboarding//access",
+                "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_event_bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/default\", \"stacklet_execution_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-execution\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\"}"
+              }
+            },
+            "awsOrgReadCustomerConfig": {
+              "terraformModule": {
+                "repositoryURL": "https://github.com/stacklet/terraform-aws-onboarding",
+                "source": "github.com/stacklet/terraform-aws-onboarding//org-read",
+                "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\", \"stacklet_platform_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-platform-lambda\"}"
+              }
+            },
+            "executionRegions": [
+              "eu-north-1",
+              "us-east-1"
+            ],
+            "externalID": "external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2",
+            "id": "WyJwbGF0Zm9ybSJd"
+          }
+        }
+      }
+    }
+  ]
+}

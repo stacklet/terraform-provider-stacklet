@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     stacklet = {
-      source = "registry.terraform.io/stacklet/stacklet"
+      source = "stacklet/stacklet"
     }
   }
 }

@@ -18,7 +18,7 @@ It allows managing resources like accounts, account groups, policy collections, 
 terraform {
   required_providers {
     stacklet = {
-      source = "registry.terraform.io/stacklet/stacklet"
+      source = "stacklet/stacklet"
     }
   }
 }
