@@ -13,7 +13,6 @@ type PlatformDataSource struct {
 	ID                       types.String `tfsdk:"id"`
 	ExternalID               types.String `tfsdk:"external_id"`
 	ExecutionRegions         types.List   `tfsdk:"execution_regions"`
-	DefaultRole              types.String `tfsdk:"default_role"`
 	AWSAccountCustomerConfig types.Object `tfsdk:"aws_account_customer_config"`
 	AWSOrgReadCustomerConfig types.Object `tfsdk:"aws_org_read_customer_config"`
 }

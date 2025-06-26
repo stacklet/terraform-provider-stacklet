@@ -13,7 +13,6 @@ type Platform struct {
 	ID                       string
 	ExternalID               *string `graphql:"externalID"`
 	ExecutionRegions         []string
-	DefaultRole              *string
 	AWSOrgReadCustomerConfig PlatformCustomerConfig `graphql:"awsOrgReadCustomerConfig"`
 	AWSAccountCustomerConfig PlatformCustomerConfig `graphql:"awsAccountCustomerConfig"`
 }

@@ -51,10 +51,6 @@ func (d *platformDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 				Computed:    true,
 				ElementType: types.StringType,
 			},
-			"default_role": schema.StringAttribute{
-				Description: "Default role for users.",
-				Computed:    true,
-			},
 			"aws_account_customer_config": schema.SingleNestedAttribute{
 				Description: "Customer configuration for AWS accounts.",
 				Computed:    true,
@@ -131,7 +127,6 @@ func (d *platformDataSource) Read(ctx context.Context, req datasource.ReadReques
 	data.ID = types.StringValue(platform.ID)
 	data.ExternalID = tftypes.NullableString(platform.ExternalID)
 	data.ExecutionRegions = tftypes.StringsList(platform.ExecutionRegions)
-	data.DefaultRole = tftypes.NullableString(platform.DefaultRole)
 	awsAccountCustomerConfig, diags := d.getCustomerConfig(ctx, platform.AWSAccountCustomerConfig)
 	resp.Diagnostics.Append(diags...)
 	data.AWSAccountCustomerConfig = awsAccountCustomerConfig

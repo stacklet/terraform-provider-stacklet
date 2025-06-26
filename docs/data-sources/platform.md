@@ -24,7 +24,6 @@ data "stacklet_platform" "example" {}
 
 - `aws_account_customer_config` (Attributes) Customer configuration for AWS accounts. (see [below for nested schema](#nestedatt--aws_account_customer_config))
 - `aws_org_read_customer_config` (Attributes) Customer configuration for AWS organization read access. (see [below for nested schema](#nestedatt--aws_org_read_customer_config))
-- `default_role` (String) Default role for users.
 - `execution_regions` (List of String) List of regions for which execution is enabled.
 - `external_id` (String) The external ID for the deployment.
 - `id` (String) The GraphQL Node ID.

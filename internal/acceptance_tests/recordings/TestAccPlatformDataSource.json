@@ -1,8 +1,8 @@
 {
-  "{platform{id,externalID,executionRegions,defaultRole,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}": [
+  "{platform{id,externalID,executionRegions,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}": [
     {
       "request": {
-        "query": "{platform{id,externalID,executionRegions,defaultRole,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
+        "query": "{platform{id,externalID,executionRegions,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
       },
       "response": {
         "data": {
@@ -21,7 +21,6 @@
                 "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\", \"stacklet_platform_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-platform-lambda\"}"
               }
             },
-            "defaultRole": "admin",
             "executionRegions": [
               "eu-north-1",
               "us-east-1"
@@ -34,7 +33,7 @@
     },
     {
       "request": {
-        "query": "{platform{id,externalID,executionRegions,defaultRole,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
+        "query": "{platform{id,externalID,executionRegions,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
       },
       "response": {
         "data": {
@@ -53,7 +52,6 @@
                 "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\", \"stacklet_platform_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-platform-lambda\"}"
               }
             },
-            "defaultRole": "admin",
             "executionRegions": [
               "eu-north-1",
               "us-east-1"
@@ -66,7 +64,7 @@
     },
     {
       "request": {
-        "query": "{platform{id,externalID,executionRegions,defaultRole,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
+        "query": "{platform{id,externalID,executionRegions,awsOrgReadCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}},awsAccountCustomerConfig{terraformModule{repositoryURL,source,variablesJSON}}}}"
       },
       "response": {
         "data": {
@@ -85,7 +83,6 @@
                 "variablesJSON": "{\"prefix\": \"stacklet\", \"stacklet_assetdb_role_arn\": \"arn:aws:iam::905418385756:role/dev-collector\", \"stacklet_external_id\": \"external=1e28+b6b6/cf0a-4f54.b604,9218@4cf2:50d2\", \"stacklet_platform_role_arn\": \"arn:aws:iam::905418385756:role/dev-stacklet-platform-lambda\"}"
               }
             },
-            "defaultRole": "admin",
             "executionRegions": [
               "eu-north-1",
               "us-east-1"
