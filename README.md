@@ -68,16 +68,16 @@ data "stacklet_policy" "one" {
 }
 
 resource "stacklet_policy_collection" "example" {
-  name           = "tf-cursor-example-collection"
+  name           = "example-collection"
   cloud_provider = "AWS"
   description    = "Example policy collection"
   auto_update    = true
 }
 
 resource "stacklet_account_group" "example" {
-  name           = "tf-cusror-example-account-group"
+  name           = "example-account-group"
   cloud_provider = "AWS"
-  description    = "test account group from terraform"
+  description    = "Example account group"
   regions        = ["us-east-1", "us-east-2"]
 }
 
@@ -100,15 +100,15 @@ resource "stacklet_policy_collection_mapping" "one" {
 resource "stacklet_account" "two" {
   cloud_provider = "AWS"
   key            = "000000000000" # AWS account ID
-  name           = "test-tf-acccount"
+  name           = "test-acccount"
   short_name     = "tftest"
-  description    = "Test account from terraform testing update"
+  description    = "Test account"
   email          = "cloud-team@example.com"
 }
 
 resource "stacklet_binding" "binding" {
-  name                   = "test-tf-cursor-binding"
-  description            = "created with terraform update"
+  name                   = "test-binding"
+  description            = "Created with terraform"
   account_group_uuid     = stacklet_account_group.example.uuid
   policy_collection_uuid = stacklet_policy_collection.example.uuid
 }
