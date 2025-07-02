@@ -1,3 +1,9 @@
+## 0.2.0 - 2025-07-02
+
+- Add `stacklet_platform` data source.
+- Handle pagination in policy collection API.
+
+
 ## 0.1.0 - 2025-06-17
 
 - First release
