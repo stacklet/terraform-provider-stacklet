@@ -38,6 +38,8 @@ resource "stacklet_policy_collection_mapping" "example" {
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import stacklet_policy_collection_mapping.example $policy_collection_uuid:$policy_uuid
 ```

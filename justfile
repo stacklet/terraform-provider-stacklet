@@ -51,8 +51,6 @@ test-record testname:
 # Generate provider documentation
 docs:
     env -C tools go generate -run=generate-docs
-    # XXX workaround for https://github.com/hashicorp/terraform-plugin-docs/issues/445
-    sed -i '/^subcategory:/d' docs/index.md
 
 # Add copyright headers
 copyright:
