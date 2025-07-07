@@ -38,6 +38,10 @@ Read-Only:
 <a id="nestedatt--aws_account_customer_config--terraform_module"></a>
 ### Nested Schema for `aws_account_customer_config.terraform_module`
 
+Optional:
+
+- `version` (String) Module version.
+
 Read-Only:
 
 - `repository_url` (String) Module repository URL.
@@ -55,6 +59,10 @@ Read-Only:
 
 <a id="nestedatt--aws_org_read_customer_config--terraform_module"></a>
 ### Nested Schema for `aws_org_read_customer_config.terraform_module`
+
+Optional:
+
+- `version` (String) Module version.
 
 Read-Only:
 

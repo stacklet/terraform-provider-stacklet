@@ -71,6 +71,11 @@ func (d *platformDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 								Description: "JSON-encoded variables for module configuration.",
 								Computed:    true,
 							},
+							"version": schema.StringAttribute{
+								Description: "Module version.",
+								Computed:    true,
+								Optional:    true,
+							},
 						},
 					},
 				},
@@ -94,6 +99,11 @@ func (d *platformDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 							"variables_json": schema.StringAttribute{
 								Description: "JSON-encoded variables for module configuration.",
 								Computed:    true,
+							},
+							"version": schema.StringAttribute{
+								Description: "Module version.",
+								Computed:    true,
+								Optional:    true,
 							},
 						},
 					},
@@ -149,6 +159,7 @@ func (d platformDataSource) getCustomerConfig(ctx context.Context, config api.Pl
 				RepositoryURL: types.StringValue(config.TerraformModule.RepositoryURL),
 				Source:        types.StringValue(config.TerraformModule.Source),
 				VariablesJSON: types.StringValue(config.TerraformModule.VariablesJSON),
+				Version:       types.StringPointerValue(config.TerraformModule.Version),
 			}, nil
 		},
 	)
