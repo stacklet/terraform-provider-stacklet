@@ -26,6 +26,7 @@ type PlatformCustomerConfig struct {
 type TerraformModule struct {
 	RepositoryURL string `graphql:"repositoryURL"`
 	Source        string
+	Version       *string
 	VariablesJSON string `graphql:"variablesJSON"`
 }
 
