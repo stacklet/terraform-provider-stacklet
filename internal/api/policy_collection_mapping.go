@@ -53,44 +53,32 @@ type policyCollectionMappingAPI struct {
 
 // Read returns data for a policy collection mapping.
 func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID string, policyUUID string) (*PolicyCollectionMapping, error) {
-	cursor := ""
 	var query struct {
 		PolicyCollection struct {
 			PolicyMappings struct {
 				Edges []struct {
 					Node PolicyCollectionMapping
 				}
-				PageInfo struct {
-					HasNextPage bool
-					EndCursor   string
-				}
 				Problems []Problem
-			} `graphql:"policyMappings(first: 100, after: $cursor)"`
+			} `graphql:"policyMappings(filterElement: $policyFilter)"`
 		} `graphql:"policyCollection(uuid: $uuid)"`
 	}
-	for {
-		variables := map[string]any{
-			"uuid":   graphql.String(collectionUUID),
-			"cursor": graphql.String(cursor),
-		}
-		if err := a.c.Query(ctx, &query, variables); err != nil {
-			return nil, NewAPIError(err)
-		}
-		if err := FromProblems(ctx, query.PolicyCollection.PolicyMappings.Problems); err != nil {
-			return nil, err
-		}
-
-		for _, edge := range query.PolicyCollection.PolicyMappings.Edges {
-			if edge.Node.Policy.UUID == policyUUID {
-				return &edge.Node, nil
-			}
-		}
-
-		if !query.PolicyCollection.PolicyMappings.PageInfo.HasNextPage {
-			return nil, NotFound{"Policy collection mapping not found"}
-		}
-		cursor = query.PolicyCollection.PolicyMappings.PageInfo.EndCursor
+	variables := map[string]any{
+		"uuid":         graphql.String(collectionUUID),
+		"policyFilter": NewFieldMatchFilter("uuid", policyUUID),
 	}
+	if err := a.c.Query(ctx, &query, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+	if err := FromProblems(ctx, query.PolicyCollection.PolicyMappings.Problems); err != nil {
+		return nil, err
+	}
+
+	if len(query.PolicyCollection.PolicyMappings.Edges) == 0 {
+		return nil, NotFound{"Policy collection mapping not found"}
+	}
+
+	return &query.PolicyCollection.PolicyMappings.Edges[0].Node, nil
 }
 
 // Upsert creates or updates a policy collection mapping.
