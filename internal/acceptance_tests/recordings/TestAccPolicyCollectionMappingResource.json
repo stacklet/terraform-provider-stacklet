@@ -18,28 +18,28 @@
             "collection": {
               "autoUpdate": false,
               "description": "Test policy collection",
-              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlODM1MTVmOS0zYzdmLTQ0ZjgtOGZmMy1hYTkxM2U3M2JhNTAiXQ==",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI2MzgyMTE2ZC05OWIxLTQzNGItYmJiNi0wMzFlZTRkNmFhOWMiXQ==",
               "isDynamic": false,
               "name": "test-collection-mapping",
               "provider": "AWS",
               "repositoryConfig": null,
               "repositoryView": null,
               "system": false,
-              "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+              "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==\"]}}": [
+  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}",
         "variables": {
           "input": {
             "ids": [
-              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
+              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
             ]
           }
         }
@@ -49,7 +49,7 @@
           "removePolicyCollectionMappings": {
             "removed": [
               {
-                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ=="
               }
             ]
           }
@@ -57,14 +57,14 @@
       }
     }
   ],
-  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==\"]}}": [
+  "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemovePolicyCollectionMappingsInput!){removePolicyCollectionMappings(input: $input){removed{id}}}",
         "variables": {
           "input": {
             "ids": [
-              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
+              "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
             ]
           }
         }
@@ -74,7 +74,7 @@
           "removePolicyCollectionMappings": {
             "removed": [
               {
-                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ=="
               }
             ]
           }
@@ -82,7 +82,7 @@
       }
     }
   ],
-  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"e83515f9-3c7f-44f8-8ff3-aa913e73ba50\",\"policyUUID\":\"0ee44f79-0c23-4b46-9d76-3d4bdfd32392\",\"policyVersion\":1}]}}": [
+  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"6382116d-99b1-434b-bbb6-031ee4d6aa9c\",\"policyUUID\":\"0ee44f79-0c23-4b46-9d76-3d4bdfd32392\",\"policyVersion\":1}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}",
@@ -90,7 +90,7 @@
           "input": {
             "mappings": [
               {
-                "collectionUUID": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50",
+                "collectionUUID": "6382116d-99b1-434b-bbb6-031ee4d6aa9c",
                 "policyUUID": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
                 "policyVersion": 1
               }
@@ -104,9 +104,9 @@
             "mappings": [
               {
                 "collection": {
-                  "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+                  "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
                 },
-                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
                 "policy": {
                   "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
                   "version": 1
@@ -118,7 +118,7 @@
       }
     }
   ],
-  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"e83515f9-3c7f-44f8-8ff3-aa913e73ba50\",\"policyUUID\":\"382c1cbd-9942-4ec4-ae48-ae0c303188eb\",\"policyVersion\":1}]}}": [
+  "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}:{\"input\":{\"mappings\":[{\"collectionUUID\":\"6382116d-99b1-434b-bbb6-031ee4d6aa9c\",\"policyUUID\":\"382c1cbd-9942-4ec4-ae48-ae0c303188eb\",\"policyVersion\":1}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertPolicyCollectionMappingsInput!){upsertPolicyCollectionMappings(input: $input){mappings{id,policy{uuid,version},collection{uuid}}}}",
@@ -126,7 +126,7 @@
           "input": {
             "mappings": [
               {
-                "collectionUUID": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50",
+                "collectionUUID": "6382116d-99b1-434b-bbb6-031ee4d6aa9c",
                 "policyUUID": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
                 "policyVersion": 1
               }
@@ -140,9 +140,9 @@
             "mappings": [
               {
                 "collection": {
-                  "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+                  "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
                 },
-                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
                 "policy": {
                   "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
                   "version": 1
@@ -154,165 +154,19 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"e83515f9-3c7f-44f8-8ff3-aa913e73ba50\"}": [
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"6382116d-99b1-434b-bbb6-031ee4d6aa9c\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
         "variables": {
-          "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+          "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
         }
       },
       "response": {
         "data": {
           "removePolicyCollection": {
             "collection": {
-              "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-            }
-          }
-        }
-      }
-    }
-  ],
-  "query ($cursor:String!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(first: 100, after: $cursor){edges{node{id,policy{uuid,version},collection{uuid}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}}:{\"cursor\":\"\",\"uuid\":\"e83515f9-3c7f-44f8-8ff3-aa913e73ba50\"}": [
-    {
-      "request": {
-        "query": "query ($cursor:String!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(first: 100, after: $cursor){edges{node{id,policy{uuid,version},collection{uuid}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}}",
-        "variables": {
-          "cursor": "",
-          "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-        }
-      },
-      "response": {
-        "data": {
-          "policyCollection": {
-            "policyMappings": {
-              "edges": [
-                {
-                  "node": {
-                    "collection": {
-                      "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-                    },
-                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
-                    "policy": {
-                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
-                      "version": 1
-                    }
-                  }
-                }
-              ],
-              "pageInfo": {
-                "endCursor": "eJyLVspLzE1V0lGIVkrOLy7RTSwvtgJi3aKUYt3MvOKSxLzkVN3SvNLi1BQgPy2/KFcpNhYA7wYTDQ==",
-                "hasNextPage": false
-              },
-              "problems": []
-            }
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($cursor:String!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(first: 100, after: $cursor){edges{node{id,policy{uuid,version},collection{uuid}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}}",
-        "variables": {
-          "cursor": "",
-          "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-        }
-      },
-      "response": {
-        "data": {
-          "policyCollection": {
-            "policyMappings": {
-              "edges": [
-                {
-                  "node": {
-                    "collection": {
-                      "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-                    },
-                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
-                    "policy": {
-                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
-                      "version": 1
-                    }
-                  }
-                }
-              ],
-              "pageInfo": {
-                "endCursor": "eJyLVspLzE1V0lGIVkrOLy7RTSwvtgJi3aKUYt3MvOKSxLzkVN3SvNLi1BQgPy2/KFcpNhYA7wYTDQ==",
-                "hasNextPage": false
-              },
-              "problems": []
-            }
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($cursor:String!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(first: 100, after: $cursor){edges{node{id,policy{uuid,version},collection{uuid}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}}",
-        "variables": {
-          "cursor": "",
-          "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-        }
-      },
-      "response": {
-        "data": {
-          "policyCollection": {
-            "policyMappings": {
-              "edges": [
-                {
-                  "node": {
-                    "collection": {
-                      "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-                    },
-                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
-                    "policy": {
-                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
-                      "version": 1
-                    }
-                  }
-                }
-              ],
-              "pageInfo": {
-                "endCursor": "eJyLVspLzE1V0lGIVkrOLy7RTSwvtgJi3aKUYt3MvOKSxLzkVN3SvNLi1BQgPy2/KFcpNhYA7wYTDQ==",
-                "hasNextPage": false
-              },
-              "problems": []
-            }
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($cursor:String!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(first: 100, after: $cursor){edges{node{id,policy{uuid,version},collection{uuid}}},pageInfo{hasNextPage,endCursor},problems{__typename,message}}}}",
-        "variables": {
-          "cursor": "",
-          "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-        }
-      },
-      "response": {
-        "data": {
-          "policyCollection": {
-            "policyMappings": {
-              "edges": [
-                {
-                  "node": {
-                    "collection": {
-                      "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
-                    },
-                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgImU4MzUxNWY5LTNjN2YtNDRmOC04ZmYzLWFhOTEzZTczYmE1MCIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
-                    "policy": {
-                      "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
-                      "version": 1
-                    }
-                  }
-                }
-              ],
-              "pageInfo": {
-                "endCursor": "eJyLVspLzE1V0lGIVkrOLy7RTSwvtgJi3aLUlOKMzLQS3dK80uLUFN3MvLT8olyl2FgAptURmw==",
-                "hasNextPage": false
-              },
-              "problems": []
+              "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
             }
           }
         }
@@ -785,13 +639,13 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"e83515f9-3c7f-44f8-8ff3-aa913e73ba50\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"6382116d-99b1-434b-bbb6-031ee4d6aa9c\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+          "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
         }
       },
       "response": {
@@ -799,14 +653,14 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlODM1MTVmOS0zYzdmLTQ0ZjgtOGZmMy1hYTkxM2U3M2JhNTAiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI2MzgyMTE2ZC05OWIxLTQzNGItYmJiNi0wMzFlZTRkNmFhOWMiXQ==",
             "isDynamic": false,
             "name": "test-collection-mapping",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+            "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
           }
         }
       }
@@ -816,7 +670,7 @@
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+          "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
         }
       },
       "response": {
@@ -824,14 +678,14 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlODM1MTVmOS0zYzdmLTQ0ZjgtOGZmMy1hYTkxM2U3M2JhNTAiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI2MzgyMTE2ZC05OWIxLTQzNGItYmJiNi0wMzFlZTRkNmFhOWMiXQ==",
             "isDynamic": false,
             "name": "test-collection-mapping",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+            "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
           }
         }
       }
@@ -841,7 +695,7 @@
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+          "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
         }
       },
       "response": {
@@ -849,14 +703,170 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJlODM1MTVmOS0zYzdmLTQ0ZjgtOGZmMy1hYTkxM2U3M2JhNTAiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI2MzgyMTE2ZC05OWIxLTQzNGItYmJiNi0wMzFlZTRkNmFhOWMiXQ==",
             "isDynamic": false,
             "name": "test-collection-mapping",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "e83515f9-3c7f-44f8-8ff3-aa913e73ba50"
+            "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+          }
+        }
+      }
+    }
+  ],
+  "query ($policyFilter:FilterElementInput!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(filterElement: $policyFilter){edges{node{id,policy{uuid,version},collection{uuid}}},problems{__typename,message}}}}:{\"policyFilter\":{\"single\":{\"name\":\"uuid\",\"operator\":\"equals\",\"value\":\"0ee44f79-0c23-4b46-9d76-3d4bdfd32392\"}},\"uuid\":\"6382116d-99b1-434b-bbb6-031ee4d6aa9c\"}": [
+    {
+      "request": {
+        "query": "query ($policyFilter:FilterElementInput!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(filterElement: $policyFilter){edges{node{id,policy{uuid,version},collection{uuid}}},problems{__typename,message}}}}",
+        "variables": {
+          "policyFilter": {
+            "single": {
+              "name": "uuid",
+              "operator": "equals",
+              "value": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392"
+            }
+          },
+          "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policyMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "collection": {
+                      "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+                    },
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIwZWU0NGY3OS0wYzIzLTRiNDYtOWQ3Ni0zZDRiZGZkMzIzOTIiXQ==",
+                    "policy": {
+                      "uuid": "0ee44f79-0c23-4b46-9d76-3d4bdfd32392",
+                      "version": 1
+                    }
+                  }
+                }
+              ],
+              "problems": []
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($policyFilter:FilterElementInput!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(filterElement: $policyFilter){edges{node{id,policy{uuid,version},collection{uuid}}},problems{__typename,message}}}}:{\"policyFilter\":{\"single\":{\"name\":\"uuid\",\"operator\":\"equals\",\"value\":\"382c1cbd-9942-4ec4-ae48-ae0c303188eb\"}},\"uuid\":\"6382116d-99b1-434b-bbb6-031ee4d6aa9c\"}": [
+    {
+      "request": {
+        "query": "query ($policyFilter:FilterElementInput!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(filterElement: $policyFilter){edges{node{id,policy{uuid,version},collection{uuid}}},problems{__typename,message}}}}",
+        "variables": {
+          "policyFilter": {
+            "single": {
+              "name": "uuid",
+              "operator": "equals",
+              "value": "382c1cbd-9942-4ec4-ae48-ae0c303188eb"
+            }
+          },
+          "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policyMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "collection": {
+                      "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+                    },
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "policy": {
+                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+                      "version": 1
+                    }
+                  }
+                }
+              ],
+              "problems": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($policyFilter:FilterElementInput!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(filterElement: $policyFilter){edges{node{id,policy{uuid,version},collection{uuid}}},problems{__typename,message}}}}",
+        "variables": {
+          "policyFilter": {
+            "single": {
+              "name": "uuid",
+              "operator": "equals",
+              "value": "382c1cbd-9942-4ec4-ae48-ae0c303188eb"
+            }
+          },
+          "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policyMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "collection": {
+                      "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+                    },
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "policy": {
+                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+                      "version": 1
+                    }
+                  }
+                }
+              ],
+              "problems": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($policyFilter:FilterElementInput!$uuid:String!){policyCollection(uuid: $uuid){policyMappings(filterElement: $policyFilter){edges{node{id,policy{uuid,version},collection{uuid}}},problems{__typename,message}}}}",
+        "variables": {
+          "policyFilter": {
+            "single": {
+              "name": "uuid",
+              "operator": "equals",
+              "value": "382c1cbd-9942-4ec4-ae48-ae0c303188eb"
+            }
+          },
+          "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "policyMappings": {
+              "edges": [
+                {
+                  "node": {
+                    "collection": {
+                      "uuid": "6382116d-99b1-434b-bbb6-031ee4d6aa9c"
+                    },
+                    "id": "WyJwb2xpY3ktY29sbGVjdGlvbi1tYXBwaW5nIiwgIjYzODIxMTZkLTk5YjEtNDM0Yi1iYmI2LTAzMWVlNGQ2YWE5YyIsICIzODJjMWNiZC05OTQyLTRlYzQtYWU0OC1hZTBjMzAzMTg4ZWIiXQ==",
+                    "policy": {
+                      "uuid": "382c1cbd-9942-4ec4-ae48-ae0c303188eb",
+                      "version": 1
+                    }
+                  }
+                }
+              ],
+              "problems": []
+            }
           }
         }
       }
