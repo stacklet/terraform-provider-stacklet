@@ -1,0 +1,1 @@
+terraform import stacklet_notification_template.example $name

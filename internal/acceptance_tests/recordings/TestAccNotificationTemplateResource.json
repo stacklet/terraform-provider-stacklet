@@ -1,0 +1,234 @@
+{
+  "mutation ($input:TemplateInput!){addTemplate(input: $input){template{id,name,description,transport,content}}}:{\"input\":{\"content\":\"sample content\",\"description\":\"Test notification template\",\"name\":\"test-notification-template\",\"transport\":\"email\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:TemplateInput!){addTemplate(input: $input){template{id,name,description,transport,content}}}",
+        "variables": {
+          "input": {
+            "content": "sample content",
+            "description": "Test notification template",
+            "name": "test-notification-template",
+            "transport": "email"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addTemplate": {
+            "template": {
+              "content": "sample content",
+              "description": "Test notification template",
+              "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZSJd",
+              "name": "test-notification-template",
+              "transport": "email"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:TemplateInput!){addTemplate(input: $input){template{id,name,description,transport,content}}}:{\"input\":{\"content\":\"sample updated content\",\"description\":\"Test updated notification template\",\"name\":\"test-notification-template\",\"transport\":\"slack\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:TemplateInput!){addTemplate(input: $input){template{id,name,description,transport,content}}}",
+        "variables": {
+          "input": {
+            "content": "sample updated content",
+            "description": "Test updated notification template",
+            "name": "test-notification-template",
+            "transport": "slack"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addTemplate": {
+            "template": {
+              "content": "sample updated content",
+              "description": "Test updated notification template",
+              "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZSJd",
+              "name": "test-notification-template",
+              "transport": "slack"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:TemplateInput!){addTemplate(input: $input){template{id,name,description,transport,content}}}:{\"input\":{\"content\":\"sample updated content\",\"description\":\"Test updated notification template\",\"name\":\"test-notification-template-renamed\",\"transport\":\"slack\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:TemplateInput!){addTemplate(input: $input){template{id,name,description,transport,content}}}",
+        "variables": {
+          "input": {
+            "content": "sample updated content",
+            "description": "Test updated notification template",
+            "name": "test-notification-template-renamed",
+            "transport": "slack"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addTemplate": {
+            "template": {
+              "content": "sample updated content",
+              "description": "Test updated notification template",
+              "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZS1yZW5hbWVkIl0=",
+              "name": "test-notification-template-renamed",
+              "transport": "slack"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($name:String!){removeTemplate(name: $name)}:{\"name\":\"test-notification-template\"}": [
+    {
+      "request": {
+        "query": "mutation ($name:String!){removeTemplate(name: $name)}",
+        "variables": {
+          "name": "test-notification-template"
+        }
+      },
+      "response": {
+        "data": {
+          "removeTemplate": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZSJd"
+        }
+      }
+    }
+  ],
+  "mutation ($name:String!){removeTemplate(name: $name)}:{\"name\":\"test-notification-template-renamed\"}": [
+    {
+      "request": {
+        "query": "mutation ($name:String!){removeTemplate(name: $name)}",
+        "variables": {
+          "name": "test-notification-template-renamed"
+        }
+      },
+      "response": {
+        "data": {
+          "removeTemplate": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZS1yZW5hbWVkIl0="
+        }
+      }
+    }
+  ],
+  "query ($name:String!){template(name: $name){id,name,description,transport,content}}:{\"name\":\"test-notification-template\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!){template(name: $name){id,name,description,transport,content}}",
+        "variables": {
+          "name": "test-notification-template"
+        }
+      },
+      "response": {
+        "data": {
+          "template": {
+            "content": "sample content",
+            "description": "Test notification template",
+            "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZSJd",
+            "name": "test-notification-template",
+            "transport": "email"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){template(name: $name){id,name,description,transport,content}}",
+        "variables": {
+          "name": "test-notification-template"
+        }
+      },
+      "response": {
+        "data": {
+          "template": {
+            "content": "sample content",
+            "description": "Test notification template",
+            "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZSJd",
+            "name": "test-notification-template",
+            "transport": "email"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){template(name: $name){id,name,description,transport,content}}",
+        "variables": {
+          "name": "test-notification-template"
+        }
+      },
+      "response": {
+        "data": {
+          "template": {
+            "content": "sample content",
+            "description": "Test notification template",
+            "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZSJd",
+            "name": "test-notification-template",
+            "transport": "email"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){template(name: $name){id,name,description,transport,content}}",
+        "variables": {
+          "name": "test-notification-template"
+        }
+      },
+      "response": {
+        "data": {
+          "template": {
+            "content": "sample updated content",
+            "description": "Test updated notification template",
+            "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZSJd",
+            "name": "test-notification-template",
+            "transport": "slack"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){template(name: $name){id,name,description,transport,content}}",
+        "variables": {
+          "name": "test-notification-template"
+        }
+      },
+      "response": {
+        "data": {
+          "template": {
+            "content": "sample updated content",
+            "description": "Test updated notification template",
+            "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZSJd",
+            "name": "test-notification-template",
+            "transport": "slack"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!){template(name: $name){id,name,description,transport,content}}:{\"name\":\"test-notification-template-renamed\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!){template(name: $name){id,name,description,transport,content}}",
+        "variables": {
+          "name": "test-notification-template-renamed"
+        }
+      },
+      "response": {
+        "data": {
+          "template": {
+            "content": "sample updated content",
+            "description": "Test updated notification template",
+            "id": "WyJjb21tc2h1Yi10ZW1wbGF0ZSIsICJ0ZXN0LW5vdGlmaWNhdGlvbi10ZW1wbGF0ZS1yZW5hbWVkIl0=",
+            "name": "test-notification-template-renamed",
+            "transport": "slack"
+          }
+        }
+      }
+    }
+  ]
+}

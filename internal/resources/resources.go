@@ -7,13 +7,14 @@ import (
 )
 
 var RESOURCES = []func() resource.Resource{
-	NewAccountDiscoveryAzureResource,
 	NewAccountDiscoveryAWSResource,
+	NewAccountDiscoveryAzureResource,
 	NewAccountDiscoveryGCPResource,
 	NewAccountGroupMappingResource,
 	NewAccountGroupResource,
 	NewAccountResource,
 	NewBindingResource,
+	NewNotificationTemplateResource,
 	NewPolicyCollectionMappingResource,
 	NewPolicyCollectionResource,
 	NewRepositoryResource,

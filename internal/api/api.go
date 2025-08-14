@@ -20,6 +20,7 @@ type API struct {
 	PolicyCollectionMapping policyCollectionMappingAPI
 	ReportGroup             reportGroupAPI
 	Repository              repositoryAPI
+	Template                templateAPI
 }
 
 // New creates an API wrapper.
@@ -36,5 +37,6 @@ func New(c *graphql.Client) *API {
 		PolicyCollectionMapping: policyCollectionMappingAPI{c},
 		ReportGroup:             reportGroupAPI{c},
 		Repository:              repositoryAPI{c},
+		Template:                templateAPI{c},
 	}
 }
