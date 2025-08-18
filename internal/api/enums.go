@@ -37,3 +37,18 @@ var REPORT_SOURCES = []ReportSource{
 	ReportSourceControl,
 	ReportSourcePolicy,
 }
+
+// ConfigurationProfileName is the name for a configuration profile.
+//
+// This is defined as a type since profiles are looked up by names matching
+// type.
+type ConfigurationProfileName string
+
+const (
+	ConfigurationProfileEmail      = ConfigurationProfileName("email")
+	ConfigurationProfileSlack      = ConfigurationProfileName("slack")
+	ConfigurationProfileTeams      = ConfigurationProfileName("teams")
+	ConfigurationProfileServiceNow = ConfigurationProfileName("servicenow")
+	ConfigurationProfileJira       = ConfigurationProfileName("jira")
+	ConfigurationProfileSymphony   = ConfigurationProfileName("symphony")
+)
