@@ -18,6 +18,7 @@ type API struct {
 	Policy                  policyAPI
 	PolicyCollection        policyCollectionAPI
 	PolicyCollectionMapping policyCollectionMappingAPI
+	ReportGroup             reportGroupAPI
 	Repository              repositoryAPI
 }
 
@@ -33,6 +34,7 @@ func New(c *graphql.Client) *API {
 		Policy:                  policyAPI{c},
 		PolicyCollection:        policyCollectionAPI{c},
 		PolicyCollectionMapping: policyCollectionMappingAPI{c},
+		ReportGroup:             reportGroupAPI{c},
 		Repository:              repositoryAPI{c},
 	}
 }
