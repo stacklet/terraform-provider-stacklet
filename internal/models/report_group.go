@@ -7,13 +7,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// ReportGroupDataSource is the model for notification report groups data sources.
-type ReportGroupDataSource struct {
+// ReportGroupResource is the model for notification report groups resources.
+type ReportGroupResource struct {
 	ID                         types.String `tfsdk:"id"`
 	Name                       types.String `tfsdk:"name"`
 	Enabled                    types.Bool   `tfsdk:"enabled"`
 	Bindings                   types.List   `tfsdk:"bindings"`
-	Source                     types.String `tfsdk:"source"`
 	Schedule                   types.String `tfsdk:"schedule"`
 	GroupBy                    types.List   `tfsdk:"group_by"`
 	UseMessageSettings         types.Bool   `tfsdk:"use_message_settings"`
@@ -23,6 +22,13 @@ type ReportGroupDataSource struct {
 	ServiceNowDeliverySettings types.List   `tfsdk:"servicenow_delivery_settings"`
 	JiraDeliverySettings       types.List   `tfsdk:"jira_delivery_settings"`
 	SymphonyDeliverySettings   types.List   `tfsdk:"symphony_delivery_settings"`
+}
+
+// ReportGroupDataSource is the model for notification report groups data sources.
+type ReportGroupDataSource struct {
+	ReportGroupResource
+
+	Source types.String `tfsdk:"source"`
 }
 
 // Recipient is the models for a notification recipient.
