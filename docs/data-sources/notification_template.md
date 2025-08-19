@@ -14,7 +14,7 @@ Fetch a notification template by name.
 
 ```terraform
 data "stacklet_notification_template" "example" {
-  name = "email"
+  name = "example"
 }
 ```
 
@@ -28,7 +28,7 @@ data "stacklet_notification_template" "example" {
 ### Optional
 
 - `description` (String) The description of the template.
-- `transport` (String) The notification trasport the template is for.
+- `transport` (String) The notification transport the template is for.
 
 ### Read-Only
 

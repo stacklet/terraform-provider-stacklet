@@ -49,7 +49,7 @@ func (d *notificationTemplateDataSource) Schema(_ context.Context, _ datasource.
 				Computed:    true,
 			},
 			"transport": schema.StringAttribute{
-				Description: "The notification trasport the template is for.",
+				Description: "The notification transport the template is for.",
 				Optional:    true,
 				Computed:    true,
 			},

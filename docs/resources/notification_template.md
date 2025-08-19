@@ -56,7 +56,7 @@ EOT
 ### Optional
 
 - `description` (String) The description of the template.
-- `transport` (String) The notification trasport the template is for.
+- `transport` (String) The notification transport the template is for.
 
 ### Read-Only
 

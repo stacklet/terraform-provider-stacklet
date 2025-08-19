@@ -59,7 +59,7 @@ func (r *notificationTemplateResource) Schema(_ context.Context, _ resource.Sche
 				Optional:    true,
 			},
 			"transport": schema.StringAttribute{
-				Description: "The notification trasport the template is for.",
+				Description: "The notification transport the template is for.",
 				Optional:    true,
 			},
 			"content": schema.StringAttribute{
