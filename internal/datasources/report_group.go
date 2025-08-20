@@ -5,15 +5,14 @@ package datasources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
@@ -411,207 +410,30 @@ func (d *reportGroupDataSource) Read(ctx context.Context, req datasource.ReadReq
 	data.GroupBy = tftypes.StringsList(reportGroup.GroupBy)
 	data.UseMessageSettings = types.BoolValue(reportGroup.UseMessageSettings)
 
-	emailDeliverySettings, diags := tftypes.ObjectList[models.EmailDeliverySettings](
-		reportGroup.EmailDeliverySettings(),
-		func(entry api.EmailDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[models.Recipient](
-				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
-					return map[string]attr.Value{
-						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
-						"event_owner":    types.BoolPointerValue(entry.EventOwner),
-						"resource_owner": types.BoolPointerValue(entry.ResourceOwner),
-						"tag":            types.StringPointerValue(entry.Tag),
-						"value":          types.StringPointerValue(entry.Value),
-					}, nil
-				},
-			)
-			if diags.HasError() {
-				return map[string]attr.Value{}, diags
-			}
+	updater := modelupdate.NewReportGroupUpdater(*reportGroup)
 
-			return map[string]attr.Value{
-				"cc":               tftypes.StringsList(entry.CC),
-				"first_match_only": types.BoolPointerValue(entry.FirstMatchOnly),
-				"format":           types.StringPointerValue(entry.Format),
-				"from":             types.StringPointerValue(entry.FromEmail),
-				"priority":         types.StringPointerValue(entry.Priority),
-				"recipients":       recipients,
-				"subject":          types.StringValue(entry.Subject),
-				"template":         types.StringValue(entry.Template),
-			}, nil
-		},
-	)
+	emailDeliverySettings, diags := updater.EmailDeliverySettings()
 	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	data.EmailDeliverySettings = emailDeliverySettings
 
-	slackDeliverySettings, diags := tftypes.ObjectList[models.SlackDeliverySettings](
-		reportGroup.SlackDeliverySettings(),
-		func(entry api.SlackDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[models.Recipient](
-				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
-					return map[string]attr.Value{
-						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
-						"event_owner":    types.BoolPointerValue(entry.EventOwner),
-						"resource_owner": types.BoolPointerValue(entry.ResourceOwner),
-						"tag":            types.StringPointerValue(entry.Tag),
-						"value":          types.StringPointerValue(entry.Value),
-					}, nil
-				},
-			)
-			if diags.HasError() {
-				return map[string]attr.Value{}, diags
-			}
-
-			return map[string]attr.Value{
-				"first_match_only": types.BoolPointerValue(entry.FirstMatchOnly),
-				"recipients":       recipients,
-				"template":         types.StringValue(entry.Template),
-			}, nil
-		},
-	)
+	slackDeliverySettings, diags := updater.SlackDeliverySettings()
 	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	data.SlackDeliverySettings = slackDeliverySettings
 
-	teamsDeliverySettings, diags := tftypes.ObjectList[models.TeamsDeliverySettings](
-		reportGroup.TeamsDeliverySettings(),
-		func(entry api.TeamsDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[models.Recipient](
-				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
-					return map[string]attr.Value{
-						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
-						"event_owner":    types.BoolPointerValue(entry.EventOwner),
-						"resource_owner": types.BoolPointerValue(entry.ResourceOwner),
-						"tag":            types.StringPointerValue(entry.Tag),
-						"value":          types.StringPointerValue(entry.Value),
-					}, nil
-				},
-			)
-			if diags.HasError() {
-				return map[string]attr.Value{}, diags
-			}
-
-			return map[string]attr.Value{
-				"first_match_only": types.BoolPointerValue(entry.FirstMatchOnly),
-				"recipients":       recipients,
-				"template":         types.StringValue(entry.Template),
-			}, nil
-		},
-	)
+	teamsDeliverySettings, diags := updater.TeamsDeliverySettings()
 	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	data.TeamsDeliverySettings = teamsDeliverySettings
 
-	servicenowDeliverySettings, diags := tftypes.ObjectList[models.ServiceNowDeliverySettings](
-		reportGroup.ServiceNowDeliverySettings(),
-		func(entry api.ServiceNowDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[models.Recipient](
-				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
-					return map[string]attr.Value{
-						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
-						"event_owner":    types.BoolPointerValue(entry.EventOwner),
-						"resource_owner": types.BoolPointerValue(entry.ResourceOwner),
-						"tag":            types.StringPointerValue(entry.Tag),
-						"value":          types.StringPointerValue(entry.Value),
-					}, nil
-				},
-			)
-			if diags.HasError() {
-				return map[string]attr.Value{}, diags
-			}
-
-			return map[string]attr.Value{
-				"first_match_only":  types.BoolPointerValue(entry.FirstMatchOnly),
-				"impact":            types.StringValue(entry.Impact),
-				"recipients":        recipients,
-				"short_description": types.StringValue(entry.ShortDescription),
-				"template":          types.StringValue(entry.Template),
-				"urgency":           types.StringValue(entry.Urgency),
-			}, nil
-		},
-	)
+	servicenowDeliverySettings, diags := updater.ServiceNowDeliverySettings()
 	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	data.ServiceNowDeliverySettings = servicenowDeliverySettings
 
-	jiraDeliverySettings, diags := tftypes.ObjectList[models.JiraDeliverySettings](
-		reportGroup.JiraDeliverySettings(),
-		func(entry api.JiraDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[models.Recipient](
-				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
-					return map[string]attr.Value{
-						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
-						"event_owner":    types.BoolPointerValue(entry.EventOwner),
-						"resource_owner": types.BoolPointerValue(entry.ResourceOwner),
-						"tag":            types.StringPointerValue(entry.Tag),
-						"value":          types.StringPointerValue(entry.Value),
-					}, nil
-				},
-			)
-			if diags.HasError() {
-				return map[string]attr.Value{}, diags
-			}
-
-			return map[string]attr.Value{
-				"first_match_only": types.BoolPointerValue(entry.FirstMatchOnly),
-				"recipients":       recipients,
-				"template":         types.StringValue(entry.Template),
-				"description":      types.StringValue(entry.Description),
-				"project":          types.StringValue(entry.Project),
-				"summary":          types.StringValue(entry.Summary),
-			}, nil
-		},
-	)
+	jiraDeliverySettings, diags := updater.JiraDeliverySettings()
 	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	data.JiraDeliverySettings = jiraDeliverySettings
 
-	symphonyDeliverySettings, diags := tftypes.ObjectList[models.SymphonyDeliverySettings](
-		reportGroup.SymphonyDeliverySettings(),
-		func(entry api.SymphonyDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[models.Recipient](
-				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
-					return map[string]attr.Value{
-						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
-						"event_owner":    types.BoolPointerValue(entry.EventOwner),
-						"resource_owner": types.BoolPointerValue(entry.ResourceOwner),
-						"tag":            types.StringPointerValue(entry.Tag),
-						"value":          types.StringPointerValue(entry.Value),
-					}, nil
-				},
-			)
-			if diags.HasError() {
-				return map[string]attr.Value{}, diags
-			}
-
-			return map[string]attr.Value{
-				"first_match_only": types.BoolPointerValue(entry.FirstMatchOnly),
-				"recipients":       recipients,
-				"template":         types.StringValue(entry.Template),
-			}, nil
-		},
-	)
+	symphonyDeliverySettings, diags := updater.SymphonyDeliverySettings()
 	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	data.SymphonyDeliverySettings = symphonyDeliverySettings
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

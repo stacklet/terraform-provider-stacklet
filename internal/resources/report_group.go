@@ -6,6 +6,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -20,6 +21,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
@@ -436,7 +438,7 @@ func (r *reportGroupResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	r.updateReportGroupModel(&state, reportGroup)
+	resp.Diagnostics.Append(r.updateReportGroupModel(&state, reportGroup)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -466,7 +468,7 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	r.updateReportGroupModel(&plan, reportGroup)
+	resp.Diagnostics.Append(r.updateReportGroupModel(&plan, reportGroup)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -492,7 +494,7 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	r.updateReportGroupModel(&plan, reportGroup)
+	resp.Diagnostics.Append(r.updateReportGroupModel(&plan, reportGroup)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -513,7 +515,9 @@ func (r *reportGroupResource) ImportState(ctx context.Context, req resource.Impo
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
 }
 
-func (r reportGroupResource) updateReportGroupModel(m *models.ReportGroupResource, reportGroup *api.ReportGroup) {
+func (r reportGroupResource) updateReportGroupModel(m *models.ReportGroupResource, reportGroup *api.ReportGroup) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	m.ID = types.StringValue(reportGroup.ID)
 	m.Name = types.StringValue(reportGroup.Name)
 	m.Enabled = types.BoolValue(reportGroup.Enabled)
@@ -521,6 +525,34 @@ func (r reportGroupResource) updateReportGroupModel(m *models.ReportGroupResourc
 	m.Schedule = types.StringValue(reportGroup.Schedule)
 	m.GroupBy = tftypes.StringsList(reportGroup.GroupBy)
 	m.UseMessageSettings = types.BoolValue(reportGroup.UseMessageSettings)
+
+	updater := modelupdate.NewReportGroupUpdater(*reportGroup)
+
+	emailDeliverySettings, d := updater.EmailDeliverySettings()
+	diags.Append(d...)
+	m.EmailDeliverySettings = emailDeliverySettings
+
+	slackDeliverySettings, d := updater.SlackDeliverySettings()
+	diags.Append(d...)
+	m.SlackDeliverySettings = slackDeliverySettings
+
+	teamsDeliverySettings, d := updater.TeamsDeliverySettings()
+	diags.Append(d...)
+	m.TeamsDeliverySettings = teamsDeliverySettings
+
+	servicenowDeliverySettings, d := updater.ServiceNowDeliverySettings()
+	diags.Append(d...)
+	m.ServiceNowDeliverySettings = servicenowDeliverySettings
+
+	jiraDeliverySettings, d := updater.JiraDeliverySettings()
+	diags.Append(d...)
+	m.JiraDeliverySettings = jiraDeliverySettings
+
+	symphonyDeliverySettings, d := updater.SymphonyDeliverySettings()
+	diags.Append(d...)
+	m.SymphonyDeliverySettings = symphonyDeliverySettings
+
+	return diags
 }
 
 type validRecipient struct{}
