@@ -113,51 +113,56 @@ type EmailDeliverySettings struct {
 }
 
 type SlackDeliverySettings struct {
-	FirstMatchOnly *bool
-	Recipients     []Recipient
-	Template       string
+	FirstMatchOnly *bool       `json:"firstMatchOnly"`
+	Recipients     []Recipient `json:"recipients"`
+	Template       string      `json:"template"`
 }
 
 type TeamsDeliverySettings struct {
-	FirstMatchOnly *bool
-	Recipients     []Recipient
-	Template       string
+	FirstMatchOnly *bool       `json:"firstMatchOnly"`
+	Recipients     []Recipient `json:"recipients"`
+	Template       string      `json:"template"`
 }
 
 type ServiceNowDeliverySettings struct {
-	FirstMatchOnly   *bool
-	Impact           string
-	Recipients       []Recipient
-	ShortDescription string
-	Template         string
-	Urgency          string
+	FirstMatchOnly   *bool       `json:"firstMatchOnly"`
+	Impact           string      `json:"impact"`
+	Recipients       []Recipient `json:"recipients"`
+	ShortDescription string      `json:"shortDescription"`
+	Template         string      `json:"template"`
+	Urgency          string      `json:"urgency"`
 }
 
 type JiraDeliverySettings struct {
-	FirstMatchOnly *bool
-	Recipients     []Recipient
-	Template       string
-	Description    string
-	Project        string
-	Summary        string
+	FirstMatchOnly *bool       `json:"firstMatchOnly"`
+	Recipients     []Recipient `json:"recipients"`
+	Template       string      `json:"template"`
+	Description    string      `json:"description"`
+	Project        string      `json:"project"`
+	Summary        string      `json:"summary"`
 }
 
 type SymphonyDeliverySettings struct {
-	FirstMatchOnly *bool
-	Recipients     []Recipient
-	Template       string
+	FirstMatchOnly *bool       `json:"firstMatchOnly"`
+	Recipients     []Recipient `json:"recipients"`
+	Template       string      `json:"template"`
 }
 
 // ReportGroupsInput is the input to create or update a report group.
 type ReportGroupInput struct {
-	Name               string                  `json:"name"`
-	Enabled            bool                    `json:"enabled"`
-	Bindings           []string                `json:"bindings"`
-	Source             ReportSource            `json:"source"`
-	Schedule           string                  `json:"schedule"`
-	GroupBy            []string                `json:"groupBy"`
-	UseMessageSettings bool                    `json:"useMessageSettings"`
-	EmailSettings      []EmailDeliverySettings `json:"emailSettings"`
+	Name               string                       `json:"name"`
+	Enabled            bool                         `json:"enabled"`
+	Bindings           []string                     `json:"bindings"`
+	Source             ReportSource                 `json:"source"`
+	Schedule           string                       `json:"schedule"`
+	GroupBy            []string                     `json:"groupBy"`
+	UseMessageSettings bool                         `json:"useMessageSettings"`
+	EmailSettings      []EmailDeliverySettings      `json:"emailSettings"`
+	SlackSettings      []SlackDeliverySettings      `json:"slackSettings"`
+	TeamsSettings      []TeamsDeliverySettings      `json:"teamsSettings"`
+	ServiceNowSettings []ServiceNowDeliverySettings `json:"serviceNowSettings"`
+	JiraSettings       []JiraDeliverySettings       `json:"jiraSettings"`
+	SymphonySettings   []SymphonyDeliverySettings   `json:"symphonySettings"`
 }
 
 type Recipient struct {

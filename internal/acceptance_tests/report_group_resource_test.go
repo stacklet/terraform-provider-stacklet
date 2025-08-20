@@ -140,7 +140,7 @@ func TestAccReportGroupResource_DeliverySettings(t *testing.T) {
 						schedule = "0 12 * * *"
 
 	                    email_delivery_settings {
-                            template = "template.html"
+                            template = "email"
                             subject = "Matched resources"
 
                             recipients = [
@@ -152,16 +152,87 @@ func TestAccReportGroupResource_DeliverySettings(t *testing.T) {
                                 },
                              ]
                         }
-	                    
+
+	                    slack_delivery_settings {
+                            template = "slack"
+                            
+                            recipients = [
+                        	    {
+                                  account_owner = true
+                                }
+	                        ]
+                        }
+
+	                    teams_delivery_settings {
+                            template = "teams"
+                            
+                            recipients = [
+                        	    {
+                                  tag = "foo"
+                                }
+	                        ]
+                        }
+
+	                    servicenow_delivery_settings {
+                            template = "servicenow"
+	                        short_description = "matched resources"
+                            impact = "2"
+                            urgency = "1"
+                        }
+
+	                    jira_delivery_settings {
+                            template = "jira"
+	                        description = "matched resources"
+                            project	 = "prj"
+                            summary = "short summary"
+                        }
+
+	                    symphony_delivery_settings {
+                            template = "symphony"
+
+                            recipients = [
+                        	    {
+                                  resource_owner = true
+                                },
+                        	    {
+                                  account_owner = true
+                                },
+	                        ]
+                        }
 					}
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.#", "1"),
-				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.template", "template.html"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.template", "email"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.subject", "Matched resources"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.recipients.#", "2"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.recipients.0.resource_owner", "true"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.recipients.1.value", "user@example.com"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "slack_delivery_settings.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "slack_delivery_settings.0.template", "slack"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "slack_delivery_settings.0.recipients.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "slack_delivery_settings.0.recipients.0.account_owner", "true"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "teams_delivery_settings.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "teams_delivery_settings.0.template", "teams"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "teams_delivery_settings.0.recipients.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "teams_delivery_settings.0.recipients.0.tag", "foo"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.0.template", "servicenow"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.0.short_description", "matched resources"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.0.impact", "2"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.0.urgency", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.0.recipients.#", "0"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "jira_delivery_settings.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "jira_delivery_settings.0.template", "jira"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "jira_delivery_settings.0.description", "matched resources"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "jira_delivery_settings.0.project", "prj"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "jira_delivery_settings.0.summary", "short summary"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "jira_delivery_settings.0.recipients.#", "0"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "symphony_delivery_settings.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "symphony_delivery_settings.0.template", "symphony"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "symphony_delivery_settings.0.recipients.#", "2"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "symphony_delivery_settings.0.recipients.0.resource_owner", "true"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "symphony_delivery_settings.0.recipients.1.account_owner", "true"),
 			),
 		},
 	}

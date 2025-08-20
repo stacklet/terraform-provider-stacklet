@@ -19,26 +19,26 @@
           "addAccountGroup": {
             "group": {
               "description": "Test account group for report group",
-              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjAzMjcyZDJlLWMwMjQtNGQ2Yi05ZjY0LTkyMjU5MGNjNmExZCJd",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgImMyNGExOGY5LTU2YTMtNDk2Mi1iZDNmLTZkMzUxMzhmYTY3MSJd",
               "name": "test-rg-ag",
               "provider": "AWS",
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "03272d2e-c024-4d6b-9f64-922590cc6a1d"
+              "uuid": "c24a18f9-56a3-4962-bd3f-6d35138fa671"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}}:{\"input\":{\"accountGroupUUID\":\"03272d2e-c024-4d6b-9f64-922590cc6a1d\",\"autoDeploy\":true,\"deploy\":true,\"description\":\"Test binding for report group\",\"executionConfig\":{\"dryRun\":null,\"resourceLimits\":{\"default\":null,\"policyOverrides\":[]},\"securityContext\":null,\"variables\":null},\"name\":\"test-rg-binding\",\"policyCollectionUUID\":\"5ea924c2-f0bb-475f-abfd-cbdcff5f7033\"}}": [
+  "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}}:{\"input\":{\"accountGroupUUID\":\"c24a18f9-56a3-4962-bd3f-6d35138fa671\",\"autoDeploy\":true,\"deploy\":true,\"description\":\"Test binding for report group\",\"executionConfig\":{\"dryRun\":null,\"resourceLimits\":{\"default\":null,\"policyOverrides\":[]},\"securityContext\":null,\"variables\":null},\"name\":\"test-rg-binding\",\"policyCollectionUUID\":\"c8c7efec-74d9-4375-a5e7-fdbfdc291248\"}}": [
     {
       "request": {
         "query": "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}}",
         "variables": {
           "input": {
-            "accountGroupUUID": "03272d2e-c024-4d6b-9f64-922590cc6a1d",
+            "accountGroupUUID": "c24a18f9-56a3-4962-bd3f-6d35138fa671",
             "autoDeploy": true,
             "deploy": true,
             "description": "Test binding for report group",
@@ -52,7 +52,7 @@
               "variables": null
             },
             "name": "test-rg-binding",
-            "policyCollectionUUID": "5ea924c2-f0bb-475f-abfd-cbdcff5f7033"
+            "policyCollectionUUID": "c8c7efec-74d9-4375-a5e7-fdbfdc291248"
           }
         }
       },
@@ -61,7 +61,7 @@
           "addBinding": {
             "binding": {
               "accountGroup": {
-                "uuid": "03272d2e-c024-4d6b-9f64-922590cc6a1d"
+                "uuid": "c24a18f9-56a3-4962-bd3f-6d35138fa671"
               },
               "autoDeploy": true,
               "description": "Test binding for report group",
@@ -71,14 +71,14 @@
                 "securityContext": null,
                 "variables": null
               },
-              "id": "WyJiaW5kaW5nIiwgIjI5ZmY1ZGMyLTVhNzctNDVjOC1iMTk1LTZkM2RkNGE5NjJlNSJd",
+              "id": "WyJiaW5kaW5nIiwgIjU1ODQxODMyLWFkZDYtNDYzMC1hYzI2LWVjOWU3NDNmMmFlNiJd",
               "name": "test-rg-binding",
               "policyCollection": {
-                "uuid": "5ea924c2-f0bb-475f-abfd-cbdcff5f7033"
+                "uuid": "c8c7efec-74d9-4375-a5e7-fdbfdc291248"
               },
               "schedule": null,
               "system": false,
-              "uuid": "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+              "uuid": "55841832-add6-4630-ac26-ec9e743f2ae6"
             }
           }
         }
@@ -104,21 +104,21 @@
             "collection": {
               "autoUpdate": false,
               "description": "Test policy collection for report group",
-              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI1ZWE5MjRjMi1mMGJiLTQ3NWYtYWJmZC1jYmRjZmY1ZjcwMzMiXQ==",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJjOGM3ZWZlYy03NGQ5LTQzNzUtYTVlNy1mZGJmZGMyOTEyNDgiXQ==",
               "isDynamic": false,
               "name": "test-rg-pc",
               "provider": "AWS",
               "repositoryConfig": null,
               "repositoryView": null,
               "system": false,
-              "uuid": "5ea924c2-f0bb-475f-abfd-cbdcff5f7033"
+              "uuid": "c8c7efec-74d9-4375-a5e7-fdbfdc291248"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:UpsertReportGroupsInput!){upsertReportGroups(input: $input){reportGroups{id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}}:{\"input\":{\"reportGroups\":[{\"bindings\":[\"29ff5dc2-5a77-45c8-b195-6d3dd4a962e5\"],\"emailSettings\":null,\"enabled\":true,\"groupBy\":[\"account\",\"region\"],\"name\":\"test-report-group\",\"schedule\":\"0 12 * * *\",\"source\":\"BINDING\",\"useMessageSettings\":true}]}}": [
+  "mutation ($input:UpsertReportGroupsInput!){upsertReportGroups(input: $input){reportGroups{id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}}:{\"input\":{\"reportGroups\":[{\"bindings\":[\"55841832-add6-4630-ac26-ec9e743f2ae6\"],\"emailSettings\":[{\"cc\":[],\"firstMatchOnly\":false,\"format\":\"\",\"fromEmail\":null,\"priority\":\"3\",\"recipients\":[{\"account_owner\":null,\"event_owner\":null,\"resource_owner\":true,\"tag\":null,\"value\":null},{\"account_owner\":null,\"event_owner\":null,\"resource_owner\":null,\"tag\":null,\"value\":\"user@example.com\"}],\"subject\":\"Matched resources\",\"template\":\"email\"}],\"enabled\":true,\"groupBy\":[\"account\",\"region\"],\"jiraSettings\":null,\"name\":\"test-report-group\",\"schedule\":\"0 12 * * *\",\"serviceNowSettings\":null,\"slackSettings\":null,\"source\":\"BINDING\",\"symphonySettings\":null,\"teamsSettings\":null,\"useMessageSettings\":true}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertReportGroupsInput!){upsertReportGroups(input: $input){reportGroups{id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}}",
@@ -127,17 +127,48 @@
             "reportGroups": [
               {
                 "bindings": [
-                  "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+                  "55841832-add6-4630-ac26-ec9e743f2ae6"
                 ],
-                "emailSettings": null,
+                "emailSettings": [
+                  {
+                    "cc": [],
+                    "firstMatchOnly": false,
+                    "format": "",
+                    "fromEmail": null,
+                    "priority": "3",
+                    "recipients": [
+                      {
+                        "account_owner": null,
+                        "event_owner": null,
+                        "resource_owner": true,
+                        "tag": null,
+                        "value": null
+                      },
+                      {
+                        "account_owner": null,
+                        "event_owner": null,
+                        "resource_owner": null,
+                        "tag": null,
+                        "value": "user@example.com"
+                      }
+                    ],
+                    "subject": "Matched resources",
+                    "template": "email"
+                  }
+                ],
                 "enabled": true,
                 "groupBy": [
                   "account",
                   "region"
                 ],
+                "jiraSettings": null,
                 "name": "test-report-group",
                 "schedule": "0 12 * * *",
+                "serviceNowSettings": null,
+                "slackSettings": null,
                 "source": "BINDING",
+                "symphonySettings": null,
+                "teamsSettings": null,
                 "useMessageSettings": true
               }
             ]
@@ -150,9 +181,36 @@
             "reportGroups": [
               {
                 "bindings": [
-                  "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+                  "55841832-add6-4630-ac26-ec9e743f2ae6"
                 ],
-                "deliverySettings": [],
+                "deliverySettings": [
+                  {
+                    "__typename": "EmailSettings",
+                    "cc": [],
+                    "firstMatchOnly": false,
+                    "format": "",
+                    "fromEmail": null,
+                    "priority": "3",
+                    "recipients": [
+                      {
+                        "account_owner": null,
+                        "event_owner": null,
+                        "resource_owner": true,
+                        "tag": null,
+                        "value": null
+                      },
+                      {
+                        "account_owner": null,
+                        "event_owner": null,
+                        "resource_owner": null,
+                        "tag": null,
+                        "value": "user@example.com"
+                      }
+                    ],
+                    "subject": "Matched resources",
+                    "template": "email"
+                  }
+                ],
                 "enabled": true,
                 "groupBy": [
                   "account",
@@ -189,102 +247,102 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"03272d2e-c024-4d6b-9f64-922590cc6a1d\"}": [
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"c24a18f9-56a3-4962-bd3f-6d35138fa671\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
         "variables": {
-          "uuid": "03272d2e-c024-4d6b-9f64-922590cc6a1d"
+          "uuid": "c24a18f9-56a3-4962-bd3f-6d35138fa671"
         }
       },
       "response": {
         "data": {
           "removeAccountGroup": {
             "group": {
-              "uuid": "03272d2e-c024-4d6b-9f64-922590cc6a1d"
+              "uuid": "c24a18f9-56a3-4962-bd3f-6d35138fa671"
             }
           }
         }
       }
     }
   ],
-  "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}:{\"uuid\":\"29ff5dc2-5a77-45c8-b195-6d3dd4a962e5\"}": [
+  "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}:{\"uuid\":\"55841832-add6-4630-ac26-ec9e743f2ae6\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}",
         "variables": {
-          "uuid": "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+          "uuid": "55841832-add6-4630-ac26-ec9e743f2ae6"
         }
       },
       "response": {
         "data": {
           "removeBinding": {
             "binding": {
-              "uuid": "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+              "uuid": "55841832-add6-4630-ac26-ec9e743f2ae6"
             }
           }
         }
       }
     }
   ],
-  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"5ea924c2-f0bb-475f-abfd-cbdcff5f7033\"}": [
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"c8c7efec-74d9-4375-a5e7-fdbfdc291248\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
         "variables": {
-          "uuid": "5ea924c2-f0bb-475f-abfd-cbdcff5f7033"
+          "uuid": "c8c7efec-74d9-4375-a5e7-fdbfdc291248"
         }
       },
       "response": {
         "data": {
           "removePolicyCollection": {
             "collection": {
-              "uuid": "5ea924c2-f0bb-475f-abfd-cbdcff5f7033"
+              "uuid": "c8c7efec-74d9-4375-a5e7-fdbfdc291248"
             }
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"03272d2e-c024-4d6b-9f64-922590cc6a1d\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"c24a18f9-56a3-4962-bd3f-6d35138fa671\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "03272d2e-c024-4d6b-9f64-922590cc6a1d"
+          "uuid": "c24a18f9-56a3-4962-bd3f-6d35138fa671"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group for report group",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjAzMjcyZDJlLWMwMjQtNGQ2Yi05ZjY0LTkyMjU5MGNjNmExZCJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImMyNGExOGY5LTU2YTMtNDk2Mi1iZDNmLTZkMzUxMzhmYTY3MSJd",
             "name": "test-rg-ag",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "03272d2e-c024-4d6b-9f64-922590cc6a1d"
+            "uuid": "c24a18f9-56a3-4962-bd3f-6d35138fa671"
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}:{\"name\":\"\",\"uuid\":\"29ff5dc2-5a77-45c8-b195-6d3dd4a962e5\"}": [
+  "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}:{\"name\":\"\",\"uuid\":\"55841832-add6-4630-ac26-ec9e743f2ae6\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}",
         "variables": {
           "name": "",
-          "uuid": "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+          "uuid": "55841832-add6-4630-ac26-ec9e743f2ae6"
         }
       },
       "response": {
         "data": {
           "binding": {
             "accountGroup": {
-              "uuid": "03272d2e-c024-4d6b-9f64-922590cc6a1d"
+              "uuid": "c24a18f9-56a3-4962-bd3f-6d35138fa671"
             },
             "autoDeploy": true,
             "description": "Test binding for report group",
@@ -294,26 +352,26 @@
               "securityContext": null,
               "variables": null
             },
-            "id": "WyJiaW5kaW5nIiwgIjI5ZmY1ZGMyLTVhNzctNDVjOC1iMTk1LTZkM2RkNGE5NjJlNSJd",
+            "id": "WyJiaW5kaW5nIiwgIjU1ODQxODMyLWFkZDYtNDYzMC1hYzI2LWVjOWU3NDNmMmFlNiJd",
             "name": "test-rg-binding",
             "policyCollection": {
-              "uuid": "5ea924c2-f0bb-475f-abfd-cbdcff5f7033"
+              "uuid": "c8c7efec-74d9-4375-a5e7-fdbfdc291248"
             },
             "schedule": null,
             "system": false,
-            "uuid": "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+            "uuid": "55841832-add6-4630-ac26-ec9e743f2ae6"
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"5ea924c2-f0bb-475f-abfd-cbdcff5f7033\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"c8c7efec-74d9-4375-a5e7-fdbfdc291248\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
         "variables": {
           "name": "",
-          "uuid": "5ea924c2-f0bb-475f-abfd-cbdcff5f7033"
+          "uuid": "c8c7efec-74d9-4375-a5e7-fdbfdc291248"
         }
       },
       "response": {
@@ -321,14 +379,14 @@
           "policyCollection": {
             "autoUpdate": false,
             "description": "Test policy collection for report group",
-            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI1ZWE5MjRjMi1mMGJiLTQ3NWYtYWJmZC1jYmRjZmY1ZjcwMzMiXQ==",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICJjOGM3ZWZlYy03NGQ5LTQzNzUtYTVlNy1mZGJmZGMyOTEyNDgiXQ==",
             "isDynamic": false,
             "name": "test-rg-pc",
             "provider": "AWS",
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "5ea924c2-f0bb-475f-abfd-cbdcff5f7033"
+            "uuid": "c8c7efec-74d9-4375-a5e7-fdbfdc291248"
           }
         }
       }
@@ -346,9 +404,36 @@
         "data": {
           "reportGroup": {
             "bindings": [
-              "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+              "55841832-add6-4630-ac26-ec9e743f2ae6"
             ],
-            "deliverySettings": [],
+            "deliverySettings": [
+              {
+                "__typename": "EmailSettings",
+                "cc": [],
+                "firstMatchOnly": false,
+                "format": "",
+                "fromEmail": null,
+                "priority": "3",
+                "recipients": [
+                  {
+                    "account_owner": null,
+                    "event_owner": null,
+                    "resource_owner": true,
+                    "tag": null,
+                    "value": null
+                  },
+                  {
+                    "account_owner": null,
+                    "event_owner": null,
+                    "resource_owner": null,
+                    "tag": null,
+                    "value": "user@example.com"
+                  }
+                ],
+                "subject": "Matched resources",
+                "template": "email"
+              }
+            ],
             "enabled": true,
             "groupBy": [
               "account",
@@ -374,9 +459,36 @@
         "data": {
           "reportGroup": {
             "bindings": [
-              "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+              "55841832-add6-4630-ac26-ec9e743f2ae6"
             ],
-            "deliverySettings": [],
+            "deliverySettings": [
+              {
+                "__typename": "EmailSettings",
+                "cc": [],
+                "firstMatchOnly": false,
+                "format": "",
+                "fromEmail": null,
+                "priority": "3",
+                "recipients": [
+                  {
+                    "account_owner": null,
+                    "event_owner": null,
+                    "resource_owner": true,
+                    "tag": null,
+                    "value": null
+                  },
+                  {
+                    "account_owner": null,
+                    "event_owner": null,
+                    "resource_owner": null,
+                    "tag": null,
+                    "value": "user@example.com"
+                  }
+                ],
+                "subject": "Matched resources",
+                "template": "email"
+              }
+            ],
             "enabled": true,
             "groupBy": [
               "account",
@@ -402,9 +514,36 @@
         "data": {
           "reportGroup": {
             "bindings": [
-              "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+              "55841832-add6-4630-ac26-ec9e743f2ae6"
             ],
-            "deliverySettings": [],
+            "deliverySettings": [
+              {
+                "__typename": "EmailSettings",
+                "cc": [],
+                "firstMatchOnly": false,
+                "format": "",
+                "fromEmail": null,
+                "priority": "3",
+                "recipients": [
+                  {
+                    "account_owner": null,
+                    "event_owner": null,
+                    "resource_owner": true,
+                    "tag": null,
+                    "value": null
+                  },
+                  {
+                    "account_owner": null,
+                    "event_owner": null,
+                    "resource_owner": null,
+                    "tag": null,
+                    "value": "user@example.com"
+                  }
+                ],
+                "subject": "Matched resources",
+                "template": "email"
+              }
+            ],
             "enabled": true,
             "groupBy": [
               "account",
@@ -430,9 +569,36 @@
         "data": {
           "reportGroup": {
             "bindings": [
-              "29ff5dc2-5a77-45c8-b195-6d3dd4a962e5"
+              "55841832-add6-4630-ac26-ec9e743f2ae6"
             ],
-            "deliverySettings": [],
+            "deliverySettings": [
+              {
+                "__typename": "EmailSettings",
+                "cc": [],
+                "firstMatchOnly": false,
+                "format": "",
+                "fromEmail": null,
+                "priority": "3",
+                "recipients": [
+                  {
+                    "account_owner": null,
+                    "event_owner": null,
+                    "resource_owner": true,
+                    "tag": null,
+                    "value": null
+                  },
+                  {
+                    "account_owner": null,
+                    "event_owner": null,
+                    "resource_owner": null,
+                    "tag": null,
+                    "value": "user@example.com"
+                  }
+                ],
+                "subject": "Matched resources",
+                "template": "email"
+              }
+            ],
             "enabled": true,
             "groupBy": [
               "account",
