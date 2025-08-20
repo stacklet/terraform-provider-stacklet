@@ -109,3 +109,61 @@ func TestAccReportGroupResource(t *testing.T) {
 	}
 	runRecordedAccTest(t, "TestAccReportGroupResource", steps)
 }
+
+func TestAccReportGroupResource_DeliverySettings(t *testing.T) {
+	steps := []resource.TestStep{
+		{
+			Config: `
+					resource "stacklet_account_group" "ag" {
+						name = "{{.Prefix}}-rg-ag"
+						description = "Test account group for report group"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+
+					resource "stacklet_policy_collection" "pc" {
+						name = "{{.Prefix}}-rg-pc"
+						description = "Test policy collection for report group"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "b" {
+						name = "{{.Prefix}}-rg-binding"
+						description = "Test binding for report group"
+						account_group_uuid = stacklet_account_group.ag.uuid
+						policy_collection_uuid = stacklet_policy_collection.pc.uuid
+					}
+
+					resource "stacklet_report_group" "test" {
+						name = "{{.Prefix}}-report-group"
+						bindings = [stacklet_binding.b.uuid]
+						schedule = "0 12 * * *"
+
+	                    email_delivery_settings {
+                            template = "template.html"
+                            subject = "Matched resources"
+
+                            recipients = [
+                        	    {
+                                  resource_owner = true
+                                },
+                        	    {
+                                  value = "user@example.com"
+                                },
+                             ]
+                        }
+	                    
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.template", "template.html"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.subject", "Matched resources"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.recipients.#", "2"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.recipients.0.resource_owner", "true"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.recipients.1.value", "user@example.com"),
+			),
+		},
+	}
+	runRecordedAccTest(t, "TestAccReportGroupResource_DeliverySettings", steps)
+}

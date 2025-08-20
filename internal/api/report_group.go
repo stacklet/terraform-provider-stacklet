@@ -102,14 +102,14 @@ func (r ReportGroup) SymphonyDeliverySettings() []SymphonyDeliverySettings {
 }
 
 type EmailDeliverySettings struct {
-	CC             []string
-	FirstMatchOnly *bool
-	Format         *string
-	FromEmail      *string
-	Priority       *string
-	Recipients     []Recipient
-	Subject        string
-	Template       string
+	CC             []string    `json:"cc"`
+	FirstMatchOnly *bool       `json:"firstMatchOnly"`
+	Format         *string     `json:"format"`
+	FromEmail      *string     `json:"fromEmail"`
+	Priority       *string     `json:"priority"`
+	Recipients     []Recipient `json:"recipients"`
+	Subject        string      `json:"subject"`
+	Template       string      `json:"template"`
 }
 
 type SlackDeliverySettings struct {
@@ -150,21 +150,22 @@ type SymphonyDeliverySettings struct {
 
 // ReportGroupsInput is the input to create or update a report group.
 type ReportGroupInput struct {
-	Name               string       `json:"name"`
-	Enabled            bool         `json:"enabled"`
-	Bindings           []string     `json:"bindings"`
-	Source             ReportSource `json:"source"`
-	Schedule           string       `json:"schedule"`
-	GroupBy            []string     `json:"groupBy"`
-	UseMessageSettings bool         `json:"useMessageSettings"`
+	Name               string                  `json:"name"`
+	Enabled            bool                    `json:"enabled"`
+	Bindings           []string                `json:"bindings"`
+	Source             ReportSource            `json:"source"`
+	Schedule           string                  `json:"schedule"`
+	GroupBy            []string                `json:"groupBy"`
+	UseMessageSettings bool                    `json:"useMessageSettings"`
+	EmailSettings      []EmailDeliverySettings `json:"emailSettings"`
 }
 
 type Recipient struct {
-	AccountOwner  *bool `graphql:"account_owner"`
-	EventOwner    *bool `graphql:"event_owner"`
-	ResourceOwner *bool `graphql:"resource_owner"`
-	Tag           *string
-	Value         *string
+	AccountOwner  *bool   `graphql:"account_owner" json:"account_owner"`
+	EventOwner    *bool   `graphql:"event_owner" json:"event_owner"`
+	ResourceOwner *bool   `graphql:"resource_owner" json:"resource_owner"`
+	Tag           *string `json:"tag"`
+	Value         *string `json:"value"`
 }
 
 type upsertReportGroupsInput struct {

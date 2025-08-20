@@ -4,7 +4,9 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -13,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -79,9 +82,9 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 			},
 			"group_by": schema.ListAttribute{
 				Description: "Fields on which matching resources are grouped.",
+				ElementType: types.StringType,
 				Optional:    true,
 				Computed:    true,
-				ElementType: types.StringType,
 				Default:     listdefault.StaticValue(basetypes.NewListValueMust(types.StringType, []attr.Value{})),
 			},
 			"use_message_settings": schema.BoolAttribute{
@@ -98,16 +101,22 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 					Attributes: map[string]schema.Attribute{
 						"cc": schema.ListAttribute{
 							Description: "List of CC addresses.",
-							Optional:    true,
 							ElementType: types.StringType,
+							Optional:    true,
+							Computed:    true,
+							Default:     listdefault.StaticValue(basetypes.NewListValueMust(types.StringType, []attr.Value{})),
 						},
 						"first_match_only": schema.BoolAttribute{
 							Description: "Only report the first match.",
 							Optional:    true,
+							Computed:    true,
+							Default:     booldefault.StaticBool(false),
 						},
 						"format": schema.StringAttribute{
 							Description: "Email format (html or plain). Autodetected from the template if not specified.",
 							Optional:    true,
+							Computed:    true,
+							Default:     stringdefault.StaticString(""),
 						},
 						"from": schema.StringAttribute{
 							Description: "Email from address.",
@@ -116,10 +125,15 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"priority": schema.StringAttribute{
 							Description: "Email priority.",
 							Optional:    true,
+							Computed:    true,
+							Default:     stringdefault.StaticString("3"),
 						},
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
-							Optional:    true,
+							Required:    true,
+							Validators: []validator.List{
+								listvalidator.SizeAtLeast(1),
+							},
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -166,10 +180,15 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"first_match_only": schema.BoolAttribute{
 							Description: "Only report the first match.",
 							Optional:    true,
+							Computed:    true,
+							Default:     booldefault.StaticBool(false),
 						},
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
-							Optional:    true,
+							Required:    true,
+							Validators: []validator.List{
+								listvalidator.SizeAtLeast(1),
+							},
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -212,10 +231,15 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"first_match_only": schema.BoolAttribute{
 							Description: "Only report the first match.",
 							Optional:    true,
+							Computed:    true,
+							Default:     booldefault.StaticBool(false),
 						},
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
 							Optional:    true,
+							Validators: []validator.List{
+								listvalidator.SizeAtLeast(1),
+							},
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -258,10 +282,15 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"first_match_only": schema.BoolAttribute{
 							Description: "Only report the first match.",
 							Optional:    true,
+							Computed:    true,
+							Default:     booldefault.StaticBool(false),
 						},
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
 							Optional:    true,
+							Validators: []validator.List{
+								listvalidator.SizeAtLeast(1),
+							},
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -316,10 +345,15 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"first_match_only": schema.BoolAttribute{
 							Description: "Only report the first match.",
 							Optional:    true,
+							Computed:    true,
+							Default:     booldefault.StaticBool(false),
 						},
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
 							Optional:    true,
+							Validators: []validator.List{
+								listvalidator.SizeAtLeast(1),
+							},
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -374,10 +408,15 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"first_match_only": schema.BoolAttribute{
 							Description: "Only report the first match.",
 							Optional:    true,
+							Computed:    true,
+							Default:     booldefault.StaticBool(false),
 						},
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
 							Optional:    true,
+							Validators: []validator.List{
+								listvalidator.SizeAtLeast(1),
+							},
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -453,6 +492,12 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
+	emailSettings, diags := r.getEmailDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	input := api.ReportGroupInput{
 		Name:               plan.Name.ValueString(),
 		Enabled:            plan.Enabled.ValueBool(),
@@ -461,6 +506,7 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		Schedule:           plan.Schedule.ValueString(),
 		GroupBy:            api.StringsList(plan.GroupBy),
 		UseMessageSettings: plan.UseMessageSettings.ValueBool(),
+		EmailSettings:      emailSettings,
 	}
 	reportGroup, err := r.api.ReportGroup.Upsert(ctx, input)
 	if err != nil {
@@ -479,6 +525,12 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
+	emailSettings, diags := r.getEmailDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	input := api.ReportGroupInput{
 		Name:               plan.Name.ValueString(),
 		Enabled:            plan.Enabled.ValueBool(),
@@ -487,6 +539,7 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		Schedule:           plan.Schedule.ValueString(),
 		GroupBy:            api.StringsList(plan.GroupBy),
 		UseMessageSettings: plan.UseMessageSettings.ValueBool(),
+		EmailSettings:      emailSettings,
 	}
 	reportGroup, err := r.api.ReportGroup.Upsert(ctx, input)
 	if err != nil {
@@ -553,6 +606,88 @@ func (r reportGroupResource) updateReportGroupModel(m *models.ReportGroupResourc
 	m.SymphonyDeliverySettings = symphonyDeliverySettings
 
 	return diags
+}
+
+func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.EmailDeliverySettings, diag.Diagnostics) {
+	if m.EmailDeliverySettings.IsNull() {
+		return nil, nil
+	}
+
+	var diags diag.Diagnostics
+
+	settings := []api.EmailDeliverySettings{}
+	for i, elem := range m.EmailDeliverySettings.Elements() {
+		block, ok := elem.(basetypes.ObjectValue)
+		if !ok {
+			diags.AddAttributeError(
+				path.Root(fmt.Sprintf("email_delivery_settings.%d", i)),
+				"Invalid email delivery settings",
+				"Email delivery settings block is invalid.",
+			)
+			return nil, diags
+		}
+		var s models.EmailDeliverySettings
+		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+			return nil, diags
+		}
+
+		recipients, diags := r.getRecipients(ctx, s.Recipients)
+		if diags.HasError() {
+			return nil, diags
+		}
+
+		settings = append(
+			settings,
+			api.EmailDeliverySettings{
+				CC:             api.StringsList(s.CC),
+				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
+				Format:         s.Format.ValueStringPointer(),
+				FromEmail:      s.From.ValueStringPointer(),
+				Priority:       s.Priority.ValueStringPointer(),
+				Recipients:     recipients,
+				Subject:        s.Subject.ValueString(),
+				Template:       s.Template.ValueString(),
+			},
+		)
+	}
+	return settings, diags
+}
+
+func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([]api.Recipient, diag.Diagnostics) {
+	if l.IsNull() {
+		return nil, nil
+	}
+
+	var diags diag.Diagnostics
+
+	recipients := []api.Recipient{}
+	for i, elem := range l.Elements() {
+		block, ok := elem.(basetypes.ObjectValue)
+		if !ok {
+			diags.AddAttributeError(
+				path.Root(fmt.Sprintf("recipients.%d", i)),
+				"Invalid recipient",
+				"Recipient block is invalid.",
+			)
+			return nil, diags
+		}
+		var r models.Recipient
+		if diags := block.As(ctx, &r, basetypes.ObjectAsOptions{}); diags.HasError() {
+			return nil, diags
+		}
+
+		recipients = append(
+			recipients,
+			api.Recipient{
+				AccountOwner:  r.AccountOwner.ValueBoolPointer(),
+				EventOwner:    r.EventOwner.ValueBoolPointer(),
+				ResourceOwner: r.ResourceOwner.ValueBoolPointer(),
+				Tag:           r.Tag.ValueStringPointer(),
+				Value:         r.Value.ValueStringPointer(),
+			},
+		)
+	}
+	return recipients, nil
 }
 
 type validRecipient struct{}
