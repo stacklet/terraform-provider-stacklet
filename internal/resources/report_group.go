@@ -21,7 +21,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
@@ -143,7 +142,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ValidRecipient(),
+									validRecipient{},
 								},
 							},
 						},
@@ -193,7 +192,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ValidRecipient(),
+									validRecipient{},
 								},
 							},
 						},
@@ -239,7 +238,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ValidRecipient(),
+									validRecipient{},
 								},
 							},
 						},
@@ -285,7 +284,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ValidRecipient(),
+									validRecipient{},
 								},
 							},
 						},
@@ -343,7 +342,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ValidRecipient(),
+									validRecipient{},
 								},
 							},
 						},
@@ -401,7 +400,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ValidRecipient(),
+									validRecipient{},
 								},
 							},
 						},
@@ -522,4 +521,46 @@ func (r reportGroupResource) updateReportGroupModel(m *models.ReportGroupResourc
 	m.Schedule = types.StringValue(reportGroup.Schedule)
 	m.GroupBy = tftypes.StringsList(reportGroup.GroupBy)
 	m.UseMessageSettings = types.BoolValue(reportGroup.UseMessageSettings)
+}
+
+type validRecipient struct{}
+
+func (v validRecipient) Description(ctx context.Context) string {
+	return "Ensures exactly one recipient field is set: either one of the owners flags are true, or exactly one of tag and value is set"
+}
+
+func (v validRecipient) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
+}
+
+func (v validRecipient) ValidateObject(ctx context.Context, req validator.ObjectRequest, resp *validator.ObjectResponse) {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
+		return
+	}
+
+	setCount := 0
+	for _, attr := range req.ConfigValue.Attributes() {
+		if attr.IsNull() || attr.IsUnknown() {
+			continue
+		}
+		switch a := attr.(type) {
+		case types.Bool:
+			if a.ValueBool() {
+				setCount++
+			}
+		case types.String:
+			if a.ValueString() != "" {
+				setCount++
+			}
+		}
+	}
+
+	if setCount != 1 {
+		resp.Diagnostics.AddAttributeError(
+			req.Path,
+			"Invalid recipient configuration",
+			"Exactly one recipient field must be set.",
+		)
+		return
+	}
 }
