@@ -9,10 +9,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// ExactlyOneRecipient returns a validator that ensures that exactly one field
-// is set in for recipients: either one of the owners flags are true, or
-// exactly one of tag and value is set.
-func ExactlyOneRecipient() validator.Object {
+// ValidRecipient returns a validator that ensures that exactly one field is
+// set in for recipients: either one of the owners flags are true, or exactly
+// one of tag and value is set.
+func ValidRecipient() validator.Object {
 	return exactlyOneRecipient{}
 }
 

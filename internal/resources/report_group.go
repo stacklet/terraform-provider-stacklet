@@ -143,7 +143,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ExactlyOneRecipient(),
+									schemavalidate.ValidRecipient(),
 								},
 							},
 						},
@@ -193,7 +193,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ExactlyOneRecipient(),
+									schemavalidate.ValidRecipient(),
 								},
 							},
 						},
@@ -239,7 +239,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ExactlyOneRecipient(),
+									schemavalidate.ValidRecipient(),
 								},
 							},
 						},
@@ -285,7 +285,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ExactlyOneRecipient(),
+									schemavalidate.ValidRecipient(),
 								},
 							},
 						},
@@ -343,7 +343,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ExactlyOneRecipient(),
+									schemavalidate.ValidRecipient(),
 								},
 							},
 						},
@@ -401,7 +401,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 									},
 								},
 								Validators: []validator.Object{
-									schemavalidate.ExactlyOneRecipient(),
+									schemavalidate.ValidRecipient(),
 								},
 							},
 						},
