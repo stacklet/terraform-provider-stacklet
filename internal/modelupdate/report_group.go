@@ -139,12 +139,12 @@ func (u reportGroupUpdater) ServiceNowDeliverySettings() (basetypes.ListValue, d
 			}
 
 			return map[string]attr.Value{
-				"first_match_only":  types.BoolPointerValue(entry.FirstMatchOnly),
-				"impact":            types.StringValue(entry.Impact),
-				"recipients":        recipients,
-				"short_description": types.StringValue(entry.ShortDescription),
-				"template":          types.StringValue(entry.Template),
-				"urgency":           types.StringValue(entry.Urgency),
+				"first_match_only": types.BoolPointerValue(entry.FirstMatchOnly),
+				"impact":           types.StringValue(entry.Impact),
+				"recipients":       recipients,
+				"description":      types.StringValue(entry.ShortDescription),
+				"template":         types.StringValue(entry.Template),
+				"urgency":          types.StringValue(entry.Urgency),
 			}, nil
 		},
 	)

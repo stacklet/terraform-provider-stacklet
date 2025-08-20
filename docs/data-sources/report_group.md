@@ -98,10 +98,10 @@ Read-Only:
 
 Read-Only:
 
+- `description` (String) Ticket description.
 - `first_match_only` (Boolean) Only report the first match.
 - `impact` (String) Impact to use for the ticket.
 - `recipients` (Attributes List) Recipients for the notification. (see [below for nested schema](#nestedatt--servicenow_delivery_settings--recipients))
-- `short_description` (String) Ticket description.
 - `template` (String) Name of the template for the notification.
 - `urgency` (String) Ticket urgency.
 

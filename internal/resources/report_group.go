@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -322,8 +323,11 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"impact": schema.StringAttribute{
 							Description: "Impact to use for the ticket.",
 							Required:    true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2", "3"),
+							},
 						},
-						"short_description": schema.StringAttribute{
+						"description": schema.StringAttribute{
 							Description: "Ticket description.",
 							Required:    true,
 						},
@@ -334,6 +338,9 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"urgency": schema.StringAttribute{
 							Description: "Ticket urgency.",
 							Required:    true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2", "3"),
+							},
 						},
 					},
 				},

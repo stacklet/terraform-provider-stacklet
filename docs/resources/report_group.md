@@ -120,8 +120,8 @@ Optional:
 
 Required:
 
+- `description` (String) Ticket description.
 - `impact` (String) Impact to use for the ticket.
-- `short_description` (String) Ticket description.
 - `template` (String) Name of the template for the notification.
 - `urgency` (String) Ticket urgency.
 
