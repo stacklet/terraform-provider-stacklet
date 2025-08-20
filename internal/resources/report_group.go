@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
@@ -20,6 +21,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
+	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
@@ -140,6 +142,9 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 										Optional:    true,
 									},
 								},
+								Validators: []validator.Object{
+									schemavalidate.ValidRecipient(),
+								},
 							},
 						},
 						"subject": schema.StringAttribute{
@@ -187,6 +192,9 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 										Optional:    true,
 									},
 								},
+								Validators: []validator.Object{
+									schemavalidate.ValidRecipient(),
+								},
 							},
 						},
 						"template": schema.StringAttribute{
@@ -230,6 +238,9 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 										Optional:    true,
 									},
 								},
+								Validators: []validator.Object{
+									schemavalidate.ValidRecipient(),
+								},
 							},
 						},
 						"template": schema.StringAttribute{
@@ -272,6 +283,9 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 										Description: "Explicit value for a notification recipient.",
 										Optional:    true,
 									},
+								},
+								Validators: []validator.Object{
+									schemavalidate.ValidRecipient(),
 								},
 							},
 						},
@@ -328,6 +342,9 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 										Optional:    true,
 									},
 								},
+								Validators: []validator.Object{
+									schemavalidate.ValidRecipient(),
+								},
 							},
 						},
 						"template": schema.StringAttribute{
@@ -382,6 +399,9 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 										Description: "Explicit value for a notification recipient.",
 										Optional:    true,
 									},
+								},
+								Validators: []validator.Object{
+									schemavalidate.ValidRecipient(),
 								},
 							},
 						},
