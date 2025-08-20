@@ -175,7 +175,7 @@ func (d *reportGroupDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 							},
 						},
 						"template": schema.StringAttribute{
-							Description: "Name of the template for the email.",
+							Description: "Name of the template for the notification.",
 							Computed:    true,
 						},
 					},
@@ -218,7 +218,7 @@ func (d *reportGroupDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 							},
 						},
 						"template": schema.StringAttribute{
-							Description: "Name of the template for the email.",
+							Description: "Name of the template for the notification.",
 							Computed:    true,
 						},
 					},

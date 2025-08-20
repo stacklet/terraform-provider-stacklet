@@ -17,5 +17,6 @@ var RESOURCES = []func() resource.Resource{
 	NewNotificationTemplateResource,
 	NewPolicyCollectionMappingResource,
 	NewPolicyCollectionResource,
+	NewReportGroupResource,
 	NewRepositoryResource,
 }

@@ -1,0 +1,450 @@
+{
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}:{\"input\":{\"description\":\"Test account group for report group\",\"name\":\"test-rg-ag\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}",
+        "variables": {
+          "input": {
+            "description": "Test account group for report group",
+            "name": "test-rg-ag",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccountGroup": {
+            "group": {
+              "description": "Test account group for report group",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgImVhNzZhZWUyLTJmZDEtNGFlYS1hMTQ4LTVjYTA2MTE3M2U4YiJd",
+              "name": "test-rg-ag",
+              "provider": "AWS",
+              "regions": [
+                "us-east-1"
+              ],
+              "uuid": "ea76aee2-2fd1-4aea-a148-5ca061173e8b"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}}:{\"input\":{\"accountGroupUUID\":\"ea76aee2-2fd1-4aea-a148-5ca061173e8b\",\"autoDeploy\":true,\"deploy\":true,\"description\":\"Test binding for report group\",\"executionConfig\":{\"dryRun\":null,\"resourceLimits\":{\"default\":null,\"policyOverrides\":[]},\"securityContext\":null,\"variables\":null},\"name\":\"test-rg-binding\",\"policyCollectionUUID\":\"94869deb-5ad7-47a8-bc08-c3ab988570d3\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddBindingInput!){addBinding(input: $input){binding{id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}}",
+        "variables": {
+          "input": {
+            "accountGroupUUID": "ea76aee2-2fd1-4aea-a148-5ca061173e8b",
+            "autoDeploy": true,
+            "deploy": true,
+            "description": "Test binding for report group",
+            "executionConfig": {
+              "dryRun": null,
+              "resourceLimits": {
+                "default": null,
+                "policyOverrides": []
+              },
+              "securityContext": null,
+              "variables": null
+            },
+            "name": "test-rg-binding",
+            "policyCollectionUUID": "94869deb-5ad7-47a8-bc08-c3ab988570d3"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addBinding": {
+            "binding": {
+              "accountGroup": {
+                "uuid": "ea76aee2-2fd1-4aea-a148-5ca061173e8b"
+              },
+              "autoDeploy": true,
+              "description": "Test binding for report group",
+              "executionConfig": {
+                "dryRun": null,
+                "resourceLimits": null,
+                "securityContext": null,
+                "variables": null
+              },
+              "id": "WyJiaW5kaW5nIiwgIjE3OGM4YzRkLThhNDQtNDc5ZC04OTMwLWQzZGU4N2I1NGUxNyJd",
+              "name": "test-rg-binding",
+              "policyCollection": {
+                "uuid": "94869deb-5ad7-47a8-bc08-c3ab988570d3"
+              },
+              "schedule": null,
+              "system": false,
+              "uuid": "178c8c4d-8a44-479d-8930-d3de87b54e17"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection for report group\",\"name\":\"test-rg-pc\",\"provider\":\"AWS\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "variables": {
+          "input": {
+            "autoUpdate": false,
+            "description": "Test policy collection for report group",
+            "name": "test-rg-pc",
+            "provider": "AWS"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addPolicyCollection": {
+            "collection": {
+              "autoUpdate": false,
+              "description": "Test policy collection for report group",
+              "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5NDg2OWRlYi01YWQ3LTQ3YTgtYmMwOC1jM2FiOTg4NTcwZDMiXQ==",
+              "isDynamic": false,
+              "name": "test-rg-pc",
+              "provider": "AWS",
+              "repositoryConfig": null,
+              "repositoryView": null,
+              "system": false,
+              "uuid": "94869deb-5ad7-47a8-bc08-c3ab988570d3"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpsertReportGroupsInput!){upsertReportGroups(input: $input){reportGroups{id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}}:{\"input\":{\"reportGroups\":[{\"bindings\":[\"178c8c4d-8a44-479d-8930-d3de87b54e17\"],\"enabled\":true,\"groupBy\":[\"account\",\"region\"],\"name\":\"test-report-group\",\"schedule\":\"0 12 * * *\",\"source\":\"BINDING\",\"useMessageSettings\":true}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpsertReportGroupsInput!){upsertReportGroups(input: $input){reportGroups{id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}}",
+        "variables": {
+          "input": {
+            "reportGroups": [
+              {
+                "bindings": [
+                  "178c8c4d-8a44-479d-8930-d3de87b54e17"
+                ],
+                "enabled": true,
+                "groupBy": [
+                  "account",
+                  "region"
+                ],
+                "name": "test-report-group",
+                "schedule": "0 12 * * *",
+                "source": "BINDING",
+                "useMessageSettings": true
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "upsertReportGroups": {
+            "reportGroups": [
+              {
+                "bindings": [
+                  "178c8c4d-8a44-479d-8930-d3de87b54e17"
+                ],
+                "deliverySettings": [],
+                "enabled": true,
+                "groupBy": [
+                  "account",
+                  "region"
+                ],
+                "id": "WyJyZyIsICJ0ZXN0LXJlcG9ydC1ncm91cCJd",
+                "name": "test-report-group",
+                "schedule": "0 12 * * *",
+                "source": "BINDING",
+                "useMessageSettings": true
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($names:[String!]!){removeReportGroups(names: $names)}:{\"names\":[\"test-report-group\"]}": [
+    {
+      "request": {
+        "query": "mutation ($names:[String!]!){removeReportGroups(names: $names)}",
+        "variables": {
+          "names": [
+            "test-report-group"
+          ]
+        }
+      },
+      "response": {
+        "data": {
+          "removeReportGroups": [
+            "WyJyZyIsICJ0ZXN0LXJlcG9ydC1ncm91cCJd"
+          ]
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"ea76aee2-2fd1-4aea-a148-5ca061173e8b\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
+        "variables": {
+          "uuid": "ea76aee2-2fd1-4aea-a148-5ca061173e8b"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccountGroup": {
+            "group": {
+              "uuid": "ea76aee2-2fd1-4aea-a148-5ca061173e8b"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}:{\"uuid\":\"178c8c4d-8a44-479d-8930-d3de87b54e17\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeBinding(uuid: $uuid){binding{uuid}}}",
+        "variables": {
+          "uuid": "178c8c4d-8a44-479d-8930-d3de87b54e17"
+        }
+      },
+      "response": {
+        "data": {
+          "removeBinding": {
+            "binding": {
+              "uuid": "178c8c4d-8a44-479d-8930-d3de87b54e17"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}:{\"uuid\":\"94869deb-5ad7-47a8-bc08-c3ab988570d3\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removePolicyCollection(uuid: $uuid){collection{uuid}}}",
+        "variables": {
+          "uuid": "94869deb-5ad7-47a8-bc08-c3ab988570d3"
+        }
+      },
+      "response": {
+        "data": {
+          "removePolicyCollection": {
+            "collection": {
+              "uuid": "94869deb-5ad7-47a8-bc08-c3ab988570d3"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"ea76aee2-2fd1-4aea-a148-5ca061173e8b\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
+        "variables": {
+          "name": "",
+          "uuid": "ea76aee2-2fd1-4aea-a148-5ca061173e8b"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test account group for report group",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImVhNzZhZWUyLTJmZDEtNGFlYS1hMTQ4LTVjYTA2MTE3M2U4YiJd",
+            "name": "test-rg-ag",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "ea76aee2-2fd1-4aea-a148-5ca061173e8b"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}:{\"name\":\"\",\"uuid\":\"178c8c4d-8a44-479d-8930-d3de87b54e17\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){binding(uuid: $uuid, name: $name){id,uuid,name,description,autoDeploy,schedule,accountGroup{uuid},policyCollection{uuid},executionConfig{dryRun{default},resourceLimits{default{maxCount,maxPercentage,requiresBoth},policyOverrides{limit{maxCount,maxPercentage,requiresBoth},policyName}},securityContext{default},variables},system}}",
+        "variables": {
+          "name": "",
+          "uuid": "178c8c4d-8a44-479d-8930-d3de87b54e17"
+        }
+      },
+      "response": {
+        "data": {
+          "binding": {
+            "accountGroup": {
+              "uuid": "ea76aee2-2fd1-4aea-a148-5ca061173e8b"
+            },
+            "autoDeploy": true,
+            "description": "Test binding for report group",
+            "executionConfig": {
+              "dryRun": null,
+              "resourceLimits": null,
+              "securityContext": null,
+              "variables": null
+            },
+            "id": "WyJiaW5kaW5nIiwgIjE3OGM4YzRkLThhNDQtNDc5ZC04OTMwLWQzZGU4N2I1NGUxNyJd",
+            "name": "test-rg-binding",
+            "policyCollection": {
+              "uuid": "94869deb-5ad7-47a8-bc08-c3ab988570d3"
+            },
+            "schedule": null,
+            "system": false,
+            "uuid": "178c8c4d-8a44-479d-8930-d3de87b54e17"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"94869deb-5ad7-47a8-bc08-c3ab988570d3\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "variables": {
+          "name": "",
+          "uuid": "94869deb-5ad7-47a8-bc08-c3ab988570d3"
+        }
+      },
+      "response": {
+        "data": {
+          "policyCollection": {
+            "autoUpdate": false,
+            "description": "Test policy collection for report group",
+            "id": "WyJwb2xpY3ktY29sbGVjdGlvbiIsICI5NDg2OWRlYi01YWQ3LTQ3YTgtYmMwOC1jM2FiOTg4NTcwZDMiXQ==",
+            "isDynamic": false,
+            "name": "test-rg-pc",
+            "provider": "AWS",
+            "repositoryConfig": null,
+            "repositoryView": null,
+            "system": false,
+            "uuid": "94869deb-5ad7-47a8-bc08-c3ab988570d3"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!){reportGroup(name: $name){id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}:{\"name\":\"test-report-group\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!){reportGroup(name: $name){id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}",
+        "variables": {
+          "name": "test-report-group"
+        }
+      },
+      "response": {
+        "data": {
+          "reportGroup": {
+            "bindings": [
+              "178c8c4d-8a44-479d-8930-d3de87b54e17"
+            ],
+            "deliverySettings": [],
+            "enabled": true,
+            "groupBy": [
+              "account",
+              "region"
+            ],
+            "id": "WyJyZyIsICJ0ZXN0LXJlcG9ydC1ncm91cCJd",
+            "name": "test-report-group",
+            "schedule": "0 12 * * *",
+            "source": "BINDING",
+            "useMessageSettings": true
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){reportGroup(name: $name){id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}",
+        "variables": {
+          "name": "test-report-group"
+        }
+      },
+      "response": {
+        "data": {
+          "reportGroup": {
+            "bindings": [
+              "178c8c4d-8a44-479d-8930-d3de87b54e17"
+            ],
+            "deliverySettings": [],
+            "enabled": true,
+            "groupBy": [
+              "account",
+              "region"
+            ],
+            "id": "WyJyZyIsICJ0ZXN0LXJlcG9ydC1ncm91cCJd",
+            "name": "test-report-group",
+            "schedule": "0 12 * * *",
+            "source": "BINDING",
+            "useMessageSettings": true
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){reportGroup(name: $name){id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}",
+        "variables": {
+          "name": "test-report-group"
+        }
+      },
+      "response": {
+        "data": {
+          "reportGroup": {
+            "bindings": [
+              "178c8c4d-8a44-479d-8930-d3de87b54e17"
+            ],
+            "deliverySettings": [],
+            "enabled": true,
+            "groupBy": [
+              "account",
+              "region"
+            ],
+            "id": "WyJyZyIsICJ0ZXN0LXJlcG9ydC1ncm91cCJd",
+            "name": "test-report-group",
+            "schedule": "0 12 * * *",
+            "source": "BINDING",
+            "useMessageSettings": true
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){reportGroup(name: $name){id,name,enabled,bindings,source,schedule,groupBy,useMessageSettings,deliverySettings{__typename,... on EmailSettings{cc,firstMatchOnly,format,fromEmail,priority,recipients{account_owner,event_owner,resource_owner,tag,value},subject,template},... on SlackSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on TeamsSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template},... on ServiceNowSettings{firstMatchOnly,impact,recipients{account_owner,event_owner,resource_owner,tag,value},shortDescription,template,urgency},... on JiraSettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template,description,project,summary},... on SymphonySettings{firstMatchOnly,recipients{account_owner,event_owner,resource_owner,tag,value},template}}}}",
+        "variables": {
+          "name": "test-report-group"
+        }
+      },
+      "response": {
+        "data": {
+          "reportGroup": {
+            "bindings": [
+              "178c8c4d-8a44-479d-8930-d3de87b54e17"
+            ],
+            "deliverySettings": [],
+            "enabled": true,
+            "groupBy": [
+              "account",
+              "region"
+            ],
+            "id": "WyJyZyIsICJ0ZXN0LXJlcG9ydC1ncm91cCJd",
+            "name": "test-report-group",
+            "schedule": "0 12 * * *",
+            "source": "BINDING",
+            "useMessageSettings": true
+          }
+        }
+      }
+    }
+  ]
+}

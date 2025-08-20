@@ -148,12 +148,31 @@ type SymphonyDeliverySettings struct {
 	Template       string
 }
 
+// ReportGroupsInput is the input to create or update a report group.
+type ReportGroupInput struct {
+	Name               string       `json:"name"`
+	Enabled            bool         `json:"enabled"`
+	Bindings           []string     `json:"bindings"`
+	Source             ReportSource `json:"source"`
+	Schedule           string       `json:"schedule"`
+	GroupBy            []string     `json:"groupBy"`
+	UseMessageSettings bool         `json:"useMessageSettings"`
+}
+
 type Recipient struct {
 	AccountOwner  *bool `graphql:"account_owner"`
 	EventOwner    *bool `graphql:"event_owner"`
 	ResourceOwner *bool `graphql:"resource_owner"`
 	Tag           *string
 	Value         *string
+}
+
+type upsertReportGroupsInput struct {
+	ReportGroups []ReportGroupInput `json:"reportGroups"`
+}
+
+func (i upsertReportGroupsInput) GetGraphQLType() string {
+	return "UpsertReportGroupsInput"
 }
 
 type reportGroupAPI struct {
@@ -175,4 +194,37 @@ func (a reportGroupAPI) Read(ctx context.Context, name string) (*ReportGroup, er
 	}
 
 	return &query.ReportGroup, nil
+}
+
+// Upsert creates or updates a report group.
+func (a reportGroupAPI) Upsert(ctx context.Context, input ReportGroupInput) (*ReportGroup, error) {
+	var mutation struct {
+		Payload struct {
+			ReportGroups []ReportGroup
+		} `graphql:"upsertReportGroups(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": upsertReportGroupsInput{
+			ReportGroups: []ReportGroupInput{input},
+		},
+	}
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if len(mutation.Payload.ReportGroups) == 0 {
+		return nil, NotFound{"Report group not found after upsert"}
+	}
+	return &mutation.Payload.ReportGroups[0], nil
+}
+
+// Delete removes a report group.
+func (a reportGroupAPI) Delete(ctx context.Context, name string) error {
+	var mutation struct {
+		IDs []string `graphql:"removeReportGroups(names: $names)"`
+	}
+	if err := a.c.Mutate(ctx, &mutation, map[string]any{"names": []graphql.String{graphql.String(name)}}); err != nil {
+		return NewAPIError(err)
+	}
+	return nil
 }
