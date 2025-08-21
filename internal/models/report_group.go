@@ -107,22 +107,22 @@ func (s TeamsDeliverySettings) AttributeTypes() map[string]attr.Type {
 
 // ServiceNowDeliverySettings are the settings for a ServiceNow delivery type.
 type ServiceNowDeliverySettings struct {
-	FirstMatchOnly types.Bool   `tfsdk:"first_match_only"`
-	Impact         types.String `tfsdk:"impact"`
-	Recipients     types.List   `tfsdk:"recipients"`
-	Description    types.String `tfsdk:"description"`
-	Template       types.String `tfsdk:"template"`
-	Urgency        types.String `tfsdk:"urgency"`
+	FirstMatchOnly   types.Bool   `tfsdk:"first_match_only"`
+	Impact           types.String `tfsdk:"impact"`
+	Recipients       types.List   `tfsdk:"recipients"`
+	ShortDescription types.String `tfsdk:"short_description"`
+	Template         types.String `tfsdk:"template"`
+	Urgency          types.String `tfsdk:"urgency"`
 }
 
 func (s ServiceNowDeliverySettings) AttributeTypes() map[string]attr.Type {
 	return map[string]attr.Type{
-		"first_match_only": types.BoolType,
-		"impact":           types.StringType,
-		"recipients":       types.ListType{ElemType: types.ObjectType{AttrTypes: Recipient{}.AttributeTypes()}},
-		"description":      types.StringType,
-		"template":         types.StringType,
-		"urgency":          types.StringType,
+		"first_match_only":  types.BoolType,
+		"impact":            types.StringType,
+		"recipients":        types.ListType{ElemType: types.ObjectType{AttrTypes: Recipient{}.AttributeTypes()}},
+		"short_description": types.StringType,
+		"template":          types.StringType,
+		"urgency":           types.StringType,
 	}
 }
 

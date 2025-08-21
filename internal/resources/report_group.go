@@ -289,9 +289,6 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
 							Optional:    true,
-							Validators: []validator.List{
-								listvalidator.SizeAtLeast(1),
-							},
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -327,7 +324,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 								stringvalidator.OneOf("1", "2", "3"),
 							},
 						},
-						"description": schema.StringAttribute{
+						"short_description": schema.StringAttribute{
 							Description: "Ticket description.",
 							Required:    true,
 						},
@@ -358,9 +355,6 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
 							Optional:    true,
-							Validators: []validator.List{
-								listvalidator.SizeAtLeast(1),
-							},
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{

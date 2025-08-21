@@ -263,7 +263,7 @@ func (d *reportGroupDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 								},
 							},
 						},
-						"description": schema.StringAttribute{
+						"short_description": schema.StringAttribute{
 							Description: "Ticket description.",
 							Computed:    true,
 						},
