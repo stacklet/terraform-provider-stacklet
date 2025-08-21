@@ -62,6 +62,7 @@ resource "stacklet_report_group" "example" {
 
 Required:
 
+- `recipients` (Attributes List) Recipients for the notification. (see [below for nested schema](#nestedatt--email_delivery_settings--recipients))
 - `subject` (String) Email subject.
 - `template` (String) Name of the template for the email.
 
@@ -72,7 +73,6 @@ Optional:
 - `format` (String) Email format (html or plain). Autodetected from the template if not specified.
 - `from` (String) Email from address.
 - `priority` (String) Email priority.
-- `recipients` (Attributes List) Recipients for the notification. (see [below for nested schema](#nestedatt--email_delivery_settings--recipients))
 
 <a id="nestedatt--email_delivery_settings--recipients"></a>
 ### Nested Schema for `email_delivery_settings.recipients`
@@ -148,12 +148,12 @@ Optional:
 
 Required:
 
+- `recipients` (Attributes List) Recipients for the notification. (see [below for nested schema](#nestedatt--slack_delivery_settings--recipients))
 - `template` (String) Name of the template for the notification.
 
 Optional:
 
 - `first_match_only` (Boolean) Only report the first match.
-- `recipients` (Attributes List) Recipients for the notification. (see [below for nested schema](#nestedatt--slack_delivery_settings--recipients))
 
 <a id="nestedatt--slack_delivery_settings--recipients"></a>
 ### Nested Schema for `slack_delivery_settings.recipients`
