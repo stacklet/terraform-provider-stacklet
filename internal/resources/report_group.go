@@ -289,6 +289,8 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
 							Optional:    true,
+							Computed:    true,
+							Default:     listdefault.StaticValue(r.emptyRecipientList()),
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -355,6 +357,8 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 						"recipients": schema.ListNestedAttribute{
 							Description: "Recipients for the notification.",
 							Optional:    true,
+							Computed:    true,
+							Default:     listdefault.StaticValue(r.emptyRecipientList()),
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -499,6 +503,36 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
+	slackSettings, diags := r.getSlackDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	teamsSettings, diags := r.getTeamsDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	servicenowSettings, diags := r.getServiceNowDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	jiraSettings, diags := r.getJiraDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	symphonySettings, diags := r.getSymphonyDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	input := api.ReportGroupInput{
 		Name:               plan.Name.ValueString(),
 		Enabled:            plan.Enabled.ValueBool(),
@@ -508,6 +542,11 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		GroupBy:            api.StringsList(plan.GroupBy),
 		UseMessageSettings: plan.UseMessageSettings.ValueBool(),
 		EmailSettings:      emailSettings,
+		SlackSettings:      slackSettings,
+		TeamsSettings:      teamsSettings,
+		ServiceNowSettings: servicenowSettings,
+		JiraSettings:       jiraSettings,
+		SymphonySettings:   symphonySettings,
 	}
 	reportGroup, err := r.api.ReportGroup.Upsert(ctx, input)
 	if err != nil {
@@ -532,6 +571,36 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
+	slackSettings, diags := r.getSlackDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	teamsSettings, diags := r.getTeamsDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	servicenowSettings, diags := r.getServiceNowDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	jiraSettings, diags := r.getJiraDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	symphonySettings, diags := r.getSymphonyDeliverySettings(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	input := api.ReportGroupInput{
 		Name:               plan.Name.ValueString(),
 		Enabled:            plan.Enabled.ValueBool(),
@@ -541,6 +610,11 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		GroupBy:            api.StringsList(plan.GroupBy),
 		UseMessageSettings: plan.UseMessageSettings.ValueBool(),
 		EmailSettings:      emailSettings,
+		SlackSettings:      slackSettings,
+		TeamsSettings:      teamsSettings,
+		ServiceNowSettings: servicenowSettings,
+		JiraSettings:       jiraSettings,
+		SymphonySettings:   symphonySettings,
 	}
 	reportGroup, err := r.api.ReportGroup.Upsert(ctx, input)
 	if err != nil {
@@ -654,6 +728,212 @@ func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m mod
 	return settings, diags
 }
 
+func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.SlackDeliverySettings, diag.Diagnostics) {
+	if m.SlackDeliverySettings.IsNull() {
+		return nil, nil
+	}
+
+	var diags diag.Diagnostics
+
+	settings := []api.SlackDeliverySettings{}
+	for i, elem := range m.SlackDeliverySettings.Elements() {
+		block, ok := elem.(basetypes.ObjectValue)
+		if !ok {
+			diags.AddAttributeError(
+				path.Root(fmt.Sprintf("slack_delivery_settings.%d", i)),
+				"Invalid Slack delivery settings",
+				"Slack delivery settings block is invalid.",
+			)
+			return nil, diags
+		}
+		var s models.SlackDeliverySettings
+		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+			return nil, diags
+		}
+
+		recipients, diags := r.getRecipients(ctx, s.Recipients)
+		if diags.HasError() {
+			return nil, diags
+		}
+
+		settings = append(
+			settings,
+			api.SlackDeliverySettings{
+				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
+				Recipients:     recipients,
+				Template:       s.Template.ValueString(),
+			},
+		)
+	}
+	return settings, diags
+}
+
+func (r reportGroupResource) getTeamsDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.TeamsDeliverySettings, diag.Diagnostics) {
+	if m.TeamsDeliverySettings.IsNull() {
+		return nil, nil
+	}
+
+	var diags diag.Diagnostics
+
+	settings := []api.TeamsDeliverySettings{}
+	for i, elem := range m.TeamsDeliverySettings.Elements() {
+		block, ok := elem.(basetypes.ObjectValue)
+		if !ok {
+			diags.AddAttributeError(
+				path.Root(fmt.Sprintf("teams_delivery_settings.%d", i)),
+				"Invalid Microsoft Teams delivery settings",
+				"Microsoft Teams delivery settings block is invalid.",
+			)
+			return nil, diags
+		}
+		var s models.TeamsDeliverySettings
+		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+			return nil, diags
+		}
+
+		recipients, diags := r.getRecipients(ctx, s.Recipients)
+		if diags.HasError() {
+			return nil, diags
+		}
+
+		settings = append(
+			settings,
+			api.TeamsDeliverySettings{
+				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
+				Recipients:     recipients,
+				Template:       s.Template.ValueString(),
+			},
+		)
+	}
+	return settings, diags
+}
+
+func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.ServiceNowDeliverySettings, diag.Diagnostics) {
+	if m.ServiceNowDeliverySettings.IsNull() {
+		return nil, nil
+	}
+
+	var diags diag.Diagnostics
+
+	settings := []api.ServiceNowDeliverySettings{}
+	for i, elem := range m.ServiceNowDeliverySettings.Elements() {
+		block, ok := elem.(basetypes.ObjectValue)
+		if !ok {
+			diags.AddAttributeError(
+				path.Root(fmt.Sprintf("servicenow_delivery_settings.%d", i)),
+				"Invalid ServiceNow delivery settings",
+				"ServiceNow delivery settings block is invalid.",
+			)
+			return nil, diags
+		}
+		var s models.ServiceNowDeliverySettings
+		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+			return nil, diags
+		}
+
+		recipients, diags := r.getRecipients(ctx, s.Recipients)
+		if diags.HasError() {
+			return nil, diags
+		}
+
+		settings = append(
+			settings,
+			api.ServiceNowDeliverySettings{
+				FirstMatchOnly:   s.FirstMatchOnly.ValueBoolPointer(),
+				Impact:           s.Impact.ValueString(),
+				Recipients:       recipients,
+				ShortDescription: s.ShortDescription.ValueString(),
+				Template:         s.Template.ValueString(),
+				Urgency:          s.Urgency.ValueString(),
+			},
+		)
+	}
+	return settings, diags
+}
+
+func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.JiraDeliverySettings, diag.Diagnostics) {
+	if m.JiraDeliverySettings.IsNull() {
+		return nil, nil
+	}
+
+	var diags diag.Diagnostics
+
+	settings := []api.JiraDeliverySettings{}
+	for i, elem := range m.JiraDeliverySettings.Elements() {
+		block, ok := elem.(basetypes.ObjectValue)
+		if !ok {
+			diags.AddAttributeError(
+				path.Root(fmt.Sprintf("jira_delivery_settings.%d", i)),
+				"Invalid Jira delivery settings",
+				"Jira delivery settings block is invalid.",
+			)
+			return nil, diags
+		}
+		var s models.JiraDeliverySettings
+		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+			return nil, diags
+		}
+
+		recipients, diags := r.getRecipients(ctx, s.Recipients)
+		if diags.HasError() {
+			return nil, diags
+		}
+
+		settings = append(
+			settings,
+			api.JiraDeliverySettings{
+				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
+				Recipients:     recipients,
+				Template:       s.Template.ValueString(),
+				Description:    s.Description.ValueString(),
+				Project:        s.Project.ValueString(),
+				Summary:        s.Summary.ValueString(),
+			},
+		)
+	}
+	return settings, diags
+}
+
+func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.SymphonyDeliverySettings, diag.Diagnostics) {
+	if m.SymphonyDeliverySettings.IsNull() {
+		return nil, nil
+	}
+
+	var diags diag.Diagnostics
+
+	settings := []api.SymphonyDeliverySettings{}
+	for i, elem := range m.SymphonyDeliverySettings.Elements() {
+		block, ok := elem.(basetypes.ObjectValue)
+		if !ok {
+			diags.AddAttributeError(
+				path.Root(fmt.Sprintf("symphony_delivery_settings.%d", i)),
+				"Invalid Symphony delivery settings",
+				"Symphony delivery settings block is invalid.",
+			)
+			return nil, diags
+		}
+		var s models.SymphonyDeliverySettings
+		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+			return nil, diags
+		}
+
+		recipients, diags := r.getRecipients(ctx, s.Recipients)
+		if diags.HasError() {
+			return nil, diags
+		}
+
+		settings = append(
+			settings,
+			api.SymphonyDeliverySettings{
+				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
+				Recipients:     recipients,
+				Template:       s.Template.ValueString(),
+			},
+		)
+	}
+	return settings, diags
+}
+
 func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([]api.Recipient, diag.Diagnostics) {
 	if l.IsNull() {
 		return nil, nil
@@ -689,6 +969,20 @@ func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([
 		)
 	}
 	return recipients, nil
+}
+
+func (reportGroupResource) emptyRecipientList() basetypes.ListValue {
+	return basetypes.NewListValueMust(
+		types.ObjectType{
+			AttrTypes: map[string]attr.Type{
+				"account_owner":  types.BoolType,
+				"event_owner":    types.BoolType,
+				"resource_owner": types.BoolType,
+				"tag":            types.StringType,
+				"value":          types.StringType,
+			}},
+		[]attr.Value{},
+	)
 }
 
 type validRecipient struct{}

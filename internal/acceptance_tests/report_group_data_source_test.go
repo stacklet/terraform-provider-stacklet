@@ -38,6 +38,20 @@ func TestAccReportGroupDataSource(t *testing.T) {
 						bindings = [stacklet_binding.b.uuid]
 						schedule = "0 12 * * *"
 						group_by = ["account", "region"]
+
+	                    email_delivery_settings {
+                            template = "email"
+                            subject = "Matched resources"
+
+                            recipients = [
+                        	    {
+                                  resource_owner = true
+                                },
+                        	    {
+                                  value = "user@example.com"
+                                },
+                             ]
+                        }
 					}
 
                     data "stacklet_report_group" "test" {
@@ -57,6 +71,17 @@ func TestAccReportGroupDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "group_by.0", "account"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "group_by.1", "region"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "use_message_settings", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "email_delivery_settings.#", "1"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "email_delivery_settings.0.template", "email"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "email_delivery_settings.0.subject", "Matched resources"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "email_delivery_settings.0.recipients.#", "2"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "email_delivery_settings.0.recipients.0.resource_owner", "true"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "email_delivery_settings.0.recipients.1.value", "user@example.com"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "slack_delivery_settings.#", "0"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "teams_delivery_settings.#", "0"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "servicenow_delivery_settings.#", "0"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "jira_delivery_settings.#", "0"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "symphony_delivery_settings.#", "0"),
 			),
 		},
 	}
