@@ -60,3 +60,16 @@ func (u configurationProfileUpdater) SlackWebhooks() (basetypes.ListValue, diag.
 		},
 	)
 }
+
+// AccountOwnersDefault returns a list of account owner defaults.
+func (u configurationProfileUpdater) AccountOwnersDefault() (basetypes.ListValue, diag.Diagnostics) {
+	return tftypes.ObjectList[models.AccountOwners](
+		u.cp.Record.AccountOwnersConfiguration.Default,
+		func(entry api.AccountOwners) (map[string]attr.Value, diag.Diagnostics) {
+			return map[string]attr.Value{
+				"account": types.StringValue(entry.Account),
+				"owners":  tftypes.StringsList(entry.Owners),
+			}, nil
+		},
+	)
+}

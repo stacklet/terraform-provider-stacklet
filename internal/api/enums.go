@@ -45,10 +45,12 @@ var REPORT_SOURCES = []ReportSource{
 type ConfigurationProfileName StringEnum
 
 const (
-	ConfigurationProfileEmail      = ConfigurationProfileName("email")
-	ConfigurationProfileSlack      = ConfigurationProfileName("slack")
-	ConfigurationProfileTeams      = ConfigurationProfileName("teams")
-	ConfigurationProfileServiceNow = ConfigurationProfileName("servicenow")
-	ConfigurationProfileJira       = ConfigurationProfileName("jira")
-	ConfigurationProfileSymphony   = ConfigurationProfileName("symphony")
+	ConfigurationProfileEmail         = ConfigurationProfileName("email")
+	ConfigurationProfileSlack         = ConfigurationProfileName("slack")
+	ConfigurationProfileTeams         = ConfigurationProfileName("teams")
+	ConfigurationProfileServiceNow    = ConfigurationProfileName("servicenow")
+	ConfigurationProfileJira          = ConfigurationProfileName("jira")
+	ConfigurationProfileSymphony      = ConfigurationProfileName("symphony")
+	ConfigurationProfileAccountOwners = ConfigurationProfileName("account_owners")
+	ConfigurationProfileResourceOwner = ConfigurationProfileName("resource_owner")
 )
