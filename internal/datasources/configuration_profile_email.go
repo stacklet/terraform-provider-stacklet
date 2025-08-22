@@ -89,7 +89,7 @@ func (d *configurationProfileEmailDataSource) Read(ctx context.Context, req data
 		return
 	}
 
-	config, err := d.api.ConfigurationProfile.Read(ctx, api.ConfigurationProfileEmail)
+	config, err := d.api.ConfigurationProfile.ReadEmail(ctx)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return

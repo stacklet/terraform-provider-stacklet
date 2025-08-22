@@ -70,7 +70,7 @@ func (d *configurationProfileSymphonyDataSource) Read(ctx context.Context, req d
 		return
 	}
 
-	config, err := d.api.ConfigurationProfile.Read(ctx, api.ConfigurationProfileSymphony)
+	config, err := d.api.ConfigurationProfile.ReadSymphony(ctx)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return

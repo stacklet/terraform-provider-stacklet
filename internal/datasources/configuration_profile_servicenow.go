@@ -78,7 +78,7 @@ func (d *configurationProfileServiceNowDataSource) Read(ctx context.Context, req
 		return
 	}
 
-	config, err := d.api.ConfigurationProfile.Read(ctx, api.ConfigurationProfileServiceNow)
+	config, err := d.api.ConfigurationProfile.ReadServiceNow(ctx)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return

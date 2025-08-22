@@ -42,7 +42,7 @@ var REPORT_SOURCES = []ReportSource{
 //
 // This is defined as a type since profiles are looked up by names matching
 // type.
-type ConfigurationProfileName string
+type ConfigurationProfileName StringEnum
 
 const (
 	ConfigurationProfileEmail      = ConfigurationProfileName("email")
