@@ -35,7 +35,7 @@ func (d *configurationProfileAccountOwnersDataSource) Metadata(_ context.Context
 
 func (d *configurationProfileAccountOwnersDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieve information about the Microsoft AccountOwners configuration profile.",
+		Description: "Retrieve information about the account owners configuration profile.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the configuration profile.",

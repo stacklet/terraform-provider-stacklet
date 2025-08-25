@@ -3,12 +3,12 @@
 page_title: "stacklet_configuration_profile_resource_owner Data Source - terraform-provider-stacklet"
 subcategory: ""
 description: |-
-  Retrieve information about the Microsoft ResourceOwner configuration profile.
+  Retrieve information about the resource owner configuration profile.
 ---
 
 # stacklet_configuration_profile_resource_owner (Data Source)
 
-Retrieve information about the Microsoft ResourceOwner configuration profile.
+Retrieve information about the resource owner configuration profile.
 
 ## Example Usage
 

@@ -3,12 +3,12 @@
 page_title: "stacklet_configuration_profile_account_owners Data Source - terraform-provider-stacklet"
 subcategory: ""
 description: |-
-  Retrieve information about the Microsoft AccountOwners configuration profile.
+  Retrieve information about the account owners configuration profile.
 ---
 
 # stacklet_configuration_profile_account_owners (Data Source)
 
-Retrieve information about the Microsoft AccountOwners configuration profile.
+Retrieve information about the account owners configuration profile.
 
 ## Example Usage
 
