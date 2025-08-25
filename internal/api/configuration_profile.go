@@ -13,13 +13,15 @@ type ConfigurationProfile struct {
 	ID      string
 	Profile string
 	Record  struct {
-		TypeName                string                  `graphql:"__typename"`
-		EmailConfiguration      EmailConfiguration      `graphql:"... on EmailConfiguration"`
-		ServiceNowConfiguration ServiceNowConfiguration `graphql:"... on ServiceNowConfiguration"`
-		SlackConfiguration      SlackConfiguration      `graphql:"... on SlackConfiguration"`
-		SymphonyConfiguration   SymphonyConfiguration   `graphql:"... on SymphonyConfiguration"`
-		TeamsConfiguration      TeamsConfiguration      `graphql:"... on TeamsConfiguration"`
-		JiraConfiguration       JiraConfiguration       `graphql:"... on JiraConfiguration"`
+		TypeName                   string                     `graphql:"__typename"`
+		EmailConfiguration         EmailConfiguration         `graphql:"... on EmailConfiguration"`
+		ServiceNowConfiguration    ServiceNowConfiguration    `graphql:"... on ServiceNowConfiguration"`
+		SlackConfiguration         SlackConfiguration         `graphql:"... on SlackConfiguration"`
+		SymphonyConfiguration      SymphonyConfiguration      `graphql:"... on SymphonyConfiguration"`
+		TeamsConfiguration         TeamsConfiguration         `graphql:"... on TeamsConfiguration"`
+		JiraConfiguration          JiraConfiguration          `graphql:"... on JiraConfiguration"`
+		ResourceOwnerConfiguration ResourceOwnerConfiguration `graphql:"... on ResourceOwnerConfiguration"`
+		AccountOwnersConfiguration AccountOwnersConfiguration `graphql:"... on AccountOwnersConfiguration"`
 	}
 }
 
@@ -90,6 +92,28 @@ type JiraProject struct {
 	Project      string
 }
 
+// ResourceOwnerConfiguration is the configuation for resource owner.
+type ResourceOwnerConfiguration struct {
+	Default      []string `graphql:"resourceOwnerDefault: default"`
+	OrgDomain    *string
+	OrgDomainTag *string
+	Tags         []string
+}
+
+// AccountOwnersConfiguration is the configuration for account owners.
+type AccountOwnersConfiguration struct {
+	Default      []AccountOwners `graphql:"accountOwnersDefault: default"`
+	OrgDomain    *string
+	OrgDomainTag *string
+	Tags         []string
+}
+
+// AccountOwners tracks the owners for an account.
+type AccountOwners struct {
+	Account string
+	Owners  []string
+}
+
 type configurationProfileAPI struct {
 	c *graphql.Client
 }
@@ -142,4 +166,14 @@ func (a configurationProfileAPI) ReadServiceNow(ctx context.Context) (*Configura
 // ReadJira returns data for the Jira configuration profile.
 func (a configurationProfileAPI) ReadJira(ctx context.Context) (*ConfigurationProfile, error) {
 	return a.Read(ctx, ConfigurationProfileJira)
+}
+
+// ReadAccountOwners returns data for the account owners configuration profile.
+func (a configurationProfileAPI) ReadAccountOwners(ctx context.Context) (*ConfigurationProfile, error) {
+	return a.Read(ctx, ConfigurationProfileAccountOwners)
+}
+
+// ReadResourceOwner returns data for the account owners configuration profile.
+func (a configurationProfileAPI) ReadResourceOwner(ctx context.Context) (*ConfigurationProfile, error) {
+	return a.Read(ctx, ConfigurationProfileResourceOwner)
 }
