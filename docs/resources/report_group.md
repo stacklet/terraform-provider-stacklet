@@ -3,12 +3,12 @@
 page_title: "stacklet_report_group Resource - terraform-provider-stacklet"
 subcategory: ""
 description: |-
-  Retrieve information about a notification report group by name.
+  Manage a notification report group.
 ---
 
 # stacklet_report_group (Resource)
 
-Retrieve information about a notification report group by name.
+Manage a notification report group.
 
 ## Example Usage
 
