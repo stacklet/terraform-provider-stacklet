@@ -32,3 +32,11 @@ func (p JiraProject) AttributeTypes() map[string]attr.Type {
 		"project":       types.StringType,
 	}
 }
+
+// ConfigurationProfileJiraResource is the model for Jira configuration profile resources.
+type ConfigurationProfileJiraResource struct {
+	ConfigurationProfileJiraDataSource
+
+	APIKeyWO        types.String `tfsdk:"api_key_wo"`
+	APIKeyWOVersion types.String `tfsdk:"api_key_wo_version"`
+}
