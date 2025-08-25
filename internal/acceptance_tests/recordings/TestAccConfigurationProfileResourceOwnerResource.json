@@ -1,0 +1,320 @@
+{
+  "mutation ($input:ResourceOwnerConfigurationInput!){addResourceOwnerProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"default\":[\"owner1@example.com\",\"owner2@example.com\"],\"name\":\"resource_owner\",\"orgDomain\":\"example.com\",\"orgDomainTag\":\"domain\",\"scope\":\"0\",\"tags\":[\"owner\",\"team\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:ResourceOwnerConfigurationInput!){addResourceOwnerProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "variables": {
+          "input": {
+            "default": [
+              "owner1@example.com",
+              "owner2@example.com"
+            ],
+            "name": "resource_owner",
+            "orgDomain": "example.com",
+            "orgDomainTag": "domain",
+            "scope": "0",
+            "tags": [
+              "owner",
+              "team"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addResourceOwnerProfile": {
+            "configuration": {
+              "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+              "profile": "resource_owner",
+              "record": {
+                "__typename": "ResourceOwnerConfiguration",
+                "orgDomain": "example.com",
+                "orgDomainTag": "domain",
+                "resourceOwnerDefault": [
+                  "owner1@example.com",
+                  "owner2@example.com"
+                ],
+                "tags": [
+                  "owner",
+                  "team"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:ResourceOwnerConfigurationInput!){addResourceOwnerProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"default\":[\"owner3@example.com\",\"owner4@example.com\",\"owner5@example.com\"],\"name\":\"resource_owner\",\"orgDomain\":\"updated.com\",\"orgDomainTag\":\"domain_tag\",\"scope\":\"0\",\"tags\":[\"updated_owner\",\"updated_team\",\"department\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:ResourceOwnerConfigurationInput!){addResourceOwnerProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "variables": {
+          "input": {
+            "default": [
+              "owner3@example.com",
+              "owner4@example.com",
+              "owner5@example.com"
+            ],
+            "name": "resource_owner",
+            "orgDomain": "updated.com",
+            "orgDomainTag": "domain_tag",
+            "scope": "0",
+            "tags": [
+              "updated_owner",
+              "updated_team",
+              "department"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addResourceOwnerProfile": {
+            "configuration": {
+              "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+              "profile": "resource_owner",
+              "record": {
+                "__typename": "ResourceOwnerConfiguration",
+                "orgDomain": "updated.com",
+                "orgDomainTag": "domain_tag",
+                "resourceOwnerDefault": [
+                  "owner3@example.com",
+                  "owner4@example.com",
+                  "owner5@example.com"
+                ],
+                "tags": [
+                  "updated_owner",
+                  "updated_team",
+                  "department"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:ResourceOwnerConfigurationInput!){addResourceOwnerProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"default\":[],\"name\":\"resource_owner\",\"orgDomain\":null,\"orgDomainTag\":null,\"scope\":\"0\",\"tags\":[]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:ResourceOwnerConfigurationInput!){addResourceOwnerProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "variables": {
+          "input": {
+            "default": [],
+            "name": "resource_owner",
+            "orgDomain": null,
+            "orgDomainTag": null,
+            "scope": "0",
+            "tags": []
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addResourceOwnerProfile": {
+            "configuration": {
+              "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+              "profile": "resource_owner",
+              "record": {
+                "__typename": "ResourceOwnerConfiguration",
+                "orgDomain": null,
+                "orgDomainTag": null,
+                "resourceOwnerDefault": [],
+                "tags": []
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($name:String!$scope:String!){removeProfile(scope: $scope, name: $name)}:{\"name\":\"resource_owner\",\"scope\":\"0\"}": [
+    {
+      "request": {
+        "query": "mutation ($name:String!$scope:String!){removeProfile(scope: $scope, name: $name)}",
+        "variables": {
+          "name": "resource_owner",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "removeProfile": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ=="
+        }
+      }
+    }
+  ],
+  "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}:{\"name\":\"resource_owner\",\"scope\":\"0\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "resource_owner",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+            "profile": "resource_owner",
+            "record": {
+              "__typename": "ResourceOwnerConfiguration",
+              "orgDomain": null,
+              "orgDomainTag": null,
+              "resourceOwnerDefault": [],
+              "tags": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "resource_owner",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+            "profile": "resource_owner",
+            "record": {
+              "__typename": "ResourceOwnerConfiguration",
+              "orgDomain": null,
+              "orgDomainTag": null,
+              "resourceOwnerDefault": [],
+              "tags": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "resource_owner",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+            "profile": "resource_owner",
+            "record": {
+              "__typename": "ResourceOwnerConfiguration",
+              "orgDomain": "example.com",
+              "orgDomainTag": "domain",
+              "resourceOwnerDefault": [
+                "owner1@example.com",
+                "owner2@example.com"
+              ],
+              "tags": [
+                "owner",
+                "team"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "resource_owner",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+            "profile": "resource_owner",
+            "record": {
+              "__typename": "ResourceOwnerConfiguration",
+              "orgDomain": "example.com",
+              "orgDomainTag": "domain",
+              "resourceOwnerDefault": [
+                "owner1@example.com",
+                "owner2@example.com"
+              ],
+              "tags": [
+                "owner",
+                "team"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "resource_owner",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+            "profile": "resource_owner",
+            "record": {
+              "__typename": "ResourceOwnerConfiguration",
+              "orgDomain": "example.com",
+              "orgDomainTag": "domain",
+              "resourceOwnerDefault": [
+                "owner1@example.com",
+                "owner2@example.com"
+              ],
+              "tags": [
+                "owner",
+                "team"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "resource_owner",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAicmVzb3VyY2Vfb3duZXIiXQ==",
+            "profile": "resource_owner",
+            "record": {
+              "__typename": "ResourceOwnerConfiguration",
+              "orgDomain": "updated.com",
+              "orgDomainTag": "domain_tag",
+              "resourceOwnerDefault": [
+                "owner3@example.com",
+                "owner4@example.com",
+                "owner5@example.com"
+              ],
+              "tags": [
+                "updated_owner",
+                "updated_team",
+                "department"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

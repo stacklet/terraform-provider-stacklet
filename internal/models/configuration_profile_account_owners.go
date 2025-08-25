@@ -29,3 +29,6 @@ func (o AccountOwners) AttributeTypes() map[string]attr.Type {
 		"owners":  types.ListType{ElemType: types.StringType},
 	}
 }
+
+// ConfigurationProfileAccountOwnersResource is the model for account owners configuration profile resources.
+type ConfigurationProfileAccountOwnersResource ConfigurationProfileAccountOwnersDataSource

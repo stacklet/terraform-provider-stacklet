@@ -102,6 +102,9 @@ func (d *configurationProfileAccountOwnersDataSource) Read(ctx context.Context, 
 
 	data.ID = types.StringValue(config.ID)
 	data.Profile = types.StringValue(config.Profile)
+	data.OrgDomain = types.StringPointerValue(config.Record.AccountOwnersConfiguration.OrgDomain)
+	data.OrgDomainTag = types.StringPointerValue(config.Record.AccountOwnersConfiguration.OrgDomainTag)
+	data.Tags = tftypes.StringsList(config.Record.AccountOwnersConfiguration.Tags)
 
 	updater := modelupdate.NewConfigurationProfileUpdater(*config)
 	defaultOwners, diags := updater.AccountOwnersDefault()
@@ -111,8 +114,5 @@ func (d *configurationProfileAccountOwnersDataSource) Read(ctx context.Context, 
 	}
 	data.Default = defaultOwners
 
-	data.OrgDomain = types.StringPointerValue(config.Record.AccountOwnersConfiguration.OrgDomain)
-	data.OrgDomainTag = types.StringPointerValue(config.Record.AccountOwnersConfiguration.OrgDomainTag)
-	data.Tags = tftypes.StringsList(config.Record.AccountOwnersConfiguration.Tags)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

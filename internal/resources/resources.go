@@ -14,6 +14,8 @@ var RESOURCES = []func() resource.Resource{
 	NewAccountGroupResource,
 	NewAccountResource,
 	NewBindingResource,
+	NewConfigurationProfileAccountOwnersResource,
+	NewConfigurationProfileResourceOwnerResource,
 	NewNotificationTemplateResource,
 	NewPolicyCollectionMappingResource,
 	NewPolicyCollectionResource,
