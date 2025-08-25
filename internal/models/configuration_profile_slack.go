@@ -15,7 +15,7 @@ type ConfigurationProfileSlackDataSource struct {
 	Webhooks   types.List   `tfsdk:"webhook"`
 }
 
-// SlackWebhook is the model for a Microsoft Slack webhook.
+// SlackWebhook is the model for a Slack webhook.
 type SlackWebhook struct {
 	Name types.String `tfsdk:"name"`
 	URL  types.String `tfsdk:"url"`

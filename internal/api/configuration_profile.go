@@ -79,17 +79,29 @@ type TeamsWebhook struct {
 
 // JiraConfiguation is the configuration for Jira profiles.
 type JiraConfiguration struct {
-	URL      *string `graphql:"url"`
-	Projects []JiraProject
-	User     string
+	URL      *string       `graphql:"url" json:"url"`
+	Projects []JiraProject `json:"projects"`
+	User     string        `json:"user"`
+	APIKey   string        `json:"apiKey"`
 }
 
 // JiraPorject is the configuration for a Jira project.
 type JiraProject struct {
-	ClosedStatus string
-	IssueType    string
-	Name         string
-	Project      string
+	ClosedStatus string `json:"closedStatus"`
+	IssueType    string `json:"issueType"`
+	Name         string `json:"name"`
+	Project      string `json:"project"`
+}
+
+type jiraConfigurationInput struct {
+	JiraConfiguration
+
+	Name  string `json:"name"`
+	Scope string `json:"scope"`
+}
+
+func (i jiraConfigurationInput) GetGraphQLType() string {
+	return "JiraConfigurationInput"
 }
 
 // ResourceOwnerConfiguration is the configuation for resource owner.
@@ -204,6 +216,32 @@ func (a configurationProfileAPI) ReadResourceOwner(ctx context.Context) (*Config
 	return a.Read(ctx, ConfigurationProfileResourceOwner)
 }
 
+// Upsert the Jira configuration profile.
+func (a configurationProfileAPI) UpsertJira(ctx context.Context, input JiraConfiguration) (*ConfigurationProfile, error) {
+	var mutation struct {
+		Payload struct {
+			Configuration ConfigurationProfile
+		} `graphql:"addJiraProfile(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": jiraConfigurationInput{
+			JiraConfiguration: input,
+			Name:              string(ConfigurationProfileJira),
+			Scope:             configurationScopeGlobal,
+		},
+	}
+
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if mutation.Payload.Configuration.ID == "" {
+		return nil, NotFound{"Configuration profile not found after upsert"}
+	}
+
+	return &mutation.Payload.Configuration, nil
+}
+
 // Upsert the account owners configuration profile.
 func (a configurationProfileAPI) UpsertAccountOwners(ctx context.Context, input AccountOwnersConfiguration) (*ConfigurationProfile, error) {
 	var mutation struct {
@@ -267,6 +305,11 @@ func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationP
 		return NewAPIError(err)
 	}
 	return nil
+}
+
+// DeleteJira deletes the Jira configuration profile.
+func (a configurationProfileAPI) DeleteJira(ctx context.Context) error {
+	return a.Delete(ctx, ConfigurationProfileJira)
 }
 
 // DeleteAccountOwners deletes the account owners configuration profile.

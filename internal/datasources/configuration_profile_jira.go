@@ -52,6 +52,10 @@ func (d *configurationProfileJiraDataSource) Schema(_ context.Context, _ datasou
 				Description: "The Jira instance authentication username.",
 				Computed:    true,
 			},
+			"api_key": schema.StringAttribute{
+				Description: "The encrypted value for the API key.",
+				Computed:    true,
+			},
 		},
 		Blocks: map[string]schema.Block{
 			"project": schema.ListNestedBlock{
@@ -106,6 +110,7 @@ func (d *configurationProfileJiraDataSource) Read(ctx context.Context, req datas
 	data.Profile = types.StringValue(config.Profile)
 	data.URL = types.StringPointerValue(config.Record.JiraConfiguration.URL)
 	data.User = types.StringValue(config.Record.JiraConfiguration.User)
+	data.APIKey = types.StringValue(config.Record.JiraConfiguration.APIKey)
 
 	updater := modelupdate.NewConfigurationProfileUpdater(*config)
 	projects, diags := updater.JiraProjects()

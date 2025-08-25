@@ -14,6 +14,7 @@ type ConfigurationProfileJiraDataSource struct {
 	URL      types.String `tfsdk:"url"`
 	Projects types.List   `tfsdk:"project"`
 	User     types.String `tfsdk:"user"`
+	APIKey   types.String `tfsdk:"api_key"`
 }
 
 // JiraProject is the model for a Jira project.
@@ -31,4 +32,12 @@ func (p JiraProject) AttributeTypes() map[string]attr.Type {
 		"name":          types.StringType,
 		"project":       types.StringType,
 	}
+}
+
+// ConfigurationProfileJiraResource is the model for Jira configuration profile resources.
+type ConfigurationProfileJiraResource struct {
+	ConfigurationProfileJiraDataSource
+
+	APIKeyWO        types.String `tfsdk:"api_key_wo"`
+	APIKeyWOVersion types.String `tfsdk:"api_key_wo_version"`
 }
