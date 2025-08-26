@@ -21,6 +21,7 @@ data "stacklet_configuration_profile_jira" "example" {}
 
 ### Read-Only
 
+- `api_key` (String) The encrypted value for the API key.
 - `id` (String) The GraphQL Node ID of the configuration profile.
 - `profile` (String) The profile name.
 - `project` (Block List) Jira project configuration. (see [below for nested schema](#nestedblock--project))
