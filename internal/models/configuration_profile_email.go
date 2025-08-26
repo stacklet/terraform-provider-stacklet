@@ -9,10 +9,11 @@ import (
 
 // ConfigurationProfileEmailDataSource is the model for email configuration profile data sources.
 type ConfigurationProfileEmailDataSource struct {
-	ID      types.String `tfsdk:"id"`
-	Profile types.String `tfsdk:"profile"`
-	From    types.String `tfsdk:"from"`
-	SMTP    types.Object `tfsdk:"smtp"`
+	ID        types.String `tfsdk:"id"`
+	Profile   types.String `tfsdk:"profile"`
+	From      types.String `tfsdk:"from"`
+	SESRegion types.String `tfsdk:"ses_region"`
+	SMTP      types.Object `tfsdk:"smtp"`
 }
 
 // SMTP is the model for SMTP configuration.

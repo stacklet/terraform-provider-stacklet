@@ -24,6 +24,7 @@ data "stacklet_configuration_profile_email" "example" {}
 - `from` (String) The email from field value.
 - `id` (String) The GraphQL Node ID of the configuration profile.
 - `profile` (String) The profile name.
+- `ses_region` (String) The SES region in use.
 - `smtp` (Attributes) SMTP configuration. (see [below for nested schema](#nestedatt--smtp))
 
 <a id="nestedatt--smtp"></a>
