@@ -94,6 +94,7 @@ type JiraProject struct {
 
 // ResourceOwnerConfiguration is the configuation for resource owner.
 type ResourceOwnerConfiguration struct {
+	// "default" is present with different type in both resource and account, so it must be aliased
 	Default      []string `graphql:"resourceOwnerDefault: default" json:"default"`
 	OrgDomain    *string  `json:"orgDomain"`
 	OrgDomainTag *string  `json:"orgDomainTag"`
@@ -113,6 +114,7 @@ func (i resourceOwnerConfigurationInput) GetGraphQLType() string {
 
 // AccountOwnersConfiguration is the configuration for account owners.
 type AccountOwnersConfiguration struct {
+	// "default" is present with different type in both resource and account, so it must be aliased
 	Default      []AccountOwners `graphql:"accountOwnersDefault: default" json:"default"`
 	OrgDomain    *string         `json:"orgDomain"`
 	OrgDomainTag *string         `json:"orgDomainTag"`
