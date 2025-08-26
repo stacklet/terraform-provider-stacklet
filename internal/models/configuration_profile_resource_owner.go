@@ -15,3 +15,6 @@ type ConfigurationProfileResourceOwnerDataSource struct {
 	OrgDomainTag types.String `tfsdk:"org_domain_tag"`
 	Tags         types.List   `tfsdk:"tags"`
 }
+
+// ConfigurationProfileResourceOwnerResource is the model for resource owner configuration profile resources.
+type ConfigurationProfileResourceOwnerResource ConfigurationProfileResourceOwnerDataSource

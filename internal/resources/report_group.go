@@ -50,7 +50,7 @@ func (r *reportGroupResource) Metadata(_ context.Context, req resource.MetadataR
 
 func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieve information about a notification report group by name.",
+		Description: "Manage a notification report group.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the report group.",
@@ -971,7 +971,7 @@ func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([
 	return recipients, nil
 }
 
-func (reportGroupResource) emptyRecipientList() basetypes.ListValue {
+func (r reportGroupResource) emptyRecipientList() basetypes.ListValue {
 	return basetypes.NewListValueMust(
 		types.ObjectType{
 			AttrTypes: map[string]attr.Type{

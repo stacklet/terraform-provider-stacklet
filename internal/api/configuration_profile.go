@@ -94,29 +94,55 @@ type JiraProject struct {
 
 // ResourceOwnerConfiguration is the configuation for resource owner.
 type ResourceOwnerConfiguration struct {
-	Default      []string `graphql:"resourceOwnerDefault: default"`
-	OrgDomain    *string
-	OrgDomainTag *string
-	Tags         []string
+	// "default" is present with different type in both resource and account, so it must be aliased
+	Default      []string `graphql:"resourceOwnerDefault: default" json:"default"`
+	OrgDomain    *string  `json:"orgDomain"`
+	OrgDomainTag *string  `json:"orgDomainTag"`
+	Tags         []string `json:"tags"`
+}
+
+type resourceOwnerConfigurationInput struct {
+	ResourceOwnerConfiguration
+
+	Name  string `json:"name"`
+	Scope string `json:"scope"`
+}
+
+func (i resourceOwnerConfigurationInput) GetGraphQLType() string {
+	return "ResourceOwnerConfigurationInput"
 }
 
 // AccountOwnersConfiguration is the configuration for account owners.
 type AccountOwnersConfiguration struct {
-	Default      []AccountOwners `graphql:"accountOwnersDefault: default"`
-	OrgDomain    *string
-	OrgDomainTag *string
-	Tags         []string
+	// "default" is present with different type in both resource and account, so it must be aliased
+	Default      []AccountOwners `graphql:"accountOwnersDefault: default" json:"default"`
+	OrgDomain    *string         `json:"orgDomain"`
+	OrgDomainTag *string         `json:"orgDomainTag"`
+	Tags         []string        `json:"tags"`
 }
 
 // AccountOwners tracks the owners for an account.
 type AccountOwners struct {
-	Account string
-	Owners  []string
+	Account string   `json:"account"`
+	Owners  []string `json:"owners"`
+}
+
+type accountOwnersConfigurationInput struct {
+	AccountOwnersConfiguration
+
+	Name  string `json:"name"`
+	Scope string `json:"scope"`
+}
+
+func (i accountOwnersConfigurationInput) GetGraphQLType() string {
+	return "AccountOwnersConfigurationInput"
 }
 
 type configurationProfileAPI struct {
 	c *graphql.Client
 }
+
+const configurationScopeGlobal = "0"
 
 // Read returns data for a configuration profile.
 func (a configurationProfileAPI) Read(ctx context.Context, name ConfigurationProfileName) (*ConfigurationProfile, error) {
@@ -125,7 +151,7 @@ func (a configurationProfileAPI) Read(ctx context.Context, name ConfigurationPro
 	}
 	variables := map[string]any{
 		"name":  graphql.String(string(name)),
-		"scope": graphql.String("0"), // always use the global scope
+		"scope": graphql.String(configurationScopeGlobal),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return nil, NewAPIError(err)
@@ -168,12 +194,87 @@ func (a configurationProfileAPI) ReadJira(ctx context.Context) (*ConfigurationPr
 	return a.Read(ctx, ConfigurationProfileJira)
 }
 
-// ReadAccountOwners returns data for the account owners configuration profile.
+// ReadAccountResourceOwners returns data for the account owners configuration profile.
 func (a configurationProfileAPI) ReadAccountOwners(ctx context.Context) (*ConfigurationProfile, error) {
 	return a.Read(ctx, ConfigurationProfileAccountOwners)
 }
 
-// ReadResourceOwner returns data for the account owners configuration profile.
+// ReadResourceOwner returns data for the resource owners configuration profile.
 func (a configurationProfileAPI) ReadResourceOwner(ctx context.Context) (*ConfigurationProfile, error) {
 	return a.Read(ctx, ConfigurationProfileResourceOwner)
+}
+
+// Upsert the account owners configuration profile.
+func (a configurationProfileAPI) UpsertAccountOwners(ctx context.Context, input AccountOwnersConfiguration) (*ConfigurationProfile, error) {
+	var mutation struct {
+		Payload struct {
+			Configuration ConfigurationProfile
+		} `graphql:"addAccountOwnersProfile(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": accountOwnersConfigurationInput{
+			AccountOwnersConfiguration: input,
+			Name:                       string(ConfigurationProfileAccountOwners),
+			Scope:                      configurationScopeGlobal,
+		},
+	}
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if mutation.Payload.Configuration.ID == "" {
+		return nil, NotFound{"Configuration profile not found after upsert"}
+	}
+
+	return &mutation.Payload.Configuration, nil
+}
+
+// Upsert the resource owners configuration profile.
+func (a configurationProfileAPI) UpsertResourceOwner(ctx context.Context, input ResourceOwnerConfiguration) (*ConfigurationProfile, error) {
+	var mutation struct {
+		Payload struct {
+			Configuration ConfigurationProfile
+		} `graphql:"addResourceOwnerProfile(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": resourceOwnerConfigurationInput{
+			ResourceOwnerConfiguration: input,
+			Name:                       string(ConfigurationProfileResourceOwner),
+			Scope:                      configurationScopeGlobal,
+		},
+	}
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if mutation.Payload.Configuration.ID == "" {
+		return nil, NotFound{"Configuration profile not found after upsert"}
+	}
+
+	return &mutation.Payload.Configuration, nil
+}
+
+// Delete removes a configuation profile.
+func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationProfileName) error {
+	var mutation struct {
+		ID string `graphql:"removeProfile(scope: $scope, name: $name)"`
+	}
+	variables := map[string]any{
+		"name":  graphql.String(string(name)),
+		"scope": graphql.String(configurationScopeGlobal),
+	}
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return NewAPIError(err)
+	}
+	return nil
+}
+
+// DeleteAccountOwners deletes the account owners configuration profile.
+func (a configurationProfileAPI) DeleteAccountOwners(ctx context.Context) error {
+	return a.Delete(ctx, ConfigurationProfileAccountOwners)
+}
+
+// DeleteResourceOwner deletes the resource owners configuration profile.
+func (a configurationProfileAPI) DeleteResourceOwner(ctx context.Context) error {
+	return a.Delete(ctx, ConfigurationProfileResourceOwner)
 }
