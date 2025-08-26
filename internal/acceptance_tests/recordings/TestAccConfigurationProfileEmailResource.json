@@ -1,0 +1,224 @@
+{
+  "mutation ($input:EmailConfigurationInput!){addEmailProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"fromEmail\":\"updated-user@example.com\",\"name\":\"email\",\"scope\":\"0\",\"sesRegion\":\"us-east-2\",\"smtp\":{\"password\":\"_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQH/167LyoPb8b59plVX5tlDAAAAZDBiBgkqhkiG9w0BBwagVTBTAgEAME4GCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiDWqKPd+bOhjNVQsAgEQgCEWpJ3wRRYKOrt0JDPTCy1YVUILsXp4lo3fngngpfGK0Uo=\",\"port\":\"5678\",\"server\":\"new-smtp.example.com\",\"ssl\":false,\"username\":\"new-user\"}}}": [
+    {
+      "request": {
+        "query": "mutation ($input:EmailConfigurationInput!){addEmailProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "variables": {
+          "input": {
+            "fromEmail": "updated-user@example.com",
+            "name": "email",
+            "scope": "0",
+            "sesRegion": "us-east-2",
+            "smtp": {
+              "password": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQH/167LyoPb8b59plVX5tlDAAAAZDBiBgkqhkiG9w0BBwagVTBTAgEAME4GCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiDWqKPd+bOhjNVQsAgEQgCEWpJ3wRRYKOrt0JDPTCy1YVUILsXp4lo3fngngpfGK0Uo=",
+              "port": "5678",
+              "server": "new-smtp.example.com",
+              "ssl": false,
+              "username": "new-user"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addEmailProfile": {
+            "configuration": {
+              "id": "WyJjb25mIiwgIjAiLCAiZW1haWwiXQ==",
+              "profile": "email",
+              "record": {
+                "__typename": "EmailConfiguration",
+                "fromEmail": "updated-user@example.com",
+                "sesRegion": "us-east-2",
+                "smtp": {
+                  "password": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQH/167LyoPb8b59plVX5tlDAAAAZDBiBgkqhkiG9w0BBwagVTBTAgEAME4GCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiDWqKPd+bOhjNVQsAgEQgCEWpJ3wRRYKOrt0JDPTCy1YVUILsXp4lo3fngngpfGK0Uo=",
+                  "port": "5678",
+                  "server": "new-smtp.example.com",
+                  "ssl": false,
+                  "username": "new-user"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:EmailConfigurationInput!){addEmailProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"fromEmail\":\"user@example.com\",\"name\":\"email\",\"scope\":\"0\",\"sesRegion\":\"us-east-1\",\"smtp\":{\"password\":\"secret\",\"port\":\"1234\",\"server\":\"smtp.example.com\",\"ssl\":true,\"username\":\"user\"}}}": [
+    {
+      "request": {
+        "query": "mutation ($input:EmailConfigurationInput!){addEmailProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "variables": {
+          "input": {
+            "fromEmail": "user@example.com",
+            "name": "email",
+            "scope": "0",
+            "sesRegion": "us-east-1",
+            "smtp": {
+              "password": "secret",
+              "port": "1234",
+              "server": "smtp.example.com",
+              "ssl": true,
+              "username": "user"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addEmailProfile": {
+            "configuration": {
+              "id": "WyJjb25mIiwgIjAiLCAiZW1haWwiXQ==",
+              "profile": "email",
+              "record": {
+                "__typename": "EmailConfiguration",
+                "fromEmail": "user@example.com",
+                "sesRegion": "us-east-1",
+                "smtp": {
+                  "password": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQH/167LyoPb8b59plVX5tlDAAAAZDBiBgkqhkiG9w0BBwagVTBTAgEAME4GCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiDWqKPd+bOhjNVQsAgEQgCEWpJ3wRRYKOrt0JDPTCy1YVUILsXp4lo3fngngpfGK0Uo=",
+                  "port": "1234",
+                  "server": "smtp.example.com",
+                  "ssl": true,
+                  "username": "user"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($name:String!$scope:String!){removeProfile(scope: $scope, name: $name)}:{\"name\":\"email\",\"scope\":\"0\"}": [
+    {
+      "request": {
+        "query": "mutation ($name:String!$scope:String!){removeProfile(scope: $scope, name: $name)}",
+        "variables": {
+          "name": "email",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "removeProfile": "WyJjb25mIiwgIjAiLCAiZW1haWwiXQ=="
+        }
+      }
+    }
+  ],
+  "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}:{\"name\":\"email\",\"scope\":\"0\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "email",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAiZW1haWwiXQ==",
+            "profile": "email",
+            "record": {
+              "__typename": "EmailConfiguration",
+              "fromEmail": "user@example.com",
+              "sesRegion": "us-east-1",
+              "smtp": {
+                "password": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQH/167LyoPb8b59plVX5tlDAAAAZDBiBgkqhkiG9w0BBwagVTBTAgEAME4GCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiDWqKPd+bOhjNVQsAgEQgCEWpJ3wRRYKOrt0JDPTCy1YVUILsXp4lo3fngngpfGK0Uo=",
+                "port": "1234",
+                "server": "smtp.example.com",
+                "ssl": true,
+                "username": "user"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "email",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAiZW1haWwiXQ==",
+            "profile": "email",
+            "record": {
+              "__typename": "EmailConfiguration",
+              "fromEmail": "user@example.com",
+              "sesRegion": "us-east-1",
+              "smtp": {
+                "password": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQH/167LyoPb8b59plVX5tlDAAAAZDBiBgkqhkiG9w0BBwagVTBTAgEAME4GCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiDWqKPd+bOhjNVQsAgEQgCEWpJ3wRRYKOrt0JDPTCy1YVUILsXp4lo3fngngpfGK0Uo=",
+                "port": "1234",
+                "server": "smtp.example.com",
+                "ssl": true,
+                "username": "user"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "email",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAiZW1haWwiXQ==",
+            "profile": "email",
+            "record": {
+              "__typename": "EmailConfiguration",
+              "fromEmail": "user@example.com",
+              "sesRegion": "us-east-1",
+              "smtp": {
+                "password": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQH/167LyoPb8b59plVX5tlDAAAAZDBiBgkqhkiG9w0BBwagVTBTAgEAME4GCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiDWqKPd+bOhjNVQsAgEQgCEWpJ3wRRYKOrt0JDPTCy1YVUILsXp4lo3fngngpfGK0Uo=",
+                "port": "1234",
+                "server": "smtp.example.com",
+                "ssl": true,
+                "username": "user"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "email",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAiZW1haWwiXQ==",
+            "profile": "email",
+            "record": {
+              "__typename": "EmailConfiguration",
+              "fromEmail": "updated-user@example.com",
+              "sesRegion": "us-east-2",
+              "smtp": {
+                "password": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQH/167LyoPb8b59plVX5tlDAAAAZDBiBgkqhkiG9w0BBwagVTBTAgEAME4GCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiDWqKPd+bOhjNVQsAgEQgCEWpJ3wRRYKOrt0JDPTCy1YVUILsXp4lo3fngngpfGK0Uo=",
+                "port": "5678",
+                "server": "new-smtp.example.com",
+                "ssl": false,
+                "username": "new-user"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
