@@ -110,3 +110,7 @@ validate-tf: build
     for dir in examples/provider examples/data-sources/* examples/resources/*; do
       validate $dir
     done
+
+# Create release tag for the specified version (without leading 'v')
+tag-release version:
+    git tag -a v{{ version }} -m 'Version {{ version }}'
