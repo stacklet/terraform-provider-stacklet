@@ -54,6 +54,10 @@ func (d *configurationProfileTeamsDataSource) Schema(_ context.Context, _ dataso
 							Description: "The webook name.",
 							Computed:    true,
 						},
+						"url": schema.StringAttribute{
+							Description: "The encrypted webhook URL.",
+							Computed:    true,
+						},
 					},
 				},
 			},
