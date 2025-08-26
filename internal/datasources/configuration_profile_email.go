@@ -5,15 +5,16 @@ package datasources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -46,6 +47,10 @@ func (d *configurationProfileEmailDataSource) Schema(_ context.Context, _ dataso
 			},
 			"from": schema.StringAttribute{
 				Description: "The email from field value.",
+				Computed:    true,
+			},
+			"ses_region": schema.StringAttribute{
+				Description: "The SES region in use.",
 				Computed:    true,
 			},
 			"smtp": schema.SingleNestedAttribute{
@@ -98,29 +103,26 @@ func (d *configurationProfileEmailDataSource) Read(ctx context.Context, req data
 	data.ID = types.StringValue(config.ID)
 	data.Profile = types.StringValue(config.Profile)
 	data.From = types.StringValue(config.Record.EmailConfiguration.FromEmail)
+	data.SESRegion = types.StringPointerValue(config.Record.EmailConfiguration.SESRegion)
 
-	if smtp := config.Record.EmailConfiguration.SMTP; smtp != nil {
-		smtpAttrs := map[string]attr.Value{
-			"server": types.StringValue(smtp.Server),
-			"port":   types.StringValue(smtp.Port),
-			"ssl":    types.BoolValue(smtp.SSL != nil && *smtp.SSL),
-			"username": func() types.String {
-				if smtp.Username != nil {
-					return types.StringValue(*smtp.Username)
-				}
-				return types.StringNull()
-			}(),
-		}
-
-		smtpObj, diags := types.ObjectValue(models.SMTP{}.AttributeTypes(), smtpAttrs)
-		resp.Diagnostics.Append(diags...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		data.SMTP = smtpObj
-	} else {
-		data.SMTP = types.ObjectNull(models.SMTP{}.AttributeTypes())
+	smtpConfig := config.Record.EmailConfiguration.SMTP
+	smtp, diags := tftypes.ObjectValue(
+		ctx,
+		smtpConfig,
+		func() (*models.SMTP, diag.Diagnostics) {
+			return &models.SMTP{
+				Server:   types.StringValue(smtpConfig.Server),
+				Port:     types.StringPointerValue(&smtpConfig.Port),
+				SSL:      types.BoolPointerValue(smtpConfig.SSL),
+				Username: types.StringPointerValue(smtpConfig.Username),
+			}, nil
+		},
+	)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
 	}
+	data.SMTP = smtp
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

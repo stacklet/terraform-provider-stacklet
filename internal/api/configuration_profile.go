@@ -28,7 +28,7 @@ type ConfigurationProfile struct {
 // EmailConfiguration is the configuration for email profiles.
 type EmailConfiguration struct {
 	FromEmail string
-	SesRegion *string
+	SESRegion *string            `graphql:"sesRegion"`
 	SMTP      *SMTPConfiguration `graphql:"smtp"`
 }
 
