@@ -68,13 +68,13 @@ type SlackWebhook struct {
 
 // TeamsConfiguration is the configuration for Microsoft Teams profiles.
 type TeamsConfiguration struct {
-	Webhooks []TeamsWebhook
+	Webhooks []TeamsWebhook `json:"webhooks"`
 }
 
 // TeamsWebhook is a webhook configuration for Microsoft Teams.
 type TeamsWebhook struct {
-	Name string
-	URL  string `graphql:"url"`
+	Name string `json:"name"`
+	URL  string `graphql:"url" json:"url"`
 }
 
 // JiraConfiguation is the configuration for Jira profiles.
@@ -148,6 +148,17 @@ type accountOwnersConfigurationInput struct {
 
 func (i accountOwnersConfigurationInput) GetGraphQLType() string {
 	return "AccountOwnersConfigurationInput"
+}
+
+type teamsConfigurationInput struct {
+	TeamsConfiguration
+
+	Name  string `json:"name"`
+	Scope string `json:"scope"`
+}
+
+func (i teamsConfigurationInput) GetGraphQLType() string {
+	return "TeamsConfigurationInput"
 }
 
 type configurationProfileAPI struct {
@@ -292,6 +303,32 @@ func (a configurationProfileAPI) UpsertResourceOwner(ctx context.Context, input 
 	return &mutation.Payload.Configuration, nil
 }
 
+// UpsertTeams upserts the Microsoft Teams configuration profile.
+func (a configurationProfileAPI) UpsertTeams(ctx context.Context, config TeamsConfiguration) (*ConfigurationProfile, error) {
+	var mutation struct {
+		Payload struct {
+			Configuration ConfigurationProfile
+		} `graphql:"addTeamsProfile(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": teamsConfigurationInput{
+			TeamsConfiguration: config,
+			Name:               string(ConfigurationProfileTeams),
+			Scope:              configurationScopeGlobal,
+		},
+	}
+
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if mutation.Payload.Configuration.ID == "" {
+		return nil, NotFound{"Configuration profile not found after upsert"}
+	}
+
+	return &mutation.Payload.Configuration, nil
+}
+
 // Delete removes a configuation profile.
 func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationProfileName) error {
 	var mutation struct {
@@ -310,6 +347,11 @@ func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationP
 // DeleteJira deletes the Jira configuration profile.
 func (a configurationProfileAPI) DeleteJira(ctx context.Context) error {
 	return a.Delete(ctx, ConfigurationProfileJira)
+}
+
+// DeleteTeams deletes the Microsoft Teams configuration profile.
+func (a configurationProfileAPI) DeleteTeams(ctx context.Context) error {
+	return a.Delete(ctx, ConfigurationProfileTeams)
 }
 
 // DeleteAccountOwners deletes the account owners configuration profile.

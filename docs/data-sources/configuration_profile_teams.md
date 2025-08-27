@@ -31,3 +31,4 @@ data "stacklet_configuration_profile_teams" "example" {}
 Read-Only:
 
 - `name` (String) The webook name.
+- `url` (String) The encrypted webhook URL.
