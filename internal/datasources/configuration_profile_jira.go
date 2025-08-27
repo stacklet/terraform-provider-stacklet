@@ -113,7 +113,7 @@ func (d *configurationProfileJiraDataSource) Read(ctx context.Context, req datas
 	data.APIKey = types.StringValue(config.Record.JiraConfiguration.APIKey)
 
 	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	projects, diags := updater.JiraProjects()
+	projects, diags := updater.JiraProjects(nil)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return

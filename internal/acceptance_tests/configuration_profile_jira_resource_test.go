@@ -21,10 +21,17 @@ func TestAccConfigurationProfileJiraResource(t *testing.T) {
 					api_key_wo_version = "1"
 
 					project {
-						name = "Test Project"
-						project = "TEST"
+						name = "foo"
+						project = "FOO"
 						issue_type = "Task"
 						closed_status = "Done"
+					}
+
+					project {
+						name = "bar"
+						project = "BAR"
+						issue_type = "Bug"
+						closed_status = "Fixed"
 					}
 				}
 			`,
@@ -34,19 +41,30 @@ func TestAccConfigurationProfileJiraResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "url", "https://example.atlassian.net"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "user", "test@example.com"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "api_key_wo_version", "1"),
-				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.#", "1"),
-				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.0.name", "Test Project"),
-				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.0.project", "TEST"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.#", "2"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.0.name", "foo"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.0.project", "FOO"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.0.issue_type", "Task"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.0.closed_status", "Done"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.1.name", "bar"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.1.project", "BAR"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.1.issue_type", "Bug"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "project.1.closed_status", "Fixed"),
 			),
 		},
 		// ImportState testing
 		{
-			ResourceName:            "stacklet_configuration_profile_jira.test",
-			ImportState:             true,
-			ImportStateVerify:       true,
-			ImportStateVerifyIgnore: []string{"api_key_wo", "api_key_wo_version"},
+			ResourceName:      "stacklet_configuration_profile_jira.test",
+			ImportState:       true,
+			ImportStateVerify: true,
+			ImportStateVerifyIgnore: []string{
+				"api_key_wo", "api_key_wo_version",
+				// Import returns projects in API order (alphabetical), not config order
+				"project.0.name", "project.1.name",
+				"project.0.project", "project.1.project",
+				"project.0.issue_type", "project.1.issue_type",
+				"project.0.closed_status", "project.1.closed_status",
+			},
 		},
 		// Update and Read testing
 		{

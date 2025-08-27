@@ -24,19 +24,53 @@ type configurationProfileUpdater struct {
 	cp api.ConfigurationProfile
 }
 
-// JiraProjects returns a list of Jira projects settings.
-func (u configurationProfileUpdater) JiraProjects() (basetypes.ListValue, diag.Diagnostics) {
-	return tftypes.ObjectList[models.JiraProject](
-		u.cp.Record.JiraConfiguration.Projects,
-		func(entry api.JiraProject) (map[string]attr.Value, diag.Diagnostics) {
-			return map[string]attr.Value{
-				"closed_status": types.StringValue(entry.ClosedStatus),
-				"issue_type":    types.StringValue(entry.IssueType),
-				"name":          types.StringValue(entry.Name),
-				"project":       types.StringValue(entry.Project),
-			}, nil
-		},
-	)
+// JiraProjects returns a list of Jira projects settings, optionally in the order specified by names.
+func (u configurationProfileUpdater) JiraProjects(names []string) (basetypes.ListValue, diag.Diagnostics) {
+	projectValueAttrs := func(proj api.JiraProject) map[string]attr.Value {
+		return map[string]attr.Value{
+			"closed_status": types.StringValue(proj.ClosedStatus),
+			"issue_type":    types.StringValue(proj.IssueType),
+			"name":          types.StringValue(proj.Name),
+			"project":       types.StringValue(proj.Project),
+		}
+	}
+
+	if names == nil {
+		return tftypes.ObjectList[models.JiraProject](
+			u.cp.Record.JiraConfiguration.Projects,
+			func(entry api.JiraProject) (map[string]attr.Value, diag.Diagnostics) {
+				return projectValueAttrs(entry), nil
+			},
+		)
+	}
+
+	var diags diag.Diagnostics
+
+	projects := map[string]api.JiraProject{}
+	for _, proj := range u.cp.Record.JiraConfiguration.Projects {
+		projects[proj.Name] = proj
+	}
+	attrTypes := models.JiraProject{}.AttributeTypes()
+
+	values := []attr.Value{}
+	for _, name := range names {
+		proj, ok := projects[name]
+		if !ok {
+			diags.AddError(
+				"Project entry not found",
+				fmt.Sprintf("Project entry '%s' not found in API result", name),
+			)
+			return basetypes.ListValue{}, diags
+		}
+
+		value, diags := types.ObjectValue(attrTypes, projectValueAttrs(proj))
+		if diags.HasError() {
+			return basetypes.ListValue{}, diags
+		}
+		values = append(values, value)
+	}
+
+	return types.ListValue(types.ObjectType{AttrTypes: attrTypes}, values)
 }
 
 // TeamsWebhooks returns a list of Microsoft Teams webhooks.
