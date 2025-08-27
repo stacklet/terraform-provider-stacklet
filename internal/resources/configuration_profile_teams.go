@@ -128,9 +128,7 @@ func (r *configurationProfileTeamsResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	names := models.ListItemsIdentifiers(state.Webhooks, "name")
-
-	resp.Diagnostics.Append(r.updateTeamsModel(&state, names, whSecretsState, teamsConfig)...)
+	resp.Diagnostics.Append(r.updateTeamsModel(&state, whSecretsState, teamsConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -161,9 +159,7 @@ func (r *configurationProfileTeamsResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	names := models.ListItemsIdentifiers(plan.Webhooks, "name")
-
-	resp.Diagnostics.Append(r.updateTeamsModel(&plan, names, whSecretsConfig, teamsConfig)...)
+	resp.Diagnostics.Append(r.updateTeamsModel(&plan, whSecretsConfig, teamsConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -197,9 +193,7 @@ func (r *configurationProfileTeamsResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	names := models.ListItemsIdentifiers(plan.Webhooks, "name")
-
-	resp.Diagnostics.Append(r.updateTeamsModel(&plan, names, whSecretsConfig, teamsConfig)...)
+	resp.Diagnostics.Append(r.updateTeamsModel(&plan, whSecretsConfig, teamsConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -220,7 +214,7 @@ func (r *configurationProfileTeamsResource) ImportState(ctx context.Context, req
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileTeams))...)
 }
 
-func (r configurationProfileTeamsResource) updateTeamsModel(m *models.ConfigurationProfileTeamsResource, namesOrder []string, webhookSecrets map[string]teamsWebhookSecret, config *api.ConfigurationProfile) diag.Diagnostics {
+func (r configurationProfileTeamsResource) updateTeamsModel(m *models.ConfigurationProfileTeamsResource, webhookSecrets map[string]teamsWebhookSecret, config *api.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = types.StringValue(config.ID)
@@ -231,8 +225,11 @@ func (r configurationProfileTeamsResource) updateTeamsModel(m *models.Configurat
 		webhookVersions[name] = secret.Version
 	}
 
+	// get the current names ordering to preserve it in the updated webhooks block
+	names := models.ListItemsIdentifiers(m.Webhooks, "name")
+
 	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	webhooks, diags := updater.TeamsWebhooksWithSecret(webhookVersions, namesOrder)
+	webhooks, diags := updater.TeamsWebhooksWithSecret(webhookVersions, names)
 	if diags.HasError() {
 		return diags
 	}
