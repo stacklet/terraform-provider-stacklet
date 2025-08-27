@@ -25,5 +25,6 @@ data "stacklet_configuration_profile_servicenow" "example" {}
 - `endpoint` (String) The ServiceNow instance endpoint.
 - `id` (String) The GraphQL Node ID of the configuration profile.
 - `issue_type` (String) The type of issue to use for tickets.
+- `password` (String) The encrypted value for the ServiceNow instance authentication password.
 - `profile` (String) The profile name.
 - `username` (String) The ServiceNow instance authentication username.

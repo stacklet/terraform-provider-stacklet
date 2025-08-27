@@ -12,6 +12,15 @@ type ConfigurationProfileServiceNowDataSource struct {
 	Profile     types.String `tfsdk:"profile"`
 	Endpoint    types.String `tfsdk:"endpoint"`
 	Username    types.String `tfsdk:"username"`
+	Password    types.String `tfsdk:"password"`
 	IssueType   types.String `tfsdk:"issue_type"`
 	ClosedState types.String `tfsdk:"closed_state"`
+}
+
+// ConfigurationProfileServiceNowResource is the model for ServiceNow configuration profile resources.
+type ConfigurationProfileServiceNowResource struct {
+	ConfigurationProfileServiceNowDataSource
+
+	PasswordWO        types.String `tfsdk:"password_wo"`
+	PasswordWOVersion types.String `tfsdk:"password_wo_version"`
 }
