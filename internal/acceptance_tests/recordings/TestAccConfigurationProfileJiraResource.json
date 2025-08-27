@@ -1,11 +1,11 @@
 {
-  "mutation ($input:JiraConfigurationInput!){addJiraProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"apiKey\":\"_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF5oAmJkd2B6qZijP9hpSwpAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMfmlWyOxxUm/tfrmQAgEQgCpoQ8odKmZ7DKKmqP3MQtdnapwKif3ZBIziKP+GRndc72rjw6jd7unuo3Y=\",\"name\":\"jira\",\"projects\":[{\"closedStatus\":\"Closed\",\"issueType\":\"Bug\",\"name\":\"Updated Project\",\"project\":\"UPD\"}],\"scope\":\"0\",\"url\":\"https://updated.atlassian.net\",\"user\":\"updated@example.com\"}}": [
+  "mutation ($input:JiraConfigurationInput!){addJiraProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"apiKey\":\"_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHILsdr5Mq4VSSV83nRXiWZAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMb0Rh31/HgDmGxi0pAgEQgCpWCYqN3zGd62DYAgXg9HitgIMpPNqCe00oWpSvgIU00GxMKL/FTglRNg0=\",\"name\":\"jira\",\"projects\":[{\"closedStatus\":\"Closed\",\"issueType\":\"Bug\",\"name\":\"Updated Project\",\"project\":\"UPD\"}],\"scope\":\"0\",\"url\":\"https://updated.atlassian.net\",\"user\":\"updated@example.com\"}}": [
     {
       "request": {
         "query": "mutation ($input:JiraConfigurationInput!){addJiraProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
         "variables": {
           "input": {
-            "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF5oAmJkd2B6qZijP9hpSwpAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMfmlWyOxxUm/tfrmQAgEQgCpoQ8odKmZ7DKKmqP3MQtdnapwKif3ZBIziKP+GRndc72rjw6jd7unuo3Y=",
+            "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHILsdr5Mq4VSSV83nRXiWZAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMb0Rh31/HgDmGxi0pAgEQgCpWCYqN3zGd62DYAgXg9HitgIMpPNqCe00oWpSvgIU00GxMKL/FTglRNg0=",
             "name": "jira",
             "projects": [
               {
@@ -29,7 +29,7 @@
               "profile": "jira",
               "record": {
                 "__typename": "JiraConfiguration",
-                "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF5oAmJkd2B6qZijP9hpSwpAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMfmlWyOxxUm/tfrmQAgEQgCpoQ8odKmZ7DKKmqP3MQtdnapwKif3ZBIziKP+GRndc72rjw6jd7unuo3Y=",
+                "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHILsdr5Mq4VSSV83nRXiWZAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMb0Rh31/HgDmGxi0pAgEQgCpWCYqN3zGd62DYAgXg9HitgIMpPNqCe00oWpSvgIU00GxMKL/FTglRNg0=",
                 "projects": [
                   {
                     "closedStatus": "Closed",
@@ -47,7 +47,7 @@
       }
     }
   ],
-  "mutation ($input:JiraConfigurationInput!){addJiraProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"apiKey\":\"initial-api-key\",\"name\":\"jira\",\"projects\":[{\"closedStatus\":\"Done\",\"issueType\":\"Task\",\"name\":\"Test Project\",\"project\":\"TEST\"}],\"scope\":\"0\",\"url\":\"https://example.atlassian.net\",\"user\":\"test@example.com\"}}": [
+  "mutation ($input:JiraConfigurationInput!){addJiraProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"apiKey\":\"initial-api-key\",\"name\":\"jira\",\"projects\":[{\"closedStatus\":\"Done\",\"issueType\":\"Task\",\"name\":\"foo\",\"project\":\"FOO\"},{\"closedStatus\":\"Fixed\",\"issueType\":\"Bug\",\"name\":\"bar\",\"project\":\"BAR\"}],\"scope\":\"0\",\"url\":\"https://example.atlassian.net\",\"user\":\"test@example.com\"}}": [
     {
       "request": {
         "query": "mutation ($input:JiraConfigurationInput!){addJiraProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
@@ -59,8 +59,14 @@
               {
                 "closedStatus": "Done",
                 "issueType": "Task",
-                "name": "Test Project",
-                "project": "TEST"
+                "name": "foo",
+                "project": "FOO"
+              },
+              {
+                "closedStatus": "Fixed",
+                "issueType": "Bug",
+                "name": "bar",
+                "project": "BAR"
               }
             ],
             "scope": "0",
@@ -77,13 +83,19 @@
               "profile": "jira",
               "record": {
                 "__typename": "JiraConfiguration",
-                "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF5oAmJkd2B6qZijP9hpSwpAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMfmlWyOxxUm/tfrmQAgEQgCpoQ8odKmZ7DKKmqP3MQtdnapwKif3ZBIziKP+GRndc72rjw6jd7unuo3Y=",
+                "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHILsdr5Mq4VSSV83nRXiWZAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMb0Rh31/HgDmGxi0pAgEQgCpWCYqN3zGd62DYAgXg9HitgIMpPNqCe00oWpSvgIU00GxMKL/FTglRNg0=",
                 "projects": [
+                  {
+                    "closedStatus": "Fixed",
+                    "issueType": "Bug",
+                    "name": "bar",
+                    "project": "BAR"
+                  },
                   {
                     "closedStatus": "Done",
                     "issueType": "Task",
-                    "name": "Test Project",
-                    "project": "TEST"
+                    "name": "foo",
+                    "project": "FOO"
                   }
                 ],
                 "url": "https://example.atlassian.net",
@@ -127,13 +139,19 @@
             "profile": "jira",
             "record": {
               "__typename": "JiraConfiguration",
-              "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF5oAmJkd2B6qZijP9hpSwpAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMfmlWyOxxUm/tfrmQAgEQgCpoQ8odKmZ7DKKmqP3MQtdnapwKif3ZBIziKP+GRndc72rjw6jd7unuo3Y=",
+              "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHILsdr5Mq4VSSV83nRXiWZAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMb0Rh31/HgDmGxi0pAgEQgCpWCYqN3zGd62DYAgXg9HitgIMpPNqCe00oWpSvgIU00GxMKL/FTglRNg0=",
               "projects": [
+                {
+                  "closedStatus": "Fixed",
+                  "issueType": "Bug",
+                  "name": "bar",
+                  "project": "BAR"
+                },
                 {
                   "closedStatus": "Done",
                   "issueType": "Task",
-                  "name": "Test Project",
-                  "project": "TEST"
+                  "name": "foo",
+                  "project": "FOO"
                 }
               ],
               "url": "https://example.atlassian.net",
@@ -158,13 +176,19 @@
             "profile": "jira",
             "record": {
               "__typename": "JiraConfiguration",
-              "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF5oAmJkd2B6qZijP9hpSwpAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMfmlWyOxxUm/tfrmQAgEQgCpoQ8odKmZ7DKKmqP3MQtdnapwKif3ZBIziKP+GRndc72rjw6jd7unuo3Y=",
+              "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHILsdr5Mq4VSSV83nRXiWZAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMb0Rh31/HgDmGxi0pAgEQgCpWCYqN3zGd62DYAgXg9HitgIMpPNqCe00oWpSvgIU00GxMKL/FTglRNg0=",
               "projects": [
+                {
+                  "closedStatus": "Fixed",
+                  "issueType": "Bug",
+                  "name": "bar",
+                  "project": "BAR"
+                },
                 {
                   "closedStatus": "Done",
                   "issueType": "Task",
-                  "name": "Test Project",
-                  "project": "TEST"
+                  "name": "foo",
+                  "project": "FOO"
                 }
               ],
               "url": "https://example.atlassian.net",
@@ -189,13 +213,19 @@
             "profile": "jira",
             "record": {
               "__typename": "JiraConfiguration",
-              "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF5oAmJkd2B6qZijP9hpSwpAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMfmlWyOxxUm/tfrmQAgEQgCpoQ8odKmZ7DKKmqP3MQtdnapwKif3ZBIziKP+GRndc72rjw6jd7unuo3Y=",
+              "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHILsdr5Mq4VSSV83nRXiWZAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMb0Rh31/HgDmGxi0pAgEQgCpWCYqN3zGd62DYAgXg9HitgIMpPNqCe00oWpSvgIU00GxMKL/FTglRNg0=",
               "projects": [
+                {
+                  "closedStatus": "Fixed",
+                  "issueType": "Bug",
+                  "name": "bar",
+                  "project": "BAR"
+                },
                 {
                   "closedStatus": "Done",
                   "issueType": "Task",
-                  "name": "Test Project",
-                  "project": "TEST"
+                  "name": "foo",
+                  "project": "FOO"
                 }
               ],
               "url": "https://example.atlassian.net",
@@ -220,7 +250,7 @@
             "profile": "jira",
             "record": {
               "__typename": "JiraConfiguration",
-              "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF5oAmJkd2B6qZijP9hpSwpAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMfmlWyOxxUm/tfrmQAgEQgCpoQ8odKmZ7DKKmqP3MQtdnapwKif3ZBIziKP+GRndc72rjw6jd7unuo3Y=",
+              "apiKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHILsdr5Mq4VSSV83nRXiWZAAAAbTBrBgkqhkiG9w0BBwagXjBcAgEAMFcGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMb0Rh31/HgDmGxi0pAgEQgCpWCYqN3zGd62DYAgXg9HitgIMpPNqCe00oWpSvgIU00GxMKL/FTglRNg0=",
               "projects": [
                 {
                   "closedStatus": "Closed",

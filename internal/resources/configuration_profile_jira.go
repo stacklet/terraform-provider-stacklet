@@ -242,8 +242,11 @@ func (r configurationProfileJiraResource) updateJiraModel(m *models.Configuratio
 	m.User = types.StringValue(jiraConfig.User)
 	m.APIKey = types.StringValue(jiraConfig.APIKey)
 
+	// get the current names ordering to preserve it in the updated projects block
+	names := models.ListItemsIdentifiers(m.Projects, "name")
+
 	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	projects, diags := updater.JiraProjects()
+	projects, diags := updater.JiraProjects(names)
 	if diags.HasError() {
 		return diags
 	}
