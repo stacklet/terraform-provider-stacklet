@@ -23,6 +23,7 @@ data "stacklet_configuration_profile_slack" "example" {}
 
 - `id` (String) The GraphQL Node ID of the configuration profile.
 - `profile` (String) The profile name.
+- `token` (String) The encrypted value for the token.
 - `user_fields` (List of String) Fields to use for identifying users for notification delivery.
 - `webhook` (Block List) Webhook configuration. (see [below for nested schema](#nestedblock--webhook))
 
@@ -32,3 +33,4 @@ data "stacklet_configuration_profile_slack" "example" {}
 Read-Only:
 
 - `name` (String) The webook name.
+- `url` (String) The encrypted webhook URL.

@@ -149,9 +149,66 @@ func (u configurationProfileUpdater) SlackWebhooks() (basetypes.ListValue, diag.
 		func(entry api.SlackWebhook) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"name": types.StringValue(entry.Name),
+				"url":  types.StringValue(entry.URL),
 			}, nil
 		},
 	)
+}
+
+// SlackWebhooksWithSecret returns a list of Slack webhooks with the secret fields, optionally in the order specified by names.
+func (u configurationProfileUpdater) SlackWebhooksWithSecret(versions map[string]string, names []string) (basetypes.ListValue, diag.Diagnostics) {
+	webhookValueAttrs := func(wh api.SlackWebhook) map[string]attr.Value {
+		var woVersion basetypes.StringValue
+		if version, ok := versions[wh.Name]; ok {
+			woVersion = types.StringValue(version)
+		} else {
+			woVersion = types.StringNull()
+		}
+
+		return map[string]attr.Value{
+			"name":           types.StringValue(wh.Name),
+			"url":            types.StringValue(wh.URL),
+			"url_wo":         types.StringNull(), // always empty since it's not stored in the state
+			"url_wo_version": woVersion,
+		}
+	}
+
+	if names == nil {
+		return tftypes.ObjectList[models.SlackWebhookWithSecret](
+			u.cp.Record.SlackConfiguration.Webhooks,
+			func(entry api.SlackWebhook) (map[string]attr.Value, diag.Diagnostics) {
+				return webhookValueAttrs(entry), nil
+			},
+		)
+	}
+
+	var diags diag.Diagnostics
+
+	webhooks := map[string]api.SlackWebhook{}
+	for _, wh := range u.cp.Record.SlackConfiguration.Webhooks {
+		webhooks[wh.Name] = wh
+	}
+	attrTypes := models.SlackWebhookWithSecret{}.AttributeTypes()
+
+	values := []attr.Value{}
+	for _, name := range names {
+		wh, ok := webhooks[name]
+		if !ok {
+			diags.AddError(
+				"Webhook entry not found",
+				fmt.Sprintf("Webhook entry '%s' not found in API result", name),
+			)
+			return basetypes.ListValue{}, diags
+		}
+
+		value, diags := types.ObjectValue(attrTypes, webhookValueAttrs(wh))
+		if diags.HasError() {
+			return basetypes.ListValue{}, diags
+		}
+		values = append(values, value)
+	}
+
+	return types.ListValue(types.ObjectType{AttrTypes: attrTypes}, values)
 }
 
 // AccountOwnersDefault returns a list of account owner defaults.

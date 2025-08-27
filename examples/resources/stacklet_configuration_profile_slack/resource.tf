@@ -1,4 +1,6 @@
-resource "stacklet_configuration_profile_teams" "example" {
+resource "stacklet_configuration_profile_slack" "example" {
+  user_fields = ["username", "email"]
+
   webhook {
     name           = "webhook1"
     url_wo         = "https://example.com/webhooks/secret1"
