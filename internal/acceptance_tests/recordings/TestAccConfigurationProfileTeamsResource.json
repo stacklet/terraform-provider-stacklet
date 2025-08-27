@@ -1,8 +1,8 @@
 {
-  "mutation ($input:TeamsConfigurationInput!){addTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"name\":\"teams\",\"scope\":\"0\",\"webhooks\":[{\"name\":\"foo\",\"url\":\"https://outlook.office.com/webhook/foo\"},{\"name\":\"bar\",\"url\":\"https://outlook.office.com/webhook/bar\"}]}}": [
+  "mutation ($input:TeamsConfigurationInput!){addTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"name\":\"teams\",\"scope\":\"0\",\"webhooks\":[{\"name\":\"foo\",\"url\":\"https://outlook.office.com/webhook/foo\"},{\"name\":\"bar\",\"url\":\"https://outlook.office.com/webhook/bar\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:TeamsConfigurationInput!){addTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "query": "mutation ($input:TeamsConfigurationInput!){addTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
         "variables": {
           "input": {
             "name": "teams",
@@ -31,11 +31,11 @@
                 "webhooks": [
                   {
                     "name": "bar",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQE/zc5NoPi3p+RnS+JdpfGjAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDsKFksKJuGR8uT7AgIBEIBB4gcY/2OkDvAuc48FOHJtrlEtkJPEc8CdUYM0HCb3/PBA6wTFSH2D+G91/jxzomaXRm2uxEq3HlBEvZdnJDCjwL4="
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGfHjKrG7wcigko2VgtfIicAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDHz8MiACHkoLEYEOCgIBEIBBshX4ouPQQoJFJZh+HfMu8tjLmVfpE0lZ7OwEY+WXL9AqYsefHGSgG1r+ZhVoe3Zlva5GnPYOaAi85g/eM0z8ga8="
                   },
                   {
                     "name": "foo",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHvBj3WhaaM21Gfm7lX2vFgAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNDJzvI0cy2q0YLl6wIBEIBB62QKZydH6W7oRxgiRI3FzDzMvFvJzHP7Rn6acFvIWGU1B/g+5u5S82mXdDPL81HTj/sYzcZ7TWIu33C3qWjpEIg="
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQG1A0OO0BDg7Cw2p0cbCNjRAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDJ/rgP9c2vAGGNZhKwIBEIBBcTzni2Af3mxU6YyUjwMOmk1pf8VVpYHAYo50+bErfp489ZIhkDtxH4Y7lb/xpJnUqgMSAaVJrig/pGnxrFucwF8="
                   }
                 ]
               }
@@ -45,10 +45,10 @@
       }
     }
   ],
-  "mutation ($input:TeamsConfigurationInput!){addTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"name\":\"teams\",\"scope\":\"0\",\"webhooks\":[{\"name\":\"foo-new\",\"url\":\"https://outlook.office.com/webhook/foo-new\"},{\"name\":\"bar-new\",\"url\":\"https://outlook.office.com/webhook/bar-new\"}]}}": [
+  "mutation ($input:TeamsConfigurationInput!){addTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"name\":\"teams\",\"scope\":\"0\",\"webhooks\":[{\"name\":\"foo-new\",\"url\":\"https://outlook.office.com/webhook/foo-new\"},{\"name\":\"bar-new\",\"url\":\"https://outlook.office.com/webhook/bar-new\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:TeamsConfigurationInput!){addTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "query": "mutation ($input:TeamsConfigurationInput!){addTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
         "variables": {
           "input": {
             "name": "teams",
@@ -77,11 +77,11 @@
                 "webhooks": [
                   {
                     "name": "bar-new",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEUrSlbZNvebNrhwvx2bG7KAAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDEkMTAzC71DDulMegIBEIBF5/xLgbLLzm1tiUVo9l/2n2pyIwda10dYfPYEmSBuUoVb/t1PqNYDMKPg1BdlKKOS2M+vVwkSIgoYBXAjH/0GhabowFaN"
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHnGZ5k66QNXIkYhMf/E+W6AAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDHH1JJtugFActyxMFQIBEIBFBKpJvx40NFRxdKqLqwC26u06yKOPOGWfHV9Mnlr+0ZQPcWcCg9Ww/1sPiBD2rPUJbds1/pubyq9wqSBNJzfl47bfhff/"
                   },
                   {
                     "name": "foo-new",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGdomedqN9a+CELFqDAH8xPAAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDNv738P2pcigIoH3gIBEIBFMtErT+4OMf8rH7bKiMfySsiMCrx3RqmhCEd2/f7gOzBHyzwZrrTzNneSHowSDEuCAjlLQT+D8k7vVy4HwqHWOe0LXy39"
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGENQ2Q7AYeiDCF3LBXgPF/AAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDBBsWWvxnBafqW+cqgIBEIBFqkV/52JyaFUaHdp8nA5EAhO1DBbQPUEJ8T9NXMx9gfKjMNe491tTa+TVQ7ZS5QbXqT/ORIvCiQywqrocSv8OTISMQR6W"
                   }
                 ]
               }
@@ -107,10 +107,10 @@
       }
     }
   ],
-  "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}:{\"name\":\"teams\",\"scope\":\"0\"}": [
+  "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}:{\"name\":\"teams\",\"scope\":\"0\"}": [
     {
       "request": {
-        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
         "variables": {
           "name": "teams",
           "scope": "0"
@@ -126,11 +126,11 @@
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQE/zc5NoPi3p+RnS+JdpfGjAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDsKFksKJuGR8uT7AgIBEIBB4gcY/2OkDvAuc48FOHJtrlEtkJPEc8CdUYM0HCb3/PBA6wTFSH2D+G91/jxzomaXRm2uxEq3HlBEvZdnJDCjwL4="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGfHjKrG7wcigko2VgtfIicAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDHz8MiACHkoLEYEOCgIBEIBBshX4ouPQQoJFJZh+HfMu8tjLmVfpE0lZ7OwEY+WXL9AqYsefHGSgG1r+ZhVoe3Zlva5GnPYOaAi85g/eM0z8ga8="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHvBj3WhaaM21Gfm7lX2vFgAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNDJzvI0cy2q0YLl6wIBEIBB62QKZydH6W7oRxgiRI3FzDzMvFvJzHP7Rn6acFvIWGU1B/g+5u5S82mXdDPL81HTj/sYzcZ7TWIu33C3qWjpEIg="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQG1A0OO0BDg7Cw2p0cbCNjRAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDJ/rgP9c2vAGGNZhKwIBEIBBcTzni2Af3mxU6YyUjwMOmk1pf8VVpYHAYo50+bErfp489ZIhkDtxH4Y7lb/xpJnUqgMSAaVJrig/pGnxrFucwF8="
                 }
               ]
             }
@@ -140,7 +140,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
         "variables": {
           "name": "teams",
           "scope": "0"
@@ -156,11 +156,11 @@
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQE/zc5NoPi3p+RnS+JdpfGjAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDsKFksKJuGR8uT7AgIBEIBB4gcY/2OkDvAuc48FOHJtrlEtkJPEc8CdUYM0HCb3/PBA6wTFSH2D+G91/jxzomaXRm2uxEq3HlBEvZdnJDCjwL4="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGfHjKrG7wcigko2VgtfIicAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDHz8MiACHkoLEYEOCgIBEIBBshX4ouPQQoJFJZh+HfMu8tjLmVfpE0lZ7OwEY+WXL9AqYsefHGSgG1r+ZhVoe3Zlva5GnPYOaAi85g/eM0z8ga8="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHvBj3WhaaM21Gfm7lX2vFgAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNDJzvI0cy2q0YLl6wIBEIBB62QKZydH6W7oRxgiRI3FzDzMvFvJzHP7Rn6acFvIWGU1B/g+5u5S82mXdDPL81HTj/sYzcZ7TWIu33C3qWjpEIg="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQG1A0OO0BDg7Cw2p0cbCNjRAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDJ/rgP9c2vAGGNZhKwIBEIBBcTzni2Af3mxU6YyUjwMOmk1pf8VVpYHAYo50+bErfp489ZIhkDtxH4Y7lb/xpJnUqgMSAaVJrig/pGnxrFucwF8="
                 }
               ]
             }
@@ -170,7 +170,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
         "variables": {
           "name": "teams",
           "scope": "0"
@@ -186,11 +186,11 @@
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQE/zc5NoPi3p+RnS+JdpfGjAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDsKFksKJuGR8uT7AgIBEIBB4gcY/2OkDvAuc48FOHJtrlEtkJPEc8CdUYM0HCb3/PBA6wTFSH2D+G91/jxzomaXRm2uxEq3HlBEvZdnJDCjwL4="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGfHjKrG7wcigko2VgtfIicAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDHz8MiACHkoLEYEOCgIBEIBBshX4ouPQQoJFJZh+HfMu8tjLmVfpE0lZ7OwEY+WXL9AqYsefHGSgG1r+ZhVoe3Zlva5GnPYOaAi85g/eM0z8ga8="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHvBj3WhaaM21Gfm7lX2vFgAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNDJzvI0cy2q0YLl6wIBEIBB62QKZydH6W7oRxgiRI3FzDzMvFvJzHP7Rn6acFvIWGU1B/g+5u5S82mXdDPL81HTj/sYzcZ7TWIu33C3qWjpEIg="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQG1A0OO0BDg7Cw2p0cbCNjRAAAAhTCBggYJKoZIhvcNAQcGoHUwcwIBADBuBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDJ/rgP9c2vAGGNZhKwIBEIBBcTzni2Af3mxU6YyUjwMOmk1pf8VVpYHAYo50+bErfp489ZIhkDtxH4Y7lb/xpJnUqgMSAaVJrig/pGnxrFucwF8="
                 }
               ]
             }
@@ -200,7 +200,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
         "variables": {
           "name": "teams",
           "scope": "0"
@@ -216,11 +216,11 @@
               "webhooks": [
                 {
                   "name": "bar-new",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEUrSlbZNvebNrhwvx2bG7KAAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDEkMTAzC71DDulMegIBEIBF5/xLgbLLzm1tiUVo9l/2n2pyIwda10dYfPYEmSBuUoVb/t1PqNYDMKPg1BdlKKOS2M+vVwkSIgoYBXAjH/0GhabowFaN"
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHnGZ5k66QNXIkYhMf/E+W6AAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDHH1JJtugFActyxMFQIBEIBFBKpJvx40NFRxdKqLqwC26u06yKOPOGWfHV9Mnlr+0ZQPcWcCg9Ww/1sPiBD2rPUJbds1/pubyq9wqSBNJzfl47bfhff/"
                 },
                 {
                   "name": "foo-new",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGdomedqN9a+CELFqDAH8xPAAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDNv738P2pcigIoH3gIBEIBFMtErT+4OMf8rH7bKiMfySsiMCrx3RqmhCEd2/f7gOzBHyzwZrrTzNneSHowSDEuCAjlLQT+D8k7vVy4HwqHWOe0LXy39"
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGENQ2Q7AYeiDCF3LBXgPF/AAAAiTCBhgYJKoZIhvcNAQcGoHkwdwIBADByBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDBBsWWvxnBafqW+cqgIBEIBFqkV/52JyaFUaHdp8nA5EAhO1DBbQPUEJ8T9NXMx9gfKjMNe491tTa+TVQ7ZS5QbXqT/ORIvCiQywqrocSv8OTISMQR6W"
                 }
               ]
             }

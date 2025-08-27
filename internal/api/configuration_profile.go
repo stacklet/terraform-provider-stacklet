@@ -54,16 +54,17 @@ type SymphonyConfiguration struct {
 	ServiceAccount string
 }
 
-// SlackConfiguration is the configuration for Symphony profiles.
+// SlackConfiguration is the configuration for Slack profiles.
 type SlackConfiguration struct {
-	UserFields []string
-	Webhooks   []SlackWebhook
+	Token      *string        `json:"token"`
+	UserFields []string       `json:"userFields"`
+	Webhooks   []SlackWebhook `json:"webhooks"`
 }
 
 // SlackWebhook is a webhook configuration for Slack.
 type SlackWebhook struct {
-	Name string
-	URL  string `graphql:"url"`
+	Name string `json:"name"`
+	URL  string `graphql:"url" json:"url"`
 }
 
 // TeamsConfiguration is the configuration for Microsoft Teams profiles.
@@ -159,6 +160,17 @@ type teamsConfigurationInput struct {
 
 func (i teamsConfigurationInput) GetGraphQLType() string {
 	return "TeamsConfigurationInput"
+}
+
+type slackConfigurationInput struct {
+	SlackConfiguration
+
+	Name  string `json:"name"`
+	Scope string `json:"scope"`
+}
+
+func (i slackConfigurationInput) GetGraphQLType() string {
+	return "SlackConfigurationInput"
 }
 
 type configurationProfileAPI struct {
@@ -329,6 +341,32 @@ func (a configurationProfileAPI) UpsertTeams(ctx context.Context, config TeamsCo
 	return &mutation.Payload.Configuration, nil
 }
 
+// UpsertSlack upserts the Slack configuration profile.
+func (a configurationProfileAPI) UpsertSlack(ctx context.Context, config SlackConfiguration) (*ConfigurationProfile, error) {
+	var mutation struct {
+		Payload struct {
+			Configuration ConfigurationProfile
+		} `graphql:"addSlackProfile(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": slackConfigurationInput{
+			SlackConfiguration: config,
+			Name:               string(ConfigurationProfileSlack),
+			Scope:              configurationScopeGlobal,
+		},
+	}
+
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if mutation.Payload.Configuration.ID == "" {
+		return nil, NotFound{"Configuration profile not found after upsert"}
+	}
+
+	return &mutation.Payload.Configuration, nil
+}
+
 // Delete removes a configuation profile.
 func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationProfileName) error {
 	var mutation struct {
@@ -352,6 +390,11 @@ func (a configurationProfileAPI) DeleteJira(ctx context.Context) error {
 // DeleteTeams deletes the Microsoft Teams configuration profile.
 func (a configurationProfileAPI) DeleteTeams(ctx context.Context) error {
 	return a.Delete(ctx, ConfigurationProfileTeams)
+}
+
+// DeleteSlack deletes the Slack configuration profile.
+func (a configurationProfileAPI) DeleteSlack(ctx context.Context) error {
+	return a.Delete(ctx, ConfigurationProfileSlack)
 }
 
 // DeleteAccountOwners deletes the account owners configuration profile.

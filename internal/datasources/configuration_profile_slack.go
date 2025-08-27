@@ -40,6 +40,7 @@ func (d *configurationProfileSlackDataSource) Schema(_ context.Context, _ dataso
 				Description: "The GraphQL Node ID of the configuration profile.",
 				Computed:    true,
 			},
+
 			"profile": schema.StringAttribute{
 				Description: "The profile name.",
 				Computed:    true,
@@ -47,6 +48,10 @@ func (d *configurationProfileSlackDataSource) Schema(_ context.Context, _ dataso
 			"user_fields": schema.ListAttribute{
 				Description: "Fields to use for identifying users for notification delivery.",
 				ElementType: types.StringType,
+				Computed:    true,
+			},
+			"token": schema.StringAttribute{
+				Description: "The encrypted value for the token.",
 				Computed:    true,
 			},
 		},
@@ -57,6 +62,10 @@ func (d *configurationProfileSlackDataSource) Schema(_ context.Context, _ dataso
 					Attributes: map[string]schema.Attribute{
 						"name": schema.StringAttribute{
 							Description: "The webook name.",
+							Computed:    true,
+						},
+						"url": schema.StringAttribute{
+							Description: "The encrypted webhook URL.",
 							Computed:    true,
 						},
 					},
@@ -89,6 +98,7 @@ func (d *configurationProfileSlackDataSource) Read(ctx context.Context, req data
 
 	data.ID = types.StringValue(config.ID)
 	data.Profile = types.StringValue(config.Profile)
+	data.Token = types.StringPointerValue(config.Record.SlackConfiguration.Token)
 
 	updater := modelupdate.NewConfigurationProfileUpdater(*config)
 	webhooks, diags := updater.SlackWebhooks()
