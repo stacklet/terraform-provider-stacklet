@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -86,7 +85,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 				ElementType: types.StringType,
 				Optional:    true,
 				Computed:    true,
-				Default:     listdefault.StaticValue(basetypes.NewListValueMust(types.StringType, []attr.Value{})),
+				Default:     tftypes.EmptyListDefault(types.StringType),
 			},
 			"use_message_settings": schema.BoolAttribute{
 				Description: "Whether to use delivery settings from the notification message.",
@@ -105,7 +104,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 							ElementType: types.StringType,
 							Optional:    true,
 							Computed:    true,
-							Default:     listdefault.StaticValue(basetypes.NewListValueMust(types.StringType, []attr.Value{})),
+							Default:     tftypes.EmptyListDefault(types.StringType),
 						},
 						"first_match_only": schema.BoolAttribute{
 							Description: "Only report the first match.",
@@ -290,7 +289,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 							Description: "Recipients for the notification.",
 							Optional:    true,
 							Computed:    true,
-							Default:     listdefault.StaticValue(r.emptyRecipientList()),
+							Default:     tftypes.EmptyListDefault(r.recipientListType()),
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -358,7 +357,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 							Description: "Recipients for the notification.",
 							Optional:    true,
 							Computed:    true,
-							Default:     listdefault.StaticValue(r.emptyRecipientList()),
+							Default:     tftypes.EmptyListDefault(r.recipientListType()),
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -971,18 +970,16 @@ func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([
 	return recipients, nil
 }
 
-func (r reportGroupResource) emptyRecipientList() basetypes.ListValue {
-	return basetypes.NewListValueMust(
-		types.ObjectType{
-			AttrTypes: map[string]attr.Type{
-				"account_owner":  types.BoolType,
-				"event_owner":    types.BoolType,
-				"resource_owner": types.BoolType,
-				"tag":            types.StringType,
-				"value":          types.StringType,
-			}},
-		[]attr.Value{},
-	)
+func (r reportGroupResource) recipientListType() attr.Type {
+	return types.ObjectType{
+		AttrTypes: map[string]attr.Type{
+			"account_owner":  types.BoolType,
+			"event_owner":    types.BoolType,
+			"resource_owner": types.BoolType,
+			"tag":            types.StringType,
+			"value":          types.StringType,
+		},
+	}
 }
 
 type validRecipient struct{}

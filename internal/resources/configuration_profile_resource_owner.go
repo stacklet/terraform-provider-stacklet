@@ -63,7 +63,7 @@ The profile is global, adding multiple resources of this kind will cause them to
 				ElementType: types.StringType,
 				Optional:    true,
 				Computed:    true,
-				Default:     tftypes.DefaultStringListEmpty(),
+				Default:     tftypes.EmptyListDefault(types.StringType),
 			},
 			"org_domain": schema.StringAttribute{
 				Description: "The organization domain to append to users for matching.",
@@ -78,7 +78,7 @@ The profile is global, adding multiple resources of this kind will cause them to
 				ElementType: types.StringType,
 				Optional:    true,
 				Computed:    true,
-				Default:     tftypes.DefaultStringListEmpty(),
+				Default:     tftypes.EmptyListDefault(types.StringType),
 			},
 		},
 	}
