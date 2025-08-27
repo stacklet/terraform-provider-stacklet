@@ -29,23 +29,3 @@ func ListItemsIdentifiers(l types.List, attrName string) []string {
 	}
 	return ids
 }
-
-// ItemsByIdentifier returns a map of objects by the specified attribute from a types.List of Objects.
-func ItemsByIdentifier(l types.List, attrName string) map[string]types.Object {
-	items := map[string]types.Object{}
-
-	for _, elem := range l.Elements() {
-		obj, ok := elem.(basetypes.ObjectValue)
-		if !ok {
-			continue
-		}
-		attr := obj.Attributes()[attrName]
-		id, ok := attr.(basetypes.StringValue)
-		if !ok {
-			continue
-		}
-		items[id.ValueString()] = obj
-	}
-
-	return items
-}
