@@ -208,7 +208,7 @@ func (r *configurationProfileSlackResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	var token *string // XXX
+	var token *string
 	if state.TokenWOVersion == plan.TokenWOVersion {
 		token = state.Token.ValueStringPointer() // send back the previous encrypted value (if set)
 	} else {
