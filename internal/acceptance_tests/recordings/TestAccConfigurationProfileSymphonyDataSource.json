@@ -1,0 +1,144 @@
+{
+  "mutation ($input:SymphonyConfigurationInput!){addSymphonyProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"agentDomain\":\"example.symphony.com\",\"name\":\"symphony\",\"privateKey\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7\\n-----END PRIVATE KEY-----\",\"scope\":\"0\",\"serviceAccount\":\"test-service-account\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:SymphonyConfigurationInput!){addSymphonyProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "variables": {
+          "input": {
+            "agentDomain": "example.symphony.com",
+            "name": "symphony",
+            "privateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7\n-----END PRIVATE KEY-----",
+            "scope": "0",
+            "serviceAccount": "test-service-account"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addSymphonyProfile": {
+            "configuration": {
+              "id": "WyJjb25mIiwgIjAiLCAic3ltcGhvbnkiXQ==",
+              "profile": "symphony",
+              "record": {
+                "__typename": "SymphonyConfiguration",
+                "agentDomain": "example.symphony.com",
+                "privateKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFYxcHEB1VKFCQ4ux9R0fKqAAAAzTCBygYJKoZIhvcNAQcGoIG8MIG5AgEAMIGzBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDAYtcYHmkVWi+kPN6wIBEICBhWOumqXuL/sjmC9m4mS9TWsTj6vGmF46SkNA6KfL2pq/rc0Sd9aBUBzWFKcWl7HgVvQ8A2Vd/GoA34a/PZvv9MHW6K92P1JgEyqKGtWPeQ3MCCgoGKyvpmt6DHeoS0JMmY7zwmejzc3F+hsRHHE4+P3i375C/iQ4FBTpVbvevPJ6DqOIBdk=",
+                "serviceAccount": "test-service-account"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($name:String!$scope:String!){removeProfile(scope: $scope, name: $name)}:{\"name\":\"symphony\",\"scope\":\"0\"}": [
+    {
+      "request": {
+        "query": "mutation ($name:String!$scope:String!){removeProfile(scope: $scope, name: $name)}",
+        "variables": {
+          "name": "symphony",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "removeProfile": "WyJjb25mIiwgIjAiLCAic3ltcGhvbnkiXQ=="
+        }
+      }
+    }
+  ],
+  "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}:{\"name\":\"symphony\",\"scope\":\"0\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "symphony",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAic3ltcGhvbnkiXQ==",
+            "profile": "symphony",
+            "record": {
+              "__typename": "SymphonyConfiguration",
+              "agentDomain": "example.symphony.com",
+              "privateKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFYxcHEB1VKFCQ4ux9R0fKqAAAAzTCBygYJKoZIhvcNAQcGoIG8MIG5AgEAMIGzBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDAYtcYHmkVWi+kPN6wIBEICBhWOumqXuL/sjmC9m4mS9TWsTj6vGmF46SkNA6KfL2pq/rc0Sd9aBUBzWFKcWl7HgVvQ8A2Vd/GoA34a/PZvv9MHW6K92P1JgEyqKGtWPeQ3MCCgoGKyvpmt6DHeoS0JMmY7zwmejzc3F+hsRHHE4+P3i375C/iQ4FBTpVbvevPJ6DqOIBdk=",
+              "serviceAccount": "test-service-account"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "symphony",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAic3ltcGhvbnkiXQ==",
+            "profile": "symphony",
+            "record": {
+              "__typename": "SymphonyConfiguration",
+              "agentDomain": "example.symphony.com",
+              "privateKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFYxcHEB1VKFCQ4ux9R0fKqAAAAzTCBygYJKoZIhvcNAQcGoIG8MIG5AgEAMIGzBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDAYtcYHmkVWi+kPN6wIBEICBhWOumqXuL/sjmC9m4mS9TWsTj6vGmF46SkNA6KfL2pq/rc0Sd9aBUBzWFKcWl7HgVvQ8A2Vd/GoA34a/PZvv9MHW6K92P1JgEyqKGtWPeQ3MCCgoGKyvpmt6DHeoS0JMmY7zwmejzc3F+hsRHHE4+P3i375C/iQ4FBTpVbvevPJ6DqOIBdk=",
+              "serviceAccount": "test-service-account"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "symphony",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAic3ltcGhvbnkiXQ==",
+            "profile": "symphony",
+            "record": {
+              "__typename": "SymphonyConfiguration",
+              "agentDomain": "example.symphony.com",
+              "privateKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFYxcHEB1VKFCQ4ux9R0fKqAAAAzTCBygYJKoZIhvcNAQcGoIG8MIG5AgEAMIGzBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDAYtcYHmkVWi+kPN6wIBEICBhWOumqXuL/sjmC9m4mS9TWsTj6vGmF46SkNA6KfL2pq/rc0Sd9aBUBzWFKcWl7HgVvQ8A2Vd/GoA34a/PZvv9MHW6K92P1JgEyqKGtWPeQ3MCCgoGKyvpmt6DHeoS0JMmY7zwmejzc3F+hsRHHE4+P3i375C/iQ4FBTpVbvevPJ6DqOIBdk=",
+              "serviceAccount": "test-service-account"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on TeamsConfiguration{webhooks{name,url}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "variables": {
+          "name": "symphony",
+          "scope": "0"
+        }
+      },
+      "response": {
+        "data": {
+          "profile": {
+            "id": "WyJjb25mIiwgIjAiLCAic3ltcGhvbnkiXQ==",
+            "profile": "symphony",
+            "record": {
+              "__typename": "SymphonyConfiguration",
+              "agentDomain": "example.symphony.com",
+              "privateKey": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFYxcHEB1VKFCQ4ux9R0fKqAAAAzTCBygYJKoZIhvcNAQcGoIG8MIG5AgEAMIGzBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDAYtcYHmkVWi+kPN6wIBEICBhWOumqXuL/sjmC9m4mS9TWsTj6vGmF46SkNA6KfL2pq/rc0Sd9aBUBzWFKcWl7HgVvQ8A2Vd/GoA34a/PZvv9MHW6K92P1JgEyqKGtWPeQ3MCCgoGKyvpmt6DHeoS0JMmY7zwmejzc3F+hsRHHE4+P3i375C/iQ4FBTpVbvevPJ6DqOIBdk=",
+              "serviceAccount": "test-service-account"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -127,7 +127,7 @@ func (r *configurationProfileServiceNowResource) Create(ctx context.Context, req
 	input := api.ServiceNowConfiguration{
 		Endpoint:    plan.Endpoint.ValueString(),
 		User:        plan.Username.ValueString(),
-		Password:    config.Password.ValueString(),
+		Password:    config.PasswordWO.ValueString(),
 		IssueType:   plan.IssueType.ValueString(),
 		ClosedState: plan.ClosedState.ValueString(),
 	}
@@ -154,7 +154,7 @@ func (r *configurationProfileServiceNowResource) Update(ctx context.Context, req
 	if state.PasswordWOVersion == plan.PasswordWOVersion {
 		password = state.Password.ValueString() // send back the previous encrypted value
 	} else {
-		password = config.Password.ValueString() // send the new value from the config
+		password = config.PasswordWO.ValueString() // send the new value from the config
 	}
 
 	input := api.ServiceNowConfiguration{

@@ -51,8 +51,9 @@ type ServiceNowConfiguration struct {
 
 // SymphonyConfiguration is the configuration for Symphony profiles.
 type SymphonyConfiguration struct {
-	AgentDomain    string
-	ServiceAccount string
+	AgentDomain    string `json:"agentDomain"`
+	ServiceAccount string `json:"serviceAccount"`
+	PrivateKey     string `json:"privateKey"`
 }
 
 // SlackConfiguration is the configuration for Slack profiles.
@@ -183,6 +184,17 @@ type serviceNowConfigurationInput struct {
 
 func (i serviceNowConfigurationInput) GetGraphQLType() string {
 	return "ServiceNowConfigurationInput"
+}
+
+type symphonyConfigurationInput struct {
+	SymphonyConfiguration
+
+	Name  string `json:"name"`
+	Scope string `json:"scope"`
+}
+
+func (i symphonyConfigurationInput) GetGraphQLType() string {
+	return "SymphonyConfigurationInput"
 }
 
 type configurationProfileAPI struct {
@@ -405,6 +417,32 @@ func (a configurationProfileAPI) UpsertServiceNow(ctx context.Context, config Se
 	return &mutation.Payload.Configuration, nil
 }
 
+// UpsertSymphony upserts the Symphony configuration profile.
+func (a configurationProfileAPI) UpsertSymphony(ctx context.Context, config SymphonyConfiguration) (*ConfigurationProfile, error) {
+	var mutation struct {
+		Payload struct {
+			Configuration ConfigurationProfile
+		} `graphql:"addSymphonyProfile(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": symphonyConfigurationInput{
+			SymphonyConfiguration: config,
+			Name:                  string(ConfigurationProfileSymphony),
+			Scope:                 configurationScopeGlobal,
+		},
+	}
+
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if mutation.Payload.Configuration.ID == "" {
+		return nil, NotFound{"Configuration profile not found after upsert"}
+	}
+
+	return &mutation.Payload.Configuration, nil
+}
+
 // Delete removes a configuation profile.
 func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationProfileName) error {
 	var mutation struct {
@@ -438,6 +476,11 @@ func (a configurationProfileAPI) DeleteSlack(ctx context.Context) error {
 // DeleteServiceNow deletes the ServiceNow configuration profile.
 func (a configurationProfileAPI) DeleteServiceNow(ctx context.Context) error {
 	return a.Delete(ctx, ConfigurationProfileServiceNow)
+}
+
+// DeleteSymphony deletes the Symphony configuration profile.
+func (a configurationProfileAPI) DeleteSymphony(ctx context.Context) error {
+	return a.Delete(ctx, ConfigurationProfileSymphony)
 }
 
 // DeleteAccountOwners deletes the account owners configuration profile.
