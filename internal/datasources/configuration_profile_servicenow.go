@@ -51,6 +51,10 @@ func (d *configurationProfileServiceNowDataSource) Schema(_ context.Context, _ d
 				Description: "The ServiceNow instance authentication username.",
 				Computed:    true,
 			},
+			"password": schema.StringAttribute{
+				Description: "The encrypted value for the ServiceNow instance authentication password.",
+				Computed:    true,
+			},
 			"issue_type": schema.StringAttribute{
 				Description: "The type of issue to use for tickets.",
 				Computed:    true,
@@ -88,6 +92,7 @@ func (d *configurationProfileServiceNowDataSource) Read(ctx context.Context, req
 	data.Profile = types.StringValue(config.Profile)
 	data.Endpoint = types.StringValue(config.Record.ServiceNowConfiguration.Endpoint)
 	data.Username = types.StringValue(config.Record.ServiceNowConfiguration.User)
+	data.Password = types.StringValue(config.Record.ServiceNowConfiguration.Password)
 	data.IssueType = types.StringValue(config.Record.ServiceNowConfiguration.IssueType)
 	data.ClosedState = types.StringValue(config.Record.ServiceNowConfiguration.ClosedState)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
