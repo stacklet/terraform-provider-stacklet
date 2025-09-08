@@ -51,6 +51,10 @@ func (d *configurationProfileSymphonyDataSource) Schema(_ context.Context, _ dat
 				Description: "The Symphony service account.",
 				Computed:    true,
 			},
+			"private_key": schema.StringAttribute{
+				Description: "The encrypted value for the account private key.",
+				Computed:    true,
+			},
 		},
 	}
 }
@@ -80,5 +84,6 @@ func (d *configurationProfileSymphonyDataSource) Read(ctx context.Context, req d
 	data.Profile = types.StringValue(config.Profile)
 	data.AgentDomain = types.StringValue(config.Record.SymphonyConfiguration.AgentDomain)
 	data.ServiceAccount = types.StringValue(config.Record.SymphonyConfiguration.ServiceAccount)
+	data.PrivateKey = types.StringValue(config.Record.SymphonyConfiguration.PrivateKey)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

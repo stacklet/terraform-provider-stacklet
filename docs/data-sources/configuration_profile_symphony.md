@@ -23,5 +23,6 @@ data "stacklet_configuration_profile_symphony" "example" {}
 
 - `agent_domain` (String) The Symphony agent domain.
 - `id` (String) The GraphQL Node ID of the configuration profile.
+- `private_key` (String) The encrypted value for the account private key.
 - `profile` (String) The profile name.
 - `service_account` (String) The Symphony service account.

@@ -19,6 +19,7 @@ var RESOURCES = []func() resource.Resource{
 	NewConfigurationProfileResourceOwnerResource,
 	NewConfigurationProfileServiceNowResource,
 	NewConfigurationProfileSlackResource,
+	NewConfigurationProfileSymphonyResource,
 	NewConfigurationProfileTeamsResource,
 	NewNotificationTemplateResource,
 	NewPolicyCollectionMappingResource,
