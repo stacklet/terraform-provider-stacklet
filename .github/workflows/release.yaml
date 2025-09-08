@@ -24,7 +24,7 @@ jobs:
           prefix: TOOL_VERSION_
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ env.TOOL_VERSION_GO }}
 
