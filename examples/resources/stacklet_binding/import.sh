@@ -1,1 +1,1 @@
-terraform import stacket_binding.example $uuid
+terraform import stacklet_binding.example $uuid

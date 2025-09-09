@@ -1,1 +1,1 @@
-terraform import stacket_account_group.example $uuid
+terraform import stacklet_account_group.example $uuid
