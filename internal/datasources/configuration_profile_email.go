@@ -73,6 +73,10 @@ func (d *configurationProfileEmailDataSource) Schema(_ context.Context, _ dataso
 						Description: "Authentication username.",
 						Computed:    true,
 					},
+					"password": schema.StringAttribute{
+						Description: "Authentication password (encrypted).",
+						Computed:    true,
+					},
 				},
 			},
 		},
@@ -109,12 +113,13 @@ func (d *configurationProfileEmailDataSource) Read(ctx context.Context, req data
 	smtp, diags := tftypes.ObjectValue(
 		ctx,
 		smtpConfig,
-		func() (*models.SMTP, diag.Diagnostics) {
-			return &models.SMTP{
+		func() (*models.SMTPDataSource, diag.Diagnostics) {
+			return &models.SMTPDataSource{
 				Server:   types.StringValue(smtpConfig.Server),
 				Port:     types.StringPointerValue(&smtpConfig.Port),
 				SSL:      types.BoolPointerValue(smtpConfig.SSL),
 				Username: types.StringPointerValue(smtpConfig.Username),
+				Password: types.StringPointerValue(smtpConfig.Password),
 			}, nil
 		},
 	)

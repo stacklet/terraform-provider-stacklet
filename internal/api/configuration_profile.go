@@ -27,17 +27,18 @@ type ConfigurationProfile struct {
 
 // EmailConfiguration is the configuration for email profiles.
 type EmailConfiguration struct {
-	FromEmail string
-	SESRegion *string            `graphql:"sesRegion"`
-	SMTP      *SMTPConfiguration `graphql:"smtp"`
+	FromEmail string             `json:"fromEmail"`
+	SESRegion *string            `graphql:"sesRegion" json:"sesRegion"`
+	SMTP      *SMTPConfiguration `graphql:"smtp" json:"smtp"`
 }
 
 // SMTPConfiguration is the SMTP server configuration.
 type SMTPConfiguration struct {
-	Server   string
-	Port     string
-	SSL      *bool `graphql:"ssl"`
-	Username *string
+	Server   string  `json:"server"`
+	Port     string  `json:"port"`
+	SSL      *bool   `graphql:"ssl" json:"ssl"`
+	Username *string `json:"username"`
+	Password *string `json:"password"`
 }
 
 // ServiceNowConfiguration is the configuration for ServiceNow profiles.
@@ -195,6 +196,17 @@ type symphonyConfigurationInput struct {
 
 func (i symphonyConfigurationInput) GetGraphQLType() string {
 	return "SymphonyConfigurationInput"
+}
+
+type emailConfigurationInput struct {
+	EmailConfiguration
+
+	Name  string `json:"name"`
+	Scope string `json:"scope"`
+}
+
+func (i emailConfigurationInput) GetGraphQLType() string {
+	return "EmailConfigurationInput"
 }
 
 type configurationProfileAPI struct {
@@ -443,6 +455,32 @@ func (a configurationProfileAPI) UpsertSymphony(ctx context.Context, config Symp
 	return &mutation.Payload.Configuration, nil
 }
 
+// UpsertEmail creates or updates the email configuration profile.
+func (a configurationProfileAPI) UpsertEmail(ctx context.Context, input EmailConfiguration) (*ConfigurationProfile, error) {
+	var mutation struct {
+		Payload struct {
+			Configuration ConfigurationProfile
+		} `graphql:"addEmailProfile(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": emailConfigurationInput{
+			EmailConfiguration: input,
+			Name:               string(ConfigurationProfileEmail),
+			Scope:              configurationScopeGlobal,
+		},
+	}
+
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if mutation.Payload.Configuration.ID == "" {
+		return nil, NotFound{"Configuration profile not found after upsert"}
+	}
+
+	return &mutation.Payload.Configuration, nil
+}
+
 // Delete removes a configuation profile.
 func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationProfileName) error {
 	var mutation struct {
@@ -481,6 +519,11 @@ func (a configurationProfileAPI) DeleteServiceNow(ctx context.Context) error {
 // DeleteSymphony deletes the Symphony configuration profile.
 func (a configurationProfileAPI) DeleteSymphony(ctx context.Context) error {
 	return a.Delete(ctx, ConfigurationProfileSymphony)
+}
+
+// DeleteEmail deletes the email configuration profile.
+func (a configurationProfileAPI) DeleteEmail(ctx context.Context) error {
+	return a.Delete(ctx, ConfigurationProfileEmail)
 }
 
 // DeleteAccountOwners deletes the account owners configuration profile.

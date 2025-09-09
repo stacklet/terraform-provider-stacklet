@@ -32,6 +32,7 @@ data "stacklet_configuration_profile_email" "example" {}
 
 Read-Only:
 
+- `password` (String) Authentication password (encrypted).
 - `port` (String) SMTP server port.
 - `server` (String) SMTP server hostname or IP address.
 - `ssl` (Boolean) Whether SSL/TLS is enabled.
