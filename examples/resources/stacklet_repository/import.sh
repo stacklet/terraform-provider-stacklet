@@ -1,1 +1,1 @@
-terraform import stacket_repository.example $url
+terraform import stacklet_repository.example $url

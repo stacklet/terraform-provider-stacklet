@@ -89,8 +89,17 @@ resource "stacklet_repository" "example_codecommit" {
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = stacklet_repository.example
+  id = "$url"
+}
+```
+
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import stacket_repository.example $url
+terraform import stacklet_repository.example $url
 ```
