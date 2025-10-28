@@ -163,8 +163,8 @@ func TestAccReportGroupResource_DeliverySettings(t *testing.T) {
 	                        ]
                         }
 
-	                    teams_delivery_settings {
-                            template = "teams"
+	                    msteams_delivery_settings {
+                            template = "msteams"
                             
                             recipients = [
                         	    {
@@ -212,10 +212,10 @@ func TestAccReportGroupResource_DeliverySettings(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "slack_delivery_settings.0.template", "slack"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "slack_delivery_settings.0.recipients.#", "1"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "slack_delivery_settings.0.recipients.0.account_owner", "true"),
-				resource.TestCheckResourceAttr("stacklet_report_group.test", "teams_delivery_settings.#", "1"),
-				resource.TestCheckResourceAttr("stacklet_report_group.test", "teams_delivery_settings.0.template", "teams"),
-				resource.TestCheckResourceAttr("stacklet_report_group.test", "teams_delivery_settings.0.recipients.#", "1"),
-				resource.TestCheckResourceAttr("stacklet_report_group.test", "teams_delivery_settings.0.recipients.0.tag", "foo"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "msteams_delivery_settings.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "msteams_delivery_settings.0.template", "msteams"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "msteams_delivery_settings.0.recipients.#", "1"),
+				resource.TestCheckResourceAttr("stacklet_report_group.test", "msteams_delivery_settings.0.recipients.0.tag", "foo"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.#", "1"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.0.template", "servicenow"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "servicenow_delivery_settings.0.short_description", "matched resources"),

@@ -180,7 +180,7 @@ func (d *reportGroupDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 					},
 				},
 			},
-			"teams_delivery_settings": schema.ListNestedBlock{
+			"msteams_delivery_settings": schema.ListNestedBlock{
 				Description: "Notifications delivery settings for Microsoft Teams.",
 				NestedObject: schema.NestedBlockObject{
 					Attributes: map[string]schema.Attribute{
@@ -420,9 +420,9 @@ func (d *reportGroupDataSource) Read(ctx context.Context, req datasource.ReadReq
 	resp.Diagnostics.Append(diags...)
 	data.SlackDeliverySettings = slackDeliverySettings
 
-	teamsDeliverySettings, diags := updater.TeamsDeliverySettings()
+	msteamsDeliverySettings, diags := updater.MSTeamsDeliverySettings()
 	resp.Diagnostics.Append(diags...)
-	data.TeamsDeliverySettings = teamsDeliverySettings
+	data.MSTeamsDeliverySettings = msteamsDeliverySettings
 
 	servicenowDeliverySettings, diags := updater.ServiceNowDeliverySettings()
 	resp.Diagnostics.Append(diags...)

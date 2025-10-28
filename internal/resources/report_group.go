@@ -224,7 +224,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 					},
 				},
 			},
-			"teams_delivery_settings": schema.ListNestedBlock{
+			"msteams_delivery_settings": schema.ListNestedBlock{
 				Description: "Notifications delivery settings for Microsoft Teams.",
 				NestedObject: schema.NestedBlockObject{
 					Attributes: map[string]schema.Attribute{
@@ -508,7 +508,7 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	teamsSettings, diags := r.getTeamsDeliverySettings(ctx, plan)
+	msteamsSettings, diags := r.getMSTeamsDeliverySettings(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -542,7 +542,7 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		UseMessageSettings: plan.UseMessageSettings.ValueBool(),
 		EmailSettings:      emailSettings,
 		SlackSettings:      slackSettings,
-		TeamsSettings:      teamsSettings,
+		MSTeamsSettings:    msteamsSettings,
 		ServiceNowSettings: servicenowSettings,
 		JiraSettings:       jiraSettings,
 		SymphonySettings:   symphonySettings,
@@ -576,7 +576,7 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	teamsSettings, diags := r.getTeamsDeliverySettings(ctx, plan)
+	msteamsSettings, diags := r.getMSTeamsDeliverySettings(ctx, plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -610,7 +610,7 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		UseMessageSettings: plan.UseMessageSettings.ValueBool(),
 		EmailSettings:      emailSettings,
 		SlackSettings:      slackSettings,
-		TeamsSettings:      teamsSettings,
+		MSTeamsSettings:    msteamsSettings,
 		ServiceNowSettings: servicenowSettings,
 		JiraSettings:       jiraSettings,
 		SymphonySettings:   symphonySettings,
@@ -663,9 +663,9 @@ func (r reportGroupResource) updateReportGroupModel(m *models.ReportGroupResourc
 	diags.Append(d...)
 	m.SlackDeliverySettings = slackDeliverySettings
 
-	teamsDeliverySettings, d := updater.TeamsDeliverySettings()
+	msteamsDeliverySettings, d := updater.MSTeamsDeliverySettings()
 	diags.Append(d...)
-	m.TeamsDeliverySettings = teamsDeliverySettings
+	m.MSTeamsDeliverySettings = msteamsDeliverySettings
 
 	servicenowDeliverySettings, d := updater.ServiceNowDeliverySettings()
 	diags.Append(d...)
@@ -767,25 +767,25 @@ func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m mod
 	return settings, diags
 }
 
-func (r reportGroupResource) getTeamsDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.TeamsDeliverySettings, diag.Diagnostics) {
-	if m.TeamsDeliverySettings.IsNull() {
+func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.MSTeamsDeliverySettings, diag.Diagnostics) {
+	if m.MSTeamsDeliverySettings.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	settings := []api.TeamsDeliverySettings{}
-	for i, elem := range m.TeamsDeliverySettings.Elements() {
+	settings := []api.MSTeamsDeliverySettings{}
+	for i, elem := range m.MSTeamsDeliverySettings.Elements() {
 		block, ok := elem.(basetypes.ObjectValue)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("teams_delivery_settings.%d", i)),
+				path.Root(fmt.Sprintf("msteams_delivery_settings.%d", i)),
 				"Invalid Microsoft Teams delivery settings",
 				"Microsoft Teams delivery settings block is invalid.",
 			)
 			return nil, diags
 		}
-		var s models.TeamsDeliverySettings
+		var s models.MSTeamsDeliverySettings
 		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
 			return nil, diags
 		}
@@ -797,7 +797,7 @@ func (r reportGroupResource) getTeamsDeliverySettings(ctx context.Context, m mod
 
 		settings = append(
 			settings,
-			api.TeamsDeliverySettings{
+			api.MSTeamsDeliverySettings{
 				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
 				Recipients:     recipients,
 				Template:       s.Template.ValueString(),

@@ -87,11 +87,11 @@ func (u reportGroupUpdater) SlackDeliverySettings() (basetypes.ListValue, diag.D
 	)
 }
 
-// TeamsDeliverySettings returns Microsoft Teams delivery settings.
-func (u reportGroupUpdater) TeamsDeliverySettings() (basetypes.ListValue, diag.Diagnostics) {
-	return tftypes.ObjectList[models.TeamsDeliverySettings](
-		u.rg.TeamsDeliverySettings(),
-		func(entry api.TeamsDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
+// MSTeamsDeliverySettings returns Microsoft Teams delivery settings.
+func (u reportGroupUpdater) MSTeamsDeliverySettings() (basetypes.ListValue, diag.Diagnostics) {
+	return tftypes.ObjectList[models.MSTeamsDeliverySettings](
+		u.rg.MSTeamsDeliverySettings(),
+		func(entry api.MSTeamsDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
 			recipients, diags := tftypes.ObjectList[models.Recipient](
 				entry.Recipients,
 				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
