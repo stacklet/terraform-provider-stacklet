@@ -33,12 +33,12 @@ data "stacklet_report_group" "example" {
 - `group_by` (List of String) Fields on which matching resources are grouped.
 - `id` (String) The GraphQL Node ID of the report group.
 - `jira_delivery_settings` (Block List) Notifications delivery settings for Jira. (see [below for nested schema](#nestedblock--jira_delivery_settings))
+- `msteams_delivery_settings` (Block List) Notifications delivery settings for Microsoft Teams. (see [below for nested schema](#nestedblock--msteams_delivery_settings))
 - `schedule` (String) Notification schedule.
 - `servicenow_delivery_settings` (Block List) Notifications delivery settings for ServiceNow. (see [below for nested schema](#nestedblock--servicenow_delivery_settings))
 - `slack_delivery_settings` (Block List) Notifications delivery settings for Slack. (see [below for nested schema](#nestedblock--slack_delivery_settings))
 - `source` (String) Type of the source for the report group.
 - `symphony_delivery_settings` (Block List) Notifications delivery settings for Symphony. (see [below for nested schema](#nestedblock--symphony_delivery_settings))
-- `teams_delivery_settings` (Block List) Notifications delivery settings for Microsoft Teams. (see [below for nested schema](#nestedblock--teams_delivery_settings))
 - `use_message_settings` (Boolean) Whether to use delivery settings from the notification message.
 
 <a id="nestedblock--email_delivery_settings"></a>
@@ -82,6 +82,28 @@ Read-Only:
 
 <a id="nestedatt--jira_delivery_settings--recipients"></a>
 ### Nested Schema for `jira_delivery_settings.recipients`
+
+Read-Only:
+
+- `account_owner` (Boolean) Whether to notify the account owner.
+- `event_owner` (Boolean) Whether to notify the event owner.
+- `resource_owner` (Boolean) Whether to notify the resource owner.
+- `tag` (String) Tag to match the resource owner from.
+- `value` (String) Explicit value for a notification recipient.
+
+
+
+<a id="nestedblock--msteams_delivery_settings"></a>
+### Nested Schema for `msteams_delivery_settings`
+
+Read-Only:
+
+- `first_match_only` (Boolean) Only report the first match.
+- `recipients` (Attributes List) Recipients for the notification. (see [below for nested schema](#nestedatt--msteams_delivery_settings--recipients))
+- `template` (String) Name of the template for the notification.
+
+<a id="nestedatt--msteams_delivery_settings--recipients"></a>
+### Nested Schema for `msteams_delivery_settings.recipients`
 
 Read-Only:
 
@@ -151,28 +173,6 @@ Read-Only:
 
 <a id="nestedatt--symphony_delivery_settings--recipients"></a>
 ### Nested Schema for `symphony_delivery_settings.recipients`
-
-Read-Only:
-
-- `account_owner` (Boolean) Whether to notify the account owner.
-- `event_owner` (Boolean) Whether to notify the event owner.
-- `resource_owner` (Boolean) Whether to notify the resource owner.
-- `tag` (String) Tag to match the resource owner from.
-- `value` (String) Explicit value for a notification recipient.
-
-
-
-<a id="nestedblock--teams_delivery_settings"></a>
-### Nested Schema for `teams_delivery_settings`
-
-Read-Only:
-
-- `first_match_only` (Boolean) Only report the first match.
-- `recipients` (Attributes List) Recipients for the notification. (see [below for nested schema](#nestedatt--teams_delivery_settings--recipients))
-- `template` (String) Name of the template for the notification.
-
-<a id="nestedatt--teams_delivery_settings--recipients"></a>
-### Nested Schema for `teams_delivery_settings.recipients`
 
 Read-Only:
 

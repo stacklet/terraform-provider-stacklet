@@ -22,7 +22,7 @@ type ReportGroup struct {
 		TypeName                   string                     `graphql:"__typename"`
 		EmailDeliverySettings      EmailDeliverySettings      `graphql:"... on EmailSettings"`
 		SlackDeliverySettings      SlackDeliverySettings      `graphql:"... on SlackSettings"`
-		TeamsDeliverySettings      TeamsDeliverySettings      `graphql:"... on TeamsSettings"`
+		MSTeamsDeliverySettings    MSTeamsDeliverySettings    `graphql:"... on MSTeamsSettings"`
 		ServiceNowDeliverySettings ServiceNowDeliverySettings `graphql:"... on ServiceNowSettings"`
 		JiraDeliverySettings       JiraDeliverySettings       `graphql:"... on JiraSettings"`
 		SymphonyDeliverySettings   SymphonyDeliverySettings   `graphql:"... on SymphonySettings"`
@@ -53,13 +53,13 @@ func (r ReportGroup) SlackDeliverySettings() []SlackDeliverySettings {
 	return settings
 }
 
-// TeamsDeliverySettings returns the list of Teams delivery settings for the
+// MSTeamsDeliverySettings returns the list of Teams delivery settings for the
 // report group.
-func (r ReportGroup) TeamsDeliverySettings() []TeamsDeliverySettings {
-	settings := []TeamsDeliverySettings{}
+func (r ReportGroup) MSTeamsDeliverySettings() []MSTeamsDeliverySettings {
+	settings := []MSTeamsDeliverySettings{}
 	for _, ds := range r.DeliverySettings {
-		if ds.TypeName == "TeamsSettings" {
-			settings = append(settings, ds.TeamsDeliverySettings)
+		if ds.TypeName == "MSTeamsSettings" {
+			settings = append(settings, ds.MSTeamsDeliverySettings)
 		}
 	}
 	return settings
@@ -118,7 +118,7 @@ type SlackDeliverySettings struct {
 	Template       string      `json:"template"`
 }
 
-type TeamsDeliverySettings struct {
+type MSTeamsDeliverySettings struct {
 	FirstMatchOnly *bool       `json:"firstMatchOnly"`
 	Recipients     []Recipient `json:"recipients"`
 	Template       string      `json:"template"`
@@ -159,7 +159,7 @@ type ReportGroupInput struct {
 	UseMessageSettings bool                         `json:"useMessageSettings"`
 	EmailSettings      []EmailDeliverySettings      `json:"emailSettings"`
 	SlackSettings      []SlackDeliverySettings      `json:"slackSettings"`
-	TeamsSettings      []TeamsDeliverySettings      `json:"teamsSettings"`
+	MSTeamsSettings    []MSTeamsDeliverySettings    `json:"msteamsSettings"`
 	ServiceNowSettings []ServiceNowDeliverySettings `json:"serviceNowSettings"`
 	JiraSettings       []JiraDeliverySettings       `json:"jiraSettings"`
 	SymphonySettings   []SymphonyDeliverySettings   `json:"symphonySettings"`
