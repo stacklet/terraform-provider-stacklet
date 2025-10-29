@@ -17,7 +17,6 @@ var DATASOURCES = []func() datasource.DataSource{
 	NewConfigurationProfileServiceNowDataSource,
 	NewConfigurationProfileSlackDataSource,
 	NewConfigurationProfileSymphonyDataSource,
-	NewConfigurationProfileTeamsDataSource,
 	NewNotificationTemplateDataSource,
 	NewPlatformDataSource,
 	NewPolicyCollectionDataSource,
