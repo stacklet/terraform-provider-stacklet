@@ -17,7 +17,7 @@ type ConfigurationProfileMSTeamsDataSource struct {
 	EntityDetails   types.Object `tfsdk:"entity_details"`
 }
 
-func (e ConfigurationProfileMSTeamsDataSource) AttributeTypes() map[string]attr.Type {
+func (c ConfigurationProfileMSTeamsDataSource) AttributeTypes() map[string]attr.Type {
 	return map[string]attr.Type{
 		"access_config": types.ObjectType{
 			AttrTypes: MSTeamsAccessConfig{}.AttributeTypes(),
@@ -32,6 +32,55 @@ func (e ConfigurationProfileMSTeamsDataSource) AttributeTypes() map[string]attr.
 		},
 		"entity_details": types.ObjectType{
 			AttrTypes: MSTeamsEntityDetails{}.AttributeTypes(),
+		},
+	}
+}
+
+// ConfigurationProfileMSTeamsResource is the model for Microsoft Teams configuration profile resources.
+type ConfigurationProfileMSTeamsResource struct {
+	ConfigurationProfileMSTeamsDataSource
+
+	AccessConfigInput   types.Object `tfsdk:"access_config_input"`
+	CustomerConfigInput types.Object `tfsdk:"customer_config_input"`
+}
+
+func (r ConfigurationProfileMSTeamsResource) AttributeTypes() map[string]attr.Type {
+	attrTypes := r.ConfigurationProfileMSTeamsDataSource.AttributeTypes()
+	attrTypes["access_config_input"] = types.ObjectType{
+		AttrTypes: MSTeamsAccessConfigInput{}.AttributeTypes(),
+	}
+	attrTypes["customer_config_input"] = types.ObjectType{
+		AttrTypes: MSTeamsCustomerConfigInput{}.AttributeTypes(),
+	}
+	return attrTypes
+}
+
+// MSTeamsAccessConfigInput is the model for Microsoft Teams access configuration input (user-provided fields).
+type MSTeamsAccessConfigInput struct {
+	ClientID        types.String `tfsdk:"client_id"`
+	RoundtripDigest types.String `tfsdk:"roundtrip_digest"`
+	TenantID        types.String `tfsdk:"tenant_id"`
+}
+
+func (a MSTeamsAccessConfigInput) AttributeTypes() map[string]attr.Type {
+	return map[string]attr.Type{
+		"client_id":        types.StringType,
+		"roundtrip_digest": types.StringType,
+		"tenant_id":        types.StringType,
+	}
+}
+
+// MSTeamsCustomerConfigInput is the model for Microsoft Teams customer configuration input (user-provided fields).
+type MSTeamsCustomerConfigInput struct {
+	Prefix types.String `tfsdk:"prefix"`
+	Tags   types.Map    `tfsdk:"tags"`
+}
+
+func (c MSTeamsCustomerConfigInput) AttributeTypes() map[string]attr.Type {
+	return map[string]attr.Type{
+		"prefix": types.StringType,
+		"tags": types.MapType{
+			ElemType: types.StringType,
 		},
 	}
 }

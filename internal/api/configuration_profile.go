@@ -8,6 +8,9 @@ import (
 	"github.com/hasura/go-graphql-client"
 )
 
+// UUID represents a UUID scalar type in GraphQL.
+type UUID string
+
 // ConfigurationProfile is the data returned for configuration profiles.
 type ConfigurationProfile struct {
 	ID      string
@@ -78,13 +81,26 @@ type MSTeamsConfiguration struct {
 	EntityDetails   MSTeamsEntityDetails    `json:"entityDetails"`
 }
 
+// MSTeamsAccessConfigInput is the input for the access configuration for
+// Microsoft Teams profile setup.
+type MSTeamsAccessConfigInput struct {
+	ClientID        string `json:"clientId"`
+	RoundtripDigest string `json:"roundtripDigest"`
+	TenantID        string `json:"tenantId"`
+}
+
+// MSTeamsCustomerConfigInput is the input for the Microsoft teams customer configuration.
+type MSTeamsCustomerConfigInput struct {
+	Prefix string   `json:"prefix"`
+	Tags   TagsList `json:"tags"`
+}
+
 // MSTeamsAccessConfig is the access configuration for Microsoft Teams profile setup.
 type MSTeamsAccessConfig struct {
+	MSTeamsAccessConfigInput
+
 	BotApplication       MSTeamsBotApplication        `json:"botApplication"`
-	ClientID             string                       `json:"clientId"`
 	PublishedApplication *MSTeamsPublishedApplication `json:"publishedApplication"`
-	RoundtripDigest      string                       `json:"roundtripDigest"`
-	TenantID             string
 }
 
 // MSTeamsBotApplication contains details about the Microsoft Teams bot application.
@@ -101,12 +117,12 @@ type MSTeamsPublishedApplication struct {
 
 // MSTeamsCustomerConfig is the customer configuration for Microsoft Teams profile setup.
 type MSTeamsCustomerConfig struct {
+	MSTeamsCustomerConfigInput
+
 	BotEndpoint     string          `json:"botEndpoint"`
 	OIDCClient      string          `json:"oidcClient"`
 	OIDCIssuer      string          `json:"oicdIssuer"`
-	Prefix          string          `json:"prefix"`
 	RoundtripDigest string          `json:"roundtripDigest"`
-	Tags            TagsList        `json:"tags"`
 	TerraformModule TerraformModule `json:"terraformModule"`
 }
 
@@ -131,8 +147,26 @@ type MSTeamsTeamDetail struct {
 // MSTeamsChannelMapping contains mappings between IDs and target names for Microsoft Teams.
 type MSTeamsChannelMapping struct {
 	Name      string `json:"name"`
-	TeamID    string `json:"teamId"`
+	TeamID    UUID   `json:"teamId"`
 	ChannelID string `json:"channelId"`
+}
+
+// MSTeamsConfigurationInput is the configuration input for the Microsoft Teams profile.
+type MSTeamsConfigurationInput struct {
+	AccessConfig    *MSTeamsAccessConfigInput   `json:"accessConfig"`
+	ChannelMappings *[]MSTeamsChannelMapping    `json:"channelMappings"`
+	CustomerConfig  *MSTeamsCustomerConfigInput `json:"customerConfig"`
+}
+
+type msteamsConfigurationInput struct {
+	MSTeamsConfigurationInput
+
+	Name  string `json:"name"`
+	Scope string `json:"scope"`
+}
+
+func (i msteamsConfigurationInput) GetGraphQLType() string {
+	return "MSTeamsConfigurationInput"
 }
 
 // JiraConfiguation is the configuration for Jira profiles.
@@ -498,6 +532,32 @@ func (a configurationProfileAPI) UpsertEmail(ctx context.Context, input EmailCon
 	return &mutation.Payload.Configuration, nil
 }
 
+// UpsertMSTeams creates or updates the Microsoft Teams configuration profile.
+func (a configurationProfileAPI) UpsertMSTeams(ctx context.Context, input MSTeamsConfigurationInput) (*ConfigurationProfile, error) {
+	var mutation struct {
+		Payload struct {
+			Configuration ConfigurationProfile
+		} `graphql:"upsertMSTeamsProfile(input: $input)"`
+	}
+	variables := map[string]any{
+		"input": msteamsConfigurationInput{
+			MSTeamsConfigurationInput: input,
+			Name:                      string(ConfigurationProfileMSTeams),
+			Scope:                     configurationScopeGlobal,
+		},
+	}
+
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if mutation.Payload.Configuration.ID == "" {
+		return nil, NotFound{"Configuration profile not found after upsert"}
+	}
+
+	return &mutation.Payload.Configuration, nil
+}
+
 // Delete removes a configuation profile.
 func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationProfileName) error {
 	var mutation struct {
@@ -516,6 +576,11 @@ func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationP
 // DeleteJira deletes the Jira configuration profile.
 func (a configurationProfileAPI) DeleteJira(ctx context.Context) error {
 	return a.Delete(ctx, ConfigurationProfileJira)
+}
+
+// DeleteMSTeams deletes the Microsoft Teams configuration profile.
+func (a configurationProfileAPI) DeleteMSTeams(ctx context.Context) error {
+	return a.Delete(ctx, ConfigurationProfileMSTeams)
 }
 
 // DeleteSlack deletes the Slack configuration profile.
