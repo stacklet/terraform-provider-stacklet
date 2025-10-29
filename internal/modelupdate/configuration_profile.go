@@ -260,7 +260,7 @@ func (u configurationProfileUpdater) MSTeamsChannelMappings() (basetypes.ListVal
 		func(entry api.MSTeamsChannelMapping) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"name":       types.StringValue(entry.Name),
-				"team_id":    types.StringValue(entry.TeamID),
+				"team_id":    types.StringValue(string(entry.TeamID)),
 				"channel_id": types.StringValue(entry.ChannelID),
 			}, nil
 		},
