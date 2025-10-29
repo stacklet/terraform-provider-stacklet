@@ -12,7 +12,7 @@ import (
 )
 
 // Set by goreleaser during compilation.
-var version string = "dev"
+var version = "dev"
 
 func main() {
 	var debug bool

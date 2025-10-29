@@ -29,20 +29,3 @@ func (c PlatformCustomerConfig) AttributeTypes() map[string]attr.Type {
 		},
 	}
 }
-
-// TerraformModule is the model for terraform modules definitions.
-type TerraformModule struct {
-	RepositoryURL types.String `tfsdk:"repository_url"`
-	Source        types.String `tfsdk:"source"`
-	VariablesJSON types.String `tfsdk:"variables_json"`
-	Version       types.String `tfsdk:"version"`
-}
-
-func (c TerraformModule) AttributeTypes() map[string]attr.Type {
-	return map[string]attr.Type{
-		"repository_url": types.StringType,
-		"source":         types.StringType,
-		"variables_json": types.StringType,
-		"version":        types.StringType,
-	}
-}
