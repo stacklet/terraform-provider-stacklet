@@ -22,14 +22,6 @@ type PlatformCustomerConfig struct {
 	TerraformModule TerraformModule
 }
 
-// TerraformModule is the data returned for terraform module definitions.
-type TerraformModule struct {
-	RepositoryURL string `graphql:"repositoryURL"`
-	Source        string
-	Version       *string
-	VariablesJSON string `graphql:"variablesJSON"`
-}
-
 type platformAPI struct {
 	c *graphql.Client
 }

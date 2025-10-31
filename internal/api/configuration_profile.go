@@ -18,6 +18,7 @@ type ConfigurationProfile struct {
 		ServiceNowConfiguration    ServiceNowConfiguration    `graphql:"... on ServiceNowConfiguration"`
 		SlackConfiguration         SlackConfiguration         `graphql:"... on SlackConfiguration"`
 		SymphonyConfiguration      SymphonyConfiguration      `graphql:"... on SymphonyConfiguration"`
+		MSTeamsConfiguration       MSTeamsConfiguration       `graphql:"... on MSTeamsConfiguration"`
 		JiraConfiguration          JiraConfiguration          `graphql:"... on JiraConfiguration"`
 		ResourceOwnerConfiguration ResourceOwnerConfiguration `graphql:"... on ResourceOwnerConfiguration"`
 		AccountOwnersConfiguration AccountOwnersConfiguration `graphql:"... on AccountOwnersConfiguration"`
@@ -67,6 +68,71 @@ type SlackConfiguration struct {
 type SlackWebhook struct {
 	Name string `json:"name"`
 	URL  string `graphql:"url" json:"url"`
+}
+
+// MSTeamsConfiguration is the configuration for Microsoft Teams profiles.
+type MSTeamsConfiguration struct {
+	AccessConfig    *MSTeamsAccessConfig    `json:"accessConfig"`
+	CustomerConfig  MSTeamsCustomerConfig   `json:"customerConfig"`
+	ChannelMappings []MSTeamsChannelMapping `json:"channelMappings"`
+	EntityDetails   MSTeamsEntityDetails    `json:"entityDetails"`
+}
+
+// MSTeamsAccessConfig is the access configuration for Microsoft Teams profile setup.
+type MSTeamsAccessConfig struct {
+	BotApplication       MSTeamsBotApplication        `json:"botApplication"`
+	ClientID             string                       `json:"clientId"`
+	PublishedApplication *MSTeamsPublishedApplication `json:"publishedApplication"`
+	RoundtripDigest      string                       `json:"roundtripDigest"`
+	TenantID             string
+}
+
+// MSTeamsBotApplication contains details about the Microsoft Teams bot application.
+type MSTeamsBotApplication struct {
+	DownloadURL string `graphql:"downloadURL" json:"downloadURL"`
+	Version     string `json:"version"`
+}
+
+// MSTeamsPublishedApplication contains details about the Microsoft Teams bot application publishing to the registry.
+type MSTeamsPublishedApplication struct {
+	CatalogID *string `json:"catalogID"`
+	Version   *string `json:"version"`
+}
+
+// MSTeamsCustomerConfig is the customer configuration for Microsoft Teams profile setup.
+type MSTeamsCustomerConfig struct {
+	BotEndpoint     string          `json:"botEndpoint"`
+	OIDCClient      string          `json:"oidcClient"`
+	OIDCIssuer      string          `json:"oicdIssuer"`
+	Prefix          string          `json:"prefix"`
+	RoundtripDigest string          `json:"roundtripDigest"`
+	Tags            TagsList        `json:"tags"`
+	TerraformModule TerraformModule `json:"terraformModule"`
+}
+
+// MSTeamsEntityDetails has details about Microsoft Teams entities from their ID.
+type MSTeamsEntityDetails struct {
+	Channels []MSTeamsChannelDetail `json:"channels"`
+	Teams    []MSTeamsTeamDetail    `json:"teams"`
+}
+
+// MSTeamsChannelDetail has details about a Microsoft Teams channel.
+type MSTeamsChannelDetail struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// MSTeamsTeamDetail has details about a Microsoft Teams team.
+type MSTeamsTeamDetail struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// MSTeamsChannelMapping contains mappings between IDs and target names for Microsoft Teams.
+type MSTeamsChannelMapping struct {
+	Name      string `json:"name"`
+	TeamID    string `json:"teamId"`
+	ChannelID string `json:"channelId"`
 }
 
 // JiraConfiguation is the configuration for Jira profiles.
@@ -220,6 +286,11 @@ func (a configurationProfileAPI) ReadEmail(ctx context.Context) (*ConfigurationP
 // ReadSlack returns data for the Slack configuration profile.
 func (a configurationProfileAPI) ReadSlack(ctx context.Context) (*ConfigurationProfile, error) {
 	return a.Read(ctx, ConfigurationProfileSlack)
+}
+
+// ReadMSTeams returns data for the Microsoft Teams configuration profile.
+func (a configurationProfileAPI) ReadMSTeams(ctx context.Context) (*ConfigurationProfile, error) {
+	return a.Read(ctx, ConfigurationProfileMSTeams)
 }
 
 // ReadSymphony returns data for the Symphony configuration profile.

@@ -13,6 +13,7 @@ var DATASOURCES = []func() datasource.DataSource{
 	NewConfigurationProfileAccountOwnersDataSource,
 	NewConfigurationProfileEmailDataSource,
 	NewConfigurationProfileJiraDataSource,
+	NewConfigurationProfileMSTeamsDataSource,
 	NewConfigurationProfileResourceOwnerDataSource,
 	NewConfigurationProfileServiceNowDataSource,
 	NewConfigurationProfileSlackDataSource,
