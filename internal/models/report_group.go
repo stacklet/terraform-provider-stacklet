@@ -18,7 +18,7 @@ type ReportGroupResource struct {
 	UseMessageSettings         types.Bool   `tfsdk:"use_message_settings"`
 	EmailDeliverySettings      types.List   `tfsdk:"email_delivery_settings"`
 	SlackDeliverySettings      types.List   `tfsdk:"slack_delivery_settings"`
-	TeamsDeliverySettings      types.List   `tfsdk:"teams_delivery_settings"`
+	MSTeamsDeliverySettings    types.List   `tfsdk:"msteams_delivery_settings"`
 	ServiceNowDeliverySettings types.List   `tfsdk:"servicenow_delivery_settings"`
 	JiraDeliverySettings       types.List   `tfsdk:"jira_delivery_settings"`
 	SymphonyDeliverySettings   types.List   `tfsdk:"symphony_delivery_settings"`
@@ -90,14 +90,14 @@ func (s SlackDeliverySettings) AttributeTypes() map[string]attr.Type {
 	}
 }
 
-// TeamsDeliverySettings are the settings for a Teams delivery type.
-type TeamsDeliverySettings struct {
+// MSTeamsDeliverySettings are the settings for a Microsoft Teams delivery type.
+type MSTeamsDeliverySettings struct {
 	FirstMatchOnly types.Bool   `tfsdk:"first_match_only"`
 	Recipients     types.List   `tfsdk:"recipients"`
 	Template       types.String `tfsdk:"template"`
 }
 
-func (s TeamsDeliverySettings) AttributeTypes() map[string]attr.Type {
+func (s MSTeamsDeliverySettings) AttributeTypes() map[string]attr.Type {
 	return map[string]attr.Type{
 		"first_match_only": types.BoolType,
 		"recipients":       types.ListType{ElemType: types.ObjectType{AttrTypes: Recipient{}.AttributeTypes()}},

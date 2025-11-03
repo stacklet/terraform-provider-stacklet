@@ -78,7 +78,7 @@ func TestAccReportGroupDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "email_delivery_settings.0.recipients.0.resource_owner", "true"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "email_delivery_settings.0.recipients.1.value", "user@example.com"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "slack_delivery_settings.#", "0"),
-				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "teams_delivery_settings.#", "0"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "msteams_delivery_settings.#", "0"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "servicenow_delivery_settings.#", "0"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "jira_delivery_settings.#", "0"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "symphony_delivery_settings.#", "0"),
