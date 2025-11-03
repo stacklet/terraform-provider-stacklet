@@ -90,44 +90,6 @@ func (d *configurationProfileMSTeamsDataSource) Schema(_ context.Context, _ data
 					},
 				},
 			},
-			"entity_details": schema.SingleNestedAttribute{
-				Description: "Entity details for Microsoft Teams.",
-				Computed:    true,
-				Attributes: map[string]schema.Attribute{
-					"channels": schema.ListNestedAttribute{
-						Description: "Channel details.",
-						Computed:    true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"id": schema.StringAttribute{
-									Description: "The channel ID.",
-									Computed:    true,
-								},
-								"name": schema.StringAttribute{
-									Description: "The channel name.",
-									Computed:    true,
-								},
-							},
-						},
-					},
-					"teams": schema.ListNestedAttribute{
-						Description: "Team details.",
-						Computed:    true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"id": schema.StringAttribute{
-									Description: "The team ID.",
-									Computed:    true,
-								},
-								"name": schema.StringAttribute{
-									Description: "The team name.",
-									Computed:    true,
-								},
-							},
-						},
-					},
-				},
-			},
 			"customer_config": schema.SingleNestedAttribute{
 				Description: "Customer configuration for Microsoft Teams.",
 				Computed:    true,
@@ -176,6 +138,44 @@ func (d *configurationProfileMSTeamsDataSource) Schema(_ context.Context, _ data
 							"variables_json": schema.StringAttribute{
 								Description: "The module variables as JSON.",
 								Computed:    true,
+							},
+						},
+					},
+				},
+			},
+			"entity_details": schema.SingleNestedAttribute{
+				Description: "Entity details for Microsoft Teams.",
+				Computed:    true,
+				Attributes: map[string]schema.Attribute{
+					"channels": schema.ListNestedAttribute{
+						Description: "Channel details.",
+						Computed:    true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"id": schema.StringAttribute{
+									Description: "The channel ID.",
+									Computed:    true,
+								},
+								"name": schema.StringAttribute{
+									Description: "The channel name.",
+									Computed:    true,
+								},
+							},
+						},
+					},
+					"teams": schema.ListNestedAttribute{
+						Description: "Team details.",
+						Computed:    true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"id": schema.StringAttribute{
+									Description: "The team ID.",
+									Computed:    true,
+								},
+								"name": schema.StringAttribute{
+									Description: "The team name.",
+									Computed:    true,
+								},
 							},
 						},
 					},
