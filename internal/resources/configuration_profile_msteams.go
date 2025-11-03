@@ -191,7 +191,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 				Optional:    true,
 				Computed:    true,
 				PlanModifiers: []planmodifier.Object{
-					planmodifiers.RequiresReplaceIfUnset(),
 					planmodifiers.DefaultObject(
 						types.ObjectValueMust(
 							map[string]attr.Type{
