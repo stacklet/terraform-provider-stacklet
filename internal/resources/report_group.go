@@ -76,6 +76,10 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 				Required:    true,
 				ElementType: types.StringType,
 			},
+			"source": schema.StringAttribute{
+				Description: "Type of the source for the report group.",
+				Computed:    true,
+			},
 			"schedule": schema.StringAttribute{
 				Description: "Notification schedule.",
 				Required:    true,
@@ -649,6 +653,7 @@ func (r reportGroupResource) updateReportGroupModel(m *models.ReportGroupResourc
 	m.Name = types.StringValue(reportGroup.Name)
 	m.Enabled = types.BoolValue(reportGroup.Enabled)
 	m.Bindings = tftypes.StringsList(reportGroup.Bindings)
+	m.Source = types.StringValue(string(reportGroup.Source))
 	m.Schedule = types.StringValue(reportGroup.Schedule)
 	m.GroupBy = tftypes.StringsList(reportGroup.GroupBy)
 	m.UseMessageSettings = types.BoolValue(reportGroup.UseMessageSettings)
