@@ -66,6 +66,7 @@ func TestAccReportGroupDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "enabled", "true"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "bindings.#", "1"),
 				resource.TestCheckResourceAttrPair("data.stacklet_report_group.test", "bindings.0", "stacklet_binding.b", "uuid"),
+				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "source", "BINDING"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "schedule", "0 12 * * *"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "group_by.#", "2"),
 				resource.TestCheckResourceAttr("data.stacklet_report_group.test", "group_by.0", "account"),

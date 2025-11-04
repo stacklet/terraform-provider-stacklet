@@ -56,6 +56,7 @@ resource "stacklet_report_group" "example" {
 ### Read-Only
 
 - `id` (String) The GraphQL Node ID of the report group.
+- `source` (String) Type of the source for the report group.
 
 <a id="nestedblock--email_delivery_settings"></a>
 ### Nested Schema for `email_delivery_settings`
