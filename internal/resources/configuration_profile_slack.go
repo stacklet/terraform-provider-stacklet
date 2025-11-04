@@ -20,7 +20,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
@@ -150,7 +149,7 @@ func (r *configurationProfileSlackResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateSlackModel(&state, whSecretsState, slackConfig)...)
+	resp.Diagnostics.Append(r.updateSlackModel(ctx, &state, whSecretsState, slackConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -183,7 +182,7 @@ func (r *configurationProfileSlackResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateSlackModel(&plan, whSecretsConfig, slackConfig)...)
+	resp.Diagnostics.Append(r.updateSlackModel(ctx, &plan, whSecretsConfig, slackConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -226,7 +225,7 @@ func (r *configurationProfileSlackResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateSlackModel(&plan, whSecretsConfig, slackConfig)...)
+	resp.Diagnostics.Append(r.updateSlackModel(ctx, &plan, whSecretsConfig, slackConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -247,31 +246,13 @@ func (r *configurationProfileSlackResource) ImportState(ctx context.Context, req
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileSlack))...)
 }
 
-func (r configurationProfileSlackResource) updateSlackModel(m *models.ConfigurationProfileSlackResource, webhookSecrets map[string]slackWebhookSecret, config *api.ConfigurationProfile) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	slackConfig := config.Record.SlackConfiguration
-
-	m.ID = types.StringValue(config.ID)
-	m.Profile = types.StringValue(config.Profile)
-	m.Token = types.StringPointerValue(slackConfig.Token)
-	m.UserFields = tftypes.StringsList(slackConfig.UserFields)
-
+func (r configurationProfileSlackResource) updateSlackModel(ctx context.Context, m *models.ConfigurationProfileSlackResource, webhookSecrets map[string]slackWebhookSecret, cp *api.ConfigurationProfile) diag.Diagnostics {
 	webhookVersions := map[string]string{}
 	for name, secret := range webhookSecrets {
 		webhookVersions[name] = secret.Version
 	}
 
-	// get the current names ordering to preserve it in the updated webhooks block
-	names := models.ListItemsIdentifiers(m.Webhooks, "name")
-
-	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	webhooks, diags := updater.SlackWebhooksWithSecret(webhookVersions, names)
-	if diags.HasError() {
-		return diags
-	}
-	m.Webhooks = webhooks
-	return diags
+	return m.Update(ctx, *cp, webhookVersions)
 }
 
 func (r configurationProfileSlackResource) getWebhooksSecrets(ctx context.Context, m models.ConfigurationProfileSlackResource) (map[string]slackWebhookSecret, diag.Diagnostics) {

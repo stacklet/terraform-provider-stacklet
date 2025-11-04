@@ -20,7 +20,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
@@ -309,17 +308,13 @@ func (r *configurationProfileMSTeamsResource) Create(ctx context.Context, req re
 		return
 	}
 
-	config, err := r.api.ConfigurationProfile.UpsertMSTeams(ctx, input)
+	profileConfig, err := r.api.ConfigurationProfile.UpsertMSTeams(ctx, input)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateStateFromAPI(&data, config)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
+	resp.Diagnostics.Append(data.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -330,17 +325,13 @@ func (r *configurationProfileMSTeamsResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	config, err := r.api.ConfigurationProfile.ReadMSTeams(ctx)
+	profileConfig, err := r.api.ConfigurationProfile.ReadMSTeams(ctx)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateStateFromAPI(&data, config)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
+	resp.Diagnostics.Append(data.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -357,17 +348,13 @@ func (r *configurationProfileMSTeamsResource) Update(ctx context.Context, req re
 		return
 	}
 
-	config, err := r.api.ConfigurationProfile.UpsertMSTeams(ctx, input)
+	profileConfig, err := r.api.ConfigurationProfile.UpsertMSTeams(ctx, input)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateStateFromAPI(&data, config)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
+	resp.Diagnostics.Append(data.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -438,81 +425,4 @@ func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, da
 	}
 
 	return input, diags
-}
-
-func (r *configurationProfileMSTeamsResource) updateStateFromAPI(data *models.ConfigurationProfileMSTeamsResource, config *api.ConfigurationProfile) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	data.ID = types.StringValue(config.ID)
-	data.Profile = types.StringValue(config.Profile)
-
-	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-
-	accessConfig, d := updater.MSTeamsAccessConfig()
-	diags.Append(d...)
-	if diags.HasError() {
-		return diags
-	}
-	data.AccessConfig = accessConfig
-
-	customerConfig, d := updater.MSTeamsCustomerConfig()
-	diags.Append(d...)
-	if diags.HasError() {
-		return diags
-	}
-	data.CustomerConfig = customerConfig
-
-	channelMappings, d := updater.MSTeamsChannelMappings()
-	diags.Append(d...)
-	if diags.HasError() {
-		return diags
-	}
-	data.ChannelMappings = channelMappings
-
-	entityDetails, d := updater.MSTeamsEntityDetails()
-	diags.Append(d...)
-	if diags.HasError() {
-		return diags
-	}
-	data.EntityDetails = entityDetails
-
-	// update state for input fields to match what's returned by the API. Since
-	// the inputs are separated from the outputs, this is needed to see diffs.
-	accessConfigInput, d := r.fillInputFromOutput(
-		accessConfig,
-		models.MSTeamsAccessConfigInput{},
-		[]string{"client_id", "roundtrip_digest", "tenant_id"},
-	)
-	data.AccessConfigInput = accessConfigInput
-	diags.Append(d...)
-	if diags.HasError() {
-		return diags
-	}
-
-	customerConfigInput, d := r.fillInputFromOutput(
-		customerConfig,
-		models.MSTeamsCustomerConfigInput{},
-		[]string{"prefix", "tags"},
-	)
-	data.CustomerConfigInput = customerConfigInput
-	diags.Append(d...)
-	if diags.HasError() {
-		return diags
-	}
-
-	return diags
-}
-
-func (r *configurationProfileMSTeamsResource) fillInputFromOutput(o basetypes.ObjectValue, t tftypes.WithAttributes, fields []string) (basetypes.ObjectValue, diag.Diagnostics) {
-	if o.IsNull() || o.IsUnknown() {
-		return tftypes.NullObject(t), nil
-	}
-
-	attrs := o.Attributes()
-	values := make(map[string]attr.Value)
-	// fill relevant fields
-	for _, field := range fields {
-		values[field] = attrs[field]
-	}
-	return types.ObjectValue(t.AttributeTypes(), values)
 }

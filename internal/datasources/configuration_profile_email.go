@@ -7,14 +7,11 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -104,30 +101,6 @@ func (d *configurationProfileEmailDataSource) Read(ctx context.Context, req data
 		return
 	}
 
-	data.ID = types.StringValue(config.ID)
-	data.Profile = types.StringValue(config.Profile)
-	data.From = types.StringValue(config.Record.EmailConfiguration.FromEmail)
-	data.SESRegion = types.StringPointerValue(config.Record.EmailConfiguration.SESRegion)
-
-	smtpConfig := config.Record.EmailConfiguration.SMTP
-	smtp, diags := tftypes.ObjectValue(
-		ctx,
-		smtpConfig,
-		func() (*models.SMTPDataSource, diag.Diagnostics) {
-			return &models.SMTPDataSource{
-				Server:   types.StringValue(smtpConfig.Server),
-				Port:     types.StringPointerValue(&smtpConfig.Port),
-				SSL:      types.BoolPointerValue(smtpConfig.SSL),
-				Username: types.StringPointerValue(smtpConfig.Username),
-				Password: types.StringPointerValue(smtpConfig.Password),
-			}, nil
-		},
-	)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.SMTP = smtp
-
+	resp.Diagnostics.Append(data.Update(ctx, *config)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

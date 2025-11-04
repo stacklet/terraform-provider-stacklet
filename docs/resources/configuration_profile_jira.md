@@ -48,12 +48,12 @@ resource "stacklet_configuration_profile_jira" "jira" {
 
 - `api_key_wo` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The input value for the API key.
 - `api_key_wo_version` (String) The version for the API key. Must be changed to update api_key_wo.
+- `url` (String) The Jira instance URL.
 - `user` (String) The Jira instance authentication username.
 
 ### Optional
 
 - `project` (Block List) Jira project configuration. (see [below for nested schema](#nestedblock--project))
-- `url` (String) The Jira instance URL.
 
 ### Read-Only
 

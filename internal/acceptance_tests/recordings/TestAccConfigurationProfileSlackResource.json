@@ -1,5 +1,5 @@
 {
-  "mutation ($input:SlackConfigurationInput!){addSlackProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{catalogId,version}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"name\":\"slack\",\"scope\":\"0\",\"token\":null,\"userFields\":[],\"webhooks\":[{\"name\":\"foo\",\"url\":\"https://example.com/webhooks/one\"},{\"name\":\"bar\",\"url\":\"https://example.com/webhooks/two\"}]}}": [
+  "mutation ($input:SlackConfigurationInput!){addSlackProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{catalogId,version}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"name\":\"slack\",\"scope\":\"0\",\"token\":null,\"userFields\":[\"username\",\"email\"],\"webhooks\":[{\"name\":\"foo\",\"url\":\"https://example.com/webhooks/one\"},{\"name\":\"bar\",\"url\":\"https://example.com/webhooks/two\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:SlackConfigurationInput!){addSlackProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{catalogId,version}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
@@ -8,7 +8,10 @@
             "name": "slack",
             "scope": "0",
             "token": null,
-            "userFields": [],
+            "userFields": [
+              "username",
+              "email"
+            ],
             "webhooks": [
               {
                 "name": "foo",
@@ -31,15 +34,18 @@
               "record": {
                 "__typename": "SlackConfiguration",
                 "token": null,
-                "userFields": [],
+                "userFields": [
+                  "username",
+                  "email"
+                ],
                 "webhooks": [
                   {
                     "name": "bar",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHuywg4OQwrfsvOtAweLi82AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiu/AjPLymwlUWvWLAgEQgDvcPWG8I171YKDz6o33H3i1eLQ7af9DW+2eyxCWRylHsFmDbGpTV01yDDRX6kr7EPxw7UypBt9yzBxoqA=="
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEWMuHMZLafbTTydak1BrVUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM2GGHwyAKx1AOriStAgEQgDuvduykTtCt8fTVwxNktvl6P+5PVhkZedCuYyhOkgPrS/Y2iPJd/kjvMYZYyZEWD9MhgF7p1FmudBmC6g=="
                   },
                   {
                     "name": "foo",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFmQTBA3Fp9y+fAtUKBnyQDAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMtYJM5K8yEz5yAKtaAgEQgDuNEBCDDvXs6GBAG6q6u6PhW44GWpTSIH9Kp/3SIyss8r4q1xAJXuA2IlLwBYRH/ACVb25dmotLuf+XCw=="
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFJlhLmgifJytKwULt3t0CUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMllxsLTDtFvPB+Tn3AgEQgDvPnRGJGVtOGALQZ8BTGjj0XldecnUdrJxj6vAr38ZRxQl2hIeV4PRJlpEJF71Sd+CqL3E6tgH014/16A=="
                   }
                 ]
               }
@@ -85,11 +91,11 @@
                 "webhooks": [
                   {
                     "name": "bar-new",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEtU3GX7d3XqovzazB7qbK2AAAAgzCBgAYJKoZIhvcNAQcGoHMwcQIBADBsBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDIqxP04/A6IyTQiEDAIBEIA/7JcmpC5KQojiMc0AmryzX4goxXq062UnRm/wJveyT/ffXVE8bKWp1JhbeBgwrhz6oQgnRnGjjfLR/2RWu0tN"
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEVxLI44U2ib2nfksMiNwcYAAAAgzCBgAYJKoZIhvcNAQcGoHMwcQIBADBsBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNMqvYPZJ1jGdKLaVwIBEIA/F+K+QkNraO/XSOQaGU8jpDj5Xky6Jf9JaItvwSEzxyY6mJoYCuPapZkH4zI/xHjRfaMaCI1MLvsADYGmZiPz"
                   },
                   {
                     "name": "foo-new",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFpxiNOimiIRU5i8ifqnBuaAAAAgzCBgAYJKoZIhvcNAQcGoHMwcQIBADBsBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDBuKWH8B4llxVN5HcQIBEIA/x9AHkCB6y+zCqGON7Ub7S1jfkf7f4P5VccE5EI3+t48o2SAZtYM/ATlwpk+KhfJ0ye7PjNn1F97331czLWKe"
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHwXnpzJRvs+cv+wKD2Vt3zAAAAgzCBgAYJKoZIhvcNAQcGoHMwcQIBADBsBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDCQqdXCk7KtUt7NecwIBEIA/sg9N2Y6samtwxJMyX2Py5pBJEbSJwiAGZZsIBtWs+zeyQXOtPL6MQ6jfj1bR9ad9oY8XFHfoL2NU9ZuSwQVT"
                   }
                 ]
               }
@@ -132,15 +138,18 @@
             "record": {
               "__typename": "SlackConfiguration",
               "token": null,
-              "userFields": [],
+              "userFields": [
+                "username",
+                "email"
+              ],
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHuywg4OQwrfsvOtAweLi82AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiu/AjPLymwlUWvWLAgEQgDvcPWG8I171YKDz6o33H3i1eLQ7af9DW+2eyxCWRylHsFmDbGpTV01yDDRX6kr7EPxw7UypBt9yzBxoqA=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEWMuHMZLafbTTydak1BrVUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM2GGHwyAKx1AOriStAgEQgDuvduykTtCt8fTVwxNktvl6P+5PVhkZedCuYyhOkgPrS/Y2iPJd/kjvMYZYyZEWD9MhgF7p1FmudBmC6g=="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFmQTBA3Fp9y+fAtUKBnyQDAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMtYJM5K8yEz5yAKtaAgEQgDuNEBCDDvXs6GBAG6q6u6PhW44GWpTSIH9Kp/3SIyss8r4q1xAJXuA2IlLwBYRH/ACVb25dmotLuf+XCw=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFJlhLmgifJytKwULt3t0CUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMllxsLTDtFvPB+Tn3AgEQgDvPnRGJGVtOGALQZ8BTGjj0XldecnUdrJxj6vAr38ZRxQl2hIeV4PRJlpEJF71Sd+CqL3E6tgH014/16A=="
                 }
               ]
             }
@@ -164,15 +173,18 @@
             "record": {
               "__typename": "SlackConfiguration",
               "token": null,
-              "userFields": [],
+              "userFields": [
+                "username",
+                "email"
+              ],
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHuywg4OQwrfsvOtAweLi82AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiu/AjPLymwlUWvWLAgEQgDvcPWG8I171YKDz6o33H3i1eLQ7af9DW+2eyxCWRylHsFmDbGpTV01yDDRX6kr7EPxw7UypBt9yzBxoqA=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEWMuHMZLafbTTydak1BrVUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM2GGHwyAKx1AOriStAgEQgDuvduykTtCt8fTVwxNktvl6P+5PVhkZedCuYyhOkgPrS/Y2iPJd/kjvMYZYyZEWD9MhgF7p1FmudBmC6g=="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFmQTBA3Fp9y+fAtUKBnyQDAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMtYJM5K8yEz5yAKtaAgEQgDuNEBCDDvXs6GBAG6q6u6PhW44GWpTSIH9Kp/3SIyss8r4q1xAJXuA2IlLwBYRH/ACVb25dmotLuf+XCw=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFJlhLmgifJytKwULt3t0CUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMllxsLTDtFvPB+Tn3AgEQgDvPnRGJGVtOGALQZ8BTGjj0XldecnUdrJxj6vAr38ZRxQl2hIeV4PRJlpEJF71Sd+CqL3E6tgH014/16A=="
                 }
               ]
             }
@@ -196,15 +208,18 @@
             "record": {
               "__typename": "SlackConfiguration",
               "token": null,
-              "userFields": [],
+              "userFields": [
+                "username",
+                "email"
+              ],
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHuywg4OQwrfsvOtAweLi82AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMiu/AjPLymwlUWvWLAgEQgDvcPWG8I171YKDz6o33H3i1eLQ7af9DW+2eyxCWRylHsFmDbGpTV01yDDRX6kr7EPxw7UypBt9yzBxoqA=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEWMuHMZLafbTTydak1BrVUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM2GGHwyAKx1AOriStAgEQgDuvduykTtCt8fTVwxNktvl6P+5PVhkZedCuYyhOkgPrS/Y2iPJd/kjvMYZYyZEWD9MhgF7p1FmudBmC6g=="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFmQTBA3Fp9y+fAtUKBnyQDAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMtYJM5K8yEz5yAKtaAgEQgDuNEBCDDvXs6GBAG6q6u6PhW44GWpTSIH9Kp/3SIyss8r4q1xAJXuA2IlLwBYRH/ACVb25dmotLuf+XCw=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFJlhLmgifJytKwULt3t0CUAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMllxsLTDtFvPB+Tn3AgEQgDvPnRGJGVtOGALQZ8BTGjj0XldecnUdrJxj6vAr38ZRxQl2hIeV4PRJlpEJF71Sd+CqL3E6tgH014/16A=="
                 }
               ]
             }
@@ -232,11 +247,11 @@
               "webhooks": [
                 {
                   "name": "bar-new",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEtU3GX7d3XqovzazB7qbK2AAAAgzCBgAYJKoZIhvcNAQcGoHMwcQIBADBsBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDIqxP04/A6IyTQiEDAIBEIA/7JcmpC5KQojiMc0AmryzX4goxXq062UnRm/wJveyT/ffXVE8bKWp1JhbeBgwrhz6oQgnRnGjjfLR/2RWu0tN"
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQEVxLI44U2ib2nfksMiNwcYAAAAgzCBgAYJKoZIhvcNAQcGoHMwcQIBADBsBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNMqvYPZJ1jGdKLaVwIBEIA/F+K+QkNraO/XSOQaGU8jpDj5Xky6Jf9JaItvwSEzxyY6mJoYCuPapZkH4zI/xHjRfaMaCI1MLvsADYGmZiPz"
                 },
                 {
                   "name": "foo-new",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQFpxiNOimiIRU5i8ifqnBuaAAAAgzCBgAYJKoZIhvcNAQcGoHMwcQIBADBsBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDBuKWH8B4llxVN5HcQIBEIA/x9AHkCB6y+zCqGON7Ub7S1jfkf7f4P5VccE5EI3+t48o2SAZtYM/ATlwpk+KhfJ0ye7PjNn1F97331czLWKe"
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHwXnpzJRvs+cv+wKD2Vt3zAAAAgzCBgAYJKoZIhvcNAQcGoHMwcQIBADBsBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDCQqdXCk7KtUt7NecwIBEIA/sg9N2Y6samtwxJMyX2Py5pBJEbSJwiAGZZsIBtWs+zeyQXOtPL6MQ6jfj1bR9ad9oY8XFHfoL2NU9ZuSwQVT"
                 }
               ]
             }

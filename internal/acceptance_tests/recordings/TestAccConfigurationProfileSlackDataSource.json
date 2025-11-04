@@ -1,5 +1,5 @@
 {
-  "mutation ($input:SlackConfigurationInput!){addSlackProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{catalogId,version}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"name\":\"slack\",\"scope\":\"0\",\"token\":null,\"userFields\":[],\"webhooks\":[{\"name\":\"bar\",\"url\":\"https://example.com/webhooks/one\"},{\"name\":\"foo\",\"url\":\"https://example.com/webhooks/two\"}]}}": [
+  "mutation ($input:SlackConfigurationInput!){addSlackProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{catalogId,version}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"name\":\"slack\",\"scope\":\"0\",\"token\":null,\"userFields\":[\"username\",\"email\"],\"webhooks\":[{\"name\":\"bar\",\"url\":\"https://example.com/webhooks/one\"},{\"name\":\"foo\",\"url\":\"https://example.com/webhooks/two\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:SlackConfigurationInput!){addSlackProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{catalogId,version}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
@@ -8,7 +8,10 @@
             "name": "slack",
             "scope": "0",
             "token": null,
-            "userFields": [],
+            "userFields": [
+              "username",
+              "email"
+            ],
             "webhooks": [
               {
                 "name": "bar",
@@ -31,15 +34,18 @@
               "record": {
                 "__typename": "SlackConfiguration",
                 "token": null,
-                "userFields": [],
+                "userFields": [
+                  "username",
+                  "email"
+                ],
                 "webhooks": [
                   {
                     "name": "bar",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF38xlFGE75O2XYIifnWOucAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMBzveYtHPVHKSFOqvAgEQgDsVGZmz0ldBlgZdXh5zRPD2oQmDq4Ms2sEt+sr5t2ZrmmM6tjJETuXXGDhR6zTp7dl+JH0T8Msi658sNw=="
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHaWIJBprY8o7a3b0qp3sYYAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMj/AYe5O6Vhjr/n1MAgEQgDvZx2wU8lZmM9N3w61gDoVmCDFGVc7VEhAB/RA5Qz3NEjl/4hWEi/je5ug66rLvtSfCzDXPpudLi1nUgg=="
                   },
                   {
                     "name": "foo",
-                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGAe7aL1YkctbcTiirqixTgAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMTU1qLepMRoE69sLYAgEQgDtz4KB+uSkkZ8RE0jUxBIDR1YURgksuBdtj+exx1xRPk7WO88o4O/Gi0elygs7J4HHDRDVFrPpxvHLihg=="
+                    "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHX1utBMHS+AN4EX8tSJRwwAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMqCS2N2nunITovQI9AgEQgDtBsjTIkY9Ulq5WxSh93KhEgRsRZiAc3/+37uup1+XKo/a1OvmJ6bkPM4dklg+Dj+D6WfePmveF6lIoWg=="
                   }
                 ]
               }
@@ -82,15 +88,18 @@
             "record": {
               "__typename": "SlackConfiguration",
               "token": null,
-              "userFields": [],
+              "userFields": [
+                "username",
+                "email"
+              ],
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF38xlFGE75O2XYIifnWOucAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMBzveYtHPVHKSFOqvAgEQgDsVGZmz0ldBlgZdXh5zRPD2oQmDq4Ms2sEt+sr5t2ZrmmM6tjJETuXXGDhR6zTp7dl+JH0T8Msi658sNw=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHaWIJBprY8o7a3b0qp3sYYAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMj/AYe5O6Vhjr/n1MAgEQgDvZx2wU8lZmM9N3w61gDoVmCDFGVc7VEhAB/RA5Qz3NEjl/4hWEi/je5ug66rLvtSfCzDXPpudLi1nUgg=="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGAe7aL1YkctbcTiirqixTgAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMTU1qLepMRoE69sLYAgEQgDtz4KB+uSkkZ8RE0jUxBIDR1YURgksuBdtj+exx1xRPk7WO88o4O/Gi0elygs7J4HHDRDVFrPpxvHLihg=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHX1utBMHS+AN4EX8tSJRwwAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMqCS2N2nunITovQI9AgEQgDtBsjTIkY9Ulq5WxSh93KhEgRsRZiAc3/+37uup1+XKo/a1OvmJ6bkPM4dklg+Dj+D6WfePmveF6lIoWg=="
                 }
               ]
             }
@@ -114,15 +123,18 @@
             "record": {
               "__typename": "SlackConfiguration",
               "token": null,
-              "userFields": [],
+              "userFields": [
+                "username",
+                "email"
+              ],
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF38xlFGE75O2XYIifnWOucAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMBzveYtHPVHKSFOqvAgEQgDsVGZmz0ldBlgZdXh5zRPD2oQmDq4Ms2sEt+sr5t2ZrmmM6tjJETuXXGDhR6zTp7dl+JH0T8Msi658sNw=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHaWIJBprY8o7a3b0qp3sYYAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMj/AYe5O6Vhjr/n1MAgEQgDvZx2wU8lZmM9N3w61gDoVmCDFGVc7VEhAB/RA5Qz3NEjl/4hWEi/je5ug66rLvtSfCzDXPpudLi1nUgg=="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGAe7aL1YkctbcTiirqixTgAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMTU1qLepMRoE69sLYAgEQgDtz4KB+uSkkZ8RE0jUxBIDR1YURgksuBdtj+exx1xRPk7WO88o4O/Gi0elygs7J4HHDRDVFrPpxvHLihg=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHX1utBMHS+AN4EX8tSJRwwAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMqCS2N2nunITovQI9AgEQgDtBsjTIkY9Ulq5WxSh93KhEgRsRZiAc3/+37uup1+XKo/a1OvmJ6bkPM4dklg+Dj+D6WfePmveF6lIoWg=="
                 }
               ]
             }
@@ -146,15 +158,18 @@
             "record": {
               "__typename": "SlackConfiguration",
               "token": null,
-              "userFields": [],
+              "userFields": [
+                "username",
+                "email"
+              ],
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF38xlFGE75O2XYIifnWOucAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMBzveYtHPVHKSFOqvAgEQgDsVGZmz0ldBlgZdXh5zRPD2oQmDq4Ms2sEt+sr5t2ZrmmM6tjJETuXXGDhR6zTp7dl+JH0T8Msi658sNw=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHaWIJBprY8o7a3b0qp3sYYAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMj/AYe5O6Vhjr/n1MAgEQgDvZx2wU8lZmM9N3w61gDoVmCDFGVc7VEhAB/RA5Qz3NEjl/4hWEi/je5ug66rLvtSfCzDXPpudLi1nUgg=="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGAe7aL1YkctbcTiirqixTgAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMTU1qLepMRoE69sLYAgEQgDtz4KB+uSkkZ8RE0jUxBIDR1YURgksuBdtj+exx1xRPk7WO88o4O/Gi0elygs7J4HHDRDVFrPpxvHLihg=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHX1utBMHS+AN4EX8tSJRwwAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMqCS2N2nunITovQI9AgEQgDtBsjTIkY9Ulq5WxSh93KhEgRsRZiAc3/+37uup1+XKo/a1OvmJ6bkPM4dklg+Dj+D6WfePmveF6lIoWg=="
                 }
               ]
             }
@@ -178,15 +193,18 @@
             "record": {
               "__typename": "SlackConfiguration",
               "token": null,
-              "userFields": [],
+              "userFields": [
+                "username",
+                "email"
+              ],
               "webhooks": [
                 {
                   "name": "bar",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQF38xlFGE75O2XYIifnWOucAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMBzveYtHPVHKSFOqvAgEQgDsVGZmz0ldBlgZdXh5zRPD2oQmDq4Ms2sEt+sr5t2ZrmmM6tjJETuXXGDhR6zTp7dl+JH0T8Msi658sNw=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHaWIJBprY8o7a3b0qp3sYYAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMj/AYe5O6Vhjr/n1MAgEQgDvZx2wU8lZmM9N3w61gDoVmCDFGVc7VEhAB/RA5Qz3NEjl/4hWEi/je5ug66rLvtSfCzDXPpudLi1nUgg=="
                 },
                 {
                   "name": "foo",
-                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQGAe7aL1YkctbcTiirqixTgAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMTU1qLepMRoE69sLYAgEQgDtz4KB+uSkkZ8RE0jUxBIDR1YURgksuBdtj+exx1xRPk7WO88o4O/Gi0elygs7J4HHDRDVFrPpxvHLihg=="
+                  "url": "_encrypted:AQICAHh4ux78bAs/X3yYBg/TwgPXGB46MhYMn/VlwsH+BGTJoQHX1utBMHS+AN4EX8tSJRwwAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMqCS2N2nunITovQI9AgEQgDtBsjTIkY9Ulq5WxSh93KhEgRsRZiAc3/+37uup1+XKo/a1OvmJ6bkPM4dklg+Dj+D6WfePmveF6lIoWg=="
                 }
               ]
             }

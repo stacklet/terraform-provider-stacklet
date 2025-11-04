@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -104,7 +103,7 @@ func (r *configurationProfileSymphonyResource) Read(ctx context.Context, req res
 		return
 	}
 
-	r.updateSymphonyModel(&state, config)
+	resp.Diagnostics.Append(state.Update(*config)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -127,7 +126,7 @@ func (r *configurationProfileSymphonyResource) Create(ctx context.Context, req r
 		return
 	}
 
-	r.updateSymphonyModel(&plan, profileConfig)
+	resp.Diagnostics.Append(plan.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -158,7 +157,7 @@ func (r *configurationProfileSymphonyResource) Update(ctx context.Context, req r
 		return
 	}
 
-	r.updateSymphonyModel(&plan, profileConfig)
+	resp.Diagnostics.Append(plan.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -177,14 +176,4 @@ func (r *configurationProfileSymphonyResource) Delete(ctx context.Context, req r
 
 func (r *configurationProfileSymphonyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileSymphony))...)
-}
-
-func (r configurationProfileSymphonyResource) updateSymphonyModel(m *models.ConfigurationProfileSymphonyResource, config *api.ConfigurationProfile) {
-	symphonyConfig := config.Record.SymphonyConfiguration
-
-	m.ID = types.StringValue(config.ID)
-	m.Profile = types.StringValue(config.Profile)
-	m.AgentDomain = types.StringValue(symphonyConfig.AgentDomain)
-	m.ServiceAccount = types.StringValue(symphonyConfig.ServiceAccount)
-	m.PrivateKey = types.StringValue(symphonyConfig.PrivateKey)
 }

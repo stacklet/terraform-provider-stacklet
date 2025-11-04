@@ -105,7 +105,7 @@ func (r *configurationProfileResourceOwnerResource) Read(ctx context.Context, re
 		return
 	}
 
-	r.updateResourceOwnerModel(&state, config)
+	resp.Diagnostics.Append(state.Update(*config)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -128,7 +128,7 @@ func (r *configurationProfileResourceOwnerResource) Create(ctx context.Context, 
 		return
 	}
 
-	r.updateResourceOwnerModel(&plan, config)
+	resp.Diagnostics.Append(plan.Update(*config)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -151,7 +151,7 @@ func (r *configurationProfileResourceOwnerResource) Update(ctx context.Context, 
 		return
 	}
 
-	r.updateResourceOwnerModel(&plan, config)
+	resp.Diagnostics.Append(plan.Update(*config)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -170,13 +170,4 @@ func (r *configurationProfileResourceOwnerResource) Delete(ctx context.Context, 
 
 func (r *configurationProfileResourceOwnerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileResourceOwner))...)
-}
-
-func (r configurationProfileResourceOwnerResource) updateResourceOwnerModel(m *models.ConfigurationProfileResourceOwnerResource, config *api.ConfigurationProfile) {
-	m.ID = types.StringValue(config.ID)
-	m.Profile = types.StringValue(config.Profile)
-	m.Default = tftypes.StringsList(config.Record.ResourceOwnerConfiguration.Default)
-	m.OrgDomain = types.StringPointerValue(config.Record.ResourceOwnerConfiguration.OrgDomain)
-	m.OrgDomainTag = types.StringPointerValue(config.Record.ResourceOwnerConfiguration.OrgDomainTag)
-	m.Tags = tftypes.StringsList(config.Record.ResourceOwnerConfiguration.Tags)
 }

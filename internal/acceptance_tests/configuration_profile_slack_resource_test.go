@@ -15,6 +15,8 @@ func TestAccConfigurationProfileSlackResource(t *testing.T) {
 		{
 			Config: `
 				resource "stacklet_configuration_profile_slack" "test" {
+ 	                user_fields = ["username", "email"]
+
 					webhook {
 						name = "foo"
 						url_wo = "https://example.com/webhooks/one"
@@ -31,6 +33,9 @@ func TestAccConfigurationProfileSlackResource(t *testing.T) {
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_slack.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_slack.test", "profile"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "user_fields.#", "2"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "user_fields.0", "username"),
+				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "user_fields.1", "email"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "webhook.#", "2"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "webhook.0.name", "foo"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "webhook.0.url_wo_version", "1"),
