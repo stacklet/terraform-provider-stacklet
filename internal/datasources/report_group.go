@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -401,40 +399,6 @@ func (d *reportGroupDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	data.ID = types.StringValue(reportGroup.ID)
-	data.Name = types.StringValue(reportGroup.Name)
-	data.Enabled = types.BoolValue(reportGroup.Enabled)
-	data.Bindings = tftypes.StringsList(reportGroup.Bindings)
-	data.Source = types.StringValue(string(reportGroup.Source))
-	data.Schedule = types.StringValue(reportGroup.Schedule)
-	data.GroupBy = tftypes.StringsList(reportGroup.GroupBy)
-	data.UseMessageSettings = types.BoolValue(reportGroup.UseMessageSettings)
-
-	updater := modelupdate.NewReportGroupUpdater(*reportGroup)
-
-	emailDeliverySettings, diags := updater.EmailDeliverySettings()
-	resp.Diagnostics.Append(diags...)
-	data.EmailDeliverySettings = emailDeliverySettings
-
-	slackDeliverySettings, diags := updater.SlackDeliverySettings()
-	resp.Diagnostics.Append(diags...)
-	data.SlackDeliverySettings = slackDeliverySettings
-
-	msteamsDeliverySettings, diags := updater.MSTeamsDeliverySettings()
-	resp.Diagnostics.Append(diags...)
-	data.MSTeamsDeliverySettings = msteamsDeliverySettings
-
-	servicenowDeliverySettings, diags := updater.ServiceNowDeliverySettings()
-	resp.Diagnostics.Append(diags...)
-	data.ServiceNowDeliverySettings = servicenowDeliverySettings
-
-	jiraDeliverySettings, diags := updater.JiraDeliverySettings()
-	resp.Diagnostics.Append(diags...)
-	data.JiraDeliverySettings = jiraDeliverySettings
-
-	symphonyDeliverySettings, diags := updater.SymphonyDeliverySettings()
-	resp.Diagnostics.Append(diags...)
-	data.SymphonyDeliverySettings = symphonyDeliverySettings
-
+	resp.Diagnostics.Append(data.Update(*reportGroup)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

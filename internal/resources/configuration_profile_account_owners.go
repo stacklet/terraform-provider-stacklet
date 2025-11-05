@@ -21,7 +21,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
@@ -121,16 +120,13 @@ func (r *configurationProfileAccountOwnersResource) Read(ctx context.Context, re
 		return
 	}
 
-	config, err := r.api.ConfigurationProfile.ReadAccountOwners(ctx)
+	profileConfig, err := r.api.ConfigurationProfile.ReadAccountOwners(ctx)
 	if err != nil {
 		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateAccountOwnersModel(&state, config)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	resp.Diagnostics.Append(state.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -153,13 +149,13 @@ func (r *configurationProfileAccountOwnersResource) Create(ctx context.Context, 
 		OrgDomainTag: plan.OrgDomainTag.ValueStringPointer(),
 		Tags:         api.StringsList(plan.Tags),
 	}
-	config, err := r.api.ConfigurationProfile.UpsertAccountOwners(ctx, input)
+	profileConfig, err := r.api.ConfigurationProfile.UpsertAccountOwners(ctx, input)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateAccountOwnersModel(&plan, config)...)
+	resp.Diagnostics.Append(plan.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -182,13 +178,13 @@ func (r *configurationProfileAccountOwnersResource) Update(ctx context.Context, 
 		OrgDomainTag: plan.OrgDomainTag.ValueStringPointer(),
 		Tags:         api.StringsList(plan.Tags),
 	}
-	config, err := r.api.ConfigurationProfile.UpsertAccountOwners(ctx, input)
+	profileConfig, err := r.api.ConfigurationProfile.UpsertAccountOwners(ctx, input)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateAccountOwnersModel(&plan, config)...)
+	resp.Diagnostics.Append(plan.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -207,24 +203,6 @@ func (r *configurationProfileAccountOwnersResource) Delete(ctx context.Context, 
 
 func (r *configurationProfileAccountOwnersResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileAccountOwners))...)
-}
-
-func (r configurationProfileAccountOwnersResource) updateAccountOwnersModel(m *models.ConfigurationProfileAccountOwnersResource, config *api.ConfigurationProfile) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	m.ID = types.StringValue(config.ID)
-	m.Profile = types.StringValue(config.Profile)
-	m.OrgDomain = types.StringPointerValue(config.Record.AccountOwnersConfiguration.OrgDomain)
-	m.OrgDomainTag = types.StringPointerValue(config.Record.AccountOwnersConfiguration.OrgDomainTag)
-	m.Tags = tftypes.StringsList(config.Record.AccountOwnersConfiguration.Tags)
-
-	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	defaultOwners, diags := updater.AccountOwnersDefault()
-	if diags.HasError() {
-		return diags
-	}
-	m.Default = defaultOwners
-	return diags
 }
 
 func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.Context, m models.ConfigurationProfileAccountOwnersResource) ([]api.AccountOwners, diag.Diagnostics) {

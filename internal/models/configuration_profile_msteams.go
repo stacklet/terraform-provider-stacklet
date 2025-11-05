@@ -4,7 +4,12 @@ package models
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // ConfigurationProfileMSTeamsDataSource is the model for Microsoft Teams configuration profile data sources.
@@ -36,6 +41,173 @@ func (c ConfigurationProfileMSTeamsDataSource) AttributeTypes() map[string]attr.
 	}
 }
 
+func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	m.ID = types.StringValue(cp.ID)
+	m.Profile = types.StringValue(cp.Profile)
+
+	channelMappings, d := tftypes.ObjectList[MSTeamsChannelMapping](
+		cp.Record.MSTeamsConfiguration.ChannelMappings,
+		func(entry api.MSTeamsChannelMapping) (map[string]attr.Value, diag.Diagnostics) {
+			return map[string]attr.Value{
+				"name":       types.StringValue(entry.Name),
+				"team_id":    types.StringValue(string(entry.TeamID)),
+				"channel_id": types.StringValue(entry.ChannelID),
+			}, nil
+		},
+	)
+	diags.Append(d...)
+	m.ChannelMappings = channelMappings
+
+	accessConfig, d := m.buildAccessConfig(cp)
+	diags.Append(d...)
+	m.AccessConfig = accessConfig
+
+	customerConfig, d := m.buildCustomerConfig(cp)
+	diags.Append(d...)
+	m.CustomerConfig = customerConfig
+
+	entityDetails, d := m.buildEntityDetails(cp)
+	diags.Append(d...)
+	m.EntityDetails = entityDetails
+
+	return diags
+}
+
+func (m *ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	cfg := cp.Record.MSTeamsConfiguration.AccessConfig
+	if cfg == nil {
+		return types.ObjectNull(MSTeamsAccessConfig{}.AttributeTypes()), diags
+	}
+
+	botApplication, d := types.ObjectValue(
+		MSTeamsBotApplication{}.AttributeTypes(),
+		map[string]attr.Value{
+			"download_url": types.StringValue(cfg.BotApplication.DownloadURL),
+			"version":      types.StringValue(cfg.BotApplication.Version),
+		},
+	)
+	diags.Append(d...)
+	if diags.HasError() {
+		return basetypes.ObjectValue{}, diags
+	}
+
+	var publishedApplication basetypes.ObjectValue
+	if cfg.PublishedApplication == nil || (cfg.PublishedApplication.CatalogID == nil && cfg.PublishedApplication.Version == nil) {
+		publishedApplication = types.ObjectNull(MSTeamsPublishedApplication{}.AttributeTypes())
+	} else {
+		var d diag.Diagnostics
+		publishedApplication, d = types.ObjectValue(
+			MSTeamsPublishedApplication{}.AttributeTypes(),
+			map[string]attr.Value{
+				"catalog_id": types.StringPointerValue(cfg.PublishedApplication.CatalogID),
+				"version":    types.StringPointerValue(cfg.PublishedApplication.Version),
+			},
+		)
+		diags.Append(d...)
+		if diags.HasError() {
+			return basetypes.ObjectValue{}, diags
+		}
+	}
+
+	return types.ObjectValue(
+		MSTeamsAccessConfig{}.AttributeTypes(),
+		map[string]attr.Value{
+			"client_id":             types.StringValue(cfg.ClientID),
+			"roundtrip_digest":      types.StringValue(cfg.RoundtripDigest),
+			"tenant_id":             types.StringValue(cfg.TenantID),
+			"bot_application":       botApplication,
+			"published_application": publishedApplication,
+		},
+	)
+}
+
+func (m *ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	cfg := cp.Record.MSTeamsConfiguration.CustomerConfig
+
+	tags, d := cfg.Tags.TagsMap()
+	diags.Append(d...)
+	if diags.HasError() {
+		return basetypes.ObjectValue{}, diags
+	}
+
+	var version types.String
+	if cfg.TerraformModule.Version != nil {
+		version = types.StringValue(*cfg.TerraformModule.Version)
+	} else {
+		version = types.StringNull()
+	}
+
+	terraformModule, d := types.ObjectValue(
+		TerraformModule{}.AttributeTypes(),
+		map[string]attr.Value{
+			"repository_url": types.StringValue(cfg.TerraformModule.RepositoryURL),
+			"source":         types.StringValue(cfg.TerraformModule.Source),
+			"version":        version,
+			"variables_json": types.StringValue(cfg.TerraformModule.VariablesJSON),
+		},
+	)
+	diags.Append(d...)
+	if diags.HasError() {
+		return basetypes.ObjectValue{}, diags
+	}
+
+	return types.ObjectValue(
+		MSTeamsCustomerConfig{}.AttributeTypes(),
+		map[string]attr.Value{
+			"bot_endpoint":     types.StringValue(cfg.BotEndpoint),
+			"oidc_client":      types.StringValue(cfg.OIDCClient),
+			"oidc_issuer":      types.StringValue(cfg.OIDCIssuer),
+			"prefix":           types.StringValue(cfg.Prefix),
+			"roundtrip_digest": types.StringValue(cfg.RoundtripDigest),
+			"tags":             tags,
+			"terraform_module": terraformModule,
+		},
+	)
+}
+
+func (m *ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+	channels, diags := tftypes.ObjectList[MSTeamsChannelDetails](
+		cp.Record.MSTeamsConfiguration.EntityDetails.Channels,
+		func(entry api.MSTeamsChannelDetail) (map[string]attr.Value, diag.Diagnostics) {
+			return map[string]attr.Value{
+				"id":   types.StringValue(entry.ID),
+				"name": types.StringValue(entry.Name),
+			}, nil
+		},
+	)
+	if diags.HasError() {
+		return basetypes.ObjectValue{}, diags
+	}
+
+	teams, teamsDiags := tftypes.ObjectList[MSTeamsTeamDetails](
+		cp.Record.MSTeamsConfiguration.EntityDetails.Teams,
+		func(entry api.MSTeamsTeamDetail) (map[string]attr.Value, diag.Diagnostics) {
+			return map[string]attr.Value{
+				"id":   types.StringValue(entry.ID),
+				"name": types.StringValue(entry.Name),
+			}, nil
+		},
+	)
+	diags.Append(teamsDiags...)
+	if diags.HasError() {
+		return basetypes.ObjectValue{}, diags
+	}
+
+	return types.ObjectValue(
+		MSTeamsEntityDetails{}.AttributeTypes(),
+		map[string]attr.Value{
+			"channels": channels,
+			"teams":    teams,
+		},
+	)
+}
+
 // ConfigurationProfileMSTeamsResource is the model for Microsoft Teams configuration profile resources.
 type ConfigurationProfileMSTeamsResource struct {
 	ConfigurationProfileMSTeamsDataSource
@@ -53,6 +225,29 @@ func (r ConfigurationProfileMSTeamsResource) AttributeTypes() map[string]attr.Ty
 		AttrTypes: MSTeamsCustomerConfigInput{}.AttributeTypes(),
 	}
 	return attrTypes
+}
+
+func (m *ConfigurationProfileMSTeamsResource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+	diags := m.ConfigurationProfileMSTeamsDataSource.Update(cp)
+
+	// update state for input fields to match what's returned by the API.
+	// Since the inputs are separated from the outputs, this is needed to match
+	// the current state (including when the resource is imported).
+	accessConfigInput, d := tftypes.FilteredObject[MSTeamsAccessConfigInput](
+		m.AccessConfig,
+		[]string{"client_id", "roundtrip_digest", "tenant_id"},
+	)
+	m.AccessConfigInput = accessConfigInput
+	diags.Append(d...)
+
+	customerConfigInput, d := tftypes.FilteredObject[MSTeamsCustomerConfigInput](
+		m.CustomerConfig,
+		[]string{"prefix", "tags"},
+	)
+	m.CustomerConfigInput = customerConfigInput
+	diags.Append(d...)
+
+	return diags
 }
 
 // MSTeamsAccessConfigInput is the model for Microsoft Teams access configuration input (user-provided fields).

@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -106,13 +105,13 @@ func (r *configurationProfileServiceNowResource) Read(ctx context.Context, req r
 		return
 	}
 
-	config, err := r.api.ConfigurationProfile.ReadServiceNow(ctx)
+	profileConfig, err := r.api.ConfigurationProfile.ReadServiceNow(ctx)
 	if err != nil {
 		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
-	r.updateServiceNowModel(&state, config)
+	resp.Diagnostics.Append(state.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -137,7 +136,7 @@ func (r *configurationProfileServiceNowResource) Create(ctx context.Context, req
 		return
 	}
 
-	r.updateServiceNowModel(&plan, profileConfig)
+	resp.Diagnostics.Append(plan.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -170,7 +169,7 @@ func (r *configurationProfileServiceNowResource) Update(ctx context.Context, req
 		return
 	}
 
-	r.updateServiceNowModel(&plan, profileConfig)
+	resp.Diagnostics.Append(plan.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -189,16 +188,4 @@ func (r *configurationProfileServiceNowResource) Delete(ctx context.Context, req
 
 func (r *configurationProfileServiceNowResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileServiceNow))...)
-}
-
-func (r configurationProfileServiceNowResource) updateServiceNowModel(m *models.ConfigurationProfileServiceNowResource, config *api.ConfigurationProfile) {
-	serviceNowConfig := config.Record.ServiceNowConfiguration
-
-	m.ID = types.StringValue(config.ID)
-	m.Profile = types.StringValue(config.Profile)
-	m.Endpoint = types.StringValue(serviceNowConfig.Endpoint)
-	m.Username = types.StringValue(serviceNowConfig.User)
-	m.Password = types.StringValue(serviceNowConfig.Password)
-	m.IssueType = types.StringValue(serviceNowConfig.IssueType)
-	m.ClosedState = types.StringValue(serviceNowConfig.ClosedState)
 }

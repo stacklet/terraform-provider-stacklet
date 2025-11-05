@@ -14,13 +14,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
@@ -65,7 +63,7 @@ The profile is global, adding multiple resources of this kind will cause them to
 			},
 			"url": schema.StringAttribute{
 				Description: "The Jira instance URL.",
-				Optional:    true,
+				Required:    true,
 			},
 			"user": schema.StringAttribute{
 				Description: "The Jira instance authentication username.",
@@ -133,13 +131,13 @@ func (r *configurationProfileJiraResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	config, err := r.api.ConfigurationProfile.ReadJira(ctx)
+	profileConfig, err := r.api.ConfigurationProfile.ReadJira(ctx)
 	if err != nil {
 		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateJiraModel(&state, config)...)
+	resp.Diagnostics.Append(state.Update(*profileConfig)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -166,13 +164,13 @@ func (r *configurationProfileJiraResource) Create(ctx context.Context, req resou
 		User:     plan.User.ValueString(),
 		APIKey:   config.APIKeyWO.ValueString(),
 	}
-	jiraConfig, err := r.api.ConfigurationProfile.UpsertJira(ctx, input)
+	profileConfig, err := r.api.ConfigurationProfile.UpsertJira(ctx, input)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateJiraModel(&plan, jiraConfig)...)
+	resp.Diagnostics.Append(plan.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -210,7 +208,7 @@ func (r *configurationProfileJiraResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateJiraModel(&plan, profileConfig)...)
+	resp.Diagnostics.Append(plan.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -229,29 +227,6 @@ func (r *configurationProfileJiraResource) Delete(ctx context.Context, req resou
 
 func (r *configurationProfileJiraResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileJira))...)
-}
-
-func (r configurationProfileJiraResource) updateJiraModel(m *models.ConfigurationProfileJiraResource, config *api.ConfigurationProfile) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	jiraConfig := config.Record.JiraConfiguration
-
-	m.ID = types.StringValue(config.ID)
-	m.Profile = types.StringValue(config.Profile)
-	m.URL = types.StringPointerValue(jiraConfig.URL)
-	m.User = types.StringValue(jiraConfig.User)
-	m.APIKey = types.StringValue(jiraConfig.APIKey)
-
-	// get the current names ordering to preserve it in the updated projects block
-	names := models.ListItemsIdentifiers(m.Projects, "name")
-
-	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	projects, diags := updater.JiraProjects(names)
-	if diags.HasError() {
-		return diags
-	}
-	m.Projects = projects
-	return diags
 }
 
 func (r configurationProfileJiraResource) getProjects(ctx context.Context, m models.ConfigurationProfileJiraResource) ([]api.JiraProject, diag.Diagnostics) {

@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -94,25 +92,12 @@ func (d *configurationProfileAccountOwnersDataSource) Read(ctx context.Context, 
 		return
 	}
 
-	config, err := d.api.ConfigurationProfile.ReadAccountOwners(ctx)
+	profileConfig, err := d.api.ConfigurationProfile.ReadAccountOwners(ctx)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	data.ID = types.StringValue(config.ID)
-	data.Profile = types.StringValue(config.Profile)
-	data.OrgDomain = types.StringPointerValue(config.Record.AccountOwnersConfiguration.OrgDomain)
-	data.OrgDomainTag = types.StringPointerValue(config.Record.AccountOwnersConfiguration.OrgDomainTag)
-	data.Tags = tftypes.StringsList(config.Record.AccountOwnersConfiguration.Tags)
-
-	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	defaultOwners, diags := updater.AccountOwnersDefault()
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.Default = defaultOwners
-
+	resp.Diagnostics.Append(data.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

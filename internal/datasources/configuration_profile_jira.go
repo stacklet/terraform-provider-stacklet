@@ -7,12 +7,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
@@ -100,25 +98,12 @@ func (d *configurationProfileJiraDataSource) Read(ctx context.Context, req datas
 		return
 	}
 
-	config, err := d.api.ConfigurationProfile.ReadJira(ctx)
+	profileConfig, err := d.api.ConfigurationProfile.ReadJira(ctx)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	data.ID = types.StringValue(config.ID)
-	data.Profile = types.StringValue(config.Profile)
-	data.URL = types.StringPointerValue(config.Record.JiraConfiguration.URL)
-	data.User = types.StringValue(config.Record.JiraConfiguration.User)
-	data.APIKey = types.StringValue(config.Record.JiraConfiguration.APIKey)
-
-	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	projects, diags := updater.JiraProjects(nil)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.Projects = projects
-
+	resp.Diagnostics.Append(data.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

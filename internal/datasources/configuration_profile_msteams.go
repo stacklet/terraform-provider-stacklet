@@ -12,7 +12,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
@@ -221,44 +220,12 @@ func (d *configurationProfileMSTeamsDataSource) Read(ctx context.Context, req da
 		return
 	}
 
-	config, err := d.api.ConfigurationProfile.ReadMSTeams(ctx)
+	profileConfig, err := d.api.ConfigurationProfile.ReadMSTeams(ctx)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	data.ID = types.StringValue(config.ID)
-	data.Profile = types.StringValue(config.Profile)
-
-	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-
-	accessConfig, diags := updater.MSTeamsAccessConfig()
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.AccessConfig = accessConfig
-
-	customerConfig, diags := updater.MSTeamsCustomerConfig()
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.CustomerConfig = customerConfig
-
-	channelMappings, diags := updater.MSTeamsChannelMappings()
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.ChannelMappings = channelMappings
-
-	entityDetails, diags := updater.MSTeamsEntityDetails()
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.EntityDetails = entityDetails
-
+	resp.Diagnostics.Append(data.Update(*profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

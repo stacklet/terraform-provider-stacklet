@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -80,10 +79,6 @@ func (d *configurationProfileSymphonyDataSource) Read(ctx context.Context, req d
 		return
 	}
 
-	data.ID = types.StringValue(config.ID)
-	data.Profile = types.StringValue(config.Profile)
-	data.AgentDomain = types.StringValue(config.Record.SymphonyConfiguration.AgentDomain)
-	data.ServiceAccount = types.StringValue(config.Record.SymphonyConfiguration.ServiceAccount)
-	data.PrivateKey = types.StringValue(config.Record.SymphonyConfiguration.PrivateKey)
+	resp.Diagnostics.Append(data.Update(*config)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

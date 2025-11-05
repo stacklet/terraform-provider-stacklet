@@ -13,7 +13,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -87,11 +86,6 @@ func (d *configurationProfileResourceOwnerDataSource) Read(ctx context.Context, 
 		return
 	}
 
-	data.ID = types.StringValue(config.ID)
-	data.Profile = types.StringValue(config.Profile)
-	data.Default = tftypes.StringsList(config.Record.ResourceOwnerConfiguration.Default)
-	data.OrgDomain = types.StringPointerValue(config.Record.ResourceOwnerConfiguration.OrgDomain)
-	data.OrgDomainTag = types.StringPointerValue(config.Record.ResourceOwnerConfiguration.OrgDomainTag)
-	data.Tags = tftypes.StringsList(config.Record.ResourceOwnerConfiguration.Tags)
+	resp.Diagnostics.Append(data.Update(*config)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

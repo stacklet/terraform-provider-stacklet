@@ -11,14 +11,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -129,7 +127,7 @@ func (r *configurationProfileEmailResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateEmailModel(ctx, &data, profileConfig)...)
+	resp.Diagnostics.Append(data.Update(ctx, *profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -172,7 +170,7 @@ func (r *configurationProfileEmailResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateEmailModel(ctx, &plan, profileConfig)...)
+	resp.Diagnostics.Append(plan.Update(ctx, *profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -226,7 +224,7 @@ func (r *configurationProfileEmailResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateEmailModel(ctx, &plan, profileConfig)...)
+	resp.Diagnostics.Append(plan.Update(ctx, *profileConfig)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -238,44 +236,6 @@ func (r *configurationProfileEmailResource) Delete(ctx context.Context, req reso
 
 func (r *configurationProfileEmailResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileEmail))...)
-}
-
-func (r configurationProfileEmailResource) updateEmailModel(ctx context.Context, m *models.ConfigurationProfileEmailResource, profileConfig *api.ConfigurationProfile) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	emailConfig := profileConfig.Record.EmailConfiguration
-
-	m.ID = types.StringValue(profileConfig.ID)
-	m.Profile = types.StringValue(profileConfig.Profile)
-	m.From = types.StringValue(emailConfig.FromEmail)
-	m.SESRegion = types.StringPointerValue(emailConfig.SESRegion)
-
-	origSMTP, diags := r.getSMTPResource(ctx, *m)
-	if diags.HasError() {
-		return diags
-	}
-
-	smtpConfig := emailConfig.SMTP
-	smtp, diags := tftypes.ObjectValue(
-		ctx,
-		smtpConfig,
-		func() (*models.SMTPResource, diag.Diagnostics) {
-			return &models.SMTPResource{
-				SMTPDataSource: models.SMTPDataSource{
-					Server:   types.StringValue(smtpConfig.Server),
-					Port:     types.StringValue(smtpConfig.Port),
-					SSL:      types.BoolPointerValue(smtpConfig.SSL),
-					Username: types.StringPointerValue(smtpConfig.Username),
-					Password: types.StringPointerValue(smtpConfig.Password),
-				},
-				// keep values from the original nested object
-				PasswordWO:        origSMTP.PasswordWO,
-				PasswordWOVersion: origSMTP.PasswordWOVersion,
-			}, nil
-		},
-	)
-	m.SMTP = smtp
-	return diags
 }
 
 func (r configurationProfileEmailResource) getSMTPResource(ctx context.Context, m models.ConfigurationProfileEmailResource) (models.SMTPResource, diag.Diagnostics) {

@@ -3,7 +3,11 @@
 package models
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // ConfigurationProfileResourceOwnerDataSource is the model for resource owner configuration profile data sources.
@@ -16,5 +20,22 @@ type ConfigurationProfileResourceOwnerDataSource struct {
 	Tags         types.List   `tfsdk:"tags"`
 }
 
+func (m *ConfigurationProfileResourceOwnerDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	config := cp.Record.ResourceOwnerConfiguration
+
+	m.ID = types.StringValue(cp.ID)
+	m.Profile = types.StringValue(cp.Profile)
+	m.Default = tftypes.StringsList(config.Default)
+	m.OrgDomain = types.StringPointerValue(config.OrgDomain)
+	m.OrgDomainTag = types.StringPointerValue(config.OrgDomainTag)
+	m.Tags = tftypes.StringsList(config.Tags)
+
+	return diags
+}
+
 // ConfigurationProfileResourceOwnerResource is the model for resource owner configuration profile resources.
-type ConfigurationProfileResourceOwnerResource ConfigurationProfileResourceOwnerDataSource
+type ConfigurationProfileResourceOwnerResource struct {
+	ConfigurationProfileResourceOwnerDataSource
+}

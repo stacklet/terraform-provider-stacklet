@@ -24,7 +24,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
@@ -485,7 +484,7 @@ func (r *reportGroupResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateReportGroupModel(&state, reportGroup)...)
+	resp.Diagnostics.Append(state.Update(*reportGroup)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -557,7 +556,7 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateReportGroupModel(&plan, reportGroup)...)
+	resp.Diagnostics.Append(plan.Update(*reportGroup)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -625,7 +624,7 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateReportGroupModel(&plan, reportGroup)...)
+	resp.Diagnostics.Append(plan.Update(*reportGroup)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -644,47 +643,6 @@ func (r *reportGroupResource) Delete(ctx context.Context, req resource.DeleteReq
 
 func (r *reportGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
-}
-
-func (r reportGroupResource) updateReportGroupModel(m *models.ReportGroupResource, reportGroup *api.ReportGroup) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	m.ID = types.StringValue(reportGroup.ID)
-	m.Name = types.StringValue(reportGroup.Name)
-	m.Enabled = types.BoolValue(reportGroup.Enabled)
-	m.Bindings = tftypes.StringsList(reportGroup.Bindings)
-	m.Source = types.StringValue(string(reportGroup.Source))
-	m.Schedule = types.StringValue(reportGroup.Schedule)
-	m.GroupBy = tftypes.StringsList(reportGroup.GroupBy)
-	m.UseMessageSettings = types.BoolValue(reportGroup.UseMessageSettings)
-
-	updater := modelupdate.NewReportGroupUpdater(*reportGroup)
-
-	emailDeliverySettings, d := updater.EmailDeliverySettings()
-	diags.Append(d...)
-	m.EmailDeliverySettings = emailDeliverySettings
-
-	slackDeliverySettings, d := updater.SlackDeliverySettings()
-	diags.Append(d...)
-	m.SlackDeliverySettings = slackDeliverySettings
-
-	msteamsDeliverySettings, d := updater.MSTeamsDeliverySettings()
-	diags.Append(d...)
-	m.MSTeamsDeliverySettings = msteamsDeliverySettings
-
-	servicenowDeliverySettings, d := updater.ServiceNowDeliverySettings()
-	diags.Append(d...)
-	m.ServiceNowDeliverySettings = servicenowDeliverySettings
-
-	jiraDeliverySettings, d := updater.JiraDeliverySettings()
-	diags.Append(d...)
-	m.JiraDeliverySettings = jiraDeliverySettings
-
-	symphonyDeliverySettings, d := updater.SymphonyDeliverySettings()
-	diags.Append(d...)
-	m.SymphonyDeliverySettings = symphonyDeliverySettings
-
-	return diags
 }
 
 func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.EmailDeliverySettings, diag.Diagnostics) {

@@ -12,7 +12,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/modelupdate"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
@@ -96,17 +95,6 @@ func (d *configurationProfileSlackDataSource) Read(ctx context.Context, req data
 		return
 	}
 
-	data.ID = types.StringValue(config.ID)
-	data.Profile = types.StringValue(config.Profile)
-	data.Token = types.StringPointerValue(config.Record.SlackConfiguration.Token)
-
-	updater := modelupdate.NewConfigurationProfileUpdater(*config)
-	webhooks, diags := updater.SlackWebhooks()
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.Webhooks = webhooks
-
+	resp.Diagnostics.Append(data.Update(*config)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
