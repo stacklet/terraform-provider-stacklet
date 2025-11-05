@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // ConfigurationProfileAccountOwnersDataSource is the model for account owners configuration profile data sources.
@@ -30,14 +30,14 @@ func (m *ConfigurationProfileAccountOwnersDataSource) Update(cp api.Configuratio
 	m.Profile = types.StringValue(cp.Profile)
 	m.OrgDomain = types.StringPointerValue(config.OrgDomain)
 	m.OrgDomainTag = types.StringPointerValue(config.OrgDomainTag)
-	m.Tags = tftypes.StringsList(config.Tags)
+	m.Tags = typehelpers.StringsList(config.Tags)
 
-	defaultOwners, d := tftypes.ObjectList[AccountOwners](
+	defaultOwners, d := typehelpers.ObjectList[AccountOwners](
 		config.Default,
 		func(entry api.AccountOwners) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"account": types.StringValue(entry.Account),
-				"owners":  tftypes.StringsList(entry.Owners),
+				"owners":  typehelpers.StringsList(entry.Owners),
 			}, nil
 		},
 	)

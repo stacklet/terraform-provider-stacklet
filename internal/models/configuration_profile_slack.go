@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // ConfigurationProfileSlackDataSource is the model for Slack configuration profile data sources.
@@ -30,9 +30,9 @@ func (m *ConfigurationProfileSlackDataSource) Update(cp api.ConfigurationProfile
 	m.ID = types.StringValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 	m.Token = types.StringPointerValue(slackConfig.Token)
-	m.UserFields = tftypes.StringsList(slackConfig.UserFields)
+	m.UserFields = typehelpers.StringsList(slackConfig.UserFields)
 
-	webhooks, d := tftypes.ObjectList[SlackWebhook](
+	webhooks, d := typehelpers.ObjectList[SlackWebhook](
 		cp.Record.SlackConfiguration.Webhooks,
 		func(entry api.SlackWebhook) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
@@ -57,7 +57,7 @@ type ConfigurationProfileSlackResource struct {
 
 func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp api.ConfigurationProfile, webhookVersions map[string]string) diag.Diagnostics {
 	// fetch current webhook names to preserve declared order
-	webhookNames := tftypes.ListItemsIdentifiers(m.Webhooks, "name")
+	webhookNames := typehelpers.ListItemsIdentifiers(m.Webhooks, "name")
 
 	diags := m.ConfigurationProfileSlackDataSource.Update(cp)
 
@@ -65,7 +65,7 @@ func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp api.C
 
 		// sort entries according to keep previous ordering
 		if webhookNames != nil {
-			webhooks, d := tftypes.ListSortedEntries[SlackWebhook](m.Webhooks, "name", webhookNames)
+			webhooks, d := typehelpers.ListSortedEntries[SlackWebhook](m.Webhooks, "name", webhookNames)
 			m.Webhooks = webhooks
 			diags.Append(d...)
 		}
@@ -77,13 +77,13 @@ func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp api.C
 			obj, _ := entry.(types.Object)
 
 			var woVersion types.String
-			if version, ok := webhookVersions[tftypes.ObjectStringIdentifier(obj, "name")]; ok {
+			if version, ok := webhookVersions[typehelpers.ObjectStringIdentifier(obj, "name")]; ok {
 				woVersion = types.StringValue(version)
 			} else {
 				woVersion = types.StringNull()
 			}
 
-			webhook, d := tftypes.UpdatedObject(
+			webhook, d := typehelpers.UpdatedObject(
 				ctx,
 				obj,
 				map[string]attr.Value{

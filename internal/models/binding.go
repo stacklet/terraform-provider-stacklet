@@ -11,7 +11,7 @@ import (
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // BindingDataSource is the model for a binding data source.
@@ -47,14 +47,14 @@ func (m *BindingDataSource) Update(ctx context.Context, binding *api.Binding) di
 	m.DryRun = types.BoolPointerValue(binding.DryRun())
 	m.SecurityContext = types.StringPointerValue(binding.SecurityContext())
 
-	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
+	variablesString, err := typehelpers.JSONString(binding.ExecutionConfig.Variables)
 	if err != nil {
 		errors.AddDiagAttributeError(&diags, "variables", err)
 	}
 	m.Variables = variablesString
 
 	defLimit := binding.DefaultResourceLimits()
-	defaultLimits, d := tftypes.ObjectValue(
+	defaultLimits, d := typehelpers.ObjectValue(
 		ctx,
 		defLimit,
 		func() (*BindingExecutionConfigResourceLimit, diag.Diagnostics) {
@@ -68,7 +68,7 @@ func (m *BindingDataSource) Update(ctx context.Context, binding *api.Binding) di
 	diags.Append(d...)
 	m.ResourceLimits = defaultLimits
 
-	policyLimits, d := tftypes.ObjectList[BindingExecutionConfigPolicyResourceLimit](
+	policyLimits, d := typehelpers.ObjectList[BindingExecutionConfigPolicyResourceLimit](
 		binding.PolicyResourceLimits(),
 		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{

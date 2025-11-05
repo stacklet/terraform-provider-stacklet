@@ -20,7 +20,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 )
 
 var (
@@ -73,7 +73,7 @@ The profile is global, adding multiple resources of this kind will cause them to
 				ElementType: types.StringType,
 				Optional:    true,
 				Computed:    true,
-				Default:     tftypes.EmptyListDefault(types.StringType),
+				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
 			"token": schema.StringAttribute{
 				Description: "The encrypted value for the token, returned by the API.",

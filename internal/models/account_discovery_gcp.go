@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // AccountDiscoveryGCPResource is the model for GCP account discovery resources.
@@ -37,8 +37,8 @@ func (m *AccountDiscoveryGCPResource) Update(accountDiscovery *api.AccountDiscov
 	m.ClientEmail = types.StringValue(accountDiscovery.Config.GCPConfig.ClientEmail)
 	m.ClientID = types.StringValue(accountDiscovery.Config.GCPConfig.ClientID)
 	m.OrgID = types.StringValue(accountDiscovery.Config.GCPConfig.OrgID)
-	m.RootFolderIDs = tftypes.StringsList(accountDiscovery.Config.GCPConfig.RootFolderIDs)
-	m.ExcludeFolderIDs = tftypes.StringsList(accountDiscovery.Config.GCPConfig.ExcludeFolderIDs)
+	m.RootFolderIDs = typehelpers.StringsList(accountDiscovery.Config.GCPConfig.RootFolderIDs)
+	m.ExcludeFolderIDs = typehelpers.StringsList(accountDiscovery.Config.GCPConfig.ExcludeFolderIDs)
 	m.ProjectID = types.StringValue(accountDiscovery.Config.GCPConfig.ProjectID)
 	m.PrivateKeyID = types.StringValue(accountDiscovery.Config.GCPConfig.PrivateKeyID)
 
