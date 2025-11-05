@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -86,7 +85,7 @@ func (r *accountGroupMappingResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	r.updateAccountGroupMappingModel(&plan, mapping)
+	resp.Diagnostics.Append(plan.Update(mapping)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -103,7 +102,7 @@ func (r *accountGroupMappingResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	r.updateAccountGroupMappingModel(&state, accountGroupMapping)
+	resp.Diagnostics.Append(state.Update(accountGroupMapping)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -142,10 +141,4 @@ func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resou
 
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), parts[0])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), parts[1])...)
-}
-
-func (r accountGroupMappingResource) updateAccountGroupMappingModel(m *models.AccountGroupMappingResource, accountGroupMapping *api.AccountGroupMapping) {
-	m.ID = types.StringValue(accountGroupMapping.ID)
-	m.GroupUUID = types.StringValue(accountGroupMapping.GroupUUID)
-	m.AccountKey = types.StringValue(accountGroupMapping.AccountKey)
 }

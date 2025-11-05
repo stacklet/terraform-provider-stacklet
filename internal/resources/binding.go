@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -15,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
@@ -23,7 +21,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -221,10 +218,7 @@ func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateBindingModel(ctx, &plan, binding)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	resp.Diagnostics.Append(plan.Update(ctx, binding)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -241,10 +235,7 @@ func (r *bindingResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateBindingModel(ctx, &state, binding)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	resp.Diagnostics.Append(state.Update(ctx, binding)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -287,10 +278,7 @@ func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateBindingModel(ctx, &plan, binding)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	resp.Diagnostics.Append(plan.Update(ctx, binding)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -309,75 +297,6 @@ func (r *bindingResource) Delete(ctx context.Context, req resource.DeleteRequest
 
 func (r *bindingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
-}
-
-func (r bindingResource) updateBindingModel(ctx context.Context, m *models.BindingResource, binding *api.Binding) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	m.ID = types.StringValue(binding.ID)
-	m.UUID = types.StringValue(binding.UUID)
-	m.Name = types.StringValue(binding.Name)
-	m.Description = types.StringPointerValue(binding.Description)
-	m.AutoDeploy = types.BoolValue(binding.AutoDeploy)
-	m.Schedule = types.StringPointerValue(binding.Schedule)
-	m.AccountGroupUUID = types.StringValue(binding.AccountGroup.UUID)
-	m.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
-	m.System = types.BoolValue(binding.System)
-	m.DryRun = types.BoolPointerValue(binding.DryRun())
-	m.SecurityContext = types.StringPointerValue(binding.SecurityContext())
-
-	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
-	if err != nil {
-		errors.AddDiagAttributeError(&diags, "variables", err)
-		return diags
-	}
-	// the API returns an empty dict for null or empty string, don't
-	// modify the expected value in that case
-	if variablesString.ValueString() == "{}" {
-		variablesString = m.Variables
-	}
-	m.Variables = variablesString
-
-	var defaultLimits types.Object
-	if binding.DefaultResourceLimits() == nil && !m.ResourceLimits.IsNull() {
-		var d diag.Diagnostics
-		// if default resource limits are set in the config but empty, apply default
-		def := models.BindingExecutionConfigResourceLimit{RequiresBoth: types.BoolValue(false)}
-		defaultLimits, d = types.ObjectValueFrom(ctx, def.AttributeTypes(), &def)
-		diags.Append(d...)
-	} else {
-		var d diag.Diagnostics
-		defaultLimits, d = tftypes.ObjectValue(
-			ctx,
-			binding.DefaultResourceLimits(),
-			func() (*models.BindingExecutionConfigResourceLimit, diag.Diagnostics) {
-				l := binding.DefaultResourceLimits()
-				return &models.BindingExecutionConfigResourceLimit{
-					MaxCount:      types.Int32PointerValue(l.MaxCount),
-					MaxPercentage: types.Float32PointerValue(l.MaxPercentage),
-					RequiresBoth:  types.BoolValue(l.RequiresBoth),
-				}, nil
-			},
-		)
-		diags.Append(d...)
-	}
-	m.ResourceLimits = defaultLimits
-
-	policyLimits, d := tftypes.ObjectList[models.BindingExecutionConfigPolicyResourceLimit](
-		binding.PolicyResourceLimits(),
-		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (map[string]attr.Value, diag.Diagnostics) {
-			return map[string]attr.Value{
-				"policy_name":    types.StringValue(entry.PolicyName),
-				"max_count":      types.Int32PointerValue(entry.Limit.MaxCount),
-				"max_percentage": types.Float32PointerValue(entry.Limit.MaxPercentage),
-				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),
-			}, nil
-		},
-	)
-	diags.Append(d...)
-	m.PolicyResourceLimits = policyLimits
-
-	return diags
 }
 
 func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.BindingResource, securityContextString *string) (api.BindingExecutionConfig, diag.Diagnostics) {

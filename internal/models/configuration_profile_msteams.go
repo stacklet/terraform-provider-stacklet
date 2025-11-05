@@ -75,7 +75,7 @@ func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfi
 	return diags
 }
 
-func (m *ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	cfg := cp.Record.MSTeamsConfiguration.AccessConfig
@@ -125,7 +125,7 @@ func (m *ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.Configu
 	)
 }
 
-func (m *ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	cfg := cp.Record.MSTeamsConfiguration.CustomerConfig
@@ -171,7 +171,7 @@ func (m *ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.Confi
 	)
 }
 
-func (m *ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
 	channels, diags := tftypes.ObjectList[MSTeamsChannelDetails](
 		cp.Record.MSTeamsConfiguration.EntityDetails.Channels,
 		func(entry api.MSTeamsChannelDetail) (map[string]attr.Value, diag.Diagnostics) {

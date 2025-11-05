@@ -3,8 +3,14 @@
 package models
 
 import (
+	"context"
+
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // PolicyCollectionResource is the model for a policy collection resource.
@@ -20,8 +26,41 @@ type PolicyCollectionResource struct {
 	DynamicConfig types.Object `tfsdk:"dynamic_config"`
 }
 
+func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection *api.PolicyCollection) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	m.ID = types.StringValue(policyCollection.ID)
+	m.UUID = types.StringValue(policyCollection.UUID)
+	m.Name = types.StringValue(policyCollection.Name)
+	m.Description = types.StringPointerValue(policyCollection.Description)
+	m.CloudProvider = types.StringValue(string(policyCollection.Provider))
+	m.AutoUpdate = types.BoolValue(policyCollection.AutoUpdate)
+	m.System = types.BoolValue(policyCollection.System)
+	m.Dynamic = types.BoolValue(policyCollection.IsDynamic)
+
+	dynamicConfig, d := tftypes.ObjectValue(
+		ctx,
+		policyCollection.RepositoryView,
+		func() (*PolicyCollectionDynamicConfig, diag.Diagnostics) {
+			return &PolicyCollectionDynamicConfig{
+				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
+				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),
+				BranchName:         types.StringValue(policyCollection.RepositoryView.BranchName),
+				PolicyDirectories:  tftypes.StringsList(policyCollection.RepositoryView.PolicyDirectories),
+				PolicyFileSuffixes: tftypes.StringsList(policyCollection.RepositoryView.PolicyFileSuffix),
+			}, nil
+		},
+	)
+	diags.Append(d...)
+	m.DynamicConfig = dynamicConfig
+
+	return diags
+}
+
 // PolicyCollectionDatasource is the model for a policy collection data source.
-type PolicyCollectionDataSource PolicyCollectionResource
+type PolicyCollectionDataSource struct {
+	PolicyCollectionResource
+}
 
 // PolicyCollectionDynamicConfig is the model for the dynamic configuration for a policy collection.
 type PolicyCollectionDynamicConfig struct {

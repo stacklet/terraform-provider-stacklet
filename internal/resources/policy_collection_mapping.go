@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -96,7 +95,7 @@ func (r *policyCollectionMappingResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	r.updatePolicyCollectionMappingModel(&plan, policyCollectionMapping)
+	resp.Diagnostics.Append(plan.Update(policyCollectionMapping)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -113,7 +112,7 @@ func (r *policyCollectionMappingResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	r.updatePolicyCollectionMappingModel(&state, policyCollectionMapping)
+	resp.Diagnostics.Append(state.Update(policyCollectionMapping)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -135,7 +134,7 @@ func (r *policyCollectionMappingResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	r.updatePolicyCollectionMappingModel(&plan, policyCollectionMapping)
+	resp.Diagnostics.Append(plan.Update(policyCollectionMapping)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -161,11 +160,4 @@ func (r *policyCollectionMappingResource) ImportState(ctx context.Context, req r
 
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("collection_uuid"), parts[0])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("policy_uuid"), parts[1])...)
-}
-
-func (r policyCollectionMappingResource) updatePolicyCollectionMappingModel(m *models.PolicyCollectionMappingResource, policyCollectionMapping *api.PolicyCollectionMapping) {
-	m.ID = types.StringValue(policyCollectionMapping.ID)
-	m.CollectionUUID = types.StringValue(policyCollectionMapping.Collection.UUID)
-	m.PolicyUUID = types.StringValue(policyCollectionMapping.Policy.UUID)
-	m.PolicyVersion = types.Int32Value(int32(policyCollectionMapping.Policy.Version))
 }

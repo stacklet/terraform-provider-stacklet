@@ -7,14 +7,12 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -122,29 +120,6 @@ func (d *policyCollectionDataSource) Read(ctx context.Context, req datasource.Re
 		return
 	}
 
-	data.ID = types.StringValue(policyCollection.ID)
-	data.UUID = types.StringValue(policyCollection.UUID)
-	data.Name = types.StringValue(policyCollection.Name)
-	data.Description = types.StringPointerValue(policyCollection.Description)
-	data.CloudProvider = types.StringValue(string(policyCollection.Provider))
-	data.AutoUpdate = types.BoolValue(policyCollection.AutoUpdate)
-	data.System = types.BoolValue(policyCollection.System)
-	data.Dynamic = types.BoolValue(policyCollection.IsDynamic)
-
-	dynamicConfig, diags := tftypes.ObjectValue(
-		ctx,
-		policyCollection.RepositoryView,
-		func() (*models.PolicyCollectionDynamicConfig, diag.Diagnostics) {
-			return &models.PolicyCollectionDynamicConfig{
-				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
-				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),
-				BranchName:         types.StringValue(policyCollection.RepositoryView.BranchName),
-				PolicyDirectories:  tftypes.StringsList(policyCollection.RepositoryView.PolicyDirectories),
-				PolicyFileSuffixes: tftypes.StringsList(policyCollection.RepositoryView.PolicyFileSuffix),
-			}, nil
-		},
-	)
-	data.DynamicConfig = dynamicConfig
-	resp.Diagnostics.Append(diags...)
+	resp.Diagnostics.Append(data.Update(ctx, policyCollection)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

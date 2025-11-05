@@ -13,7 +13,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -91,12 +90,6 @@ func (d *accountGroupDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	data.ID = types.StringValue(account_group.ID)
-	data.UUID = types.StringValue(account_group.UUID)
-	data.Name = types.StringValue(account_group.Name)
-	data.Description = types.StringPointerValue(account_group.Description)
-	data.CloudProvider = types.StringValue(account_group.Provider)
-	data.Regions = tftypes.StringsList(account_group.Regions)
-
+	resp.Diagnostics.Append((*models.AccountGroupResource)(&data).Update(account_group)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

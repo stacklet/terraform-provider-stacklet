@@ -24,7 +24,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -185,7 +184,7 @@ func (r *policyCollectionResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	resp.Diagnostics.Append(r.updatePolicyCollectionModel(ctx, &plan, policyCollection)...)
+	resp.Diagnostics.Append(plan.Update(ctx, policyCollection)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -202,7 +201,7 @@ func (r *policyCollectionResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	resp.Diagnostics.Append(r.updatePolicyCollectionModel(ctx, &state, policyCollection)...)
+	resp.Diagnostics.Append(state.Update(ctx, policyCollection)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -235,7 +234,7 @@ func (r *policyCollectionResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	resp.Diagnostics.Append(r.updatePolicyCollectionModel(ctx, &plan, policyCollection)...)
+	resp.Diagnostics.Append(plan.Update(ctx, policyCollection)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -273,31 +272,4 @@ func (r policyCollectionResource) getDynamicDetails(ctx context.Context, planDyn
 	}
 
 	return uuid, view, diags
-}
-
-func (r policyCollectionResource) updatePolicyCollectionModel(ctx context.Context, m *models.PolicyCollectionResource, policyCollection *api.PolicyCollection) diag.Diagnostics {
-	m.ID = types.StringValue(policyCollection.ID)
-	m.UUID = types.StringValue(policyCollection.UUID)
-	m.Name = types.StringValue(policyCollection.Name)
-	m.Description = types.StringPointerValue(policyCollection.Description)
-	m.CloudProvider = types.StringValue(string(policyCollection.Provider))
-	m.AutoUpdate = types.BoolValue(policyCollection.AutoUpdate)
-	m.System = types.BoolValue(policyCollection.System)
-	m.Dynamic = types.BoolValue(policyCollection.IsDynamic)
-
-	dynamicConfig, diags := tftypes.ObjectValue(
-		ctx,
-		policyCollection.RepositoryView,
-		func() (*models.PolicyCollectionDynamicConfig, diag.Diagnostics) {
-			return &models.PolicyCollectionDynamicConfig{
-				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
-				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),
-				BranchName:         types.StringValue(policyCollection.RepositoryView.BranchName),
-				PolicyDirectories:  tftypes.StringsList(policyCollection.RepositoryView.PolicyDirectories),
-				PolicyFileSuffixes: tftypes.StringsList(policyCollection.RepositoryView.PolicyFileSuffix),
-			}, nil
-		},
-	)
-	m.DynamicConfig = dynamicConfig
-	return diags
 }

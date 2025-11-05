@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -178,8 +177,7 @@ func (r *repositoryResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	// Update plan from response and save into state.
-	r.updateRepositoryModel(&plan, repo)
+	resp.Diagnostics.Append(plan.Update(repo)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -198,8 +196,7 @@ func (r *repositoryResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	// Update state from response.
-	r.updateRepositoryModel(&state, repo)
+	resp.Diagnostics.Append(state.Update(repo)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -242,8 +239,7 @@ func (r *repositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	// Merge response into state.
-	r.updateRepositoryModel(&state, repo)
+	resp.Diagnostics.Append(state.Update(repo)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -274,19 +270,4 @@ func (r *repositoryResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), uuid)...)
-}
-
-func (r repositoryResource) updateRepositoryModel(m *models.RepositoryResource, repo *api.Repository) {
-	m.ID = types.StringValue(repo.ID)
-	m.UUID = types.StringValue(repo.UUID)
-	m.URL = types.StringValue(repo.URL)
-	m.Name = types.StringValue(repo.Name)
-	m.Description = types.StringPointerValue(repo.Description)
-	m.System = types.BoolValue(repo.System)
-	m.WebhookURL = types.StringValue(repo.WebhookURL)
-	m.AuthUser = types.StringPointerValue(repo.Auth.AuthUser)
-	m.HasAuthToken = types.BoolValue(repo.Auth.HasAuthToken)
-	m.SSHPublicKey = types.StringPointerValue(repo.Auth.SSHPublicKey)
-	m.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
-	m.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
 }

@@ -7,13 +7,11 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -101,20 +99,6 @@ func (d *accountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 
-	data.ID = types.StringValue(account.ID)
-	data.Key = types.StringValue(account.Key)
-	data.Name = types.StringValue(account.Name)
-	data.ShortName = types.StringPointerValue(account.ShortName)
-	data.Description = types.StringPointerValue(account.Description)
-	data.CloudProvider = types.StringValue(string(account.Provider))
-	data.Path = types.StringPointerValue(account.Path)
-	data.Email = types.StringPointerValue(account.Email)
-	data.SecurityContext = types.StringPointerValue(account.SecurityContext)
-	variablesString, err := tftypes.JSONString(account.Variables)
-	if err != nil {
-		errors.AddDiagAttributeError(&resp.Diagnostics, "variables", err)
-		return
-	}
-	data.Variables = variablesString
+	resp.Diagnostics.Append(data.Update(account)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
