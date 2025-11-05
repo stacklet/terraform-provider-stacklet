@@ -6,20 +6,20 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 // DefaultObject returns a plan modifier that sets a default object value when
 // the planned value is null. This is useful when the API applies defaults that
 // need to be reflected in the plan to avoid consistency errors.
-func DefaultObject(defaultValue basetypes.ObjectValue) planmodifier.Object {
+func DefaultObject(defaultValue types.Object) planmodifier.Object {
 	return defaultObjectModifier{
 		defaultValue: defaultValue,
 	}
 }
 
 type defaultObjectModifier struct {
-	defaultValue basetypes.ObjectValue
+	defaultValue types.Object
 }
 
 func (m defaultObjectModifier) Description(ctx context.Context) string {

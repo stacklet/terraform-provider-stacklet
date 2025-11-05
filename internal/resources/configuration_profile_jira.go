@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -238,7 +238,7 @@ func (r configurationProfileJiraResource) getProjects(ctx context.Context, m mod
 
 	projects := []api.JiraProject{}
 	for i, elem := range m.Projects.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("project.%d", i)),
@@ -248,7 +248,7 @@ func (r configurationProfileJiraResource) getProjects(ctx context.Context, m mod
 			return nil, diags
 		}
 		var p models.JiraProject
-		if diags := block.As(ctx, &p, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &p, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 

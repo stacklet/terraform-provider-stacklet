@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -313,7 +313,7 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 	var defaultResourceLimits *api.BindingExecutionConfigResourceLimit
 	if !plan.ResourceLimits.IsNull() {
 		var defLimitsObj models.BindingExecutionConfigResourceLimit
-		if diags := plan.ResourceLimits.As(ctx, &defLimitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := plan.ResourceLimits.As(ctx, &defLimitsObj, ObjectAsOptions); diags.HasError() {
 			return api.BindingExecutionConfig{}, diags
 		}
 		defaultResourceLimits = &api.BindingExecutionConfigResourceLimit{
@@ -326,7 +326,7 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 	policyResourceLimits := []api.BindingExecutionConfigResourceLimitsPolicyOverrides{}
 	if !plan.PolicyResourceLimits.IsNull() {
 		for i, elem := range plan.PolicyResourceLimits.Elements() {
-			resourceLimit, ok := elem.(basetypes.ObjectValue)
+			resourceLimit, ok := elem.(types.Object)
 			if !ok {
 				var diags diag.Diagnostics
 				diags.AddAttributeError(
@@ -337,7 +337,7 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 				return api.BindingExecutionConfig{}, diags
 			}
 			var limitsObj models.BindingExecutionConfigPolicyResourceLimit
-			if diags := resourceLimit.As(ctx, &limitsObj, basetypes.ObjectAsOptions{}); diags.HasError() {
+			if diags := resourceLimit.As(ctx, &limitsObj, ObjectAsOptions); diags.HasError() {
 				return api.BindingExecutionConfig{}, diags
 			}
 
@@ -403,7 +403,7 @@ func (m bindingResourceLimitsValidator) ValidateObject(ctx context.Context, req 
 		return
 	}
 	var obj models.BindingExecutionConfigResourceLimit
-	if diags := req.ConfigValue.As(ctx, &obj, basetypes.ObjectAsOptions{}); diags.HasError() {
+	if diags := req.ConfigValue.As(ctx, &obj, ObjectAsOptions); diags.HasError() {
 		resp.Diagnostics.Append(diags...)
 		return
 	}
@@ -426,7 +426,7 @@ func (m bindingResourcePolicyLimitsValidator) ValidateObject(ctx context.Context
 		return
 	}
 	var obj models.BindingExecutionConfigPolicyResourceLimit
-	if diags := req.ConfigValue.As(ctx, &obj, basetypes.ObjectAsOptions{}); diags.HasError() {
+	if diags := req.ConfigValue.As(ctx, &obj, ObjectAsOptions); diags.HasError() {
 		resp.Diagnostics.Append(diags...)
 		return
 	}

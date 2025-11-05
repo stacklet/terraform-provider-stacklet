@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -260,7 +259,7 @@ func (r configurationProfileSlackResource) getWebhooksSecrets(ctx context.Contex
 	var diags diag.Diagnostics
 
 	for i, elem := range m.Webhooks.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("webhook.%d", i)),
@@ -271,7 +270,7 @@ func (r configurationProfileSlackResource) getWebhooksSecrets(ctx context.Contex
 		}
 
 		var w models.SlackWebhookWithSecret
-		if diags := block.As(ctx, &w, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &w, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 		secrets[w.Name.ValueString()] = slackWebhookSecret{
@@ -292,7 +291,7 @@ func (r configurationProfileSlackResource) getWebhooksForCreate(ctx context.Cont
 
 	webhooks := []api.SlackWebhook{}
 	for i, elem := range m.Webhooks.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("webhook.%d", i)),
@@ -302,7 +301,7 @@ func (r configurationProfileSlackResource) getWebhooksForCreate(ctx context.Cont
 			return nil, diags
 		}
 		var w models.SlackWebhookWithSecret
-		if diags := block.As(ctx, &w, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &w, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -326,7 +325,7 @@ func (r configurationProfileSlackResource) getWebhooksForUpdate(ctx context.Cont
 
 	webhooks := []api.SlackWebhook{}
 	for i, elem := range m.Webhooks.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("webhook.%d", i)),
@@ -336,7 +335,7 @@ func (r configurationProfileSlackResource) getWebhooksForUpdate(ctx context.Cont
 			return nil, diags
 		}
 		var w models.SlackWebhookWithSecret
-		if diags := block.As(ctx, &w, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &w, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 

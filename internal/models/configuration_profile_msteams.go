@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -75,12 +74,13 @@ func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfi
 	return diags
 }
 
-func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.ConfigurationProfile) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
+	nullObj := types.ObjectNull(MSTeamsAccessConfig{}.AttributeTypes())
 
 	cfg := cp.Record.MSTeamsConfiguration.AccessConfig
 	if cfg == nil {
-		return types.ObjectNull(MSTeamsAccessConfig{}.AttributeTypes()), diags
+		return nullObj, diags
 	}
 
 	botApplication, d := types.ObjectValue(
@@ -92,10 +92,10 @@ func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.Configur
 	)
 	diags.Append(d...)
 	if diags.HasError() {
-		return basetypes.ObjectValue{}, diags
+		return nullObj, diags
 	}
 
-	var publishedApplication basetypes.ObjectValue
+	var publishedApplication types.Object
 	if cfg.PublishedApplication == nil || (cfg.PublishedApplication.CatalogID == nil && cfg.PublishedApplication.Version == nil) {
 		publishedApplication = types.ObjectNull(MSTeamsPublishedApplication{}.AttributeTypes())
 	} else {
@@ -109,7 +109,7 @@ func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.Configur
 		)
 		diags.Append(d...)
 		if diags.HasError() {
-			return basetypes.ObjectValue{}, diags
+			return nullObj, diags
 		}
 	}
 
@@ -125,15 +125,16 @@ func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.Configur
 	)
 }
 
-func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.ConfigurationProfile) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
+	nullObj := types.ObjectNull(MSTeamsCustomerConfig{}.AttributeTypes())
 
 	cfg := cp.Record.MSTeamsConfiguration.CustomerConfig
 
 	tags, d := cfg.Tags.TagsMap()
 	diags.Append(d...)
 	if diags.HasError() {
-		return basetypes.ObjectValue{}, diags
+		return nullObj, diags
 	}
 
 	var version types.String
@@ -154,7 +155,7 @@ func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.Config
 	)
 	diags.Append(d...)
 	if diags.HasError() {
-		return basetypes.ObjectValue{}, diags
+		return nullObj, diags
 	}
 
 	return types.ObjectValue(
@@ -171,7 +172,9 @@ func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.Config
 	)
 }
 
-func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.ConfigurationProfile) (basetypes.ObjectValue, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.ConfigurationProfile) (types.Object, diag.Diagnostics) {
+	nullObj := types.ObjectNull(MSTeamsEntityDetails{}.AttributeTypes())
+
 	channels, diags := tftypes.ObjectList[MSTeamsChannelDetails](
 		cp.Record.MSTeamsConfiguration.EntityDetails.Channels,
 		func(entry api.MSTeamsChannelDetail) (map[string]attr.Value, diag.Diagnostics) {
@@ -182,7 +185,7 @@ func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.Configu
 		},
 	)
 	if diags.HasError() {
-		return basetypes.ObjectValue{}, diags
+		return nullObj, diags
 	}
 
 	teams, teamsDiags := tftypes.ObjectList[MSTeamsTeamDetails](
@@ -196,7 +199,7 @@ func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.Configu
 	)
 	diags.Append(teamsDiags...)
 	if diags.HasError() {
-		return basetypes.ObjectValue{}, diags
+		return nullObj, diags
 	}
 
 	return types.ObjectValue(

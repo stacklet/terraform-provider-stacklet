@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -654,7 +653,7 @@ func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m mod
 
 	settings := []api.EmailDeliverySettings{}
 	for i, elem := range m.EmailDeliverySettings.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("email_delivery_settings.%d", i)),
@@ -664,7 +663,7 @@ func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m mod
 			return nil, diags
 		}
 		var s models.EmailDeliverySettings
-		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -699,7 +698,7 @@ func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m mod
 
 	settings := []api.SlackDeliverySettings{}
 	for i, elem := range m.SlackDeliverySettings.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("slack_delivery_settings.%d", i)),
@@ -709,7 +708,7 @@ func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m mod
 			return nil, diags
 		}
 		var s models.SlackDeliverySettings
-		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -739,7 +738,7 @@ func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m m
 
 	settings := []api.MSTeamsDeliverySettings{}
 	for i, elem := range m.MSTeamsDeliverySettings.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("msteams_delivery_settings.%d", i)),
@@ -749,7 +748,7 @@ func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m m
 			return nil, diags
 		}
 		var s models.MSTeamsDeliverySettings
-		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -779,7 +778,7 @@ func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, 
 
 	settings := []api.ServiceNowDeliverySettings{}
 	for i, elem := range m.ServiceNowDeliverySettings.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("servicenow_delivery_settings.%d", i)),
@@ -789,7 +788,7 @@ func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, 
 			return nil, diags
 		}
 		var s models.ServiceNowDeliverySettings
-		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -822,7 +821,7 @@ func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m mode
 
 	settings := []api.JiraDeliverySettings{}
 	for i, elem := range m.JiraDeliverySettings.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("jira_delivery_settings.%d", i)),
@@ -832,7 +831,7 @@ func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m mode
 			return nil, diags
 		}
 		var s models.JiraDeliverySettings
-		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -865,7 +864,7 @@ func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m 
 
 	settings := []api.SymphonyDeliverySettings{}
 	for i, elem := range m.SymphonyDeliverySettings.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("symphony_delivery_settings.%d", i)),
@@ -875,7 +874,7 @@ func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m 
 			return nil, diags
 		}
 		var s models.SymphonyDeliverySettings
-		if diags := block.As(ctx, &s, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -905,7 +904,7 @@ func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([
 
 	recipients := []api.Recipient{}
 	for i, elem := range l.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("recipients.%d", i)),
@@ -915,7 +914,7 @@ func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([
 			return nil, diags
 		}
 		var r models.Recipient
-		if diags := block.As(ctx, &r, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &r, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 

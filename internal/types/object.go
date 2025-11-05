@@ -8,39 +8,35 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 type WithAttributes interface {
 	AttributeTypes() map[string]attr.Type
 }
 
-// ObjectValue returns a basetypes.ObjectValue from a type.
-func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, construct func() (*Type, diag.Diagnostics)) (basetypes.ObjectValue, diag.Diagnostics) {
+// ObjectValue returns a types.Object from a type.
+func ObjectValue[Type WithAttributes, Value any](ctx context.Context, v *Value, construct func() (*Type, diag.Diagnostics)) (types.Object, diag.Diagnostics) {
 	var empty Type
-	var diags diag.Diagnostics
-	if v == nil {
-		return NullObject(empty), diags
-	}
-	objPtr, d := construct()
-	diags.Append(d...)
-	if diags.HasError() || objPtr == nil {
-		return NullObject(empty), diags
-	}
-	return types.ObjectValueFrom(ctx, empty.AttributeTypes(), *objPtr)
-}
+	attrTypes := empty.AttributeTypes()
+	nullObj := types.ObjectNull(attrTypes)
 
-// NullObject returns a basetype.ObjectValue for the provided type with empty values.
-func NullObject(t WithAttributes) basetypes.ObjectValue {
-	return basetypes.NewObjectNull(t.AttributeTypes())
+	if v == nil {
+		return nullObj, nil
+	}
+	objPtr, diags := construct()
+	if diags.HasError() || objPtr == nil {
+		return nullObj, diags
+	}
+	return types.ObjectValueFrom(ctx, attrTypes, *objPtr)
 }
 
 // FilteredObject returns an object with only the specified attributes.
-func FilteredObject[Type WithAttributes](obj basetypes.ObjectValue, fields []string) (basetypes.ObjectValue, diag.Diagnostics) {
+func FilteredObject[Type WithAttributes](obj types.Object, fields []string) (types.Object, diag.Diagnostics) {
 	var empty Type
+	attrTypes := empty.AttributeTypes()
 
 	if obj.IsNull() || obj.IsUnknown() {
-		return NullObject(empty), nil
+		return types.ObjectNull(attrTypes), nil
 	}
 
 	attrs := obj.Attributes()
@@ -48,11 +44,11 @@ func FilteredObject[Type WithAttributes](obj basetypes.ObjectValue, fields []str
 	for _, field := range fields {
 		values[field] = attrs[field]
 	}
-	return types.ObjectValue(empty.AttributeTypes(), values)
+	return types.ObjectValue(attrTypes, values)
 }
 
 // UpdateObject returns an object with the specified attributes added/updated.
-func UpdatedObject(ctx context.Context, obj basetypes.ObjectValue, attrs map[string]attr.Value) (basetypes.ObjectValue, diag.Diagnostics) {
+func UpdatedObject(ctx context.Context, obj types.Object, attrs map[string]attr.Value) (types.Object, diag.Diagnostics) {
 	objAttrs := obj.Attributes()
 	objTypes := obj.AttributeTypes(ctx)
 	for name, value := range attrs {
@@ -65,6 +61,6 @@ func UpdatedObject(ctx context.Context, obj basetypes.ObjectValue, attrs map[str
 // ObjectStringIdentifier returns the string identifier for the object, from the provided attribute (which must be of type.String).
 func ObjectStringIdentifier(obj types.Object, name string) string {
 	attr := obj.Attributes()[name]
-	id, _ := attr.(basetypes.StringValue)
+	id, _ := attr.(types.String)
 	return id.ValueString()
 }
