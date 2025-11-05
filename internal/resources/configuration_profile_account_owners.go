@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -214,7 +213,7 @@ func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.
 
 	owners := []api.AccountOwners{}
 	for i, elem := range m.Default.Elements() {
-		block, ok := elem.(basetypes.ObjectValue)
+		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
 				path.Root(fmt.Sprintf("default.%d", i)),
@@ -224,7 +223,7 @@ func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.
 			return nil, diags
 		}
 		var o models.AccountOwners
-		if diags := block.As(ctx, &o, basetypes.ObjectAsOptions{}); diags.HasError() {
+		if diags := block.As(ctx, &o, ObjectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 

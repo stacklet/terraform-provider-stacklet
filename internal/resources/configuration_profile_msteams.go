@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -381,7 +380,7 @@ func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, da
 
 	if !data.AccessConfigInput.IsNull() && !data.AccessConfigInput.IsUnknown() {
 		var accessConfigInput models.MSTeamsAccessConfigInput
-		diags.Append(data.AccessConfigInput.As(ctx, &accessConfigInput, basetypes.ObjectAsOptions{})...)
+		diags.Append(data.AccessConfigInput.As(ctx, &accessConfigInput, ObjectAsOptions)...)
 		if diags.HasError() {
 			return input, diags
 		}
@@ -395,7 +394,7 @@ func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, da
 
 	if !data.CustomerConfigInput.IsNull() && !data.CustomerConfigInput.IsUnknown() {
 		var customerConfigInput models.MSTeamsCustomerConfigInput
-		diags.Append(data.CustomerConfigInput.As(ctx, &customerConfigInput, basetypes.ObjectAsOptions{})...)
+		diags.Append(data.CustomerConfigInput.As(ctx, &customerConfigInput, ObjectAsOptions)...)
 		if diags.HasError() {
 			return input, diags
 		}

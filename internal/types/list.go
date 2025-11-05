@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 // StringsList returns a list of values of string type.
@@ -19,7 +18,7 @@ func StringsList(l []string) types.List {
 	return lv
 }
 
-// ObjectList returns a basetypes.ListValue from a list of objects.
+// ObjectList returns a types.List from a list of objects.
 func ObjectList[ElemType WithAttributes, ItemType any](l []ItemType, buildElement func(ItemType) (map[string]attr.Value, diag.Diagnostics)) (types.List, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	var emptyElem ElemType
@@ -60,7 +59,7 @@ func ListItemsIdentifiers(l types.List, attrName string) []string {
 	elems := l.Elements()
 	ids := make([]string, len(elems))
 	for i, elem := range elems {
-		if obj, ok := elem.(basetypes.ObjectValue); ok {
+		if obj, ok := elem.(types.Object); ok {
 			ids[i] = ObjectStringIdentifier(obj, attrName)
 		}
 	}

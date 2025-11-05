@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -77,7 +76,7 @@ func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp api.C
 		for _, entry := range elems {
 			obj, _ := entry.(types.Object)
 
-			var woVersion basetypes.StringValue
+			var woVersion types.String
 			if version, ok := webhookVersions[tftypes.ObjectStringIdentifier(obj, "name")]; ok {
 				woVersion = types.StringValue(version)
 			} else {

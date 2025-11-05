@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
@@ -41,7 +40,7 @@ func (m *PlatformDataSource) Update(ctx context.Context, platform *api.Platform)
 	return diags
 }
 
-func (m PlatformDataSource) getCustomerConfig(ctx context.Context, config api.PlatformCustomerConfig) (basetypes.ObjectValue, diag.Diagnostics) {
+func (m PlatformDataSource) getCustomerConfig(ctx context.Context, config api.PlatformCustomerConfig) (types.Object, diag.Diagnostics) {
 	terraformModule, diags := tftypes.ObjectValue(
 		ctx,
 		&config.TerraformModule,
@@ -55,7 +54,7 @@ func (m PlatformDataSource) getCustomerConfig(ctx context.Context, config api.Pl
 		},
 	)
 	if diags.HasError() {
-		return basetypes.NewObjectNull(PlatformCustomerConfig{}.AttributeTypes()), diags
+		return types.ObjectNull(PlatformCustomerConfig{}.AttributeTypes()), diags
 	}
 
 	return tftypes.ObjectValue(
@@ -76,7 +75,7 @@ type PlatformCustomerConfig struct {
 
 func (c PlatformCustomerConfig) AttributeTypes() map[string]attr.Type {
 	return map[string]attr.Type{
-		"terraform_module": basetypes.ObjectType{
+		"terraform_module": types.ObjectType{
 			AttrTypes: TerraformModule{}.AttributeTypes(),
 		},
 	}

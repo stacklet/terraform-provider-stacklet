@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -262,7 +261,7 @@ func (r policyCollectionResource) getDynamicDetails(ctx context.Context, planDyn
 
 	if !planDynamicConfig.IsNull() {
 		var dynamicConfig models.PolicyCollectionDynamicConfig
-		diags = planDynamicConfig.As(ctx, &dynamicConfig, basetypes.ObjectAsOptions{})
+		diags = planDynamicConfig.As(ctx, &dynamicConfig, ObjectAsOptions)
 		uuid = dynamicConfig.RepositoryUUID.ValueStringPointer()
 		view = &api.RepositoryViewInput{
 			BranchName:        dynamicConfig.BranchName.ValueStringPointer(),

@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 // TerraformModule is the data returned for terraform module definitions.
@@ -56,7 +55,7 @@ func NewTagsList(tags types.Map) TagsList {
 }
 
 // TagsMap converts a list of tags to a map of key-value pairs.
-func (t TagsList) TagsMap() (basetypes.MapValue, diag.Diagnostics) {
+func (t TagsList) TagsMap() (types.Map, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	tagsMap := map[string]attr.Value{}
