@@ -1,6 +1,6 @@
 // Copyright (c) 2025 - Stacklet, Inc.
 
-package types
+package typehelpers
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"

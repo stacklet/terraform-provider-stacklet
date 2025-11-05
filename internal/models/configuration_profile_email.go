@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // ConfigurationProfileEmailDataSource is the model for email configuration profile data sources.
@@ -31,7 +31,7 @@ func (m *ConfigurationProfileEmailDataSource) Update(ctx context.Context, cp api
 	m.SESRegion = types.StringPointerValue(cp.Record.EmailConfiguration.SESRegion)
 
 	smtpConfig := cp.Record.EmailConfiguration.SMTP
-	smtp, d := tftypes.ObjectValue(
+	smtp, d := typehelpers.ObjectValue(
 		ctx,
 		smtpConfig,
 		func() (*SMTPDataSource, diag.Diagnostics) {
@@ -77,7 +77,7 @@ func (m *ConfigurationProfileEmailResource) Update(ctx context.Context, cp api.C
 			origPasswordWOVersion, _ = origSMTPAttrs["password_wo_version"].(types.String)
 		}
 
-		smtp, d := tftypes.UpdatedObject(
+		smtp, d := typehelpers.UpdatedObject(
 			ctx,
 			m.SMTP,
 			map[string]attr.Value{

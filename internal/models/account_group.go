@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // AccountGroupResource is the model for account group resources.
@@ -28,7 +28,7 @@ func (m *AccountGroupResource) Update(accountGroup *api.AccountGroup) diag.Diagn
 	m.Name = types.StringValue(accountGroup.Name)
 	m.Description = types.StringPointerValue(accountGroup.Description)
 	m.CloudProvider = types.StringValue(accountGroup.Provider)
-	m.Regions = tftypes.StringsList(accountGroup.Regions)
+	m.Regions = typehelpers.StringsList(accountGroup.Regions)
 
 	return diags
 }

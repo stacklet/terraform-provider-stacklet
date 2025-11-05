@@ -8,7 +8,7 @@ import (
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // AcountDataSource is the model for account data sources.
@@ -38,7 +38,7 @@ func (m *AccountDataSource) Update(account *api.Account) diag.Diagnostics {
 	m.Email = types.StringPointerValue(account.Email)
 	m.SecurityContext = types.StringPointerValue(account.SecurityContext)
 
-	variablesString, err := tftypes.JSONString(account.Variables)
+	variablesString, err := typehelpers.JSONString(account.Variables)
 	if err != nil {
 		errors.AddDiagAttributeError(&diags, "variables", err)
 		return diags

@@ -21,8 +21,8 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
+	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -216,7 +216,7 @@ The profile is global, adding multiple resources of this kind will cause them to
 						ElementType: types.StringType,
 						Optional:    true,
 						Computed:    true,
-						Default:     tftypes.EmptyMapDefault(types.StringType),
+						Default:     schemadefault.EmptyMapDefault(types.StringType),
 					},
 				},
 			},

@@ -21,7 +21,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 )
 
 var (
@@ -67,7 +67,14 @@ The profile is global, adding multiple resources of this kind will cause them to
 				Description: "List of default account owners.",
 				Optional:    true,
 				Computed:    true,
-				Default:     tftypes.EmptyListDefault(r.ownersListType()),
+				Default: schemadefault.EmptyListDefault(
+					types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							"account": types.StringType,
+							"owners":  types.ListType{ElemType: types.StringType},
+						},
+					},
+				),
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"account": schema.StringAttribute{
@@ -98,7 +105,7 @@ The profile is global, adding multiple resources of this kind will cause them to
 				ElementType: types.StringType,
 				Optional:    true,
 				Computed:    true,
-				Default:     tftypes.EmptyListDefault(types.StringType),
+				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
 		},
 	}
@@ -236,13 +243,4 @@ func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.
 		)
 	}
 	return owners, diags
-}
-
-func (r configurationProfileAccountOwnersResource) ownersListType() attr.Type {
-	return types.ObjectType{
-		AttrTypes: map[string]attr.Type{
-			"account": types.StringType,
-			"owners":  types.ListType{ElemType: types.StringType},
-		},
-	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // ConfigurationProfileResourceOwnerDataSource is the model for resource owner configuration profile data sources.
@@ -27,10 +27,10 @@ func (m *ConfigurationProfileResourceOwnerDataSource) Update(cp api.Configuratio
 
 	m.ID = types.StringValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
-	m.Default = tftypes.StringsList(config.Default)
+	m.Default = typehelpers.StringsList(config.Default)
 	m.OrgDomain = types.StringPointerValue(config.OrgDomain)
 	m.OrgDomainTag = types.StringPointerValue(config.OrgDomainTag)
-	m.Tags = tftypes.StringsList(config.Tags)
+	m.Tags = typehelpers.StringsList(config.Tags)
 
 	return diags
 }

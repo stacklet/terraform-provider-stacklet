@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // PlatformDataSource is the model for the platform data source.
@@ -27,7 +27,7 @@ func (m *PlatformDataSource) Update(ctx context.Context, platform *api.Platform)
 
 	m.ID = types.StringValue(platform.ID)
 	m.ExternalID = types.StringPointerValue(platform.ExternalID)
-	m.ExecutionRegions = tftypes.StringsList(platform.ExecutionRegions)
+	m.ExecutionRegions = typehelpers.StringsList(platform.ExecutionRegions)
 
 	awsAccountCustomerConfig, d := m.getCustomerConfig(ctx, platform.AWSAccountCustomerConfig)
 	diags.Append(d...)
@@ -41,7 +41,7 @@ func (m *PlatformDataSource) Update(ctx context.Context, platform *api.Platform)
 }
 
 func (m PlatformDataSource) getCustomerConfig(ctx context.Context, config api.PlatformCustomerConfig) (types.Object, diag.Diagnostics) {
-	terraformModule, diags := tftypes.ObjectValue(
+	terraformModule, diags := typehelpers.ObjectValue(
 		ctx,
 		&config.TerraformModule,
 		func() (*TerraformModule, diag.Diagnostics) {
@@ -57,7 +57,7 @@ func (m PlatformDataSource) getCustomerConfig(ctx context.Context, config api.Pl
 		return types.ObjectNull(PlatformCustomerConfig{}.AttributeTypes()), diags
 	}
 
-	return tftypes.ObjectValue(
+	return typehelpers.ObjectValue(
 		ctx,
 		&config,
 		func() (*PlatformCustomerConfig, diag.Diagnostics) {

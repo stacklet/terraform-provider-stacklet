@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // JiraProject is the model for a Jira project.
@@ -49,7 +49,7 @@ func (m *ConfigurationProfileJiraDataSource) Update(cp api.ConfigurationProfile)
 	m.User = types.StringValue(jiraConfig.User)
 	m.APIKey = types.StringValue(jiraConfig.APIKey)
 
-	projects, d := tftypes.ObjectList[JiraProject](
+	projects, d := typehelpers.ObjectList[JiraProject](
 		jiraConfig.Projects,
 		func(entry api.JiraProject) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
@@ -76,12 +76,12 @@ type ConfigurationProfileJiraResource struct {
 
 func (m *ConfigurationProfileJiraResource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
 	// fetch current project names to preserve declared order
-	projectNames := tftypes.ListItemsIdentifiers(m.Projects, "name")
+	projectNames := typehelpers.ListItemsIdentifiers(m.Projects, "name")
 
 	diags := m.ConfigurationProfileJiraDataSource.Update(cp)
 
 	if projectNames != nil {
-		projects, d := tftypes.ListSortedEntries[JiraProject](m.Projects, "name", projectNames)
+		projects, d := typehelpers.ListSortedEntries[JiraProject](m.Projects, "name", projectNames)
 		m.Projects = projects
 		diags.Append(d...)
 	}

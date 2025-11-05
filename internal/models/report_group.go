@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // ReportGroupDataSource is the model for notification report groups data sources.
@@ -35,16 +35,16 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 	m.ID = types.StringValue(rg.ID)
 	m.Name = types.StringValue(rg.Name)
 	m.Enabled = types.BoolValue(rg.Enabled)
-	m.Bindings = tftypes.StringsList(rg.Bindings)
+	m.Bindings = typehelpers.StringsList(rg.Bindings)
 	m.Source = types.StringValue(string(rg.Source))
 	m.Schedule = types.StringValue(rg.Schedule)
-	m.GroupBy = tftypes.StringsList(rg.GroupBy)
+	m.GroupBy = typehelpers.StringsList(rg.GroupBy)
 	m.UseMessageSettings = types.BoolValue(rg.UseMessageSettings)
 
-	emailDeliverySettings, d := tftypes.ObjectList[EmailDeliverySettings](
+	emailDeliverySettings, d := typehelpers.ObjectList[EmailDeliverySettings](
 		rg.EmailDeliverySettings(),
 		func(entry api.EmailDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[Recipient](
+			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
 				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
@@ -61,7 +61,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 			}
 
 			return map[string]attr.Value{
-				"cc":               tftypes.StringsList(entry.CC),
+				"cc":               typehelpers.StringsList(entry.CC),
 				"first_match_only": types.BoolPointerValue(entry.FirstMatchOnly),
 				"format":           types.StringPointerValue(entry.Format),
 				"from":             types.StringPointerValue(entry.FromEmail),
@@ -75,10 +75,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 	diags.Append(d...)
 	m.EmailDeliverySettings = emailDeliverySettings
 
-	slackDeliverySettings, d := tftypes.ObjectList[SlackDeliverySettings](
+	slackDeliverySettings, d := typehelpers.ObjectList[SlackDeliverySettings](
 		rg.SlackDeliverySettings(),
 		func(entry api.SlackDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[Recipient](
+			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
 				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
@@ -104,10 +104,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 	diags.Append(d...)
 	m.SlackDeliverySettings = slackDeliverySettings
 
-	msteamsDeliverySettings, d := tftypes.ObjectList[MSTeamsDeliverySettings](
+	msteamsDeliverySettings, d := typehelpers.ObjectList[MSTeamsDeliverySettings](
 		rg.MSTeamsDeliverySettings(),
 		func(entry api.MSTeamsDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[Recipient](
+			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
 				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
@@ -133,10 +133,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 	diags.Append(d...)
 	m.MSTeamsDeliverySettings = msteamsDeliverySettings
 
-	servicenowDeliverySettings, d := tftypes.ObjectList[ServiceNowDeliverySettings](
+	servicenowDeliverySettings, d := typehelpers.ObjectList[ServiceNowDeliverySettings](
 		rg.ServiceNowDeliverySettings(),
 		func(entry api.ServiceNowDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[Recipient](
+			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
 				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
@@ -165,10 +165,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 	diags.Append(d...)
 	m.ServiceNowDeliverySettings = servicenowDeliverySettings
 
-	jiraDeliverySettings, d := tftypes.ObjectList[JiraDeliverySettings](
+	jiraDeliverySettings, d := typehelpers.ObjectList[JiraDeliverySettings](
 		rg.JiraDeliverySettings(),
 		func(entry api.JiraDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[Recipient](
+			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
 				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
@@ -197,10 +197,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 	diags.Append(d...)
 	m.JiraDeliverySettings = jiraDeliverySettings
 
-	symphonyDeliverySettings, d := tftypes.ObjectList[SymphonyDeliverySettings](
+	symphonyDeliverySettings, d := typehelpers.ObjectList[SymphonyDeliverySettings](
 		rg.SymphonyDeliverySettings(),
 		func(entry api.SymphonyDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
-			recipients, diags := tftypes.ObjectList[Recipient](
+			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
 				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{

@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // PolicyCollectionResource is the model for a policy collection resource.
@@ -38,7 +38,7 @@ func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection 
 	m.System = types.BoolValue(policyCollection.System)
 	m.Dynamic = types.BoolValue(policyCollection.IsDynamic)
 
-	dynamicConfig, d := tftypes.ObjectValue(
+	dynamicConfig, d := typehelpers.ObjectValue(
 		ctx,
 		policyCollection.RepositoryView,
 		func() (*PolicyCollectionDynamicConfig, diag.Diagnostics) {
@@ -46,8 +46,8 @@ func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection 
 				RepositoryUUID:     types.StringValue(*policyCollection.RepositoryConfig.UUID),
 				Namespace:          types.StringValue(policyCollection.RepositoryView.Namespace),
 				BranchName:         types.StringValue(policyCollection.RepositoryView.BranchName),
-				PolicyDirectories:  tftypes.StringsList(policyCollection.RepositoryView.PolicyDirectories),
-				PolicyFileSuffixes: tftypes.StringsList(policyCollection.RepositoryView.PolicyFileSuffix),
+				PolicyDirectories:  typehelpers.StringsList(policyCollection.RepositoryView.PolicyDirectories),
+				PolicyFileSuffixes: typehelpers.StringsList(policyCollection.RepositoryView.PolicyFileSuffix),
 			}, nil
 		},
 	)

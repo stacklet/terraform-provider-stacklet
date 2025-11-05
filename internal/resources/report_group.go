@@ -24,7 +24,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 )
 
 var (
@@ -87,7 +87,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 				ElementType: types.StringType,
 				Optional:    true,
 				Computed:    true,
-				Default:     tftypes.EmptyListDefault(types.StringType),
+				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
 			"use_message_settings": schema.BoolAttribute{
 				Description: "Whether to use delivery settings from the notification message.",
@@ -106,7 +106,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 							ElementType: types.StringType,
 							Optional:    true,
 							Computed:    true,
-							Default:     tftypes.EmptyListDefault(types.StringType),
+							Default:     schemadefault.EmptyListDefault(types.StringType),
 						},
 						"first_match_only": schema.BoolAttribute{
 							Description: "Only report the first match.",
@@ -291,7 +291,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 							Description: "Recipients for the notification.",
 							Optional:    true,
 							Computed:    true,
-							Default:     tftypes.EmptyListDefault(r.recipientListType()),
+							Default:     schemadefault.EmptyListDefault(r.recipientListType()),
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{
@@ -359,7 +359,7 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 							Description: "Recipients for the notification.",
 							Optional:    true,
 							Computed:    true,
-							Default:     tftypes.EmptyListDefault(r.recipientListType()),
+							Default:     schemadefault.EmptyListDefault(r.recipientListType()),
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"account_owner": schema.BoolAttribute{

@@ -17,8 +17,8 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
+	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -77,7 +77,7 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 				ElementType: types.StringType,
 				Optional:    true,
 				Computed:    true,
-				Default:     tftypes.EmptyListDefault(types.StringType),
+				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
 		},
 	}

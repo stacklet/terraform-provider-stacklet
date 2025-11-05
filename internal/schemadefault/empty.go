@@ -1,6 +1,6 @@
 // Copyright (c) 2025 - Stacklet, Inc.
 
-package types
+package schemadefault
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"

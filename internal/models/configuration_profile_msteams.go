@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // ConfigurationProfileMSTeamsDataSource is the model for Microsoft Teams configuration profile data sources.
@@ -46,7 +46,7 @@ func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfi
 	m.ID = types.StringValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 
-	channelMappings, d := tftypes.ObjectList[MSTeamsChannelMapping](
+	channelMappings, d := typehelpers.ObjectList[MSTeamsChannelMapping](
 		cp.Record.MSTeamsConfiguration.ChannelMappings,
 		func(entry api.MSTeamsChannelMapping) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
@@ -175,7 +175,7 @@ func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.Config
 func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.ConfigurationProfile) (types.Object, diag.Diagnostics) {
 	nullObj := types.ObjectNull(MSTeamsEntityDetails{}.AttributeTypes())
 
-	channels, diags := tftypes.ObjectList[MSTeamsChannelDetails](
+	channels, diags := typehelpers.ObjectList[MSTeamsChannelDetails](
 		cp.Record.MSTeamsConfiguration.EntityDetails.Channels,
 		func(entry api.MSTeamsChannelDetail) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
@@ -188,7 +188,7 @@ func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.Configu
 		return nullObj, diags
 	}
 
-	teams, teamsDiags := tftypes.ObjectList[MSTeamsTeamDetails](
+	teams, teamsDiags := typehelpers.ObjectList[MSTeamsTeamDetails](
 		cp.Record.MSTeamsConfiguration.EntityDetails.Teams,
 		func(entry api.MSTeamsTeamDetail) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
@@ -236,14 +236,14 @@ func (m *ConfigurationProfileMSTeamsResource) Update(cp api.ConfigurationProfile
 	// update state for input fields to match what's returned by the API.
 	// Since the inputs are separated from the outputs, this is needed to match
 	// the current state (including when the resource is imported).
-	accessConfigInput, d := tftypes.FilteredObject[MSTeamsAccessConfigInput](
+	accessConfigInput, d := typehelpers.FilteredObject[MSTeamsAccessConfigInput](
 		m.AccessConfig,
 		[]string{"client_id", "roundtrip_digest", "tenant_id"},
 	)
 	m.AccessConfigInput = accessConfigInput
 	diags.Append(d...)
 
-	customerConfigInput, d := tftypes.FilteredObject[MSTeamsCustomerConfigInput](
+	customerConfigInput, d := typehelpers.FilteredObject[MSTeamsCustomerConfigInput](
 		m.CustomerConfig,
 		[]string{"prefix", "tags"},
 	)
