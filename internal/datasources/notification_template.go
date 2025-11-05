@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -82,11 +81,6 @@ func (d *notificationTemplateDataSource) Read(ctx context.Context, req datasourc
 		return
 	}
 
-	data.ID = types.StringValue(template.ID)
-	data.Name = types.StringValue(template.Name)
-	data.Description = types.StringPointerValue(template.Description)
-	data.Transport = types.StringPointerValue(template.Transport)
-	data.Content = types.StringValue(template.Content)
-
+	resp.Diagnostics.Append(data.Update(template)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

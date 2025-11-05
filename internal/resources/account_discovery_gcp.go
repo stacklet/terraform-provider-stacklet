@@ -18,7 +18,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -152,7 +151,7 @@ func (r *accountDiscoveryGCPResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	r.updateAccountDiscoveryGCPModel(&plan, accountDiscovery)
+	resp.Diagnostics.Append(plan.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -169,7 +168,7 @@ func (r *accountDiscoveryGCPResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	r.updateAccountDiscoveryGCPModel(&state, accountDiscovery)
+	resp.Diagnostics.Append(state.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -206,7 +205,7 @@ func (r *accountDiscoveryGCPResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	r.updateAccountDiscoveryGCPModel(&plan, accountDiscovery)
+	resp.Diagnostics.Append(plan.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -216,18 +215,4 @@ func (r *accountDiscoveryGCPResource) Delete(ctx context.Context, req resource.D
 
 func (r *accountDiscoveryGCPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
-}
-
-func (r accountDiscoveryGCPResource) updateAccountDiscoveryGCPModel(m *models.AccountDiscoveryGCPResource, accountDiscovery *api.AccountDiscovery) {
-	m.ID = types.StringValue(accountDiscovery.ID)
-	m.Name = types.StringValue(accountDiscovery.Name)
-	m.Description = types.StringPointerValue(accountDiscovery.Description)
-	m.Suspended = types.BoolValue(accountDiscovery.Schedule.Suspended)
-	m.ClientEmail = types.StringValue(accountDiscovery.Config.GCPConfig.ClientEmail)
-	m.ClientID = types.StringValue(accountDiscovery.Config.GCPConfig.ClientID)
-	m.OrgID = types.StringValue(accountDiscovery.Config.GCPConfig.OrgID)
-	m.RootFolderIDs = tftypes.StringsList(accountDiscovery.Config.GCPConfig.RootFolderIDs)
-	m.ExcludeFolderIDs = tftypes.StringsList(accountDiscovery.Config.GCPConfig.ExcludeFolderIDs)
-	m.ProjectID = types.StringValue(accountDiscovery.Config.GCPConfig.ProjectID)
-	m.PrivateKeyID = types.StringValue(accountDiscovery.Config.GCPConfig.PrivateKeyID)
 }

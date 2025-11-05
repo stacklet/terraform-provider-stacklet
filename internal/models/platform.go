@@ -3,9 +3,15 @@
 package models
 
 import (
+	"context"
+
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // PlatformDataSource is the model for the platform data source.
@@ -15,6 +21,52 @@ type PlatformDataSource struct {
 	ExecutionRegions         types.List   `tfsdk:"execution_regions"`
 	AWSAccountCustomerConfig types.Object `tfsdk:"aws_account_customer_config"`
 	AWSOrgReadCustomerConfig types.Object `tfsdk:"aws_org_read_customer_config"`
+}
+
+func (m *PlatformDataSource) Update(ctx context.Context, platform *api.Platform) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	m.ID = types.StringValue(platform.ID)
+	m.ExternalID = types.StringPointerValue(platform.ExternalID)
+	m.ExecutionRegions = tftypes.StringsList(platform.ExecutionRegions)
+
+	awsAccountCustomerConfig, d := m.getCustomerConfig(ctx, platform.AWSAccountCustomerConfig)
+	diags.Append(d...)
+	m.AWSAccountCustomerConfig = awsAccountCustomerConfig
+
+	awsOrgReadCustomerConfig, d := m.getCustomerConfig(ctx, platform.AWSOrgReadCustomerConfig)
+	diags.Append(d...)
+	m.AWSOrgReadCustomerConfig = awsOrgReadCustomerConfig
+
+	return diags
+}
+
+func (m PlatformDataSource) getCustomerConfig(ctx context.Context, config api.PlatformCustomerConfig) (basetypes.ObjectValue, diag.Diagnostics) {
+	terraformModule, diags := tftypes.ObjectValue(
+		ctx,
+		&config.TerraformModule,
+		func() (*TerraformModule, diag.Diagnostics) {
+			return &TerraformModule{
+				RepositoryURL: types.StringValue(config.TerraformModule.RepositoryURL),
+				Source:        types.StringValue(config.TerraformModule.Source),
+				VariablesJSON: types.StringValue(config.TerraformModule.VariablesJSON),
+				Version:       types.StringPointerValue(config.TerraformModule.Version),
+			}, nil
+		},
+	)
+	if diags.HasError() {
+		return basetypes.NewObjectNull(PlatformCustomerConfig{}.AttributeTypes()), diags
+	}
+
+	return tftypes.ObjectValue(
+		ctx,
+		&config,
+		func() (*PlatformCustomerConfig, diag.Diagnostics) {
+			return &PlatformCustomerConfig{
+				TerraformModule: terraformModule,
+			}, nil
+		},
+	)
 }
 
 // PlatformCustomerConfig is the model for customer config definitions.

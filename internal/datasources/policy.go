@@ -126,25 +126,6 @@ func (d *policyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	data.ID = types.StringValue(policy.ID)
-	data.UUID = types.StringValue(policy.UUID)
-	data.Name = types.StringValue(policy.Name)
-	data.Description = types.StringPointerValue(policy.Description)
-	data.CloudProvider = types.StringValue(policy.Provider)
-	data.Version = types.Int32Value(int32(policy.Version))
-	category, diag := types.ListValueFrom(ctx, types.StringType, policy.Category)
-	if diag.HasError() {
-		resp.Diagnostics.Append(diag...)
-		return
-	}
-	data.Category = category
-	data.Mode = types.StringValue(policy.Mode)
-	data.ResourceType = types.StringValue(policy.ResourceType)
-	data.Path = types.StringValue(policy.Path)
-	data.SourceJSON = types.StringValue(policy.Source)
-	data.SourceYAML = types.StringValue(policy.SourceYAML)
-	data.System = types.BoolValue(policy.System)
-	data.UnqualifiedName = types.StringValue(policy.UnqualifiedName)
-
+	resp.Diagnostics.Append(data.Update(ctx, policy)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

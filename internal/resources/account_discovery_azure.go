@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -125,7 +124,7 @@ func (r *accountDiscoveryAzureResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	r.updateAccountDiscoveryAzureModel(&plan, accountDiscovery)
+	resp.Diagnostics.Append(plan.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -142,7 +141,7 @@ func (r *accountDiscoveryAzureResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	r.updateAccountDiscoveryAzureModel(&state, accountDiscovery)
+	resp.Diagnostics.Append(state.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -180,7 +179,7 @@ func (r *accountDiscoveryAzureResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	r.updateAccountDiscoveryAzureModel(&plan, accountDiscovery)
+	resp.Diagnostics.Append(plan.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -190,13 +189,4 @@ func (r *accountDiscoveryAzureResource) Delete(ctx context.Context, req resource
 
 func (r *accountDiscoveryAzureResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
-}
-
-func (r accountDiscoveryAzureResource) updateAccountDiscoveryAzureModel(m *models.AccountDiscoveryAzureResource, accountDiscovery *api.AccountDiscovery) {
-	m.ID = types.StringValue(accountDiscovery.ID)
-	m.Name = types.StringValue(accountDiscovery.Name)
-	m.Description = types.StringPointerValue(accountDiscovery.Description)
-	m.Suspended = types.BoolValue(accountDiscovery.Schedule.Suspended)
-	m.ClientID = types.StringValue(accountDiscovery.Config.AzureConfig.ClientID)
-	m.TenantID = types.StringValue(accountDiscovery.Config.AzureConfig.TenantID)
 }

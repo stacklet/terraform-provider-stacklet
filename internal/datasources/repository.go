@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -122,20 +121,6 @@ func (d *repositoryDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	// Map response to model
-	data.ID = types.StringValue(repo.ID)
-	data.UUID = types.StringValue(repo.UUID)
-	data.URL = types.StringValue(repo.URL)
-	data.Name = types.StringValue(repo.Name)
-	data.WebhookURL = types.StringValue(repo.WebhookURL)
-	data.Description = types.StringPointerValue(repo.Description)
-	data.AuthUser = types.StringPointerValue(repo.Auth.AuthUser)
-	data.HasAuthToken = types.BoolValue(repo.Auth.HasAuthToken)
-	data.SSHPublicKey = types.StringPointerValue(repo.Auth.SSHPublicKey)
-	data.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
-	data.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
-	data.System = types.BoolValue(repo.System)
-
-	// Save data into Terraform state
+	resp.Diagnostics.Append(data.Update(repo)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

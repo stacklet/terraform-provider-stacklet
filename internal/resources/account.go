@@ -5,21 +5,18 @@ package resources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -144,10 +141,7 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateAccountModel(&plan, account)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	resp.Diagnostics.Append(plan.Update(account)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -164,10 +158,7 @@ func (r *accountResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateAccountModel(&state, account)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	resp.Diagnostics.Append(state.Update(account)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -202,10 +193,7 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	resp.Diagnostics.Append(r.updateAccountModel(&plan, account)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	resp.Diagnostics.Append(plan.Update(account)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -231,24 +219,4 @@ func (r *accountResource) ImportState(ctx context.Context, req resource.ImportSt
 
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), parts[0])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), parts[1])...)
-}
-
-func (r accountResource) updateAccountModel(m *models.AccountResource, account *api.Account) diag.Diagnostics {
-	var diags diag.Diagnostics
-	m.ID = types.StringValue(account.ID)
-	m.Key = types.StringValue(account.Key)
-	m.Name = types.StringValue(account.Name)
-	m.ShortName = types.StringPointerValue(account.ShortName)
-	m.CloudProvider = types.StringValue(string(account.Provider))
-	m.Description = types.StringPointerValue(account.Description)
-	m.Path = types.StringPointerValue(account.Path)
-	m.Email = types.StringPointerValue(account.Email)
-	m.SecurityContext = types.StringPointerValue(account.SecurityContext)
-	variablesString, err := tftypes.JSONString(account.Variables)
-	if err != nil {
-		errors.AddDiagAttributeError(&diags, "variables", err)
-		return diags
-	}
-	m.Variables = variablesString
-	return diags
 }

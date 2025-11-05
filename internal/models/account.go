@@ -3,7 +3,12 @@
 package models
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // AcountDataSource is the model for account data sources.
@@ -18,6 +23,29 @@ type AccountDataSource struct {
 	Email           types.String `tfsdk:"email"`
 	SecurityContext types.String `tfsdk:"security_context"`
 	Variables       types.String `tfsdk:"variables"`
+}
+
+func (m *AccountDataSource) Update(account *api.Account) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	m.ID = types.StringValue(account.ID)
+	m.Key = types.StringValue(account.Key)
+	m.Name = types.StringValue(account.Name)
+	m.ShortName = types.StringPointerValue(account.ShortName)
+	m.Description = types.StringPointerValue(account.Description)
+	m.CloudProvider = types.StringValue(string(account.Provider))
+	m.Path = types.StringPointerValue(account.Path)
+	m.Email = types.StringPointerValue(account.Email)
+	m.SecurityContext = types.StringPointerValue(account.SecurityContext)
+
+	variablesString, err := tftypes.JSONString(account.Variables)
+	if err != nil {
+		errors.AddDiagAttributeError(&diags, "variables", err)
+		return diags
+	}
+	m.Variables = variablesString
+
+	return diags
 }
 
 // AccountResource is the model for account resources.

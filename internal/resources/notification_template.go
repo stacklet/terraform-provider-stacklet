@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -91,10 +90,7 @@ func (r *notificationTemplateResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	r.updateNotificationTemplateModel(&state, template)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	resp.Diagnostics.Append(state.Update(template)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -117,7 +113,7 @@ func (r *notificationTemplateResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	r.updateNotificationTemplateModel(&plan, template)
+	resp.Diagnostics.Append(plan.Update(template)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -140,7 +136,7 @@ func (r *notificationTemplateResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	r.updateNotificationTemplateModel(&plan, template)
+	resp.Diagnostics.Append(plan.Update(template)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -159,12 +155,4 @@ func (r *notificationTemplateResource) Delete(ctx context.Context, req resource.
 
 func (r *notificationTemplateResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
-}
-
-func (r *notificationTemplateResource) updateNotificationTemplateModel(m *models.NotificationTemplateResource, template *api.Template) {
-	m.ID = types.StringValue(template.ID)
-	m.Name = types.StringValue(template.Name)
-	m.Description = types.StringPointerValue(template.Description)
-	m.Transport = types.StringPointerValue(template.Transport)
-	m.Content = types.StringValue(template.Content)
 }

@@ -111,7 +111,7 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	r.updateAccountGroupModel(&plan, account_group)
+	resp.Diagnostics.Append(plan.Update(account_group)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -128,7 +128,7 @@ func (r *accountGroupResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	r.updateAccountGroupModel(&state, account_group)
+	resp.Diagnostics.Append(state.Update(account_group)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -152,7 +152,7 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	r.updateAccountGroupModel(&plan, account_group)
+	resp.Diagnostics.Append(plan.Update(account_group)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -171,13 +171,4 @@ func (r *accountGroupResource) Delete(ctx context.Context, req resource.DeleteRe
 
 func (r *accountGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
-}
-
-func (r accountGroupResource) updateAccountGroupModel(m *models.AccountGroupResource, account_group *api.AccountGroup) {
-	m.ID = types.StringValue(account_group.ID)
-	m.UUID = types.StringValue(account_group.UUID)
-	m.Name = types.StringValue(account_group.Name)
-	m.Description = types.StringPointerValue(account_group.Description)
-	m.CloudProvider = types.StringValue(account_group.Provider)
-	m.Regions = tftypes.StringsList(account_group.Regions)
 }

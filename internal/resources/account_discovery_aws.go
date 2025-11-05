@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -130,7 +129,7 @@ func (r *accountDiscoveryAWSResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	r.updateAccountDiscoveryAWSModel(&plan, accountDiscovery)
+	resp.Diagnostics.Append(plan.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -147,7 +146,7 @@ func (r *accountDiscoveryAWSResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	r.updateAccountDiscoveryAWSModel(&state, accountDiscovery)
+	resp.Diagnostics.Append(state.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
@@ -177,7 +176,7 @@ func (r *accountDiscoveryAWSResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	r.updateAccountDiscoveryAWSModel(&plan, accountDiscovery)
+	resp.Diagnostics.Append(plan.Update(accountDiscovery)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -187,14 +186,4 @@ func (r *accountDiscoveryAWSResource) Delete(ctx context.Context, req resource.D
 
 func (r *accountDiscoveryAWSResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
-}
-
-func (r accountDiscoveryAWSResource) updateAccountDiscoveryAWSModel(m *models.AccountDiscoveryAWSResource, accountDiscovery *api.AccountDiscovery) {
-	m.ID = types.StringValue(accountDiscovery.ID)
-	m.Name = types.StringValue(accountDiscovery.Name)
-	m.Description = types.StringPointerValue(accountDiscovery.Description)
-	m.Suspended = types.BoolValue(accountDiscovery.Schedule.Suspended)
-	m.OrgID = types.StringValue(accountDiscovery.Config.AWSConfig.OrgID)
-	m.OrgReadRole = types.StringValue(accountDiscovery.Config.AWSConfig.OrgRole)
-	m.CustodianRole = types.StringValue(accountDiscovery.Config.AWSConfig.CustodianRole)
 }

@@ -3,8 +3,15 @@
 package models
 
 import (
+	"context"
+
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
+	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 // BindingDataSource is the model for a binding data source.
@@ -25,12 +32,90 @@ type BindingDataSource struct {
 	Variables            types.String `tfsdk:"variables"`
 }
 
+func (m *BindingDataSource) Update(ctx context.Context, binding *api.Binding) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	m.ID = types.StringValue(binding.ID)
+	m.UUID = types.StringValue(binding.UUID)
+	m.Name = types.StringValue(binding.Name)
+	m.Description = types.StringPointerValue(binding.Description)
+	m.AutoDeploy = types.BoolValue(binding.AutoDeploy)
+	m.Schedule = types.StringPointerValue(binding.Schedule)
+	m.AccountGroupUUID = types.StringValue(binding.AccountGroup.UUID)
+	m.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
+	m.System = types.BoolValue(binding.System)
+	m.DryRun = types.BoolPointerValue(binding.DryRun())
+	m.SecurityContext = types.StringPointerValue(binding.SecurityContext())
+
+	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
+	if err != nil {
+		errors.AddDiagAttributeError(&diags, "variables", err)
+	}
+	m.Variables = variablesString
+
+	defLimit := binding.DefaultResourceLimits()
+	defaultLimits, d := tftypes.ObjectValue(
+		ctx,
+		defLimit,
+		func() (*BindingExecutionConfigResourceLimit, diag.Diagnostics) {
+			return &BindingExecutionConfigResourceLimit{
+				MaxCount:      types.Int32PointerValue(defLimit.MaxCount),
+				MaxPercentage: types.Float32PointerValue(defLimit.MaxPercentage),
+				RequiresBoth:  types.BoolValue(defLimit.RequiresBoth),
+			}, nil
+		},
+	)
+	diags.Append(d...)
+	m.ResourceLimits = defaultLimits
+
+	policyLimits, d := tftypes.ObjectList[BindingExecutionConfigPolicyResourceLimit](
+		binding.PolicyResourceLimits(),
+		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (map[string]attr.Value, diag.Diagnostics) {
+			return map[string]attr.Value{
+				"policy_name":    types.StringValue(entry.PolicyName),
+				"max_count":      types.Int32PointerValue(entry.Limit.MaxCount),
+				"max_percentage": types.Float32PointerValue(entry.Limit.MaxPercentage),
+				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),
+			}, nil
+		},
+	)
+	diags.Append(d...)
+	m.PolicyResourceLimits = policyLimits
+
+	return diags
+}
+
 // BindingResource is the model for a binding resource.
 type BindingResource struct {
 	BindingDataSource
 
 	SecurityContextWO        types.String `tfsdk:"security_context_wo"`
 	SecurityContextWOVersion types.String `tfsdk:"security_context_wo_version"`
+}
+
+func (m *BindingResource) Update(ctx context.Context, binding *api.Binding) diag.Diagnostics {
+	// Save original values for resource-specific logic
+	originalVariables := m.Variables
+	originalResourceLimits := m.ResourceLimits
+
+	diags := m.BindingDataSource.Update(ctx, binding)
+
+	// the API returns an empty dictionary for both null or empty strings. In
+	// that case don't modify the expected value.
+	if m.Variables.ValueString() == "{}" {
+		m.Variables = originalVariables
+	}
+
+	// if default resource limits are set in the config but empty, apply default
+	if binding.DefaultResourceLimits() == nil && !originalResourceLimits.IsNull() {
+		var d diag.Diagnostics
+		defLimits := BindingExecutionConfigResourceLimit{RequiresBoth: types.BoolValue(false)}
+		resourceLimits, d := types.ObjectValueFrom(ctx, defLimits.AttributeTypes(), &defLimits)
+		diags.Append(d...)
+		m.ResourceLimits = resourceLimits
+	}
+
+	return diags
 }
 
 // BindingExecutionConfigResourceLimit is the model for a resource limit in binding execution config.

@@ -5,17 +5,13 @@ package datasources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
-	tftypes "github.com/stacklet/terraform-provider-stacklet/internal/types"
 )
 
 var (
@@ -163,59 +159,6 @@ func (d *bindingDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 
-	data.ID = types.StringValue(binding.ID)
-	data.UUID = types.StringValue(binding.UUID)
-	data.Name = types.StringValue(binding.Name)
-	data.Description = types.StringPointerValue(binding.Description)
-	data.AutoDeploy = types.BoolValue(binding.AutoDeploy)
-	data.Schedule = types.StringPointerValue(binding.Schedule)
-	data.AccountGroupUUID = types.StringValue(binding.AccountGroup.UUID)
-	data.PolicyCollectionUUID = types.StringValue(binding.PolicyCollection.UUID)
-	data.System = types.BoolValue(binding.System)
-	data.DryRun = types.BoolPointerValue(binding.DryRun())
-	data.SecurityContext = types.StringPointerValue(binding.SecurityContext())
-
-	variablesString, err := tftypes.JSONString(binding.ExecutionConfig.Variables)
-	if err != nil {
-		errors.AddDiagAttributeError(&resp.Diagnostics, "variables", err)
-		return
-	}
-	data.Variables = variablesString
-
-	defLimit := binding.DefaultResourceLimits()
-	defaultLimits, diags := tftypes.ObjectValue(
-		ctx,
-		defLimit,
-		func() (*models.BindingExecutionConfigResourceLimit, diag.Diagnostics) {
-			return &models.BindingExecutionConfigResourceLimit{
-				MaxCount:      types.Int32PointerValue(defLimit.MaxCount),
-				MaxPercentage: types.Float32PointerValue(defLimit.MaxPercentage),
-				RequiresBoth:  types.BoolValue(defLimit.RequiresBoth),
-			}, nil
-		},
-	)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.ResourceLimits = defaultLimits
-
-	policyLimits, diags := tftypes.ObjectList[models.BindingExecutionConfigPolicyResourceLimit](
-		binding.PolicyResourceLimits(),
-		func(entry api.BindingExecutionConfigResourceLimitsPolicyOverrides) (map[string]attr.Value, diag.Diagnostics) {
-			return map[string]attr.Value{
-				"policy_name":    types.StringValue(entry.PolicyName),
-				"max_count":      types.Int32PointerValue(entry.Limit.MaxCount),
-				"max_percentage": types.Float32PointerValue(entry.Limit.MaxPercentage),
-				"requires_both":  types.BoolValue(entry.Limit.RequiresBoth),
-			}, nil
-		},
-	)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	data.PolicyResourceLimits = policyLimits
-
+	resp.Diagnostics.Append(data.Update(ctx, binding)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
