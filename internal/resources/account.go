@@ -5,7 +5,6 @@ package resources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -15,7 +14,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 )
 
@@ -25,12 +23,12 @@ var (
 	_ resource.ResourceWithImportState = &accountResource{}
 )
 
-func NewAccountResource() resource.Resource {
+func newAccountResource() resource.Resource {
 	return &accountResource{}
 }
 
 type accountResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *accountResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -106,14 +104,6 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Optional:    true,
 			},
 		},
-	}
-}
-
-func (r *accountResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -211,12 +201,5 @@ func (r *accountResource) Delete(ctx context.Context, req resource.DeleteRequest
 }
 
 func (r *accountResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	parts, err := splitImportID(req.ID, []string{"provider", "key"})
-	if err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cloud_provider"), parts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), parts[1])...)
+	importState(ctx, req, resp, []string{"cloud_provider", "key"})
 }

@@ -14,8 +14,8 @@ type FilterValueInput struct {
 	Value    any    `json:"value"`
 }
 
-// NewFilterElementSingle returns a populated FilterElementSingle.
-func NewFieldMatchFilter(name string, value any) FilterElementInput {
+// newExactMatchFilter returns a populated FilterElementInput for an exact match.
+func newExactMatchFilter(name string, value any) FilterElementInput {
 	return FilterElementInput{
 		Single: FilterValueInput{
 			Name:     name,

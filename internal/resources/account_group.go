@@ -5,7 +5,6 @@ package resources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -16,7 +15,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 )
@@ -27,12 +25,12 @@ var (
 	_ resource.ResourceWithImportState = &accountGroupResource{}
 )
 
-func NewAccountGroupResource() resource.Resource {
+func newAccountGroupResource() resource.Resource {
 	return &accountGroupResource{}
 }
 
 type accountGroupResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *accountGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -80,14 +78,6 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
 		},
-	}
-}
-
-func (r *accountGroupResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -170,5 +160,5 @@ func (r *accountGroupResource) Delete(ctx context.Context, req resource.DeleteRe
 }
 
 func (r *accountGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
+	importState(ctx, req, resp, []string{"uuid"})
 }

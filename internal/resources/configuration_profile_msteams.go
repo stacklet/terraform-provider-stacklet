@@ -20,7 +20,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 )
@@ -31,12 +30,12 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileMSTeamsResource{}
 )
 
-func NewConfigurationProfileMSTeamsResource() resource.Resource {
+func newConfigurationProfileMSTeamsResource() resource.Resource {
 	return &configurationProfileMSTeamsResource{}
 }
 
 type configurationProfileMSTeamsResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *configurationProfileMSTeamsResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -286,14 +285,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 	}
 }
 
-func (r *configurationProfileMSTeamsResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
-	}
-}
-
 func (r *configurationProfileMSTeamsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data models.ConfigurationProfileMSTeamsResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -380,7 +371,7 @@ func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, da
 
 	if !data.AccessConfigInput.IsNull() && !data.AccessConfigInput.IsUnknown() {
 		var accessConfigInput models.MSTeamsAccessConfigInput
-		diags.Append(data.AccessConfigInput.As(ctx, &accessConfigInput, ObjectAsOptions)...)
+		diags.Append(data.AccessConfigInput.As(ctx, &accessConfigInput, objectAsOptions)...)
 		if diags.HasError() {
 			return input, diags
 		}
@@ -394,7 +385,7 @@ func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, da
 
 	if !data.CustomerConfigInput.IsNull() && !data.CustomerConfigInput.IsUnknown() {
 		var customerConfigInput models.MSTeamsCustomerConfigInput
-		diags.Append(data.CustomerConfigInput.As(ctx, &customerConfigInput, ObjectAsOptions)...)
+		diags.Append(data.CustomerConfigInput.As(ctx, &customerConfigInput, objectAsOptions)...)
 		if diags.HasError() {
 			return input, diags
 		}

@@ -115,7 +115,7 @@ func (a repositoryAPI) Read(ctx context.Context, uuid string) (*Repository, erro
 	if err := a.c.Query(ctx, &q, map[string]any{"uuid": uuid}); err != nil {
 		return nil, NewAPIError(err)
 	}
-	if err := FromProblems(ctx, q.Payload.Problems); err != nil {
+	if err := fromProblems(ctx, q.Payload.Problems); err != nil {
 		return nil, err
 	}
 	return &q.Payload.RepositoryConfig, nil
@@ -143,7 +143,7 @@ func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error
 		if err := a.c.Query(ctx, &q, variables); err != nil {
 			return "", NewAPIError(err)
 		}
-		if err := FromProblems(ctx, q.Conn.Problems); err != nil {
+		if err := fromProblems(ctx, q.Conn.Problems); err != nil {
 			return "", err
 		}
 		for _, edge := range q.Conn.Edges {
@@ -168,7 +168,7 @@ func (a repositoryAPI) Create(ctx context.Context, i RepositoryCreateInput) (*Re
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
 		return nil, NewAPIError(err)
 	}
-	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
+	if err := fromProblems(ctx, m.Payload.Problems); err != nil {
 		return nil, err
 	}
 	return &m.Payload.RepositoryConfig, nil
@@ -184,7 +184,7 @@ func (a repositoryAPI) Update(ctx context.Context, i RepositoryUpdateInput) (*Re
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
 		return nil, NewAPIError(err)
 	}
-	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
+	if err := fromProblems(ctx, m.Payload.Problems); err != nil {
 		return nil, err
 	}
 	return &m.Payload.RepositoryConfig, nil
@@ -199,7 +199,7 @@ func (a repositoryAPI) Delete(ctx context.Context, i RepositoryDeleteInput) erro
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
 		return NewAPIError(err)
 	}
-	if err := FromProblems(ctx, m.Payload.Problems); err != nil {
+	if err := fromProblems(ctx, m.Payload.Problems); err != nil {
 		return err
 	}
 	return nil

@@ -9,22 +9,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &platformDataSource{}
 )
 
-func NewPlatformDataSource() datasource.DataSource {
+func newPlatformDataSource() datasource.DataSource {
 	return &platformDataSource{}
 }
 
 type platformDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *platformDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -107,14 +105,6 @@ func (d *platformDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 				},
 			},
 		},
-	}
-}
-
-func (d *platformDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

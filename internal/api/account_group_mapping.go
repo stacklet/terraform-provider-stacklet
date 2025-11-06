@@ -62,7 +62,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 	}
 	variables := map[string]any{
 		"uuid":          graphql.String(groupUUID),
-		"accountFilter": NewFieldMatchFilter("id", accountKey),
+		"accountFilter": newExactMatchFilter("id", accountKey),
 	}
 
 	if err := a.c.Query(ctx, &query, variables); err != nil {

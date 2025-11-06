@@ -19,7 +19,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 )
 
@@ -29,12 +28,12 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileAccountOwnersResource{}
 )
 
-func NewConfigurationProfileAccountOwnersResource() resource.Resource {
+func newConfigurationProfileAccountOwnersResource() resource.Resource {
 	return &configurationProfileAccountOwnersResource{}
 }
 
 type configurationProfileAccountOwnersResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *configurationProfileAccountOwnersResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -107,14 +106,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
 		},
-	}
-}
-
-func (r *configurationProfileAccountOwnersResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -229,7 +220,7 @@ func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.
 			return nil, diags
 		}
 		var o models.AccountOwners
-		if diags := block.As(ctx, &o, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &o, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 

@@ -8,22 +8,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &configurationProfileSymphonyDataSource{}
 )
 
-func NewConfigurationProfileSymphonyDataSource() datasource.DataSource {
+func newConfigurationProfileSymphonyDataSource() datasource.DataSource {
 	return &configurationProfileSymphonyDataSource{}
 }
 
 type configurationProfileSymphonyDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *configurationProfileSymphonyDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -55,14 +53,6 @@ func (d *configurationProfileSymphonyDataSource) Schema(_ context.Context, _ dat
 				Computed:    true,
 			},
 		},
-	}
-}
-
-func (d *configurationProfileSymphonyDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

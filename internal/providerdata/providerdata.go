@@ -12,57 +12,54 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 )
 
-// ProviderData holds shared data for available in requests.
-type ProviderData struct {
+// providerData holds shared data for available in requests.
+type providerData struct {
 	API *api.API
 }
 
-// New returns a new ProviderData.
-func New(client *graphql.Client) *ProviderData {
-	return &ProviderData{
+// New returns configured provider data.
+func New(client *graphql.Client) *providerData {
+	return &providerData{
 		API: api.New(client),
 	}
 }
 
-// ProviderDataError is an error handling provider data.
-type ProviderDataError struct {
+type providerDataError struct {
 	Kind         string
 	ProviderData any
 }
 
-// Summary returns the error summary.
-func (e ProviderDataError) Summary() string {
+func (e providerDataError) Summary() string {
 	return fmt.Sprintf("Unexpected %s configure type", e.Kind)
 }
 
-// Error returns the error message.
-func (e ProviderDataError) Error() string {
+func (e providerDataError) Error() string {
 	return fmt.Sprintf("Expected *ProviderData, got: %T. Please report this issue to the provider developers.", e.ProviderData)
 }
 
-// GetResourceProviderData returns ProviderData for a resource request, or nil if not set.
-func GetResourceProviderData(req resource.ConfigureRequest) (*ProviderData, error) {
+// GetForResource returns provider data for a resource request, or nil if not set.
+func GetForResource(req resource.ConfigureRequest) (*providerData, error) {
 	if req.ProviderData == nil {
 		return nil, nil
 	}
-	if providerData, ok := req.ProviderData.(*ProviderData); ok {
+	if providerData, ok := req.ProviderData.(*providerData); ok {
 		return providerData, nil
 	}
-	return nil, ProviderDataError{
+	return nil, providerDataError{
 		Kind:         "resource",
 		ProviderData: req.ProviderData,
 	}
 }
 
-// GetDataSourceProviderData returns ProviderData for a resource request, or nil if not set.
-func GetDataSourceProviderData(req datasource.ConfigureRequest) (*ProviderData, error) {
+// GetForDataSource returns provider data for a data source request, or nil if not set.
+func GetForDataSource(req datasource.ConfigureRequest) (*providerData, error) {
 	if req.ProviderData == nil {
 		return nil, nil
 	}
-	if providerData, ok := req.ProviderData.(*ProviderData); ok {
+	if providerData, ok := req.ProviderData.(*providerData); ok {
 		return providerData, nil
 	}
-	return nil, ProviderDataError{
+	return nil, providerDataError{
 		Kind:         "datasource",
 		ProviderData: req.ProviderData,
 	}

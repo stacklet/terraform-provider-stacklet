@@ -14,7 +14,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
@@ -23,12 +22,12 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileSymphonyResource{}
 )
 
-func NewConfigurationProfileSymphonyResource() resource.Resource {
+func newConfigurationProfileSymphonyResource() resource.Resource {
 	return &configurationProfileSymphonyResource{}
 }
 
 type configurationProfileSymphonyResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *configurationProfileSymphonyResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -79,14 +78,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 				Required:    true,
 			},
 		},
-	}
-}
-
-func (r *configurationProfileSymphonyResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 

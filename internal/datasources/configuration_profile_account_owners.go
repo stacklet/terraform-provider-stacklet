@@ -9,22 +9,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &configurationProfileAccountOwnersDataSource{}
 )
 
-func NewConfigurationProfileAccountOwnersDataSource() datasource.DataSource {
+func newConfigurationProfileAccountOwnersDataSource() datasource.DataSource {
 	return &configurationProfileAccountOwnersDataSource{}
 }
 
 type configurationProfileAccountOwnersDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *configurationProfileAccountOwnersDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -74,14 +72,6 @@ func (d *configurationProfileAccountOwnersDataSource) Schema(_ context.Context, 
 				Computed:    true,
 			},
 		},
-	}
-}
-
-func (d *configurationProfileAccountOwnersDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

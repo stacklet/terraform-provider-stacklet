@@ -5,16 +5,13 @@ package resources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
@@ -23,12 +20,12 @@ var (
 	_ resource.ResourceWithImportState = &accountGroupMappingResource{}
 )
 
-func NewAccountGroupMappingResource() resource.Resource {
+func newAccountGroupMappingResource() resource.Resource {
 	return &accountGroupMappingResource{}
 }
 
 type accountGroupMappingResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *accountGroupMappingResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,14 +58,6 @@ func (r *accountGroupMappingResource) Schema(_ context.Context, _ resource.Schem
 				},
 			},
 		},
-	}
-}
-
-func (r *accountGroupMappingResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -133,12 +122,5 @@ func (r *accountGroupMappingResource) Delete(ctx context.Context, req resource.D
 }
 
 func (r *accountGroupMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	parts, err := splitImportID(req.ID, []string{"group_uuid", "account_key"})
-	if err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("group_uuid"), parts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_key"), parts[1])...)
+	importState(ctx, req, resp, []string{"group_uuid", "account_key"})
 }

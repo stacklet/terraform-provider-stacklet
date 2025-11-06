@@ -8,22 +8,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ datasource.DataSource = &repositoryDataSource{}
 
-func NewRepositoryDataSource() datasource.DataSource {
+func newRepositoryDataSource() datasource.DataSource {
 	return &repositoryDataSource{}
 }
 
 // repositoryDataSource defines the data source implementation.
 type repositoryDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *repositoryDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -85,14 +83,6 @@ func (d *repositoryDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed:    true,
 			},
 		},
-	}
-}
-
-func (d *repositoryDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

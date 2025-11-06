@@ -6,5 +6,5 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-// ObjectAsOptions are the options used by ObjectValue.As calls.
-var ObjectAsOptions = basetypes.ObjectAsOptions{}
+// objectAsOptions are the options used by ObjectValue.As calls.
+var objectAsOptions = basetypes.ObjectAsOptions{}

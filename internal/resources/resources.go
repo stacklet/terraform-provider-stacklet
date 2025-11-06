@@ -6,25 +6,28 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 )
 
-var RESOURCES = []func() resource.Resource{
-	NewAccountDiscoveryAWSResource,
-	NewAccountDiscoveryAzureResource,
-	NewAccountDiscoveryGCPResource,
-	NewAccountGroupMappingResource,
-	NewAccountGroupResource,
-	NewAccountResource,
-	NewBindingResource,
-	NewConfigurationProfileAccountOwnersResource,
-	NewConfigurationProfileEmailResource,
-	NewConfigurationProfileJiraResource,
-	NewConfigurationProfileMSTeamsResource,
-	NewConfigurationProfileResourceOwnerResource,
-	NewConfigurationProfileServiceNowResource,
-	NewConfigurationProfileSlackResource,
-	NewConfigurationProfileSymphonyResource,
-	NewNotificationTemplateResource,
-	NewPolicyCollectionMappingResource,
-	NewPolicyCollectionResource,
-	NewReportGroupResource,
-	NewRepositoryResource,
+// Resources returns all available resources.
+func Resources() []func() resource.Resource {
+	return []func() resource.Resource{
+		newAccountDiscoveryAWSResource,
+		newAccountDiscoveryAzureResource,
+		newAccountDiscoveryGCPResource,
+		newAccountGroupMappingResource,
+		newAccountGroupResource,
+		newAccountResource,
+		newBindingResource,
+		newConfigurationProfileAccountOwnersResource,
+		newConfigurationProfileEmailResource,
+		newConfigurationProfileJiraResource,
+		newConfigurationProfileMSTeamsResource,
+		newConfigurationProfileResourceOwnerResource,
+		newConfigurationProfileServiceNowResource,
+		newConfigurationProfileSlackResource,
+		newConfigurationProfileSymphonyResource,
+		newNotificationTemplateResource,
+		newPolicyCollectionMappingResource,
+		newPolicyCollectionResource,
+		newReportGroupResource,
+		newRepositoryResource,
+	}
 }

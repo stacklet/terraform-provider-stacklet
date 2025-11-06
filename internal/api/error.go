@@ -44,8 +44,8 @@ func (e NotFound) Error() string {
 	return e.Message
 }
 
-// FromProblems returns an error from a list of API problems.
-func FromProblems(ctx context.Context, problems []Problem) error {
+// fromProblems returns an error from a list of API problems.
+func fromProblems(ctx context.Context, problems []Problem) error {
 	if len(problems) == 0 {
 		return nil
 	}

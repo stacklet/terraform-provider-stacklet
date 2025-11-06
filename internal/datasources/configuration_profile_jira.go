@@ -8,22 +8,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &configurationProfileJiraDataSource{}
 )
 
-func NewConfigurationProfileJiraDataSource() datasource.DataSource {
+func newConfigurationProfileJiraDataSource() datasource.DataSource {
 	return &configurationProfileJiraDataSource{}
 }
 
 type configurationProfileJiraDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *configurationProfileJiraDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -80,14 +78,6 @@ func (d *configurationProfileJiraDataSource) Schema(_ context.Context, _ datasou
 				},
 			},
 		},
-	}
-}
-
-func (d *configurationProfileJiraDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 
