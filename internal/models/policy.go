@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 )
 
 // PolicyDataSource is the model for policy data sources.
@@ -49,7 +50,7 @@ func (m *PolicyDataSource) Update(ctx context.Context, policy *api.Policy) diag.
 
 	category, d := types.ListValueFrom(ctx, types.StringType, policy.Category)
 	m.Category = category
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "category")
 
 	return diags
 }

@@ -38,11 +38,8 @@ func (m *AccountDataSource) Update(account *api.Account) diag.Diagnostics {
 	m.Email = types.StringPointerValue(account.Email)
 	m.SecurityContext = types.StringPointerValue(account.SecurityContext)
 
-	variablesString, err := typehelpers.JSONString(account.Variables)
-	if err != nil {
-		errors.AddDiagAttributeError(&diags, "variables", err)
-		return diags
-	}
+	variablesString, d := typehelpers.JSONString(account.Variables)
+	errors.AddAttributeDiags(&diags, d, "variables")
 	m.Variables = variablesString
 
 	return diags

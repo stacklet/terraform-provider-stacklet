@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -61,7 +62,7 @@ func (m *ConfigurationProfileJiraDataSource) Update(cp api.ConfigurationProfile)
 		},
 	)
 	m.Projects = projects
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "project")
 
 	return diags
 }
@@ -75,15 +76,19 @@ type ConfigurationProfileJiraResource struct {
 }
 
 func (m *ConfigurationProfileJiraResource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
-	// fetch current project names to preserve declared order
-	projectNames := typehelpers.ListItemsIdentifiers(m.Projects, "name")
+	var diags diag.Diagnostics
 
-	diags := m.ConfigurationProfileJiraDataSource.Update(cp)
+	// fetch current project names to preserve declared order
+	projectNames, d := typehelpers.ListItemsIdentifiers(m.Projects, "name")
+	errors.AddAttributeDiags(&diags, d, "project")
+
+	d = m.ConfigurationProfileJiraDataSource.Update(cp)
+	diags.Append(d...)
 
 	if projectNames != nil {
 		projects, d := typehelpers.ListSortedEntries[JiraProject](m.Projects, "name", projectNames)
 		m.Projects = projects
-		diags.Append(d...)
+		errors.AddAttributeDiags(&diags, d, "project")
 	}
 
 	return diags

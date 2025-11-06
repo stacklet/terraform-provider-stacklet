@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -42,7 +43,7 @@ func (m *ConfigurationProfileSlackDataSource) Update(cp api.ConfigurationProfile
 		},
 	)
 	m.Webhooks = webhooks
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "webhook")
 
 	return diags
 }
@@ -56,18 +57,21 @@ type ConfigurationProfileSlackResource struct {
 }
 
 func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp api.ConfigurationProfile, webhookVersions map[string]string) diag.Diagnostics {
-	// fetch current webhook names to preserve declared order
-	webhookNames := typehelpers.ListItemsIdentifiers(m.Webhooks, "name")
+	var diags diag.Diagnostics
 
-	diags := m.ConfigurationProfileSlackDataSource.Update(cp)
+	// fetch current webhook names to preserve declared order
+	webhookNames, d := typehelpers.ListItemsIdentifiers(m.Webhooks, "name")
+	errors.AddAttributeDiags(&diags, d, "webhook")
+
+	d = m.ConfigurationProfileSlackDataSource.Update(cp)
+	diags.Append(d...)
 
 	if !m.Webhooks.IsNull() {
-
 		// sort entries according to keep previous ordering
 		if webhookNames != nil {
 			webhooks, d := typehelpers.ListSortedEntries[SlackWebhook](m.Webhooks, "name", webhookNames)
 			m.Webhooks = webhooks
-			diags.Append(d...)
+			errors.AddAttributeDiags(&diags, d, "webhook")
 		}
 
 		// extend entries with secrets
@@ -76,8 +80,14 @@ func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp api.C
 		for _, entry := range elems {
 			obj, _ := entry.(types.Object)
 
+			name, d := typehelpers.ObjectStringIdentifier(obj, "name")
+			errors.AddAttributeDiags(&diags, d, "webhook")
+			if diags.HasError() {
+				return diags
+			}
+
 			var woVersion types.String
-			if version, ok := webhookVersions[typehelpers.ObjectStringIdentifier(obj, "name")]; ok {
+			if version, ok := webhookVersions[name]; ok {
 				woVersion = types.StringValue(version)
 			} else {
 				woVersion = types.StringNull()
@@ -92,12 +102,12 @@ func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp api.C
 				},
 			)
 			values = append(values, webhook)
-			diags.Append(d...)
+			errors.AddAttributeDiags(&diags, d, "webhook")
 		}
 
 		webhooks, d := types.ListValue(types.ObjectType{AttrTypes: SlackWebhookWithSecret{}.AttributeTypes()}, values)
 		m.Webhooks = webhooks
-		diags.Append(d...)
+		errors.AddAttributeDiags(&diags, d, "webhook")
 	}
 
 	return diags

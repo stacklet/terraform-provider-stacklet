@@ -43,8 +43,9 @@ func AddDiagError(diag *diag.Diagnostics, err error) {
 	diag.AddError(e.Summary(), e.Error())
 }
 
-// AddDiagAttributeError adds an error to the diagnostics for a specific attribute.
-func AddDiagAttributeError(diag *diag.Diagnostics, attr string, err error) {
-	e := AsDiagError(err)
-	diag.AddAttributeError(path.Root(attr), e.Summary(), e.Error())
+// AddAttributeDiags adds attribute-specific Diagnostics to a set of Diagnostics.
+func AddAttributeDiags(dest *diag.Diagnostics, src diag.Diagnostics, attr string) {
+	for _, d := range src {
+		dest.Append(diag.WithPath(path.Root(attr), d))
+	}
 }

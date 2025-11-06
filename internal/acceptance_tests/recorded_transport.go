@@ -74,7 +74,7 @@ func (rt *recordedTransport) loadRecording() error {
 		return fmt.Errorf("failed to read recordings: %v", err)
 	}
 
-	recordings := map[string][]recording{}
+	recordings := make(map[string][]recording)
 	if err := json.Unmarshal(data, &recordings); err != nil {
 		return err
 	}

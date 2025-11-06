@@ -47,10 +47,8 @@ func (m *BindingDataSource) Update(ctx context.Context, binding *api.Binding) di
 	m.DryRun = types.BoolPointerValue(binding.DryRun())
 	m.SecurityContext = types.StringPointerValue(binding.SecurityContext())
 
-	variablesString, err := typehelpers.JSONString(binding.ExecutionConfig.Variables)
-	if err != nil {
-		errors.AddDiagAttributeError(&diags, "variables", err)
-	}
+	variablesString, d := typehelpers.JSONString(binding.ExecutionConfig.Variables)
+	errors.AddAttributeDiags(&diags, d, "variables")
 	m.Variables = variablesString
 
 	defLimit := binding.DefaultResourceLimits()
@@ -65,7 +63,7 @@ func (m *BindingDataSource) Update(ctx context.Context, binding *api.Binding) di
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "resource_limits")
 	m.ResourceLimits = defaultLimits
 
 	policyLimits, d := typehelpers.ObjectList[BindingExecutionConfigPolicyResourceLimit](
@@ -79,7 +77,7 @@ func (m *BindingDataSource) Update(ctx context.Context, binding *api.Binding) di
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "policy_resource_limit")
 	m.PolicyResourceLimits = policyLimits
 
 	return diags
@@ -111,7 +109,7 @@ func (m *BindingResource) Update(ctx context.Context, binding *api.Binding) diag
 		var d diag.Diagnostics
 		defLimits := BindingExecutionConfigResourceLimit{RequiresBoth: types.BoolValue(false)}
 		resourceLimits, d := types.ObjectValueFrom(ctx, defLimits.AttributeTypes(), &defLimits)
-		diags.Append(d...)
+		errors.AddAttributeDiags(&diags, d, "resource_limits")
 		m.ResourceLimits = resourceLimits
 	}
 

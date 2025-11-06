@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -45,7 +46,7 @@ func (m *ConfigurationProfileEmailDataSource) Update(ctx context.Context, cp api
 		},
 	)
 	m.SMTP = smtp
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "smtp")
 
 	return diags
 }
@@ -85,7 +86,7 @@ func (m *ConfigurationProfileEmailResource) Update(ctx context.Context, cp api.C
 				"password_wo_version": origPasswordWOVersion,
 			},
 		)
-		diags.Append(d...)
+		errors.AddAttributeDiags(&diags, d, "smtp")
 		m.SMTP = smtp
 	}
 

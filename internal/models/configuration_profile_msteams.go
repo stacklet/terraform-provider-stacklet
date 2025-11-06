@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -56,19 +57,19 @@ func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfi
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "channel_mapping")
 	m.ChannelMappings = channelMappings
 
 	accessConfig, d := m.buildAccessConfig(cp)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "access_config")
 	m.AccessConfig = accessConfig
 
 	customerConfig, d := m.buildCustomerConfig(cp)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "customer_config")
 	m.CustomerConfig = customerConfig
 
 	entityDetails, d := m.buildEntityDetails(cp)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "entity_details")
 	m.EntityDetails = entityDetails
 
 	return diags

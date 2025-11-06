@@ -4,6 +4,7 @@ package typehelpers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -59,8 +60,17 @@ func UpdatedObject(ctx context.Context, obj types.Object, attrs map[string]attr.
 }
 
 // ObjectStringIdentifier returns the string identifier for the object, from the provided attribute (which must be of type.String).
-func ObjectStringIdentifier(obj types.Object, name string) string {
+func ObjectStringIdentifier(obj types.Object, name string) (string, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	attr := obj.Attributes()[name]
-	id, _ := attr.(types.String)
-	return id.ValueString()
+	id, ok := attr.(types.String)
+	if !ok {
+		diags.AddError(
+			"Invalid Attribute Type",
+			fmt.Sprintf("Expected string attribute '%s' but got a different type.", name),
+		)
+		return "", diags
+	}
+	return id.ValueString(), diags
 }

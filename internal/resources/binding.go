@@ -4,7 +4,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -323,14 +322,14 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 		}
 	}
 
-	policyResourceLimits := []api.BindingExecutionConfigResourceLimitsPolicyOverrides{}
+	policyResourceLimits := make([]api.BindingExecutionConfigResourceLimitsPolicyOverrides, 0)
 	if !plan.PolicyResourceLimits.IsNull() {
 		for i, elem := range plan.PolicyResourceLimits.Elements() {
 			resourceLimit, ok := elem.(types.Object)
 			if !ok {
 				var diags diag.Diagnostics
 				diags.AddAttributeError(
-					path.Root(fmt.Sprintf("policy_resource_limit.%d", i)),
+					path.Root("policy_resource_limit").AtListIndex(i),
 					"Invalid limits",
 					"Limits block is invalid,",
 				)

@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -30,11 +31,11 @@ func (m *PlatformDataSource) Update(ctx context.Context, platform *api.Platform)
 	m.ExecutionRegions = typehelpers.StringsList(platform.ExecutionRegions)
 
 	awsAccountCustomerConfig, d := m.getCustomerConfig(ctx, platform.AWSAccountCustomerConfig)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "aws_account_customer_config")
 	m.AWSAccountCustomerConfig = awsAccountCustomerConfig
 
 	awsOrgReadCustomerConfig, d := m.getCustomerConfig(ctx, platform.AWSOrgReadCustomerConfig)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "aws_org_read_customer_config")
 	m.AWSOrgReadCustomerConfig = awsOrgReadCustomerConfig
 
 	return diags

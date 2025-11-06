@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -57,7 +58,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 				},
 			)
 			if diags.HasError() {
-				return map[string]attr.Value{}, diags
+				return make(map[string]attr.Value), diags
 			}
 
 			return map[string]attr.Value{
@@ -72,7 +73,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "email_delivery_setting")
 	m.EmailDeliverySettings = emailDeliverySettings
 
 	slackDeliverySettings, d := typehelpers.ObjectList[SlackDeliverySettings](
@@ -91,7 +92,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 				},
 			)
 			if diags.HasError() {
-				return map[string]attr.Value{}, diags
+				return make(map[string]attr.Value), diags
 			}
 
 			return map[string]attr.Value{
@@ -101,7 +102,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "slack_delivery_setting")
 	m.SlackDeliverySettings = slackDeliverySettings
 
 	msteamsDeliverySettings, d := typehelpers.ObjectList[MSTeamsDeliverySettings](
@@ -120,7 +121,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 				},
 			)
 			if diags.HasError() {
-				return map[string]attr.Value{}, diags
+				return make(map[string]attr.Value), diags
 			}
 
 			return map[string]attr.Value{
@@ -130,7 +131,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "msteams_delivery_setting")
 	m.MSTeamsDeliverySettings = msteamsDeliverySettings
 
 	servicenowDeliverySettings, d := typehelpers.ObjectList[ServiceNowDeliverySettings](
@@ -149,7 +150,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 				},
 			)
 			if diags.HasError() {
-				return map[string]attr.Value{}, diags
+				return make(map[string]attr.Value), diags
 			}
 
 			return map[string]attr.Value{
@@ -162,7 +163,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "servicenow_delivery_setting")
 	m.ServiceNowDeliverySettings = servicenowDeliverySettings
 
 	jiraDeliverySettings, d := typehelpers.ObjectList[JiraDeliverySettings](
@@ -181,7 +182,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 				},
 			)
 			if diags.HasError() {
-				return map[string]attr.Value{}, diags
+				return make(map[string]attr.Value), diags
 			}
 
 			return map[string]attr.Value{
@@ -194,7 +195,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "jira_delivery_setting")
 	m.JiraDeliverySettings = jiraDeliverySettings
 
 	symphonyDeliverySettings, d := typehelpers.ObjectList[SymphonyDeliverySettings](
@@ -213,7 +214,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 				},
 			)
 			if diags.HasError() {
-				return map[string]attr.Value{}, diags
+				return make(map[string]attr.Value), diags
 			}
 
 			return map[string]attr.Value{
@@ -223,7 +224,7 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "symphony_delivery_setting")
 	m.SymphonyDeliverySettings = symphonyDeliverySettings
 
 	return diags

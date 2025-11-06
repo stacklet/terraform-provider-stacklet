@@ -4,7 +4,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -218,12 +217,12 @@ func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.
 
 	var diags diag.Diagnostics
 
-	owners := []api.AccountOwners{}
+	owners := make([]api.AccountOwners, 0)
 	for i, elem := range m.Default.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("default.%d", i)),
+				path.Root("default").AtListIndex(i),
 				"Invalid account owners default settings",
 				"Account owners default block is invalid.",
 			)
