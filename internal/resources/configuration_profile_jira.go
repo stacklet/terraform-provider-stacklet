@@ -4,7 +4,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -236,12 +235,12 @@ func (r configurationProfileJiraResource) getProjects(ctx context.Context, m mod
 
 	var diags diag.Diagnostics
 
-	projects := []api.JiraProject{}
+	projects := make([]api.JiraProject, 0)
 	for i, elem := range m.Projects.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("project.%d", i)),
+				path.Root("project").AtListIndex(i),
 				"Invalid project configuration",
 				"Project configuration block is invalid.",
 			)

@@ -4,7 +4,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -262,7 +261,7 @@ func (r configurationProfileSlackResource) getWebhooksSecrets(ctx context.Contex
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("webhook.%d", i)),
+				path.Root("webhook").AtListIndex(i),
 				"Invalid webhook configuration",
 				"Webhook configuration block is invalid.",
 			)
@@ -289,12 +288,12 @@ func (r configurationProfileSlackResource) getWebhooksForCreate(ctx context.Cont
 
 	var diags diag.Diagnostics
 
-	webhooks := []api.SlackWebhook{}
+	webhooks := make([]api.SlackWebhook, 0)
 	for i, elem := range m.Webhooks.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("webhook.%d", i)),
+				path.Root("webhook").AtListIndex(i),
 				"Invalid webhook configuration",
 				"Webhook configuration block is invalid.",
 			)
@@ -323,12 +322,12 @@ func (r configurationProfileSlackResource) getWebhooksForUpdate(ctx context.Cont
 
 	var diags diag.Diagnostics
 
-	webhooks := []api.SlackWebhook{}
+	webhooks := make([]api.SlackWebhook, 0)
 	for i, elem := range m.Webhooks.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("webhook.%d", i)),
+				path.Root("webhook").AtListIndex(i),
 				"Invalid webhook configuration",
 				"Webhook configuration block is invalid.",
 			)

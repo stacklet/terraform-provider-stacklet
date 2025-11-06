@@ -4,7 +4,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -651,12 +650,12 @@ func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m mod
 
 	var diags diag.Diagnostics
 
-	settings := []api.EmailDeliverySettings{}
+	settings := make([]api.EmailDeliverySettings, 0)
 	for i, elem := range m.EmailDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("email_delivery_settings.%d", i)),
+				path.Root("email_delivery_settings").AtListIndex(i),
 				"Invalid email delivery settings",
 				"Email delivery settings block is invalid.",
 			)
@@ -696,12 +695,12 @@ func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m mod
 
 	var diags diag.Diagnostics
 
-	settings := []api.SlackDeliverySettings{}
+	settings := make([]api.SlackDeliverySettings, 0)
 	for i, elem := range m.SlackDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("slack_delivery_settings.%d", i)),
+				path.Root("slack_delivery_settings").AtListIndex(i),
 				"Invalid Slack delivery settings",
 				"Slack delivery settings block is invalid.",
 			)
@@ -736,12 +735,12 @@ func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m m
 
 	var diags diag.Diagnostics
 
-	settings := []api.MSTeamsDeliverySettings{}
+	settings := make([]api.MSTeamsDeliverySettings, 0)
 	for i, elem := range m.MSTeamsDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("msteams_delivery_settings.%d", i)),
+				path.Root("msteams_delivery_settings").AtListIndex(i),
 				"Invalid Microsoft Teams delivery settings",
 				"Microsoft Teams delivery settings block is invalid.",
 			)
@@ -776,12 +775,12 @@ func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, 
 
 	var diags diag.Diagnostics
 
-	settings := []api.ServiceNowDeliverySettings{}
+	settings := make([]api.ServiceNowDeliverySettings, 0)
 	for i, elem := range m.ServiceNowDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("servicenow_delivery_settings.%d", i)),
+				path.Root("servicenow_delivery_settings").AtListIndex(i),
 				"Invalid ServiceNow delivery settings",
 				"ServiceNow delivery settings block is invalid.",
 			)
@@ -819,12 +818,12 @@ func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m mode
 
 	var diags diag.Diagnostics
 
-	settings := []api.JiraDeliverySettings{}
+	settings := make([]api.JiraDeliverySettings, 0)
 	for i, elem := range m.JiraDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("jira_delivery_settings.%d", i)),
+				path.Root("jira_delivery_settings").AtListIndex(i),
 				"Invalid Jira delivery settings",
 				"Jira delivery settings block is invalid.",
 			)
@@ -862,12 +861,12 @@ func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m 
 
 	var diags diag.Diagnostics
 
-	settings := []api.SymphonyDeliverySettings{}
+	settings := make([]api.SymphonyDeliverySettings, 0)
 	for i, elem := range m.SymphonyDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("symphony_delivery_settings.%d", i)),
+				path.Root("symphony_delivery_settings").AtListIndex(i),
 				"Invalid Symphony delivery settings",
 				"Symphony delivery settings block is invalid.",
 			)
@@ -902,12 +901,12 @@ func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([
 
 	var diags diag.Diagnostics
 
-	recipients := []api.Recipient{}
+	recipients := make([]api.Recipient, 0)
 	for i, elem := range l.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
 			diags.AddAttributeError(
-				path.Root(fmt.Sprintf("recipients.%d", i)),
+				path.Root("recipients").AtListIndex(i),
 				"Invalid recipient",
 				"Recipient block is invalid.",
 			)

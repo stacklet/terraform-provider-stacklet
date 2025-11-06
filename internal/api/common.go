@@ -58,7 +58,7 @@ func NewTagsList(tags types.Map) TagsList {
 func (t TagsList) TagsMap() (types.Map, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	tagsMap := map[string]attr.Value{}
+	tagsMap := make(map[string]attr.Value)
 	for _, tag := range t {
 		tagsMap[tag.Key] = types.StringValue(tag.Value)
 	}

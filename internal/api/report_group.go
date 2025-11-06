@@ -32,7 +32,7 @@ type ReportGroup struct {
 // EmailDeliverySettings returns the list of email delivery settings for the
 // report group.
 func (r ReportGroup) EmailDeliverySettings() []EmailDeliverySettings {
-	settings := []EmailDeliverySettings{}
+	settings := make([]EmailDeliverySettings, 0)
 	for _, ds := range r.DeliverySettings {
 		if ds.TypeName == "EmailSettings" {
 			settings = append(settings, ds.EmailDeliverySettings)
@@ -44,7 +44,7 @@ func (r ReportGroup) EmailDeliverySettings() []EmailDeliverySettings {
 // SlackDeliverySettings returns the list of Slack delivery settings for the
 // report group.
 func (r ReportGroup) SlackDeliverySettings() []SlackDeliverySettings {
-	settings := []SlackDeliverySettings{}
+	settings := make([]SlackDeliverySettings, 0)
 	for _, ds := range r.DeliverySettings {
 		if ds.TypeName == "SlackSettings" {
 			settings = append(settings, ds.SlackDeliverySettings)
@@ -56,7 +56,7 @@ func (r ReportGroup) SlackDeliverySettings() []SlackDeliverySettings {
 // MSTeamsDeliverySettings returns the list of Teams delivery settings for the
 // report group.
 func (r ReportGroup) MSTeamsDeliverySettings() []MSTeamsDeliverySettings {
-	settings := []MSTeamsDeliverySettings{}
+	settings := make([]MSTeamsDeliverySettings, 0)
 	for _, ds := range r.DeliverySettings {
 		if ds.TypeName == "MSTeamsSettings" {
 			settings = append(settings, ds.MSTeamsDeliverySettings)
@@ -68,7 +68,7 @@ func (r ReportGroup) MSTeamsDeliverySettings() []MSTeamsDeliverySettings {
 // ServiceNowDeliverySettings returns the list of ServiceNow delivery settings for the
 // report group.
 func (r ReportGroup) ServiceNowDeliverySettings() []ServiceNowDeliverySettings {
-	settings := []ServiceNowDeliverySettings{}
+	settings := make([]ServiceNowDeliverySettings, 0)
 	for _, ds := range r.DeliverySettings {
 		if ds.TypeName == "ServiceNowSettings" {
 			settings = append(settings, ds.ServiceNowDeliverySettings)
@@ -80,7 +80,7 @@ func (r ReportGroup) ServiceNowDeliverySettings() []ServiceNowDeliverySettings {
 // JiraDeliverySettings returns the list of Jira delivery settings for the
 // report group.
 func (r ReportGroup) JiraDeliverySettings() []JiraDeliverySettings {
-	settings := []JiraDeliverySettings{}
+	settings := make([]JiraDeliverySettings, 0)
 	for _, ds := range r.DeliverySettings {
 		if ds.TypeName == "JiraSettings" {
 			settings = append(settings, ds.JiraDeliverySettings)
@@ -92,7 +92,7 @@ func (r ReportGroup) JiraDeliverySettings() []JiraDeliverySettings {
 // SymphonyDeliverySettings returns the list of Symphony delivery settings for the
 // report group.
 func (r ReportGroup) SymphonyDeliverySettings() []SymphonyDeliverySettings {
-	settings := []SymphonyDeliverySettings{}
+	settings := make([]SymphonyDeliverySettings, 0)
 	for _, ds := range r.DeliverySettings {
 		if ds.TypeName == "SymphonySettings" {
 			settings = append(settings, ds.SymphonyDeliverySettings)

@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -51,7 +52,7 @@ func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection 
 			}, nil
 		},
 	)
-	diags.Append(d...)
+	errors.AddAttributeDiags(&diags, d, "dynamic_config")
 	m.DynamicConfig = dynamicConfig
 
 	return diags

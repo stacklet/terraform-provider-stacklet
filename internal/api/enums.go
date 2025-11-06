@@ -31,13 +31,6 @@ const (
 	ReportSourcePolicy  = ReportSource("POLICY")
 )
 
-// REPORT_SOURCES is the list of all supported report group sources.
-var REPORT_SOURCES = []ReportSource{
-	ReportSourceBinding,
-	ReportSourceControl,
-	ReportSourcePolicy,
-}
-
 // ConfigurationProfileName is the name for a configuration profile.
 //
 // This is defined as a type since profiles are looked up by names matching
@@ -47,7 +40,6 @@ type ConfigurationProfileName StringEnum
 const (
 	ConfigurationProfileEmail         = ConfigurationProfileName("email")
 	ConfigurationProfileSlack         = ConfigurationProfileName("slack")
-	ConfigurationProfileTeams         = ConfigurationProfileName("teams")
 	ConfigurationProfileMSTeams       = ConfigurationProfileName("msteams")
 	ConfigurationProfileServiceNow    = ConfigurationProfileName("servicenow")
 	ConfigurationProfileJira          = ConfigurationProfileName("jira")

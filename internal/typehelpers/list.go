@@ -29,7 +29,7 @@ func ObjectList[ElemType WithAttributes, ItemType any](l []ItemType, buildElemen
 		return types.ListNull(elemType), diags
 	}
 
-	values := []attr.Value{}
+	values := make([]attr.Value, 0)
 	for _, entry := range l {
 		objValues, d := buildElement(entry)
 		diags.Append(d...)
@@ -51,19 +51,26 @@ func ObjectList[ElemType WithAttributes, ItemType any](l []ItemType, buildElemen
 }
 
 // ListItemsIdentifiers returns a list of identifiers from the specified attribute from a types.List of objects.
-func ListItemsIdentifiers(l types.List, attrName string) []string {
+func ListItemsIdentifiers(l types.List, attrName string) ([]string, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	if l.IsNull() || l.IsUnknown() {
-		return nil
+		return nil, diags
 	}
 
 	elems := l.Elements()
 	ids := make([]string, len(elems))
 	for i, elem := range elems {
 		if obj, ok := elem.(types.Object); ok {
-			ids[i] = ObjectStringIdentifier(obj, attrName)
+			id, d := ObjectStringIdentifier(obj, attrName)
+			diags.Append(d...)
+			if diags.HasError() {
+				return nil, diags
+			}
+			ids[i] = id
 		}
 	}
-	return ids
+	return ids, diags
 }
 
 // ListSortedEntries returns a list with same entries as the original one, but sorted by the specified string attribute according to the provided values, with extra entries at the end.
@@ -79,7 +86,10 @@ func ListSortedEntries[Type WithAttributes](l types.List, attrName string, attrV
 		return l, nil
 	}
 
-	listIdentifiers := ListItemsIdentifiers(l, attrName)
+	listIdentifiers, diags := ListItemsIdentifiers(l, attrName)
+	if diags.HasError() {
+		return types.ListNull(types.ObjectType{AttrTypes: attrTypes}), diags
+	}
 
 	elems := l.Elements()
 
@@ -88,7 +98,7 @@ func ListSortedEntries[Type WithAttributes](l types.List, attrName string, attrV
 		elemsByID[id] = elems[i]
 	}
 
-	values := []attr.Value{}
+	values := make([]attr.Value, 0)
 	seen := make(map[string]bool)
 	for _, id := range attrValues {
 		if elem, ok := elemsByID[id]; ok {
