@@ -99,14 +99,19 @@ type MSTeamsCustomerConfigInput struct {
 type MSTeamsAccessConfig struct {
 	MSTeamsAccessConfigInput
 
-	BotApplication       MSTeamsBotApplication        `json:"botApplication"`
-	PublishedApplication *MSTeamsPublishedApplication `json:"publishedApplication"`
+	BotApplication       MSTeamsBotApplication              `json:"botApplication"`
+	PublishedApplication MSTeamsPublishedApplicationPayload `json:"publishedApplication"`
 }
 
 // MSTeamsBotApplication contains details about the Microsoft Teams bot application.
 type MSTeamsBotApplication struct {
 	DownloadURL string `graphql:"downloadURL" json:"downloadURL"`
 	Version     string `json:"version"`
+}
+
+// MSTeamsPublishedApplicationPayload contains details about the Microsoft Teams bot application publishing to the registry.
+type MSTeamsPublishedApplicationPayload struct {
+	Application *MSTeamsPublishedApplication `json:"application"`
 }
 
 // MSTeamsPublishedApplication contains details about the Microsoft Teams bot application publishing to the registry.

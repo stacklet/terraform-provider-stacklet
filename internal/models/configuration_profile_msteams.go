@@ -97,15 +97,16 @@ func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.Configur
 	}
 
 	var publishedApplication types.Object
-	if cfg.PublishedApplication == nil || (cfg.PublishedApplication.CatalogID == nil && cfg.PublishedApplication.Version == nil) {
+
+	if app := cfg.PublishedApplication.Application; app == nil || (app.CatalogID == nil && app.Version == nil) {
 		publishedApplication = types.ObjectNull(MSTeamsPublishedApplication{}.AttributeTypes())
 	} else {
 		var d diag.Diagnostics
 		publishedApplication, d = types.ObjectValue(
 			MSTeamsPublishedApplication{}.AttributeTypes(),
 			map[string]attr.Value{
-				"catalog_id": types.StringPointerValue(cfg.PublishedApplication.CatalogID),
-				"version":    types.StringPointerValue(cfg.PublishedApplication.Version),
+				"catalog_id": types.StringPointerValue(app.CatalogID),
+				"version":    types.StringPointerValue(app.Version),
 			},
 		)
 		diags.Append(d...)
