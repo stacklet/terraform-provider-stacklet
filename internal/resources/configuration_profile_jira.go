@@ -18,7 +18,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
@@ -27,12 +26,12 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileJiraResource{}
 )
 
-func NewConfigurationProfileJiraResource() resource.Resource {
+func newConfigurationProfileJiraResource() resource.Resource {
 	return &configurationProfileJiraResource{}
 }
 
 type configurationProfileJiraResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *configurationProfileJiraResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -112,14 +111,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 				},
 			},
 		},
-	}
-}
-
-func (r *configurationProfileJiraResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -247,7 +238,7 @@ func (r configurationProfileJiraResource) getProjects(ctx context.Context, m mod
 			return nil, diags
 		}
 		var p models.JiraProject
-		if diags := block.As(ctx, &p, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &p, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 

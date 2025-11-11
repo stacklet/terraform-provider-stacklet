@@ -15,7 +15,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 )
 
@@ -25,12 +24,12 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileResourceOwnerResource{}
 )
 
-func NewConfigurationProfileResourceOwnerResource() resource.Resource {
+func newConfigurationProfileResourceOwnerResource() resource.Resource {
 	return &configurationProfileResourceOwnerResource{}
 }
 
 type configurationProfileResourceOwnerResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *configurationProfileResourceOwnerResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -81,14 +80,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
 		},
-	}
-}
-
-func (r *configurationProfileResourceOwnerResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 

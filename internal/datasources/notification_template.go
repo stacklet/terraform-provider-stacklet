@@ -8,22 +8,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &notificationTemplateDataSource{}
 )
 
-func NewNotificationTemplateDataSource() datasource.DataSource {
+func newNotificationTemplateDataSource() datasource.DataSource {
 	return &notificationTemplateDataSource{}
 }
 
 type notificationTemplateDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *notificationTemplateDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -57,14 +55,6 @@ func (d *notificationTemplateDataSource) Schema(_ context.Context, _ datasource.
 				Computed:    true,
 			},
 		},
-	}
-}
-
-func (d *notificationTemplateDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

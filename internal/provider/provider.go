@@ -22,32 +22,28 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/resources"
 )
 
-// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ provider.Provider = &stackletProvider{}
 )
 
-// stackletProvider is the provider implementation.
-type stackletProvider struct {
-	// version is set to the provider version on release, "dev" when the
-	// provider is built and ran locally, and "test" when running acceptance
-	// testing.
-	version string
-}
-
-// stackletProviderModel maps provider schema data to a Go type.
 type stackletProviderModel struct {
 	Endpoint types.String `tfsdk:"endpoint"`
 	APIKey   types.String `tfsdk:"api_key"`
 }
 
-// New creates a new provider instance.
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &stackletProvider{
 			version: version,
 		}
 	}
+}
+
+type stackletProvider struct {
+	// version is set to the provider version on release, "dev" when the
+	// provider is built and run locally, and "test" when running acceptance
+	// testing.
+	version string
 }
 
 // Metadata returns the provider type name.
@@ -145,17 +141,17 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 	resp.ResourceData = providerData
 	resp.DataSourceData = providerData
 
-	tflog.Info(ctx, "Configured Stacklet client", map[string]any{"success": true})
+	tflog.Info(ctx, "Configured Stacklet client")
 }
 
 // DataSources defines the data sources implemented in the provider.
 func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-	return datasources.DATASOURCES
+	return datasources.DataSources()
 }
 
 // Resources defines the resources implemented in the provider.
 func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resource {
-	return resources.RESOURCES
+	return resources.Resources()
 }
 
 type credentials struct {
@@ -166,15 +162,11 @@ type credentials struct {
 func getCredentials(config stackletProviderModel) *credentials {
 	creds := credentials{}
 
-	// Lookup provider configuration
-	if !config.Endpoint.IsNull() {
-		creds.Endpoint = config.Endpoint.ValueString()
-	}
-	if !config.APIKey.IsNull() {
-		creds.APIKey = config.APIKey.ValueString()
-	}
+	// lookup provider configuration (might return empty strings)
+	creds.Endpoint = config.Endpoint.ValueString()
+	creds.APIKey = config.APIKey.ValueString()
 
-	// Lookup env vars
+	// lookup environment variables
 	if creds.Endpoint == "" {
 		creds.Endpoint = os.Getenv("STACKLET_ENDPOINT")
 	}
@@ -182,6 +174,7 @@ func getCredentials(config stackletProviderModel) *credentials {
 		creds.APIKey = os.Getenv("STACKLET_API_KEY")
 	}
 
+	// lookup stacklet-admin configuration
 	if homeDir, err := os.UserHomeDir(); err == nil {
 		configFile := path.Join(homeDir, ".stacklet", "config.json")
 		if content, err := os.ReadFile(configFile); err == nil {

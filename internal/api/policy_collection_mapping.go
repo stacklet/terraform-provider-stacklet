@@ -65,12 +65,12 @@ func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID str
 	}
 	variables := map[string]any{
 		"uuid":         graphql.String(collectionUUID),
-		"policyFilter": NewFieldMatchFilter("uuid", policyUUID),
+		"policyFilter": newExactMatchFilter("uuid", policyUUID),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
 		return nil, NewAPIError(err)
 	}
-	if err := FromProblems(ctx, query.PolicyCollection.PolicyMappings.Problems); err != nil {
+	if err := fromProblems(ctx, query.PolicyCollection.PolicyMappings.Problems); err != nil {
 		return nil, err
 	}
 

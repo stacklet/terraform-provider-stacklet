@@ -18,7 +18,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 )
 
@@ -28,12 +27,12 @@ var (
 	_ resource.ResourceWithImportState = &bindingResource{}
 )
 
-func NewBindingResource() resource.Resource {
+func newBindingResource() resource.Resource {
 	return &bindingResource{}
 }
 
 type bindingResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *bindingResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -178,14 +177,6 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 	}
 }
 
-func (r *bindingResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
-	}
-}
-
 func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan, config models.BindingResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -295,7 +286,7 @@ func (r *bindingResource) Delete(ctx context.Context, req resource.DeleteRequest
 }
 
 func (r *bindingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
+	importState(ctx, req, resp, []string{"uuid"})
 }
 
 func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.BindingResource, securityContextString *string) (api.BindingExecutionConfig, diag.Diagnostics) {
@@ -312,7 +303,7 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 	var defaultResourceLimits *api.BindingExecutionConfigResourceLimit
 	if !plan.ResourceLimits.IsNull() {
 		var defLimitsObj models.BindingExecutionConfigResourceLimit
-		if diags := plan.ResourceLimits.As(ctx, &defLimitsObj, ObjectAsOptions); diags.HasError() {
+		if diags := plan.ResourceLimits.As(ctx, &defLimitsObj, objectAsOptions); diags.HasError() {
 			return api.BindingExecutionConfig{}, diags
 		}
 		defaultResourceLimits = &api.BindingExecutionConfigResourceLimit{
@@ -336,7 +327,7 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 				return api.BindingExecutionConfig{}, diags
 			}
 			var limitsObj models.BindingExecutionConfigPolicyResourceLimit
-			if diags := resourceLimit.As(ctx, &limitsObj, ObjectAsOptions); diags.HasError() {
+			if diags := resourceLimit.As(ctx, &limitsObj, objectAsOptions); diags.HasError() {
 				return api.BindingExecutionConfig{}, diags
 			}
 
@@ -402,7 +393,7 @@ func (m bindingResourceLimitsValidator) ValidateObject(ctx context.Context, req 
 		return
 	}
 	var obj models.BindingExecutionConfigResourceLimit
-	if diags := req.ConfigValue.As(ctx, &obj, ObjectAsOptions); diags.HasError() {
+	if diags := req.ConfigValue.As(ctx, &obj, objectAsOptions); diags.HasError() {
 		resp.Diagnostics.Append(diags...)
 		return
 	}
@@ -425,7 +416,7 @@ func (m bindingResourcePolicyLimitsValidator) ValidateObject(ctx context.Context
 		return
 	}
 	var obj models.BindingExecutionConfigPolicyResourceLimit
-	if diags := req.ConfigValue.As(ctx, &obj, ObjectAsOptions); diags.HasError() {
+	if diags := req.ConfigValue.As(ctx, &obj, objectAsOptions); diags.HasError() {
 		resp.Diagnostics.Append(diags...)
 		return
 	}

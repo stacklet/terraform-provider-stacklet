@@ -5,7 +5,6 @@ package resources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -16,7 +15,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
@@ -25,12 +23,12 @@ var (
 	_ resource.ResourceWithImportState = &accountDiscoveryAWSResource{}
 )
 
-func NewAccountDiscoveryAWSResource() resource.Resource {
+func newAccountDiscoveryAWSResource() resource.Resource {
 	return &accountDiscoveryAWSResource{}
 }
 
 type accountDiscoveryAWSResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *accountDiscoveryAWSResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -91,14 +89,6 @@ func (r *accountDiscoveryAWSResource) Schema(_ context.Context, _ resource.Schem
 				},
 			},
 		},
-	}
-}
-
-func (r *accountDiscoveryAWSResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -185,5 +175,5 @@ func (r *accountDiscoveryAWSResource) Delete(ctx context.Context, req resource.D
 }
 
 func (r *accountDiscoveryAWSResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
+	importState(ctx, req, resp, []string{"name"})
 }

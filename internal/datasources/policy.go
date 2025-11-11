@@ -10,10 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 )
 
@@ -21,12 +19,12 @@ var (
 	_ datasource.DataSource = &policyDataSource{}
 )
 
-func NewPolicyDataSource() datasource.DataSource {
+func newPolicyDataSource() datasource.DataSource {
 	return &policyDataSource{}
 }
 
 type policyDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *policyDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -98,14 +96,6 @@ func (d *policyDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 				Computed:    true,
 			},
 		},
-	}
-}
-
-func (d *policyDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

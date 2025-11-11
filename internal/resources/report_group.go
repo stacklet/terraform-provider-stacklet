@@ -22,7 +22,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 )
 
@@ -32,12 +31,12 @@ var (
 	_ resource.ResourceWithImportState = &reportGroupResource{}
 )
 
-func NewReportGroupResource() resource.Resource {
+func newReportGroupResource() resource.Resource {
 	return &reportGroupResource{}
 }
 
 type reportGroupResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *reportGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -461,14 +460,6 @@ func (r *reportGroupResource) Schema(_ context.Context, _ resource.SchemaRequest
 	}
 }
 
-func (r *reportGroupResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
-	}
-}
-
 func (r *reportGroupResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state models.ReportGroupResource
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
@@ -640,7 +631,7 @@ func (r *reportGroupResource) Delete(ctx context.Context, req resource.DeleteReq
 }
 
 func (r *reportGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), req.ID)...)
+	importState(ctx, req, resp, []string{"name"})
 }
 
 func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.EmailDeliverySettings, diag.Diagnostics) {
@@ -662,7 +653,7 @@ func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m mod
 			return nil, diags
 		}
 		var s models.EmailDeliverySettings
-		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &s, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -707,7 +698,7 @@ func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m mod
 			return nil, diags
 		}
 		var s models.SlackDeliverySettings
-		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &s, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -747,7 +738,7 @@ func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m m
 			return nil, diags
 		}
 		var s models.MSTeamsDeliverySettings
-		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &s, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -787,7 +778,7 @@ func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, 
 			return nil, diags
 		}
 		var s models.ServiceNowDeliverySettings
-		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &s, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -830,7 +821,7 @@ func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m mode
 			return nil, diags
 		}
 		var s models.JiraDeliverySettings
-		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &s, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -873,7 +864,7 @@ func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m 
 			return nil, diags
 		}
 		var s models.SymphonyDeliverySettings
-		if diags := block.As(ctx, &s, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &s, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -913,7 +904,7 @@ func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([
 			return nil, diags
 		}
 		var r models.Recipient
-		if diags := block.As(ctx, &r, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &r, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 

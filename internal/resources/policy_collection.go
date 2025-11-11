@@ -6,7 +6,6 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -21,7 +20,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 )
 
@@ -31,12 +29,12 @@ var (
 	_ resource.ResourceWithImportState = &policyCollectionResource{}
 )
 
-func NewPolicyCollectionResource() resource.Resource {
+func newPolicyCollectionResource() resource.Resource {
 	return &policyCollectionResource{}
 }
 
 type policyCollectionResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *policyCollectionResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -147,14 +145,6 @@ func (r *policyCollectionResource) Schema(_ context.Context, _ resource.SchemaRe
 	}
 }
 
-func (r *policyCollectionResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
-	}
-}
-
 func (r *policyCollectionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan models.PolicyCollectionResource
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -251,7 +241,7 @@ func (r *policyCollectionResource) Delete(ctx context.Context, req resource.Dele
 }
 
 func (r *policyCollectionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("uuid"), req.ID)...)
+	importState(ctx, req, resp, []string{"uuid"})
 }
 
 func (r policyCollectionResource) getDynamicDetails(ctx context.Context, planDynamicConfig types.Object) (*string, *api.RepositoryViewInput, diag.Diagnostics) {
@@ -261,7 +251,7 @@ func (r policyCollectionResource) getDynamicDetails(ctx context.Context, planDyn
 
 	if !planDynamicConfig.IsNull() {
 		var dynamicConfig models.PolicyCollectionDynamicConfig
-		diags = planDynamicConfig.As(ctx, &dynamicConfig, ObjectAsOptions)
+		diags = planDynamicConfig.As(ctx, &dynamicConfig, objectAsOptions)
 		uuid = dynamicConfig.RepositoryUUID.ValueStringPointer()
 		view = &api.RepositoryViewInput{
 			BranchName:        dynamicConfig.BranchName.ValueStringPointer(),

@@ -5,7 +5,6 @@ package resources
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -14,7 +13,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
@@ -23,12 +21,12 @@ var (
 	_ resource.ResourceWithImportState = &policyCollectionMappingResource{}
 )
 
-func NewPolicyCollectionMappingResource() resource.Resource {
+func newPolicyCollectionMappingResource() resource.Resource {
 	return &policyCollectionMappingResource{}
 }
 
 type policyCollectionMappingResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *policyCollectionMappingResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,14 +63,6 @@ func (r *policyCollectionMappingResource) Schema(_ context.Context, _ resource.S
 				Required:    true,
 			},
 		},
-	}
-}
-
-func (r *policyCollectionMappingResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -152,12 +142,5 @@ func (r *policyCollectionMappingResource) Delete(ctx context.Context, req resour
 }
 
 func (r *policyCollectionMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	parts, err := splitImportID(req.ID, []string{"collection_uuid", "policy_uuid"})
-	if err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-		return
-	}
-
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("collection_uuid"), parts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("policy_uuid"), parts[1])...)
+	importState(ctx, req, resp, []string{"collection_uuid", "policy_uuid"})
 }

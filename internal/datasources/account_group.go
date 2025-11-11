@@ -9,22 +9,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &accountGroupDataSource{}
 )
 
-func NewAccountGroupDataSource() datasource.DataSource {
+func newAccountGroupDataSource() datasource.DataSource {
 	return &accountGroupDataSource{}
 }
 
 type accountGroupDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *accountGroupDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -61,14 +59,6 @@ func (d *accountGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				ElementType: types.StringType,
 			},
 		},
-	}
-}
-
-func (d *accountGroupDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

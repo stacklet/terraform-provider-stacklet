@@ -9,22 +9,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &configurationProfileMSTeamsDataSource{}
 )
 
-func NewConfigurationProfileMSTeamsDataSource() datasource.DataSource {
+func newConfigurationProfileMSTeamsDataSource() datasource.DataSource {
 	return &configurationProfileMSTeamsDataSource{}
 }
 
 type configurationProfileMSTeamsDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *configurationProfileMSTeamsDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -202,14 +200,6 @@ func (d *configurationProfileMSTeamsDataSource) Schema(_ context.Context, _ data
 				},
 			},
 		},
-	}
-}
-
-func (d *configurationProfileMSTeamsDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

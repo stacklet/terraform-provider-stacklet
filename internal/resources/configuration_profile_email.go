@@ -15,7 +15,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
@@ -24,12 +23,12 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileEmailResource{}
 )
 
-func NewConfigurationProfileEmailResource() resource.Resource {
+func newConfigurationProfileEmailResource() resource.Resource {
 	return &configurationProfileEmailResource{}
 }
 
 type configurationProfileEmailResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *configurationProfileEmailResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -102,14 +101,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 				},
 			},
 		},
-	}
-}
-
-func (r *configurationProfileEmailResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -242,7 +233,7 @@ func (r configurationProfileEmailResource) getSMTPResource(ctx context.Context, 
 	var smtp models.SMTPResource
 
 	if !m.SMTP.IsNull() {
-		diags = m.SMTP.As(ctx, &smtp, ObjectAsOptions)
+		diags = m.SMTP.As(ctx, &smtp, objectAsOptions)
 	}
 	return smtp, diags
 }

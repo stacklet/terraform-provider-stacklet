@@ -15,7 +15,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -23,13 +22,13 @@ var _ resource.Resource = &repositoryResource{}
 var _ resource.ResourceWithConfigure = &repositoryResource{}
 var _ resource.ResourceWithImportState = &repositoryResource{}
 
-func NewRepositoryResource() resource.Resource {
+func newRepositoryResource() resource.Resource {
 	return &repositoryResource{}
 }
 
 // repositoryResource defines the resource implementation.
 type repositoryResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *repositoryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -139,14 +138,6 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:    true,
 			},
 		},
-	}
-}
-
-func (r *repositoryResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 

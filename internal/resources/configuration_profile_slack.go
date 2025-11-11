@@ -18,7 +18,6 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 )
 
@@ -34,12 +33,12 @@ type slackWebhookSecret struct {
 	Version   string
 }
 
-func NewConfigurationProfileSlackResource() resource.Resource {
+func newConfigurationProfileSlackResource() resource.Resource {
 	return &configurationProfileSlackResource{}
 }
 
 type configurationProfileSlackResource struct {
-	api *api.API
+	apiResource
 }
 
 func (r *configurationProfileSlackResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -120,14 +119,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 				},
 			},
 		},
-	}
-}
-
-func (r *configurationProfileSlackResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetResourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
 	}
 }
 
@@ -269,7 +260,7 @@ func (r configurationProfileSlackResource) getWebhooksSecrets(ctx context.Contex
 		}
 
 		var w models.SlackWebhookWithSecret
-		if diags := block.As(ctx, &w, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &w, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 		secrets[w.Name.ValueString()] = slackWebhookSecret{
@@ -300,7 +291,7 @@ func (r configurationProfileSlackResource) getWebhooksForCreate(ctx context.Cont
 			return nil, diags
 		}
 		var w models.SlackWebhookWithSecret
-		if diags := block.As(ctx, &w, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &w, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 
@@ -334,7 +325,7 @@ func (r configurationProfileSlackResource) getWebhooksForUpdate(ctx context.Cont
 			return nil, diags
 		}
 		var w models.SlackWebhookWithSecret
-		if diags := block.As(ctx, &w, ObjectAsOptions); diags.HasError() {
+		if diags := block.As(ctx, &w, objectAsOptions); diags.HasError() {
 			return nil, diags
 		}
 

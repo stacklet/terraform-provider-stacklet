@@ -8,22 +8,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &bindingDataSource{}
 )
 
-func NewBindingDataSource() datasource.DataSource {
+func newBindingDataSource() datasource.DataSource {
 	return &bindingDataSource{}
 }
 
 type bindingDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *bindingDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -135,14 +133,6 @@ func (d *bindingDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				},
 			},
 		},
-	}
-}
-
-func (d *bindingDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 

@@ -9,22 +9,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
-	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 var (
 	_ datasource.DataSource = &policyCollectionDataSource{}
 )
 
-func NewPolicyCollectionDataSource() datasource.DataSource {
+func newPolicyCollectionDataSource() datasource.DataSource {
 	return &policyCollectionDataSource{}
 }
 
 type policyCollectionDataSource struct {
-	api *api.API
+	apiDataSource
 }
 
 func (d *policyCollectionDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -96,14 +94,6 @@ func (d *policyCollectionDataSource) Schema(_ context.Context, _ datasource.Sche
 				},
 			},
 		},
-	}
-}
-
-func (d *policyCollectionDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetDataSourceProviderData(req); err != nil {
-		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
 	}
 }
 
