@@ -20,6 +20,7 @@ func DataSources() []func() datasource.DataSource {
 		newConfigurationProfileServiceNowDataSource,
 		newConfigurationProfileSlackDataSource,
 		newConfigurationProfileSymphonyDataSource,
+		newMSTeamsIntegrationSurfaceDataSource,
 		newNotificationTemplateDataSource,
 		newPlatformDataSource,
 		newPolicyCollectionDataSource,

@@ -115,7 +115,7 @@ func (d *platformDataSource) Read(ctx context.Context, req datasource.ReadReques
 		return
 	}
 
-	platform, err := d.api.Platform.Read(ctx)
+	platform, err := d.api.System.Platform(ctx)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return

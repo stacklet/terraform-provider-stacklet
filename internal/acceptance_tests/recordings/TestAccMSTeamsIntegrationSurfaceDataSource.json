@@ -1,0 +1,46 @@
+{
+  "{msTeamsIntegrationSurface{botEndpoint,oidcClient,oidcIssuer}}": [
+    {
+      "request": {
+        "query": "{msTeamsIntegrationSurface{botEndpoint,oidcClient,oidcIssuer}}"
+      },
+      "response": {
+        "data": {
+          "msTeamsIntegrationSurface": {
+            "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
+            "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
+            "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{msTeamsIntegrationSurface{botEndpoint,oidcClient,oidcIssuer}}"
+      },
+      "response": {
+        "data": {
+          "msTeamsIntegrationSurface": {
+            "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
+            "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
+            "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{msTeamsIntegrationSurface{botEndpoint,oidcClient,oidcIssuer}}"
+      },
+      "response": {
+        "data": {
+          "msTeamsIntegrationSurface": {
+            "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
+            "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
+            "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5"
+          }
+        }
+      }
+    }
+  ]
+}
