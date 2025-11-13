@@ -66,8 +66,11 @@ resource "stacklet_configuration_profile_msteams" "example" {
 Required:
 
 - `client_id` (String) The client ID.
-- `roundtrip_digest` (String) The roundtrip digest.
 - `tenant_id` (String) The tenant ID.
+
+Optional:
+
+- `roundtrip_digest` (String) The roundtrip digest.
 
 
 <a id="nestedblock--channel_mapping"></a>
