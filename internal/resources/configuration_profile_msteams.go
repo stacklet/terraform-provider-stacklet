@@ -122,7 +122,9 @@ The profile is global, adding multiple resources of this kind will cause them to
 					},
 					"roundtrip_digest": schema.StringAttribute{
 						Description: "The roundtrip digest.",
-						Required:    true,
+						Optional:    true,
+						Computed:    true,
+						Default:     stringdefault.StaticString("#managed-by-terraform#"),
 					},
 					"tenant_id": schema.StringAttribute{
 						Description: "The tenant ID.",
