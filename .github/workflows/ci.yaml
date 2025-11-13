@@ -17,48 +17,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Tool versions
-        uses: wistia/parse-tool-versions@v2.1.1
+        uses: wistia/parse-tool-versions@32f568a4ffd4bfa7720ebf93f171597d1ebc979a # v2.1.1
         with:
-          prefix: TOOL_VERSION_
+          postfix: _TOOL_VERSION
 
       - name: Setup Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
-          go-version: ${{ env.TOOL_VERSION_GO }}
+          go-version: ${{ env.GO_TOOL_VERSION }}
 
       - name: Lint
-        uses: golangci/golangci-lint-action@v9
+        uses: golangci/golangci-lint-action@0a35821d5c230e903fcfe077583637dea1b27b47 # v9.0.0
         with:
-          version: ${{ env.TOOL_VERSION_GOLANGCI_LINT }}
+          version: ${{ env.GOLANGCI_LINT_TOOL_VERSION }}
 
   lint-tf:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Tool versions
-        uses: wistia/parse-tool-versions@v2.1.1
+        uses: wistia/parse-tool-versions@32f568a4ffd4bfa7720ebf93f171597d1ebc979a # v2.1.1
         with:
-          prefix: TOOL_VERSION_
+          postfix: _TOOL_VERSION
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
-          terraform_version: ${{ env.TOOL_VERSION_TERRAFORM }}
+          terraform_version: ${{ env.TERRAFORM_TOOL_VERSION }}
 
       - name: Setup Just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859 # v1.4.0
         with:
-          just-version: ${{ env.TOOL_VERSION_JUST }}
+          repo: casey/just
+          version: ${{ env.JUST_TOOL_VERSION }}
 
       - name: Setup Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
-          go-version: ${{ env.TOOL_VERSION_GO }}
+          go-version: ${{ env.GO_TOOL_VERSION }}
 
       - name: Lint
         run: |
@@ -68,22 +69,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Tool versions
-        uses: wistia/parse-tool-versions@v2.1.1
+        uses: wistia/parse-tool-versions@32f568a4ffd4bfa7720ebf93f171597d1ebc979a # v2.1.1
         with:
-          prefix: TOOL_VERSION_
+          postfix: _TOOL_VERSION
 
       - name: Setup Just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859 # v1.4.0
         with:
-          just-version: ${{ env.TOOL_VERSION_JUST }}
+          repo: casey/just
+          version: ${{ env.JUST_TOOL_VERSION }}
 
       - name: Setup Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
-          go-version: ${{ env.TOOL_VERSION_GO }}
+          go-version: ${{ env.GO_TOOL_VERSION }}
 
       - name: Lint
         run: |
@@ -93,22 +95,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Tool versions
-        uses: wistia/parse-tool-versions@v2.1.1
+        uses: wistia/parse-tool-versions@32f568a4ffd4bfa7720ebf93f171597d1ebc979a # v2.1.1
         with:
-          prefix: TOOL_VERSION_
+          postfix: _TOOL_VERSION
 
       - name: Setup Just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859 # v1.4.0
         with:
-          just-version: ${{ env.TOOL_VERSION_JUST }}
+          repo: casey/just
+          version: ${{ env.JUST_TOOL_VERSION }}
 
       - name: Setup Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
-          go-version: ${{ env.TOOL_VERSION_GO }}
+          go-version: ${{ env.GO_TOOL_VERSION }}
 
       - name: Lint
         run: |
@@ -118,22 +121,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Tool versions
-        uses: wistia/parse-tool-versions@v2.1.1
+        uses: wistia/parse-tool-versions@32f568a4ffd4bfa7720ebf93f171597d1ebc979a # v2.1.1
         with:
-          prefix: TOOL_VERSION_
+          postfix: _TOOL_VERSION
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
-          terraform_version: ${{ env.TOOL_VERSION_TERRAFORM }}
+          terraform_version: ${{ env.TERRAFORM_TOOL_VERSION }}
 
       - name: Setup Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
-          go-version: ${{ env.TOOL_VERSION_GO }}
+          go-version: ${{ env.GO_TOOL_VERSION }}
 
       - name: Test
         env:
