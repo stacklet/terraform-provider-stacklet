@@ -34,7 +34,7 @@ type systemAPI struct {
 	c *graphql.Client
 }
 
-// Platform return platform details.
+// Platform returns platform details.
 func (a systemAPI) Platform(ctx context.Context) (*Platform, error) {
 	var query struct {
 		Platform Platform `graphql:"platform"`
