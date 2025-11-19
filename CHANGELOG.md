@@ -1,3 +1,20 @@
+## 0.4.0 - 2025-11-19
+
+- Replace `teams_delivery_settings` support in `stacklet_report_group` resource/datasource with `msteams_delivery_settings`, based on the new integration.
+- Add support for the following resource types:
+  * `stacklet_configuration_profile_email`
+  * `stacklet_configuration_profile_jira`
+  * `stacklet_configuration_profile_msteams`
+  * `stacklet_configuration_profile_servicenow`
+  * `stacklet_configuration_profile_slack`
+  * `stacklet_configuration_profile_symphony`
+- Add support for the following data source types:
+  * `stacklet_configuration_profile_msteams`
+  * `stacklet_msteams_integration_surface`
+- Remove support for the `stacklet_configuration_profile_teams` data source.
+- Add missing computed `source` attribute for `stacklet_report_group` resource.
+
+
 ## 0.3.0 - 2025-08-26
 
 - Add module versions for `stacklet_platform` data source.
@@ -17,6 +34,7 @@
   * `stacklet_configuration_profile_teams`
   * `stacklet_notification_template`
   * `stacklet_report_group`
+
 
 ## 0.2.0 - 2025-07-02
 
