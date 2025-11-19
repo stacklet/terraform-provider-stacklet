@@ -1,6 +1,6 @@
 ## 0.4.0 - 2025-11-19
 
-- Replace `teams_delivery_settings` suppor tin `stacklet_report_group` resource/datasource with `msteams_delivery_settings`, based on the new integration.
+- Replace `teams_delivery_settings` support in `stacklet_report_group` resource/datasource with `msteams_delivery_settings`, based on the new integration.
 - Add support for the following resource types:
   * `stacklet_configuration_profile_email`
   * `stacklet_configuration_profile_jira`
