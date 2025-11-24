@@ -1,3 +1,10 @@
+## 0.5.0 - 2025-11-24
+
+- Add support for dynamic account groups via `dynamic_filter` in `stacklet_account_group` resource/datasource,
+- Fix: don't override provider endpoint and api key with the stacklet-admin config if they're declared elsewhere.
+- Fix: Don't try logging HTTP responses if the request failed.
+
+
 ## 0.4.0 - 2025-11-19
 
 - Replace `teams_delivery_settings` support in `stacklet_report_group` resource/datasource with `msteams_delivery_settings`, based on the new integration.
