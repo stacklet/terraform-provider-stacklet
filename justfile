@@ -48,6 +48,10 @@ test-live *args:
 test-record testname:
     TF_ACC_MODE=record just test -count=1 -run {{ testname }}
 
+# Run only unit tests (no acceptance)
+test-unit *args:
+    go test {{ package }} {{ args }}
+
 # Generate provider documentation
 docs:
     env -C tools go generate -run=generate-docs

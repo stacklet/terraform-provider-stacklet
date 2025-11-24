@@ -12,6 +12,42 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func setHomeDir(t *testing.T) string {
+	homeDir := t.TempDir()
+	t.Setenv("HOME", homeDir)
+	return homeDir
+}
+
+func makeStackletAdminDir(t *testing.T) string {
+	homeDir := setHomeDir(t)
+	stackletDir := path.Join(homeDir, ".stacklet")
+	if err := os.MkdirAll(stackletDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+
+	return stackletDir
+}
+
+func setupStackletAdminConfig(t *testing.T, endpoint, apiKey string) {
+	stackletDir := makeStackletAdminDir(t)
+
+	if endpoint != "" {
+		configFile := path.Join(stackletDir, "config.json")
+		configData := map[string]string{"api": endpoint}
+		configJSON, _ := json.Marshal(configData)
+		if err := os.WriteFile(configFile, configJSON, 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	if apiKey != "" {
+		credsFile := path.Join(stackletDir, "credentials")
+		if err := os.WriteFile(credsFile, []byte(apiKey), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+}
+
 func TestGetCredentials_FromConfig(t *testing.T) {
 	config := stackletProviderModel{
 		Endpoint: types.StringValue("https://config-endpoint.example.com"),
@@ -19,7 +55,6 @@ func TestGetCredentials_FromConfig(t *testing.T) {
 	}
 
 	creds := getCredentials(config)
-
 	assert.Equal(t, "https://config-endpoint.example.com", creds.Endpoint)
 	assert.Equal(t, "config-api-key", creds.APIKey)
 }
@@ -34,7 +69,6 @@ func TestGetCredentials_FromEnvVars(t *testing.T) {
 	}
 
 	creds := getCredentials(config)
-
 	assert.Equal(t, "https://env-endpoint.example.com", creds.Endpoint)
 	assert.Equal(t, "env-api-key", creds.APIKey)
 }
@@ -49,31 +83,12 @@ func TestGetCredentials_ConfigOverridesEnvVars(t *testing.T) {
 	}
 
 	creds := getCredentials(config)
-
 	assert.Equal(t, "https://config-endpoint.example.com", creds.Endpoint)
 	assert.Equal(t, "config-api-key", creds.APIKey)
 }
 
 func TestGetCredentials_FromStackletAdminConfig(t *testing.T) {
-	tmpDir := t.TempDir()
-	t.Setenv("HOME", tmpDir)
-
-	stackletDir := path.Join(tmpDir, ".stacklet")
-	if err := os.MkdirAll(stackletDir, 0755); err != nil {
-		t.Fatal(err)
-	}
-
-	configFile := path.Join(stackletDir, "config.json")
-	configData := map[string]string{"api": "https://cli-endpoint.example.com"}
-	configJSON, _ := json.Marshal(configData)
-	if err := os.WriteFile(configFile, configJSON, 0644); err != nil {
-		t.Fatal(err)
-	}
-
-	credsFile := path.Join(stackletDir, "credentials")
-	if err := os.WriteFile(credsFile, []byte("cli-api-key"), 0644); err != nil {
-		t.Fatal(err)
-	}
+	setupStackletAdminConfig(t, "https://cli-endpoint.example.com", "cli-api-key")
 
 	config := stackletProviderModel{
 		Endpoint: types.StringNull(),
@@ -81,33 +96,15 @@ func TestGetCredentials_FromStackletAdminConfig(t *testing.T) {
 	}
 
 	creds := getCredentials(config)
-
 	assert.Equal(t, "https://cli-endpoint.example.com", creds.Endpoint)
 	assert.Equal(t, "cli-api-key", creds.APIKey)
 }
 
 func TestGetCredentials_EnvVarsOverrideStackletAdminFiles(t *testing.T) {
-	tmpDir := t.TempDir()
-	t.Setenv("HOME", tmpDir)
 	t.Setenv("STACKLET_ENDPOINT", "https://env-endpoint.example.com")
 	t.Setenv("STACKLET_API_KEY", "env-api-key")
 
-	stackletDir := path.Join(tmpDir, ".stacklet")
-	if err := os.MkdirAll(stackletDir, 0755); err != nil {
-		t.Fatal(err)
-	}
-
-	configFile := path.Join(stackletDir, "config.json")
-	configData := map[string]string{"api": "https://cli-endpoint.example.com"}
-	configJSON, _ := json.Marshal(configData)
-	if err := os.WriteFile(configFile, configJSON, 0644); err != nil {
-		t.Fatal(err)
-	}
-
-	credsFile := path.Join(stackletDir, "credentials")
-	if err := os.WriteFile(credsFile, []byte("cli-api-key"), 0644); err != nil {
-		t.Fatal(err)
-	}
+	setupStackletAdminConfig(t, "https://cli-endpoint.example.com", "cli-api-key")
 
 	config := stackletProviderModel{
 		Endpoint: types.StringNull(),
@@ -115,27 +112,14 @@ func TestGetCredentials_EnvVarsOverrideStackletAdminFiles(t *testing.T) {
 	}
 
 	creds := getCredentials(config)
-
 	assert.Equal(t, "https://env-endpoint.example.com", creds.Endpoint)
 	assert.Equal(t, "env-api-key", creds.APIKey)
 }
 
 func TestGetCredentials_MixedSources(t *testing.T) {
-	tmpDir := t.TempDir()
-	t.Setenv("HOME", tmpDir)
 	t.Setenv("STACKLET_API_KEY", "env-api-key")
 
-	stackletDir := path.Join(tmpDir, ".stacklet")
-	if err := os.MkdirAll(stackletDir, 0755); err != nil {
-		t.Fatal(err)
-	}
-
-	configFile := path.Join(stackletDir, "config.json")
-	configData := map[string]string{"api": "https://cli-endpoint.example.com"}
-	configJSON, _ := json.Marshal(configData)
-	if err := os.WriteFile(configFile, configJSON, 0644); err != nil {
-		t.Fatal(err)
-	}
+	setupStackletAdminConfig(t, "https://cli-endpoint.example.com", "")
 
 	config := stackletProviderModel{
 		Endpoint: types.StringNull(),
@@ -143,14 +127,12 @@ func TestGetCredentials_MixedSources(t *testing.T) {
 	}
 
 	creds := getCredentials(config)
-
 	assert.Equal(t, "https://cli-endpoint.example.com", creds.Endpoint)
 	assert.Equal(t, "env-api-key", creds.APIKey)
 }
 
 func TestGetCredentials_Empty(t *testing.T) {
-	tmpDir := t.TempDir()
-	t.Setenv("HOME", tmpDir)
+	setupStackletAdminConfig(t, "", "")
 
 	config := stackletProviderModel{
 		Endpoint: types.StringNull(),
@@ -178,14 +160,7 @@ func TestGetCredentials_PartialConfig(t *testing.T) {
 }
 
 func TestGetCredentials_InvalidStackletAdminConfigJSON(t *testing.T) {
-	tmpDir := t.TempDir()
-	t.Setenv("HOME", tmpDir)
-
-	stackletDir := path.Join(tmpDir, ".stacklet")
-	if err := os.MkdirAll(stackletDir, 0755); err != nil {
-		t.Fatal(err)
-	}
-
+	stackletDir := makeStackletAdminDir(t)
 	configFile := path.Join(stackletDir, "config.json")
 	if err := os.WriteFile(configFile, []byte("invalid json"), 0644); err != nil {
 		t.Fatal(err)
@@ -197,18 +172,12 @@ func TestGetCredentials_InvalidStackletAdminConfigJSON(t *testing.T) {
 	}
 
 	creds := getCredentials(config)
-
 	assert.Equal(t, "", creds.Endpoint)
+	assert.Equal(t, "", creds.APIKey)
 }
 
 func TestGetCredentials_MissingStackletAdminFiles(t *testing.T) {
-	tmpDir := t.TempDir()
-	t.Setenv("HOME", tmpDir)
-
-	stackletDir := path.Join(tmpDir, ".stacklet")
-	if err := os.MkdirAll(stackletDir, 0755); err != nil {
-		t.Fatal(err)
-	}
+	setupStackletAdminConfig(t, "", "")
 
 	config := stackletProviderModel{
 		Endpoint: types.StringNull(),
@@ -216,7 +185,6 @@ func TestGetCredentials_MissingStackletAdminFiles(t *testing.T) {
 	}
 
 	creds := getCredentials(config)
-
 	assert.Equal(t, "", creds.Endpoint)
 	assert.Equal(t, "", creds.APIKey)
 }
