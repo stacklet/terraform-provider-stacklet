@@ -176,22 +176,26 @@ func getCredentials(config stackletProviderModel) *credentials {
 
 	// lookup stacklet-admin configuration
 	if homeDir, err := os.UserHomeDir(); err == nil {
-		configFile := path.Join(homeDir, ".stacklet", "config.json")
-		if content, err := os.ReadFile(configFile); err == nil {
-			config := struct {
-				Api string `json:"api"`
-			}{}
-			if err := json.Unmarshal(content, &config); err == nil {
-				creds.Endpoint = config.Api
+
+		if creds.Endpoint == "" {
+			configFile := path.Join(homeDir, ".stacklet", "config.json")
+			if content, err := os.ReadFile(configFile); err == nil {
+				config := struct {
+					Api string `json:"api"`
+				}{}
+				if err := json.Unmarshal(content, &config); err == nil {
+					creds.Endpoint = config.Api
+				}
 			}
 		}
 
-		credsFile := path.Join(homeDir, ".stacklet", "credentials")
-		if content, err := os.ReadFile(credsFile); err == nil {
-			creds.APIKey = string(content)
+		if creds.APIKey == "" {
+			credsFile := path.Join(homeDir, ".stacklet", "credentials")
+			if content, err := os.ReadFile(credsFile); err == nil {
+				creds.APIKey = string(content)
+			}
 		}
 	}
 
 	return &creds
-
 }
