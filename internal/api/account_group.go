@@ -10,20 +10,22 @@ import (
 
 // AccountGroup is the data returned by reading account group data.
 type AccountGroup struct {
-	ID          string
-	UUID        string
-	Name        string
-	Description *string
-	Provider    string
-	Regions     []string
+	ID            string
+	UUID          string
+	Name          string
+	Description   *string
+	DynamicFilter *string
+	Provider      string
+	Regions       []string
 }
 
 // AccountGroupCreateInput is the input for creating an account group.
 type AccountGroupCreateInput struct {
-	Name        string   `json:"name"`
-	Provider    string   `json:"provider"`
-	Description *string  `json:"description,omitempty"`
-	Regions     []string `json:"regions"`
+	Name          string   `json:"name"`
+	Provider      string   `json:"provider"`
+	Description   *string  `json:"description,omitempty"`
+	DynamicFilter *string  `json:"dynamicFilter,omitempty"`
+	Regions       []string `json:"regions"`
 }
 
 func (i AccountGroupCreateInput) GetGraphQLType() string {
@@ -32,10 +34,11 @@ func (i AccountGroupCreateInput) GetGraphQLType() string {
 
 // AccountGroupUpdateInput is the input for updating an account group.
 type AccountGroupUpdateInput struct {
-	UUID        string   `json:"uuid"`
-	Name        *string  `json:"name"`
-	Description *string  `json:"description"`
-	Regions     []string `json:"regions"`
+	UUID          string   `json:"uuid"`
+	Name          *string  `json:"name"`
+	Description   *string  `json:"description"`
+	DynamicFilter *string  `json:"dynamicFilter"`
+	Regions       []string `json:"regions"`
 }
 
 func (i AccountGroupUpdateInput) GetGraphQLType() string {

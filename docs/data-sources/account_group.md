@@ -36,5 +36,6 @@ data "stacklet_account_group" "by_name" {
 
 - `cloud_provider` (String) The cloud provider for the account group.
 - `description` (String) The description of the account group.
+- `dynamic_filter` (String) Dynamic filter for accounts matching. Null means not dynamic, empty string matches all accounts.
 - `id` (String) The GraphQL Node ID of the account group.
 - `regions` (List of String) The regions for the account group.

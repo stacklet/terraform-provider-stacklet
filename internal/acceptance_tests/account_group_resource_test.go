@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestAccAccountGroupResource(t *testing.T) {
@@ -26,6 +27,7 @@ func TestAccAccountGroupResource(t *testing.T) {
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "regions.0", "us-east-1"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group.test", "uuid"),
+				resource.TestCheckNoResourceAttr("stacklet_account_group.test", "dynamic_filter"),
 			),
 		},
 		// ImportState testing using UUID
@@ -73,4 +75,66 @@ func TestAccAccountGroupResource(t *testing.T) {
 		},
 	}
 	runRecordedAccTest(t, "TestAccAccountGroupResource", steps)
+}
+
+func TestAccAccountGroupResource_Dynamic(t *testing.T) {
+	steps := []resource.TestStep{
+		// Create account group without dynamic filter
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-dynamic-group"
+						description = "Test dynamic account group"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("dynamic-group")),
+				resource.TestCheckNoResourceAttr("stacklet_account_group.test", "dynamic_filter"),
+			),
+		},
+		// Add dynamic filter - should trigger recreation
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-dynamic-group"
+						description = "Test dynamic account group"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+						dynamic_filter = "tag:Environment=prod"
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("dynamic-group")),
+				resource.TestCheckResourceAttr("stacklet_account_group.test", "dynamic_filter", "tag:Environment=prod"),
+			),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction("stacklet_account_group.test", plancheck.ResourceActionDestroyBeforeCreate),
+				},
+			},
+		},
+		// Remove dynamic filter - should trigger recreation
+		{
+			Config: `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-dynamic-group"
+						description = "Test dynamic account group"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+				`,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("dynamic-group")),
+				resource.TestCheckNoResourceAttr("stacklet_account_group.test", "dynamic_filter"),
+			),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction("stacklet_account_group.test", plancheck.ResourceActionDestroyBeforeCreate),
+				},
+			},
+		},
+	}
+	runRecordedAccTest(t, "TestAccAccountGroupResource_Dynamic", steps)
 }

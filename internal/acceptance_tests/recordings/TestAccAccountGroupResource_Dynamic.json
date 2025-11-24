@@ -1,0 +1,286 @@
+{
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Test dynamic account group\",\"dynamicFilter\":\"tag:Environment=prod\",\"name\":\"test-dynamic-group\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "variables": {
+          "input": {
+            "description": "Test dynamic account group",
+            "dynamicFilter": "tag:Environment=prod",
+            "name": "test-dynamic-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccountGroup": {
+            "group": {
+              "description": "Test dynamic account group",
+              "dynamicFilter": "tag:Environment=prod",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjFkY2MxMjUzLTQ3NDktNGQxYi1iMTNmLWFiNmU5MWU1MmY5OSJd",
+              "name": "test-dynamic-group",
+              "provider": "AWS",
+              "regions": [
+                "us-east-1"
+              ],
+              "uuid": "1dcc1253-4749-4d1b-b13f-ab6e91e52f99"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Test dynamic account group\",\"name\":\"test-dynamic-group\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "variables": {
+          "input": {
+            "description": "Test dynamic account group",
+            "name": "test-dynamic-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccountGroup": {
+            "group": {
+              "description": "Test dynamic account group",
+              "dynamicFilter": null,
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjZhNWFmOWFlLTE3MzUtNDUxOC1hM2ZjLTgyYWJkNDdiM2M2OSJd",
+              "name": "test-dynamic-group",
+              "provider": "AWS",
+              "regions": [
+                "us-east-1"
+              ],
+              "uuid": "6a5af9ae-1735-4518-a3fc-82abd47b3c69"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "variables": {
+          "input": {
+            "description": "Test dynamic account group",
+            "name": "test-dynamic-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAccountGroup": {
+            "group": {
+              "description": "Test dynamic account group",
+              "dynamicFilter": null,
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgImFlMmZhOTQ1LTJhYmQtNGJmNi05NmQ0LWZlZGNlNDc1MjYzZiJd",
+              "name": "test-dynamic-group",
+              "provider": "AWS",
+              "regions": [
+                "us-east-1"
+              ],
+              "uuid": "ae2fa945-2abd-4bf6-96d4-fedce475263f"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"1dcc1253-4749-4d1b-b13f-ab6e91e52f99\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
+        "variables": {
+          "uuid": "1dcc1253-4749-4d1b-b13f-ab6e91e52f99"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccountGroup": {
+            "group": {
+              "uuid": "1dcc1253-4749-4d1b-b13f-ab6e91e52f99"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"6a5af9ae-1735-4518-a3fc-82abd47b3c69\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
+        "variables": {
+          "uuid": "6a5af9ae-1735-4518-a3fc-82abd47b3c69"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccountGroup": {
+            "group": {
+              "uuid": "6a5af9ae-1735-4518-a3fc-82abd47b3c69"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"ae2fa945-2abd-4bf6-96d4-fedce475263f\"}": [
+    {
+      "request": {
+        "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
+        "variables": {
+          "uuid": "ae2fa945-2abd-4bf6-96d4-fedce475263f"
+        }
+      },
+      "response": {
+        "data": {
+          "removeAccountGroup": {
+            "group": {
+              "uuid": "ae2fa945-2abd-4bf6-96d4-fedce475263f"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"1dcc1253-4749-4d1b-b13f-ab6e91e52f99\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "variables": {
+          "name": "",
+          "uuid": "1dcc1253-4749-4d1b-b13f-ab6e91e52f99"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test dynamic account group",
+            "dynamicFilter": "tag:Environment=prod",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjFkY2MxMjUzLTQ3NDktNGQxYi1iMTNmLWFiNmU5MWU1MmY5OSJd",
+            "name": "test-dynamic-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "1dcc1253-4749-4d1b-b13f-ab6e91e52f99"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "variables": {
+          "name": "",
+          "uuid": "1dcc1253-4749-4d1b-b13f-ab6e91e52f99"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test dynamic account group",
+            "dynamicFilter": "tag:Environment=prod",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjFkY2MxMjUzLTQ3NDktNGQxYi1iMTNmLWFiNmU5MWU1MmY5OSJd",
+            "name": "test-dynamic-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "1dcc1253-4749-4d1b-b13f-ab6e91e52f99"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"6a5af9ae-1735-4518-a3fc-82abd47b3c69\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "variables": {
+          "name": "",
+          "uuid": "6a5af9ae-1735-4518-a3fc-82abd47b3c69"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test dynamic account group",
+            "dynamicFilter": null,
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjZhNWFmOWFlLTE3MzUtNDUxOC1hM2ZjLTgyYWJkNDdiM2M2OSJd",
+            "name": "test-dynamic-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "6a5af9ae-1735-4518-a3fc-82abd47b3c69"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "variables": {
+          "name": "",
+          "uuid": "6a5af9ae-1735-4518-a3fc-82abd47b3c69"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test dynamic account group",
+            "dynamicFilter": null,
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjZhNWFmOWFlLTE3MzUtNDUxOC1hM2ZjLTgyYWJkNDdiM2M2OSJd",
+            "name": "test-dynamic-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "6a5af9ae-1735-4518-a3fc-82abd47b3c69"
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"ae2fa945-2abd-4bf6-96d4-fedce475263f\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "variables": {
+          "name": "",
+          "uuid": "ae2fa945-2abd-4bf6-96d4-fedce475263f"
+        }
+      },
+      "response": {
+        "data": {
+          "accountGroup": {
+            "description": "Test dynamic account group",
+            "dynamicFilter": null,
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImFlMmZhOTQ1LTJhYmQtNGJmNi05NmQ0LWZlZGNlNDc1MjYzZiJd",
+            "name": "test-dynamic-group",
+            "provider": "AWS",
+            "regions": [
+              "us-east-1"
+            ],
+            "uuid": "ae2fa945-2abd-4bf6-96d4-fedce475263f"
+          }
+        }
+      }
+    }
+  ]
+}

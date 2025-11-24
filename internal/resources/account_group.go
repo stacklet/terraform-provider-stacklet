@@ -15,6 +15,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 )
@@ -63,6 +64,13 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 				Description: "The description of the account group.",
 				Optional:    true,
 			},
+			"dynamic_filter": schema.StringAttribute{
+				Description: "Dynamic filter for accounts matching. Null means not dynamic, empty string matches all accounts.",
+				Optional:    true,
+				PlanModifiers: []planmodifier.String{
+					planmodifiers.RequiresReplaceIfNullStringChange(),
+				},
+			},
 			"cloud_provider": schema.StringAttribute{
 				Description: "The cloud provider for the account group (aws, azure, gcp, kubernetes, or tencentcloud).",
 				Required:    true,
@@ -89,10 +97,11 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 	}
 
 	input := api.AccountGroupCreateInput{
-		Name:        plan.Name.ValueString(),
-		Provider:    plan.CloudProvider.ValueString(),
-		Description: plan.Description.ValueStringPointer(),
-		Regions:     api.StringsList(plan.Regions),
+		Name:          plan.Name.ValueString(),
+		Provider:      plan.CloudProvider.ValueString(),
+		Description:   plan.Description.ValueStringPointer(),
+		DynamicFilter: plan.DynamicFilter.ValueStringPointer(),
+		Regions:       api.StringsList(plan.Regions),
 	}
 
 	account_group, err := r.api.AccountGroup.Create(ctx, input)
@@ -130,10 +139,11 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 
 	input := api.AccountGroupUpdateInput{
-		UUID:        plan.UUID.ValueString(),
-		Name:        plan.Name.ValueStringPointer(),
-		Description: plan.Description.ValueStringPointer(),
-		Regions:     api.StringsList(plan.Regions),
+		UUID:          plan.UUID.ValueString(),
+		Name:          plan.Name.ValueStringPointer(),
+		Description:   plan.Description.ValueStringPointer(),
+		DynamicFilter: plan.DynamicFilter.ValueStringPointer(),
+		Regions:       api.StringsList(plan.Regions),
 	}
 
 	account_group, err := r.api.AccountGroup.Update(ctx, input)
