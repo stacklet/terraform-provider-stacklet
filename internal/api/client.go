@@ -74,25 +74,27 @@ func (t *logTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 
 	resp, reqErr := t.Base.RoundTrip(req)
 
-	if t.LogBody {
-		respBody, err = decodeResponseBody(resp)
-		if err != nil {
-			return nil, err
+	if resp != nil {
+		if t.LogBody {
+			respBody, err = decodeResponseBody(resp)
+			if err != nil {
+				return nil, err
+			}
 		}
-	}
 
-	tflog.Debug(
-		t.Ctx,
-		"Got GraphQL response",
-		map[string]any{
-			"req_method":       req.Method,
-			"req_url":          req.URL.String(),
-			"resp_status":      resp.Status,
-			"resp_status_code": resp.StatusCode,
-			"req_body":         reqBody,
-			"resp_body":        respBody,
-		},
-	)
+		tflog.Debug(
+			t.Ctx,
+			"Got GraphQL response",
+			map[string]any{
+				"req_method":       req.Method,
+				"req_url":          req.URL.String(),
+				"resp_status":      resp.Status,
+				"resp_status_code": resp.StatusCode,
+				"req_body":         reqBody,
+				"resp_body":        respBody,
+			},
+		)
+	}
 
 	return resp, reqErr
 }
