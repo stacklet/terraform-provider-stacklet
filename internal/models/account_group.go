@@ -16,6 +16,7 @@ type AccountGroupResource struct {
 	UUID          types.String `tfsdk:"uuid"`
 	Name          types.String `tfsdk:"name"`
 	Description   types.String `tfsdk:"description"`
+	DynamicFilter types.String `tfsdk:"dynamic_filter"`
 	CloudProvider types.String `tfsdk:"cloud_provider"`
 	Regions       types.List   `tfsdk:"regions"`
 }
@@ -27,6 +28,7 @@ func (m *AccountGroupResource) Update(accountGroup *api.AccountGroup) diag.Diagn
 	m.UUID = types.StringValue(accountGroup.UUID)
 	m.Name = types.StringValue(accountGroup.Name)
 	m.Description = types.StringPointerValue(accountGroup.Description)
+	m.DynamicFilter = types.StringPointerValue(accountGroup.DynamicFilter)
 	m.CloudProvider = types.StringValue(accountGroup.Provider)
 	m.Regions = typehelpers.StringsList(accountGroup.Regions)
 

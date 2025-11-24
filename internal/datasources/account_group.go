@@ -49,6 +49,10 @@ func (d *accountGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Description: "The description of the account group.",
 				Computed:    true,
 			},
+			"dynamic_filter": schema.StringAttribute{
+				Description: "Dynamic filter for accounts matching. Null means not dynamic, empty string matches all accounts.",
+				Computed:    true,
+			},
 			"cloud_provider": schema.StringAttribute{
 				Description: "The cloud provider for the account group.",
 				Computed:    true,

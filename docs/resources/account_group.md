@@ -40,6 +40,7 @@ resource "stacklet_account_group" "development" {
 ### Optional
 
 - `description` (String) The description of the account group.
+- `dynamic_filter` (String) Dynamic filter for accounts matching. Null means not dynamic, empty string matches all accounts.
 - `regions` (List of String) The list of regions for the account group (e.g., us-east-1, eu-west-2), for providers that require it.
 
 ### Read-Only

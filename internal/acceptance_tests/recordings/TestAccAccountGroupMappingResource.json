@@ -67,10 +67,10 @@
       }
     }
   ],
-  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-mappings\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-mappings\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
     {
       "request": {
-        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,provider,regions}}}",
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
         "variables": {
           "input": {
             "description": "Test account group",
@@ -87,27 +87,28 @@
           "addAccountGroup": {
             "group": {
               "description": "Test account group",
-              "id": "WyJhY2NvdW50LWdyb3VwIiwgImU5ZjI3ZDk1LWI5YWEtNDk3ZS1iMDZmLTJjZTcxZWQ3YTZiNiJd",
+              "dynamicFilter": null,
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjliNGIzYjJjLTIwZWQtNDExMi1iYzNjLWZkZjAzMGNmZTlkZiJd",
               "name": "test-group-mappings",
               "provider": "AWS",
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+              "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd\"]}}": [
+  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjExMTExMTExMTExMSJd\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}",
         "variables": {
           "input": {
             "ids": [
-              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjExMTExMTExMTExMSJd"
             ]
           }
         }
@@ -117,7 +118,7 @@
           "removeAccountGroupMappings": {
             "removed": [
               {
-                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjExMTExMTExMTExMSJd"
               }
             ]
           }
@@ -125,14 +126,14 @@
       }
     }
   ],
-  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd\"]}}": [
+  "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}:{\"input\":{\"ids\":[\"WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjIyMjIyMjIyMjIyMiJd\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemoveAccountGroupMappingsInput!){removeAccountGroupMappings(input: $input){removed{id}}}",
         "variables": {
           "input": {
             "ids": [
-              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd"
+              "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjIyMjIyMjIyMjIyMiJd"
             ]
           }
         }
@@ -142,7 +143,7 @@
           "removeAccountGroupMappings": {
             "removed": [
               {
-                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd"
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjIyMjIyMjIyMjIyMiJd"
               }
             ]
           }
@@ -150,7 +151,7 @@
       }
     }
   ],
-  "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}:{\"input\":{\"mappings\":[{\"accountKey\":\"111111111111\",\"groupUUID\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}]}}": [
+  "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}:{\"input\":{\"mappings\":[{\"accountKey\":\"111111111111\",\"groupUUID\":\"9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}",
@@ -159,7 +160,7 @@
             "mappings": [
               {
                 "accountKey": "111111111111",
-                "groupUUID": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+                "groupUUID": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
               }
             ]
           }
@@ -170,7 +171,7 @@
           "upsertAccountGroupMappings": {
             "mappings": [
               {
-                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjExMTExMTExMTExMSJd"
               }
             ]
           }
@@ -178,7 +179,7 @@
       }
     }
   ],
-  "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}:{\"input\":{\"mappings\":[{\"accountKey\":\"222222222222\",\"groupUUID\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}]}}": [
+  "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}:{\"input\":{\"mappings\":[{\"accountKey\":\"222222222222\",\"groupUUID\":\"9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertAccountGroupMappingsInput!){upsertAccountGroupMappings(input: $input){mappings{id}}}",
@@ -187,7 +188,7 @@
             "mappings": [
               {
                 "accountKey": "222222222222",
-                "groupUUID": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+                "groupUUID": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
               }
             ]
           }
@@ -198,7 +199,7 @@
           "upsertAccountGroupMappings": {
             "mappings": [
               {
-                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd"
+                "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjIyMjIyMjIyMjIyMiJd"
               }
             ]
           }
@@ -246,26 +247,26 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}": [
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
         "variables": {
-          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+          "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
         }
       },
       "response": {
         "data": {
           "removeAccountGroup": {
             "group": {
-              "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+              "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
             }
           }
         }
       }
     }
   ],
-  "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}:{\"accountFilter\":{\"single\":{\"name\":\"id\",\"operator\":\"equals\",\"value\":\"111111111111\"}},\"uuid\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}": [
+  "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}:{\"accountFilter\":{\"single\":{\"name\":\"id\",\"operator\":\"equals\",\"value\":\"111111111111\"}},\"uuid\":\"9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df\"}": [
     {
       "request": {
         "query": "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}",
@@ -277,7 +278,7 @@
               "value": "111111111111"
             }
           },
-          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+          "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
         }
       },
       "response": {
@@ -290,7 +291,7 @@
                     "account": {
                       "key": "111111111111"
                     },
-                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjExMTExMTExMTExMSJd"
                   }
                 }
               ]
@@ -310,7 +311,7 @@
               "value": "111111111111"
             }
           },
-          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+          "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
         }
       },
       "response": {
@@ -323,7 +324,7 @@
                     "account": {
                       "key": "111111111111"
                     },
-                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjExMTExMTExMTExMSJd"
                   }
                 }
               ]
@@ -343,7 +344,7 @@
               "value": "111111111111"
             }
           },
-          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+          "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
         }
       },
       "response": {
@@ -356,7 +357,7 @@
                     "account": {
                       "key": "111111111111"
                     },
-                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjExMTExMTExMTExMSJd"
+                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjExMTExMTExMTExMSJd"
                   }
                 }
               ]
@@ -366,7 +367,7 @@
       }
     }
   ],
-  "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}:{\"accountFilter\":{\"single\":{\"name\":\"id\",\"operator\":\"equals\",\"value\":\"222222222222\"}},\"uuid\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}": [
+  "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}:{\"accountFilter\":{\"single\":{\"name\":\"id\",\"operator\":\"equals\",\"value\":\"222222222222\"}},\"uuid\":\"9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df\"}": [
     {
       "request": {
         "query": "query ($accountFilter:FilterElementInput!$uuid:String!){accountGroup(uuid: $uuid){accountMappings(filterElement: $accountFilter){edges{node{id,account{key}}}}}}",
@@ -378,7 +379,7 @@
               "value": "222222222222"
             }
           },
-          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+          "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
         }
       },
       "response": {
@@ -391,7 +392,7 @@
                     "account": {
                       "key": "222222222222"
                     },
-                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiZTlmMjdkOTUtYjlhYS00OTdlLWIwNmYtMmNlNzFlZDdhNmI2IiwgIjIyMjIyMjIyMjIyMiJd"
+                    "id": "WyJhY2NvdW50LWdyb3VwLW1hcHBpbmciLCAiOWI0YjNiMmMtMjBlZC00MTEyLWJjM2MtZmRmMDMwY2ZlOWRmIiwgIjIyMjIyMjIyMjIyMiJd"
                   }
                 }
               ]
@@ -561,72 +562,75 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}:{\"name\":\"\",\"uuid\":\"e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+          "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImU5ZjI3ZDk1LWI5YWEtNDk3ZS1iMDZmLTJjZTcxZWQ3YTZiNiJd",
+            "dynamicFilter": null,
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjliNGIzYjJjLTIwZWQtNDExMi1iYzNjLWZkZjAzMGNmZTlkZiJd",
             "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+          "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImU5ZjI3ZDk1LWI5YWEtNDk3ZS1iMDZmLTJjZTcxZWQ3YTZiNiJd",
+            "dynamicFilter": null,
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjliNGIzYjJjLTIwZWQtNDExMi1iYzNjLWZkZjAzMGNmZTlkZiJd",
             "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
         "variables": {
           "name": "",
-          "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+          "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
         }
       },
       "response": {
         "data": {
           "accountGroup": {
             "description": "Test account group",
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImU5ZjI3ZDk1LWI5YWEtNDk3ZS1iMDZmLTJjZTcxZWQ3YTZiNiJd",
+            "dynamicFilter": null,
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjliNGIzYjJjLTIwZWQtNDExMi1iYzNjLWZkZjAzMGNmZTlkZiJd",
             "name": "test-group-mappings",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "uuid": "e9f27d95-b9aa-497e-b06f-2ce71ed7a6b6"
+            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
           }
         }
       }

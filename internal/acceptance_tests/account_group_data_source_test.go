@@ -28,6 +28,7 @@ func TestAccAccountGroupDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.stacklet_account_group.test", "description", "Test account group"),
 				resource.TestCheckResourceAttr("data.stacklet_account_group.test", "cloud_provider", "AWS"),
 				resource.TestCheckResourceAttr("data.stacklet_account_group.test", "regions.0", "us-east-1"),
+				resource.TestCheckNoResourceAttr("stacklet_account_group.test", "dynamic_filter"),
 			),
 		},
 	}
