@@ -55,9 +55,6 @@ func TestAccConfigurationProfileMSTeamsResource(t *testing.T) {
 
 				// Check customer_config computed values
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_msteams.test", "customer_config.prefix", "stacklet-test"),
-				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_msteams.test", "customer_config.bot_endpoint"),
-				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_msteams.test", "customer_config.oidc_client"),
-				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_msteams.test", "customer_config.oidc_issuer"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_msteams.test", "customer_config.roundtrip_digest"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_msteams.test", "customer_config.tags.env", "test"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_msteams.test", "customer_config.tags.team", "platform"),

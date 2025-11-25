@@ -16,8 +16,8 @@ func TestAccMSTeamsIntegrationSurfaceDataSource(t *testing.T) {
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("data.stacklet_msteams_integration_surface.test", "bot_endpoint"),
-				resource.TestCheckResourceAttrSet("data.stacklet_msteams_integration_surface.test", "oidc_client"),
-				resource.TestCheckResourceAttrSet("data.stacklet_msteams_integration_surface.test", "oidc_issuer"),
+				resource.TestCheckResourceAttrSet("data.stacklet_msteams_integration_surface.test", "wif_issuer_url"),
+				resource.TestCheckResourceAttrSet("data.stacklet_msteams_integration_surface.test", "trust_role_arn"),
 			),
 		},
 	}

@@ -136,18 +136,6 @@ The profile is global, adding multiple resources of this kind will cause them to
 				Description: "Customer configuration for Microsoft Teams.",
 				Computed:    true,
 				Attributes: map[string]schema.Attribute{
-					"bot_endpoint": schema.StringAttribute{
-						Description: "The bot endpoint URL.",
-						Computed:    true,
-					},
-					"oidc_client": schema.StringAttribute{
-						Description: "The OIDC client ID.",
-						Computed:    true,
-					},
-					"oidc_issuer": schema.StringAttribute{
-						Description: "The OIDC issuer URL.",
-						Computed:    true,
-					},
 					"prefix": schema.StringAttribute{
 						Description: "The prefix for resources.",
 						Computed:    true,

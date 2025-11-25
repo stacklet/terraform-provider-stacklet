@@ -163,9 +163,6 @@ func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.Config
 	return types.ObjectValue(
 		MSTeamsCustomerConfig{}.AttributeTypes(),
 		map[string]attr.Value{
-			"bot_endpoint":     types.StringValue(cfg.BotEndpoint),
-			"oidc_client":      types.StringValue(cfg.OIDCClient),
-			"oidc_issuer":      types.StringValue(cfg.OIDCIssuer),
 			"prefix":           types.StringValue(cfg.Prefix),
 			"roundtrip_digest": types.StringValue(cfg.RoundtripDigest),
 			"tags":             tags,
@@ -349,9 +346,6 @@ func (d MSTeamsTeamDetails) AttributeTypes() map[string]attr.Type {
 
 // MSTeamsCustomerConfig is the model for Microsoft Teams customer configuration.
 type MSTeamsCustomerConfig struct {
-	BotEndpoint     types.String `tfsdk:"bot_endpoint"`
-	OIDCClient      types.String `tfsdk:"oidc_client"`
-	OIDCIssuer      types.String `tfsdk:"oidc_issuer"`
 	Prefix          types.String `tfsdk:"prefix"`
 	RoundtripDigest types.String `tfsdk:"roundtrip_digest"`
 	Tags            types.Map    `tfsdk:"tags"`
@@ -360,9 +354,6 @@ type MSTeamsCustomerConfig struct {
 
 func (c MSTeamsCustomerConfig) AttributeTypes() map[string]attr.Type {
 	return map[string]attr.Type{
-		"bot_endpoint":     types.StringType,
-		"oidc_client":      types.StringType,
-		"oidc_issuer":      types.StringType,
 		"prefix":           types.StringType,
 		"roundtrip_digest": types.StringType,
 		"tags": types.MapType{
