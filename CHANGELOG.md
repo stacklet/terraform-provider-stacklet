@@ -1,3 +1,8 @@
+## Unreleased
+
+- Drop releases for 32bit architectures.
+
+
 ## 0.5.0 - 2025-11-24
 
 - Add support for dynamic account groups via `dynamic_filter` in `stacklet_account_group` resource/datasource,
