@@ -80,7 +80,7 @@ jobs:
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
 
       - name: Publish to Terraform Cloud Private Registry
-        uses: thechrisjohnson/terraform-cloud-provider-publish@d1b86ab81be0be986d36e3ca5325826f43b8e3d8 # v1.3
+        uses: thechrisjohnson/terraform-cloud-provider-publish@e84bbd68e02848a42d3618d1fc91e94215cefff7 # v1.6
         with:
           organization-name: stacklet
           organization-api-token: ${{ secrets.TF_PRIVATE_REGISTRY_TOKEN }}
