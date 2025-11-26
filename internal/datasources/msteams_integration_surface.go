@@ -36,12 +36,12 @@ func (d *msteamsIntegrationSurfaceDataSource) Schema(_ context.Context, _ dataso
 				Description: "The bot endpoint URL for the MS Teams integration.",
 				Computed:    true,
 			},
-			"oidc_client": schema.StringAttribute{
-				Description: "The OIDC client identifier for the MS Teams integration.",
+			"wif_issuer_url": schema.StringAttribute{
+				Description: "The AWS Workload Identity Federation (WIF) issuer URL.",
 				Computed:    true,
 			},
-			"oidc_issuer": schema.StringAttribute{
-				Description: "The OIDC issuer URL for the MS Teams integration.",
+			"trust_role_arn": schema.StringAttribute{
+				Description: "The ARN for the AWS IAM role that generates WIF tokens for Azure AD authentication.",
 				Computed:    true,
 			},
 		},

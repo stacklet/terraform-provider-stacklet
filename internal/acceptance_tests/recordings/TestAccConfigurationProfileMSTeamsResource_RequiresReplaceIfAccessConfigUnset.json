@@ -1,8 +1,8 @@
 {
-  "mutation ($input:MSTeamsConfigurationInput!){upsertMSTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"accessConfig\":null,\"channelMappings\":null,\"customerConfig\":{\"prefix\":\"stacklet-test\",\"tags\":[{\"key\":\"env\",\"value\":\"test\"}]},\"name\":\"msteams\",\"scope\":\"0\"}}": [
+  "mutation ($input:MSTeamsConfigurationInput!){upsertMSTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"accessConfig\":null,\"channelMappings\":null,\"customerConfig\":{\"prefix\":\"stacklet-test\",\"tags\":[{\"key\":\"env\",\"value\":\"test\"}]},\"name\":\"msteams\",\"scope\":\"0\"}}": [
     {
       "request": {
-        "query": "mutation ($input:MSTeamsConfigurationInput!){upsertMSTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "query": "mutation ($input:MSTeamsConfigurationInput!){upsertMSTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
         "variables": {
           "input": {
             "accessConfig": null,
@@ -32,11 +32,8 @@
                 "accessConfig": null,
                 "channelMappings": [],
                 "customerConfig": {
-                  "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
-                  "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
-                  "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5",
                   "prefix": "stacklet-test",
-                  "roundtripDigest": "6942eb2066ded93962304a3d26aae404",
+                  "roundtripDigest": "fc38afcec2ab40138c74b11390ceb63c",
                   "tags": [
                     {
                       "key": "env",
@@ -46,8 +43,8 @@
                   "terraformModule": {
                     "repositoryURL": "https://github.com/stacklet/terraform-msteams-bot",
                     "source": "stacklet/bot/msteams",
-                    "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"oidc_client\": \"6erq0b1p4bmi1b211vqnnjvm3d\", \"oidc_issuer\": \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"6942eb2066ded93962304a3d26aae404\", \"tags\": {\"env\": \"test\"}}",
-                    "version": "0.1.0"
+                    "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"fc38afcec2ab40138c74b11390ceb63c\", \"tags\": {\"env\": \"test\"}, \"trust_role_arn\": \"arn:aws:iam::905418385756:role/ack-stacklet-platform\", \"wif_issuer_url\": \"https://a1f05e92-f4a9-481d-a81f-cbfd0dc888ac.tokens.sts.global.api.aws\"}",
+                    "version": "0.2.0"
                   }
                 },
                 "entityDetails": {
@@ -61,10 +58,10 @@
       }
     }
   ],
-  "mutation ($input:MSTeamsConfigurationInput!){upsertMSTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"accessConfig\":{\"clientId\":\"e90b9a7a-f726-44f4-af92-9e5827c465f8\",\"roundtripDigest\":\"724ba7cc82663bc247b5a100b3ca2ece\",\"tenantId\":\"408b7351-82bd-44b5-aed5-59198cd1c1c6\"},\"channelMappings\":null,\"customerConfig\":{\"prefix\":\"stacklet-test\",\"tags\":[{\"key\":\"env\",\"value\":\"test\"}]},\"name\":\"msteams\",\"scope\":\"0\"}}": [
+  "mutation ($input:MSTeamsConfigurationInput!){upsertMSTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}:{\"input\":{\"accessConfig\":{\"clientId\":\"e90b9a7a-f726-44f4-af92-9e5827c465f8\",\"roundtripDigest\":\"724ba7cc82663bc247b5a100b3ca2ece\",\"tenantId\":\"408b7351-82bd-44b5-aed5-59198cd1c1c6\"},\"channelMappings\":null,\"customerConfig\":{\"prefix\":\"stacklet-test\",\"tags\":[{\"key\":\"env\",\"value\":\"test\"}]},\"name\":\"msteams\",\"scope\":\"0\"}}": [
     {
       "request": {
-        "query": "mutation ($input:MSTeamsConfigurationInput!){upsertMSTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
+        "query": "mutation ($input:MSTeamsConfigurationInput!){upsertMSTeamsProfile(input: $input){configuration{id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}}",
         "variables": {
           "input": {
             "accessConfig": {
@@ -102,21 +99,15 @@
                   },
                   "clientId": "e90b9a7a-f726-44f4-af92-9e5827c465f8",
                   "publishedApplication": {
-                    "application": {
-                      "catalogId": "4db9f854-4092-4d46-b5fb-972e3f66f6d2",
-                      "version": "1.0.2"
-                    }
+                    "application": null
                   },
                   "roundtripDigest": "724ba7cc82663bc247b5a100b3ca2ece",
                   "tenantId": "408b7351-82bd-44b5-aed5-59198cd1c1c6"
                 },
                 "channelMappings": [],
                 "customerConfig": {
-                  "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
-                  "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
-                  "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5",
                   "prefix": "stacklet-test",
-                  "roundtripDigest": "6942eb2066ded93962304a3d26aae404",
+                  "roundtripDigest": "fc38afcec2ab40138c74b11390ceb63c",
                   "tags": [
                     {
                       "key": "env",
@@ -126,8 +117,8 @@
                   "terraformModule": {
                     "repositoryURL": "https://github.com/stacklet/terraform-msteams-bot",
                     "source": "stacklet/bot/msteams",
-                    "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"oidc_client\": \"6erq0b1p4bmi1b211vqnnjvm3d\", \"oidc_issuer\": \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"6942eb2066ded93962304a3d26aae404\", \"tags\": {\"env\": \"test\"}}",
-                    "version": "0.1.0"
+                    "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"fc38afcec2ab40138c74b11390ceb63c\", \"tags\": {\"env\": \"test\"}, \"trust_role_arn\": \"arn:aws:iam::905418385756:role/ack-stacklet-platform\", \"wif_issuer_url\": \"https://a1f05e92-f4a9-481d-a81f-cbfd0dc888ac.tokens.sts.global.api.aws\"}",
+                    "version": "0.2.0"
                   }
                 },
                 "entityDetails": {
@@ -171,10 +162,10 @@
       }
     }
   ],
-  "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}:{\"name\":\"msteams\",\"scope\":\"0\"}": [
+  "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}:{\"name\":\"msteams\",\"scope\":\"0\"}": [
     {
       "request": {
-        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
         "variables": {
           "name": "msteams",
           "scope": "0"
@@ -194,21 +185,15 @@
                 },
                 "clientId": "e90b9a7a-f726-44f4-af92-9e5827c465f8",
                 "publishedApplication": {
-                  "application": {
-                    "catalogId": "4db9f854-4092-4d46-b5fb-972e3f66f6d2",
-                    "version": "1.0.2"
-                  }
+                  "application": null
                 },
                 "roundtripDigest": "724ba7cc82663bc247b5a100b3ca2ece",
                 "tenantId": "408b7351-82bd-44b5-aed5-59198cd1c1c6"
               },
               "channelMappings": [],
               "customerConfig": {
-                "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
-                "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
-                "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5",
                 "prefix": "stacklet-test",
-                "roundtripDigest": "6942eb2066ded93962304a3d26aae404",
+                "roundtripDigest": "fc38afcec2ab40138c74b11390ceb63c",
                 "tags": [
                   {
                     "key": "env",
@@ -218,8 +203,8 @@
                 "terraformModule": {
                   "repositoryURL": "https://github.com/stacklet/terraform-msteams-bot",
                   "source": "stacklet/bot/msteams",
-                  "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"oidc_client\": \"6erq0b1p4bmi1b211vqnnjvm3d\", \"oidc_issuer\": \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"6942eb2066ded93962304a3d26aae404\", \"tags\": {\"env\": \"test\"}}",
-                  "version": "0.1.0"
+                  "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"fc38afcec2ab40138c74b11390ceb63c\", \"tags\": {\"env\": \"test\"}, \"trust_role_arn\": \"arn:aws:iam::905418385756:role/ack-stacklet-platform\", \"wif_issuer_url\": \"https://a1f05e92-f4a9-481d-a81f-cbfd0dc888ac.tokens.sts.global.api.aws\"}",
+                  "version": "0.2.0"
                 }
               },
               "entityDetails": {
@@ -233,7 +218,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
         "variables": {
           "name": "msteams",
           "scope": "0"
@@ -253,21 +238,15 @@
                 },
                 "clientId": "e90b9a7a-f726-44f4-af92-9e5827c465f8",
                 "publishedApplication": {
-                  "application": {
-                    "catalogId": "4db9f854-4092-4d46-b5fb-972e3f66f6d2",
-                    "version": "1.0.2"
-                  }
+                  "application": null
                 },
                 "roundtripDigest": "724ba7cc82663bc247b5a100b3ca2ece",
                 "tenantId": "408b7351-82bd-44b5-aed5-59198cd1c1c6"
               },
               "channelMappings": [],
               "customerConfig": {
-                "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
-                "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
-                "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5",
                 "prefix": "stacklet-test",
-                "roundtripDigest": "6942eb2066ded93962304a3d26aae404",
+                "roundtripDigest": "fc38afcec2ab40138c74b11390ceb63c",
                 "tags": [
                   {
                     "key": "env",
@@ -277,8 +256,8 @@
                 "terraformModule": {
                   "repositoryURL": "https://github.com/stacklet/terraform-msteams-bot",
                   "source": "stacklet/bot/msteams",
-                  "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"oidc_client\": \"6erq0b1p4bmi1b211vqnnjvm3d\", \"oidc_issuer\": \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"6942eb2066ded93962304a3d26aae404\", \"tags\": {\"env\": \"test\"}}",
-                  "version": "0.1.0"
+                  "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"fc38afcec2ab40138c74b11390ceb63c\", \"tags\": {\"env\": \"test\"}, \"trust_role_arn\": \"arn:aws:iam::905418385756:role/ack-stacklet-platform\", \"wif_issuer_url\": \"https://a1f05e92-f4a9-481d-a81f-cbfd0dc888ac.tokens.sts.global.api.aws\"}",
+                  "version": "0.2.0"
                 }
               },
               "entityDetails": {
@@ -292,7 +271,7 @@
     },
     {
       "request": {
-        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},botEndpoint,oidcClient,oidcIssuer,roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
+        "query": "query ($name:String!$scope:String!){profile(name: $name, scope: $scope){id,profile,record{__typename,... on EmailConfiguration{fromEmail,sesRegion,smtp{server,port,ssl,username,password}},... on ServiceNowConfiguration{endpoint,user,password,issueType,closedState},... on SlackConfiguration{token,userFields,webhooks{name,url}},... on SymphonyConfiguration{agentDomain,serviceAccount,privateKey},... on MSTeamsConfiguration{accessConfig{clientId,roundtripDigest,tenantId,botApplication{downloadURL,version},publishedApplication{application{catalogId,version}}},customerConfig{prefix,tags{key,value},roundtripDigest,terraformModule{repositoryURL,source,version,variablesJSON}},channelMappings{name,teamId,channelId},entityDetails{channels{id,name},teams{id,name}}},... on JiraConfiguration{url,projects{closedStatus,issueType,name,project},user,apiKey},... on ResourceOwnerConfiguration{resourceOwnerDefault: default,orgDomain,orgDomainTag,tags},... on AccountOwnersConfiguration{accountOwnersDefault: default{account,owners},orgDomain,orgDomainTag,tags}}}}",
         "variables": {
           "name": "msteams",
           "scope": "0"
@@ -308,11 +287,8 @@
               "accessConfig": null,
               "channelMappings": [],
               "customerConfig": {
-                "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
-                "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
-                "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5",
                 "prefix": "stacklet-test",
-                "roundtripDigest": "6942eb2066ded93962304a3d26aae404",
+                "roundtripDigest": "fc38afcec2ab40138c74b11390ceb63c",
                 "tags": [
                   {
                     "key": "env",
@@ -322,8 +298,8 @@
                 "terraformModule": {
                   "repositoryURL": "https://github.com/stacklet/terraform-msteams-bot",
                   "source": "stacklet/bot/msteams",
-                  "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"oidc_client\": \"6erq0b1p4bmi1b211vqnnjvm3d\", \"oidc_issuer\": \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"6942eb2066ded93962304a3d26aae404\", \"tags\": {\"env\": \"test\"}}",
-                  "version": "0.1.0"
+                  "variablesJSON": "{\"bot_endpoint\": \"https://api.alberto.sandbox.stacklet.dev/webhooks/msteams\", \"prefix\": \"stacklet-test\", \"roundtrip_digest\": \"fc38afcec2ab40138c74b11390ceb63c\", \"tags\": {\"env\": \"test\"}, \"trust_role_arn\": \"arn:aws:iam::905418385756:role/ack-stacklet-platform\", \"wif_issuer_url\": \"https://a1f05e92-f4a9-481d-a81f-cbfd0dc888ac.tokens.sts.global.api.aws\"}",
+                  "version": "0.2.0"
                 }
               },
               "entityDetails": {

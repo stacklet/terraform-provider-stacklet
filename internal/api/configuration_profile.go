@@ -124,9 +124,6 @@ type MSTeamsPublishedApplication struct {
 type MSTeamsCustomerConfig struct {
 	MSTeamsCustomerConfigInput
 
-	BotEndpoint     string          `json:"botEndpoint"`
-	OIDCClient      string          `json:"oidcClient"`
-	OIDCIssuer      string          `json:"oidcIssuer"`
 	RoundtripDigest string          `json:"roundtripDigest"`
 	TerraformModule TerraformModule `json:"terraformModule"`
 }

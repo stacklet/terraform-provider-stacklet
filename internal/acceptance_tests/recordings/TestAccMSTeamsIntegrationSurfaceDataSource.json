@@ -1,43 +1,43 @@
 {
-  "{msTeamsIntegrationSurface{botEndpoint,oidcClient,oidcIssuer}}": [
+  "{msTeamsIntegrationSurface{botEndpoint,wifIssuerURL,trustRoleARN}}": [
     {
       "request": {
-        "query": "{msTeamsIntegrationSurface{botEndpoint,oidcClient,oidcIssuer}}"
+        "query": "{msTeamsIntegrationSurface{botEndpoint,wifIssuerURL,trustRoleARN}}"
       },
       "response": {
         "data": {
           "msTeamsIntegrationSurface": {
             "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
-            "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
-            "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5"
+            "trustRoleARN": "arn:aws:iam::905418385756:role/ack-stacklet-platform",
+            "wifIssuerURL": "https://a1f05e92-f4a9-481d-a81f-cbfd0dc888ac.tokens.sts.global.api.aws"
           }
         }
       }
     },
     {
       "request": {
-        "query": "{msTeamsIntegrationSurface{botEndpoint,oidcClient,oidcIssuer}}"
+        "query": "{msTeamsIntegrationSurface{botEndpoint,wifIssuerURL,trustRoleARN}}"
       },
       "response": {
         "data": {
           "msTeamsIntegrationSurface": {
             "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
-            "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
-            "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5"
+            "trustRoleARN": "arn:aws:iam::905418385756:role/ack-stacklet-platform",
+            "wifIssuerURL": "https://a1f05e92-f4a9-481d-a81f-cbfd0dc888ac.tokens.sts.global.api.aws"
           }
         }
       }
     },
     {
       "request": {
-        "query": "{msTeamsIntegrationSurface{botEndpoint,oidcClient,oidcIssuer}}"
+        "query": "{msTeamsIntegrationSurface{botEndpoint,wifIssuerURL,trustRoleARN}}"
       },
       "response": {
         "data": {
           "msTeamsIntegrationSurface": {
             "botEndpoint": "https://api.alberto.sandbox.stacklet.dev/webhooks/msteams",
-            "oidcClient": "6erq0b1p4bmi1b211vqnnjvm3d",
-            "oidcIssuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_YfsmqvKv5"
+            "trustRoleARN": "arn:aws:iam::905418385756:role/ack-stacklet-platform",
+            "wifIssuerURL": "https://a1f05e92-f4a9-481d-a81f-cbfd0dc888ac.tokens.sts.global.api.aws"
           }
         }
       }

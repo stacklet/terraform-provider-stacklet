@@ -13,17 +13,17 @@ import (
 
 // MSTeamsIntegrationSurfaceDataSource is the model for the MS Teams integration surface data source.
 type MSTeamsIntegrationSurfaceDataSource struct {
-	BotEndpoint types.String `tfsdk:"bot_endpoint"`
-	OIDCClient  types.String `tfsdk:"oidc_client"`
-	OIDCIssuer  types.String `tfsdk:"oidc_issuer"`
+	BotEndpoint  types.String `tfsdk:"bot_endpoint"`
+	WIFIssuerURL types.String `tfsdk:"wif_issuer_url"`
+	TrustRoleARN types.String `tfsdk:"trust_role_arn"`
 }
 
 func (m *MSTeamsIntegrationSurfaceDataSource) Update(ctx context.Context, surface *api.MSTeamsIntegrationSurface) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.BotEndpoint = types.StringValue(surface.BotEndpoint)
-	m.OIDCClient = types.StringValue(surface.OIDCClient)
-	m.OIDCIssuer = types.StringValue(surface.OIDCIssuer)
+	m.WIFIssuerURL = types.StringValue(surface.WIFIssuerURL)
+	m.TrustRoleARN = types.StringValue(surface.TrustRoleARN)
 
 	return diags
 }

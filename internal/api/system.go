@@ -25,9 +25,9 @@ type PlatformCustomerConfig struct {
 // MSTeamsIntegrationSurface is the data returned by reading Microsoft Teams
 // integration configuration details.
 type MSTeamsIntegrationSurface struct {
-	BotEndpoint string `graphql:"botEndpoint"`
-	OIDCClient  string `graphql:"oidcClient"`
-	OIDCIssuer  string `graphql:"oidcIssuer"`
+	BotEndpoint  string `graphql:"botEndpoint"`
+	WIFIssuerURL string `graphql:"wifIssuerURL"`
+	TrustRoleARN string `graphql:"trustRoleARN"`
 }
 
 type systemAPI struct {

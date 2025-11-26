@@ -127,9 +127,6 @@ Read-Only:
 
 Read-Only:
 
-- `bot_endpoint` (String) The bot endpoint URL.
-- `oidc_client` (String) The OIDC client ID.
-- `oidc_issuer` (String) The OIDC issuer URL.
 - `prefix` (String) The prefix for resources.
 - `roundtrip_digest` (String) The roundtrip digest.
 - `tags` (Map of String) Tags for the configuration as key-value pairs.

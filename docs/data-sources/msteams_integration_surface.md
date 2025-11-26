@@ -23,5 +23,5 @@ data "stacklet_msteams_integration_surface" "example" {}
 ### Read-Only
 
 - `bot_endpoint` (String) The bot endpoint URL for the MS Teams integration.
-- `oidc_client` (String) The OIDC client identifier for the MS Teams integration.
-- `oidc_issuer` (String) The OIDC issuer URL for the MS Teams integration.
+- `trust_role_arn` (String) The ARN for the AWS IAM role that generates WIF tokens for Azure AD authentication.
+- `wif_issuer_url` (String) The AWS Workload Identity Federation (WIF) issuer URL.
