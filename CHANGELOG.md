@@ -1,6 +1,7 @@
-## Unreleased
+## 0.5.1 - 2025-11-26
 
 - Drop releases for 32bit architectures.
+- Update resources and datasources related to MS Teams with new fields.
 
 
 ## 0.5.0 - 2025-11-24
