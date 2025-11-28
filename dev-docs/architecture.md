@@ -31,7 +31,7 @@
 - **API Wrapper**: `internal/api/api.go` provides a typed `API` struct with methods for each resource type
 - **Modular API Files**: Each resource type has its own API file
 - **HTTP Transport**: Custom transport layers for authentication (`authTransport`) and logging (`logTransport`)
-- **Enums**: Strongly typed enums in `internal/api/enums.go` (CloudProvider, ReportSource, etc.)
+- **Enums**: Strongly typed enums in `internal/api/enums.go`.
 - **Pagination**: Generic helpers in `internal/api/pagination.go` for GraphQL connection pattern pagination
   - `FindInPaginatedQuery[T, R]()` - Searches through paginated results for a specific item
   - `CollectAllPages[T]()` - Collects all items from all pages

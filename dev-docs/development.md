@@ -54,23 +54,10 @@ Provider supports multiple authentication methods (in priority order):
 
 Each credential is resolved independently using the first non-empty value found. Unit tests in `internal/provider/provider_test.go` verify precedence and mixed sources.
 
-## Workflow
-
-1. **Build**: `just build`
-2. **Test**: `just test` (replay), `just test-live` (live API), `just test-record <name>` (record new)
-3. **Format/Lint**: `just format` and `just lint` before committing
-4. **Documentation**: `just docs` to regenerate provider docs
-
 ## Development Tools
 
-Required tools (defined in `.tool-versions`):
-- Go 1.24
-- golangci-lint v2.1.5
-- just 1.40.0
-
-Additional tools (in `go.mod`):
-- `github.com/hashicorp/terraform-plugin-docs` - Documentation generation
-- `github.com/hashicorp/copywrite` - Copyright header management
+Required tools are defined in `.tool-versions`.
+Additional tools are defined in `tools/go.mod`.
 
 ## Documentation
 

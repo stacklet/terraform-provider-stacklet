@@ -44,15 +44,7 @@ When API changes or new tests are added:
 
 ## Key Resources
 
-The provider implements resources for:
-- Account management (accounts, discovery, groups)
-- Policy management (collections, bindings)
-- Configuration profiles (multiple integration types: Email, Jira, Slack, Teams, ServiceNow, etc.)
-- Repository management
-
 See `internal/resources/resources.go` and `internal/datasources/datasources.go` for complete lists.
 
 **Key Features**:
-- Account groups support optional `dynamic_filter` for automatic account matching (null ↔ non-null transitions trigger replacement)
-- Configuration profiles support multiple integration types
-- Write-only fields use `_wo` suffix with version tracking via `_wo_version`
+- Write-only fields use `_wo` suffix with version tracking via `_wo_version`.

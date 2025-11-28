@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Terraform provider for Stacklet's cloud governance platform. It allows managing cloud infrastructure and governance resources like accounts, policy collections, bindings, and configuration profiles through Infrastructure as Code.
 
-Built with Terraform Plugin Framework and Go 1.24, the provider uses GraphQL to communicate with the Stacklet API.
+Built with Terraform Plugin Framework the provider uses GraphQL to communicate with the Stacklet API.
 
 ## Documentation Structure
 
