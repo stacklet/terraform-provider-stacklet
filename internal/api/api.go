@@ -20,6 +20,8 @@ type API struct {
 	PolicyCollectionMapping policyCollectionMappingAPI
 	ReportGroup             reportGroupAPI
 	Repository              repositoryAPI
+	Role                    roleAPI
+	RoleAssignment          roleAssignmentAPI
 	System                  systemAPI
 	Template                templateAPI
 }
@@ -38,6 +40,8 @@ func New(c *graphql.Client) *API {
 		PolicyCollectionMapping: policyCollectionMappingAPI{c},
 		ReportGroup:             reportGroupAPI{c},
 		Repository:              repositoryAPI{c},
+		Role:                    roleAPI{c},
+		RoleAssignment:          roleAssignmentAPI{c},
 		System:                  systemAPI{c},
 		Template:                templateAPI{c},
 	}
