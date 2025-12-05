@@ -123,7 +123,6 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			},
 			"security_context": schema.StringAttribute{
 				Description: "The binding execution security context.",
-				Optional:    true,
 				Computed:    true,
 			},
 			"security_context_wo": schema.StringAttribute{
