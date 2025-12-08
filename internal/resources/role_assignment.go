@@ -110,13 +110,13 @@ func (r *roleAssignmentResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	input, diags := plan.ToAPIInput(ctx)
+	roleName, principal, target, diags := plan.ToAPIParams(ctx)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	assignment, err := r.api.RoleAssignment.Create(ctx, input)
+	assignment, err := r.api.RoleAssignment.Create(ctx, roleName, principal, target)
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
@@ -159,13 +159,13 @@ func (r *roleAssignmentResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	input, diags := state.ToAPIInput(ctx)
+	roleName, principal, target, diags := state.ToAPIParams(ctx)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	if err := r.api.RoleAssignment.Delete(ctx, input); err != nil {
+	if err := r.api.RoleAssignment.Delete(ctx, roleName, principal, target); err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}

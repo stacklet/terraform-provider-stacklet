@@ -55,18 +55,20 @@ func (m *RoleAssignmentResource) Update(ctx context.Context, assignment *api.Rol
 	m.RoleName = types.StringValue(assignment.Role.Name)
 
 	// Update principal
+	principal := assignment.GetPrincipal()
 	principalAttrs := map[string]attr.Value{
-		"type": types.StringValue(assignment.Principal.Type),
-		"id":   types.Int64Value(assignment.Principal.ID),
+		"type": types.StringValue(principal.Type),
+		"id":   types.Int64Value(principal.ID),
 	}
 	principalObj, d := types.ObjectValue(RoleAssignmentPrincipal{}.AttributeTypes(), principalAttrs)
 	diags.Append(d...)
 	m.Principal = principalObj
 
 	// Update target
+	target := assignment.GetTarget()
 	targetAttrs := map[string]attr.Value{
-		"type": types.StringValue(assignment.Target.Type),
-		"uuid": types.StringPointerValue(assignment.Target.UUID),
+		"type": types.StringValue(target.Type),
+		"uuid": types.StringPointerValue(target.UUID),
 	}
 	targetObj, d := types.ObjectValue(RoleAssignmentTarget{}.AttributeTypes(), targetAttrs)
 	diags.Append(d...)
@@ -75,8 +77,8 @@ func (m *RoleAssignmentResource) Update(ctx context.Context, assignment *api.Rol
 	return diags
 }
 
-// ToAPIInput converts the model to an API input struct.
-func (m *RoleAssignmentResource) ToAPIInput(ctx context.Context) (api.RoleAssignmentInput, diag.Diagnostics) {
+// ToAPIParams extracts the parameters needed for API calls.
+func (m *RoleAssignmentResource) ToAPIParams(ctx context.Context) (string, api.RoleAssignmentPrincipal, api.RoleAssignmentTarget, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	// Extract principal
@@ -90,22 +92,20 @@ func (m *RoleAssignmentResource) ToAPIInput(ctx context.Context) (api.RoleAssign
 	diags.Append(d...)
 
 	if diags.HasError() {
-		return api.RoleAssignmentInput{}, diags
+		return "", api.RoleAssignmentPrincipal{}, api.RoleAssignmentTarget{}, diags
 	}
 
-	input := api.RoleAssignmentInput{
-		RoleName: m.RoleName.ValueString(),
-		Principal: api.RoleAssignmentPrincipal{
-			Type: principal.Type.ValueString(),
-			ID:   principal.ID.ValueInt64(),
-		},
-		Target: api.RoleAssignmentTarget{
-			Type: target.Type.ValueString(),
-			UUID: target.UUID.ValueStringPointer(),
-		},
+	roleName := m.RoleName.ValueString()
+	apiPrincipal := api.RoleAssignmentPrincipal{
+		Type: principal.Type.ValueString(),
+		ID:   principal.ID.ValueInt64(),
+	}
+	apiTarget := api.RoleAssignmentTarget{
+		Type: target.Type.ValueString(),
+		UUID: target.UUID.ValueStringPointer(),
 	}
 
-	return input, diags
+	return roleName, apiPrincipal, apiTarget, diags
 }
 
 // RoleAssignmentsDataSource is the model for role_assignments data source.
@@ -139,17 +139,19 @@ func (m *RoleAssignmentsDataSource) Update(ctx context.Context, assignments []ap
 	items := make([]RoleAssignmentItem, 0, len(assignments))
 	for _, assignment := range assignments {
 		// Build principal object
+		principal := assignment.GetPrincipal()
 		principalAttrs := map[string]attr.Value{
-			"type": types.StringValue(assignment.Principal.Type),
-			"id":   types.Int64Value(assignment.Principal.ID),
+			"type": types.StringValue(principal.Type),
+			"id":   types.Int64Value(principal.ID),
 		}
 		principalObj, d := types.ObjectValue(RoleAssignmentPrincipal{}.AttributeTypes(), principalAttrs)
 		diags.Append(d...)
 
 		// Build target object
+		target := assignment.GetTarget()
 		targetAttrs := map[string]attr.Value{
-			"type": types.StringValue(assignment.Target.Type),
-			"uuid": types.StringPointerValue(assignment.Target.UUID),
+			"type": types.StringValue(target.Type),
+			"uuid": types.StringPointerValue(target.UUID),
 		}
 		targetObj, d := types.ObjectValue(RoleAssignmentTarget{}.AttributeTypes(), targetAttrs)
 		diags.Append(d...)
