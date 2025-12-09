@@ -1,31 +1,31 @@
 # Query all system-level role assignments
 data "stacklet_role_assignments" "system_access" {
-  target {
+  target = {
     type = "system"
   }
 }
 
 # Query role assignments for a specific account group
 data "stacklet_role_assignments" "production_acl" {
-  target {
+  target = {
     type = "account-group"
-    uuid = stacklet_account_group.production.uuid
+    uuid = "00000000-0000-0000-0000-000000000001"
   }
 }
 
 # Query role assignments for a policy collection
 data "stacklet_role_assignments" "security_policies_access" {
-  target {
+  target = {
     type = "policy-collection"
-    uuid = stacklet_policy_collection.security.uuid
+    uuid = "00000000-0000-0000-0000-000000000002"
   }
 }
 
 # Query role assignments for a repository
 data "stacklet_role_assignments" "repo_access" {
-  target {
+  target = {
     type = "repository"
-    uuid = stacklet_repository.custom_policies.uuid
+    uuid = "00000000-0000-0000-0000-000000000003"
   }
 }
 
