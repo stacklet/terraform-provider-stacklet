@@ -64,7 +64,7 @@ func (r roleAPI) List(ctx context.Context) ([]Role, error) {
 	return roles, nil
 }
 
-// FilterSchema represents the filter schema structure
+// FilterSchema represents the filter schema structure.
 type FilterSchema struct {
 	Filters []struct {
 		Name string

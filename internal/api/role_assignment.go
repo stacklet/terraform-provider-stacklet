@@ -24,15 +24,15 @@ type RoleAssignmentPrincipal struct {
 
 // RoleAssignmentTarget represents the target entity for a role assignment.
 type RoleAssignmentTarget struct {
-	Type string  `json:"type"`          // "system", "account-group", "policy-collection", "repository"
+	Type string  `json:"type"`           // "system", "account-group", "policy-collection", "repository"
 	UUID *string `json:"uuid,omitempty"` // Required for all target types except "system"
 }
 
 // RoleAssignmentInput is the input for creating a role assignment.
 type RoleAssignmentInput struct {
-	RoleName  string                   `json:"roleName"`
-	Principal RoleAssignmentPrincipal  `json:"principal"`
-	Target    RoleAssignmentTarget     `json:"target"`
+	RoleName  string                  `json:"roleName"`
+	Principal RoleAssignmentPrincipal `json:"principal"`
+	Target    RoleAssignmentTarget    `json:"target"`
 }
 
 func (i RoleAssignmentInput) GetGraphQLType() string {
