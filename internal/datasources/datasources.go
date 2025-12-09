@@ -28,5 +28,6 @@ func DataSources() []func() datasource.DataSource {
 		newReportgroupDataSource,
 		newRepositoryDataSource,
 		newRoleDataSource,
+		newRoleAssignmentsDataSource,
 	}
 }
