@@ -55,7 +55,7 @@ func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection 
 	)
 	errors.AddAttributeDiags(&diags, d, "dynamic_config")
 	m.DynamicConfig = dynamicConfig
-	m.RoleAssignmentTarget = types.StringValue("policy-collection:" + policyCollection.UUID)
+	m.RoleAssignmentTarget = types.StringValue(policyCollection.RoleAssignmentTarget)
 
 	return diags
 }

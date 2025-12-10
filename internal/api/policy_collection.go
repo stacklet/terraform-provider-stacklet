@@ -10,18 +10,19 @@ import (
 
 // Account is the data returned by reading policy collection data.
 type PolicyCollection struct {
-	ID               string
-	UUID             string
-	Name             string
-	Description      *string
-	Provider         CloudProvider
-	AutoUpdate       bool
-	System           bool
-	IsDynamic        bool
-	RepositoryConfig struct {
+	ID                   string
+	UUID                 string
+	Name                 string
+	Description          *string
+	Provider             CloudProvider
+	AutoUpdate           bool
+	System               bool
+	IsDynamic            bool
+	RepositoryConfig     struct {
 		UUID *string
 	}
-	RepositoryView *RepositoryView
+	RepositoryView       *RepositoryView
+	RoleAssignmentTarget string
 }
 
 type RepositoryViewConfig struct {

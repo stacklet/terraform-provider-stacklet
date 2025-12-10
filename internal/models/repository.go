@@ -40,7 +40,7 @@ func (m *RepositoryDataSource) Update(repo *api.Repository) diag.Diagnostics {
 	m.SSHPublicKey = types.StringPointerValue(repo.Auth.SSHPublicKey)
 	m.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
 	m.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
-	m.RoleAssignmentTarget = types.StringValue("repository:" + repo.UUID)
+	m.RoleAssignmentTarget = types.StringValue(repo.RoleAssignmentTarget)
 
 	return diags
 }

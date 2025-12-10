@@ -10,13 +10,14 @@ import (
 )
 
 type Repository struct {
-	ID          string
-	UUID        string
-	URL         string
-	Name        string
-	Description *string
-	WebhookURL  string `graphql:"webhookURL"`
-	System      bool
+	ID                   string
+	UUID                 string
+	URL                  string
+	Name                 string
+	Description          *string
+	WebhookURL           string `graphql:"webhookURL"`
+	System               bool
+	RoleAssignmentTarget string
 
 	Auth struct {
 		AuthUser         *string

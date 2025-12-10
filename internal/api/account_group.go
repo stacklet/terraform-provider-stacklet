@@ -10,13 +10,14 @@ import (
 
 // AccountGroup is the data returned by reading account group data.
 type AccountGroup struct {
-	ID            string
-	UUID          string
-	Name          string
-	Description   *string
-	DynamicFilter *string
-	Provider      string
-	Regions       []string
+	ID                   string
+	UUID                 string
+	Name                 string
+	Description          *string
+	DynamicFilter        *string
+	Provider             string
+	Regions              []string
+	RoleAssignmentTarget string
 }
 
 // AccountGroupCreateInput is the input for creating an account group.

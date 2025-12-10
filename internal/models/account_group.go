@@ -32,7 +32,7 @@ func (m *AccountGroupResource) Update(accountGroup *api.AccountGroup) diag.Diagn
 	m.DynamicFilter = types.StringPointerValue(accountGroup.DynamicFilter)
 	m.CloudProvider = types.StringValue(accountGroup.Provider)
 	m.Regions = typehelpers.StringsList(accountGroup.Regions)
-	m.RoleAssignmentTarget = types.StringValue("account-group:" + accountGroup.UUID)
+	m.RoleAssignmentTarget = types.StringValue(accountGroup.RoleAssignmentTarget)
 
 	return diags
 }
