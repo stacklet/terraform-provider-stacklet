@@ -354,6 +354,28 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *RoleAssignmentTarge
 	return assignments, nil
 }
 
+// ListByTargetString returns role assignments filtered by an opaque target string.
+// The target string should be in the format "type:id" (e.g., "account-group:uuid", "system:all").
+func (r roleAssignmentAPI) ListByTargetString(ctx context.Context, targetStr string) ([]RoleAssignment, error) {
+	// Get all role assignments (no server-side filtering for now)
+	// We'll filter client-side by comparing the target strings
+	assignments, err := r.List(ctx, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// Filter by target string
+	filtered := make([]RoleAssignment, 0)
+	for _, assignment := range assignments {
+		assignmentTarget := assignment.GetTarget()
+		if assignmentTarget.String() == targetStr {
+			filtered = append(filtered, assignment)
+		}
+	}
+
+	return filtered, nil
+}
+
 // Delete removes a role assignment.
 func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principal RoleAssignmentPrincipal, target RoleAssignmentTarget) error {
 	// Validate target

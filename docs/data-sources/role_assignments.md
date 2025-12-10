@@ -15,33 +15,22 @@ Retrieve role assignments for a specific target. This data source allows you to 
 ```terraform
 # Query all system-level role assignments
 data "stacklet_role_assignments" "system_access" {
-  target {
-    type = "system"
-  }
+  target = "system:all"
 }
 
 # Query role assignments for a specific account group
 data "stacklet_role_assignments" "production_acl" {
-  target {
-    type = "account-group"
-    uuid = stacklet_account_group.production.uuid
-  }
+  target = "account-group:00000000-0000-0000-0000-000000000001"
 }
 
 # Query role assignments for a policy collection
 data "stacklet_role_assignments" "security_policies_access" {
-  target {
-    type = "policy-collection"
-    uuid = stacklet_policy_collection.security.uuid
-  }
+  target = "policy-collection:00000000-0000-0000-0000-000000000002"
 }
 
 # Query role assignments for a repository
 data "stacklet_role_assignments" "repo_access" {
-  target {
-    type = "repository"
-    uuid = stacklet_repository.custom_policies.uuid
-  }
+  target = "repository:00000000-0000-0000-0000-000000000003"
 }
 
 # Output all system administrators
@@ -86,23 +75,11 @@ output "user_has_access" {
 
 ### Required
 
-- `target` (Attributes) The target entity to query role assignments for. (see [below for nested schema](#nestedatt--target))
+- `target` (String) The target identifier to query role assignments for (e.g., 'system:all', 'account-group:uuid', 'policy-collection:uuid', 'repository:uuid'). Use the 'target' attribute from resource outputs.
 
 ### Read-Only
 
 - `assignments` (Attributes List) The list of role assignments for the target. (see [below for nested schema](#nestedatt--assignments))
-
-<a id="nestedatt--target"></a>
-### Nested Schema for `target`
-
-Required:
-
-- `type` (String) The type of target. Valid values: 'system', 'account-group', 'policy-collection', 'repository'.
-
-Optional:
-
-- `uuid` (String) The UUID of the target. Required for all target types except 'system'.
-
 
 <a id="nestedatt--assignments"></a>
 ### Nested Schema for `assignments`
@@ -110,23 +87,6 @@ Optional:
 Read-Only:
 
 - `id` (String) The unique identifier of the role assignment.
-- `principal` (Attributes) The principal (user or SSO group) that has been granted the role. (see [below for nested schema](#nestedatt--assignments--principal))
+- `principal` (String) The principal identifier (e.g., 'user:123', 'sso-group:456').
 - `role_name` (String) The name of the role assigned.
-- `target` (Attributes) The target entity that the role is assigned to. (see [below for nested schema](#nestedatt--assignments--target))
-
-<a id="nestedatt--assignments--principal"></a>
-### Nested Schema for `assignments.principal`
-
-Read-Only:
-
-- `id` (Number) The numeric ID of the principal.
-- `type` (String) The type of principal. Either 'user' or 'sso-group'.
-
-
-<a id="nestedatt--assignments--target"></a>
-### Nested Schema for `assignments.target`
-
-Read-Only:
-
-- `type` (String) The type of target.
-- `uuid` (String) The UUID of the target (null for system targets).
+- `target` (String) The target identifier (e.g., 'account-group:uuid').

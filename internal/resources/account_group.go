@@ -85,6 +85,13 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 				Computed:    true,
 				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
+			"role_assignment_target": schema.StringAttribute{
+				Description: "The target identifier for role assignments (e.g., 'account-group:uuid'). Use this value when assigning roles to this account group.",
+				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
 		},
 	}
 }

@@ -93,6 +93,10 @@ func (d *policyCollectionDataSource) Schema(_ context.Context, _ datasource.Sche
 					},
 				},
 			},
+			"role_assignment_target": schema.StringAttribute{
+				Description: "The target identifier for role assignments (e.g., 'policy-collection:uuid'). Use this value when assigning roles to this policy collection.",
+				Computed:    true,
+			},
 		},
 	}
 }

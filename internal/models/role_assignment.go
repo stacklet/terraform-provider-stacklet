@@ -110,7 +110,7 @@ func (m *RoleAssignmentResource) ToAPIParams(ctx context.Context) (string, api.R
 
 // RoleAssignmentsDataSource is the model for role_assignments data source.
 type RoleAssignmentsDataSource struct {
-	Target      types.Object `tfsdk:"target"`
+	Target      types.String `tfsdk:"target"`
 	Assignments types.List   `tfsdk:"assignments"`
 }
 
@@ -118,16 +118,16 @@ type RoleAssignmentsDataSource struct {
 type RoleAssignmentItem struct {
 	ID        types.String `tfsdk:"id"`
 	RoleName  types.String `tfsdk:"role_name"`
-	Principal types.Object `tfsdk:"principal"`
-	Target    types.Object `tfsdk:"target"`
+	Principal types.String `tfsdk:"principal"`
+	Target    types.String `tfsdk:"target"`
 }
 
 func (i RoleAssignmentItem) AttributeTypes() map[string]attr.Type {
 	return map[string]attr.Type{
 		"id":        types.StringType,
 		"role_name": types.StringType,
-		"principal": types.ObjectType{AttrTypes: RoleAssignmentPrincipal{}.AttributeTypes()},
-		"target":    types.ObjectType{AttrTypes: RoleAssignmentTarget{}.AttributeTypes()},
+		"principal": types.StringType,
+		"target":    types.StringType,
 	}
 }
 
@@ -138,29 +138,19 @@ func (m *RoleAssignmentsDataSource) Update(ctx context.Context, assignments []ap
 	// Convert each assignment to a list item
 	items := make([]RoleAssignmentItem, 0, len(assignments))
 	for _, assignment := range assignments {
-		// Build principal object
+		// Get principal as opaque string
 		principal := assignment.GetPrincipal()
-		principalAttrs := map[string]attr.Value{
-			"type": types.StringValue(principal.Type),
-			"id":   types.Int64Value(principal.ID),
-		}
-		principalObj, d := types.ObjectValue(RoleAssignmentPrincipal{}.AttributeTypes(), principalAttrs)
-		diags.Append(d...)
+		principalStr := principal.String()
 
-		// Build target object
+		// Get target as opaque string
 		target := assignment.GetTarget()
-		targetAttrs := map[string]attr.Value{
-			"type": types.StringValue(target.Type),
-			"uuid": types.StringPointerValue(target.UUID),
-		}
-		targetObj, d := types.ObjectValue(RoleAssignmentTarget{}.AttributeTypes(), targetAttrs)
-		diags.Append(d...)
+		targetStr := target.String()
 
 		item := RoleAssignmentItem{
 			ID:        types.StringValue(assignment.ID),
 			RoleName:  types.StringValue(assignment.Role.Name),
-			Principal: principalObj,
-			Target:    targetObj,
+			Principal: types.StringValue(principalStr),
+			Target:    types.StringValue(targetStr),
 		}
 		items = append(items, item)
 	}

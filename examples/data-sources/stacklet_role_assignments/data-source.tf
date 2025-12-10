@@ -1,32 +1,21 @@
 # Query all system-level role assignments
 data "stacklet_role_assignments" "system_access" {
-  target = {
-    type = "system"
-  }
+  target = "system:all"
 }
 
 # Query role assignments for a specific account group
 data "stacklet_role_assignments" "production_acl" {
-  target = {
-    type = "account-group"
-    uuid = "00000000-0000-0000-0000-000000000001"
-  }
+  target = "account-group:00000000-0000-0000-0000-000000000001"
 }
 
 # Query role assignments for a policy collection
 data "stacklet_role_assignments" "security_policies_access" {
-  target = {
-    type = "policy-collection"
-    uuid = "00000000-0000-0000-0000-000000000002"
-  }
+  target = "policy-collection:00000000-0000-0000-0000-000000000002"
 }
 
 # Query role assignments for a repository
 data "stacklet_role_assignments" "repo_access" {
-  target = {
-    type = "repository"
-    uuid = "00000000-0000-0000-0000-000000000003"
-  }
+  target = "repository:00000000-0000-0000-0000-000000000003"
 }
 
 # Output all system administrators

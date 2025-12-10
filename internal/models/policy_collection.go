@@ -16,15 +16,16 @@ import (
 
 // PolicyCollectionResource is the model for a policy collection resource.
 type PolicyCollectionResource struct {
-	ID            types.String `tfsdk:"id"`
-	UUID          types.String `tfsdk:"uuid"`
-	Name          types.String `tfsdk:"name"`
-	Description   types.String `tfsdk:"description"`
-	CloudProvider types.String `tfsdk:"cloud_provider"`
-	AutoUpdate    types.Bool   `tfsdk:"auto_update"`
-	System        types.Bool   `tfsdk:"system"`
-	Dynamic       types.Bool   `tfsdk:"dynamic"`
-	DynamicConfig types.Object `tfsdk:"dynamic_config"`
+	ID                   types.String `tfsdk:"id"`
+	UUID                 types.String `tfsdk:"uuid"`
+	Name                 types.String `tfsdk:"name"`
+	Description          types.String `tfsdk:"description"`
+	CloudProvider        types.String `tfsdk:"cloud_provider"`
+	AutoUpdate           types.Bool   `tfsdk:"auto_update"`
+	System               types.Bool   `tfsdk:"system"`
+	Dynamic              types.Bool   `tfsdk:"dynamic"`
+	DynamicConfig        types.Object `tfsdk:"dynamic_config"`
+	RoleAssignmentTarget types.String `tfsdk:"role_assignment_target"`
 }
 
 func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection *api.PolicyCollection) diag.Diagnostics {
@@ -54,6 +55,7 @@ func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection 
 	)
 	errors.AddAttributeDiags(&diags, d, "dynamic_config")
 	m.DynamicConfig = dynamicConfig
+	m.RoleAssignmentTarget = types.StringValue("policy-collection:" + policyCollection.UUID)
 
 	return diags
 }

@@ -46,6 +46,7 @@ resource "stacklet_account_group" "development" {
 ### Read-Only
 
 - `id` (String) The GraphQL Node ID of the account group.
+- `role_assignment_target` (String) The target identifier for role assignments (e.g., 'account-group:uuid'). Use this value when assigning roles to this account group.
 - `uuid` (String) The UUID of the account group.
 
 ## Import
