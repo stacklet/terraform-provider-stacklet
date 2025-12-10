@@ -293,12 +293,17 @@ func (r roleAssignmentAPI) Read(ctx context.Context, id string) (*RoleAssignment
 
 // List returns role assignments filtered by target or principal.
 func (r roleAssignmentAPI) List(ctx context.Context, target *RoleAssignmentTarget, principal *RoleAssignmentPrincipal) ([]RoleAssignment, error) {
+	cursor := ""
 	var query struct {
 		RoleAssignments struct {
 			Edges []struct {
 				Node RoleAssignment
 			}
-		} `graphql:"roleAssignments(filterElement: $filterElement)"`
+			PageInfo struct {
+				HasNextPage bool
+				EndCursor   string
+			}
+		} `graphql:"roleAssignments(first: 100, after: $cursor, filterElement: $filterElement)"`
 	}
 
 	// Build filter based on target and/or principal
@@ -311,44 +316,55 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *RoleAssignmentTarge
 		filterElement = newExactMatchFilter("principal.type", principal.Type)
 	}
 
-	variables := map[string]any{
-		"filterElement": filterElement,
-	}
+	assignments := make([]RoleAssignment, 0)
 
-	if err := r.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
-	}
-
-	assignments := make([]RoleAssignment, 0, len(query.RoleAssignments.Edges))
-	for _, edge := range query.RoleAssignments.Edges {
-		// Apply client-side filtering for fields not in the query filter
-		assignment := edge.Node
-
-		// Filter by target if specified
-		if target != nil {
-			assignmentTarget := assignment.GetTarget()
-			if assignmentTarget.Type != target.Type {
-				continue
-			}
-			// Check UUID if provided (for non-system targets)
-			if target.UUID != nil && (assignmentTarget.UUID == nil || *assignmentTarget.UUID != *target.UUID) {
-				continue
-			}
-			// For system target, ensure UUID is nil
-			if target.Type == "system" && assignmentTarget.UUID != nil {
-				continue
-			}
+	// Paginate through all results
+	for {
+		variables := map[string]any{
+			"cursor":        graphql.String(cursor),
+			"filterElement": filterElement,
 		}
 
-		// Filter by principal if specified
-		if principal != nil {
-			assignmentPrincipal := assignment.GetPrincipal()
-			if assignmentPrincipal.Type != principal.Type || assignmentPrincipal.ID != principal.ID {
-				continue
-			}
+		if err := r.c.Query(ctx, &query, variables); err != nil {
+			return nil, NewAPIError(err)
 		}
 
-		assignments = append(assignments, assignment)
+		for _, edge := range query.RoleAssignments.Edges {
+			// Apply client-side filtering for fields not in the query filter
+			assignment := edge.Node
+
+			// Filter by target if specified
+			if target != nil {
+				assignmentTarget := assignment.GetTarget()
+				if assignmentTarget.Type != target.Type {
+					continue
+				}
+				// Check UUID if provided (for non-system targets)
+				if target.UUID != nil && (assignmentTarget.UUID == nil || *assignmentTarget.UUID != *target.UUID) {
+					continue
+				}
+				// For system target, ensure UUID is nil
+				if target.Type == "system" && assignmentTarget.UUID != nil {
+					continue
+				}
+			}
+
+			// Filter by principal if specified
+			if principal != nil {
+				assignmentPrincipal := assignment.GetPrincipal()
+				if assignmentPrincipal.Type != principal.Type || assignmentPrincipal.ID != principal.ID {
+					continue
+				}
+			}
+
+			assignments = append(assignments, assignment)
+		}
+
+		// Check if there are more pages
+		if !query.RoleAssignments.PageInfo.HasNextPage {
+			break
+		}
+		cursor = query.RoleAssignments.PageInfo.EndCursor
 	}
 
 	return assignments, nil

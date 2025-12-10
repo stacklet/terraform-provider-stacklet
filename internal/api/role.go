@@ -63,24 +63,3 @@ func (r roleAPI) List(ctx context.Context) ([]Role, error) {
 
 	return roles, nil
 }
-
-// FilterSchema represents the filter schema structure.
-type FilterSchema struct {
-	Filters []struct {
-		Name string
-	}
-}
-
-// GetFilterSchema returns the filter schema for roles.
-func (r roleAPI) GetFilterSchema(ctx context.Context) (*FilterSchema, error) {
-	var query struct {
-		Roles struct {
-			FilterSchema FilterSchema
-		}
-	}
-	if err := r.c.Query(ctx, &query, nil); err != nil {
-		return nil, NewAPIError(err)
-	}
-
-	return &query.Roles.FilterSchema, nil
-}
