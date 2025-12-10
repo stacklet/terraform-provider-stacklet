@@ -12,14 +12,14 @@ import (
 
 // AccountGroupResource is the model for account group resources.
 type AccountGroupResource struct {
-	ID                    types.String `tfsdk:"id"`
-	UUID                  types.String `tfsdk:"uuid"`
-	Name                  types.String `tfsdk:"name"`
-	Description           types.String `tfsdk:"description"`
-	DynamicFilter         types.String `tfsdk:"dynamic_filter"`
-	CloudProvider         types.String `tfsdk:"cloud_provider"`
-	Regions               types.List   `tfsdk:"regions"`
-	RoleAssignmentTarget  types.String `tfsdk:"role_assignment_target"`
+	ID                   types.String `tfsdk:"id"`
+	UUID                 types.String `tfsdk:"uuid"`
+	Name                 types.String `tfsdk:"name"`
+	Description          types.String `tfsdk:"description"`
+	DynamicFilter        types.String `tfsdk:"dynamic_filter"`
+	CloudProvider        types.String `tfsdk:"cloud_provider"`
+	Regions              types.List   `tfsdk:"regions"`
+	RoleAssignmentTarget types.String `tfsdk:"role_assignment_target"`
 }
 
 func (m *AccountGroupResource) Update(accountGroup *api.AccountGroup) diag.Diagnostics {
