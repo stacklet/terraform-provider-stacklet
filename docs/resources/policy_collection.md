@@ -55,7 +55,7 @@ resource "stacklet_policy_collection" "policies" {
 
 - `dynamic` (Boolean) Whether this is a dynamic policy collection.
 - `id` (String) The GraphQL Node ID of the policy collection.
-- `role_assignment_target` (String) The target identifier for role assignments (e.g., 'policy-collection:uuid'). Use this value when assigning roles to this policy collection.
+- `role_assignment_target` (String) An opaque identifier for role assignments. Use this value when assigning roles to this resource.
 - `system` (Boolean) Whether this is a system policy collection.
 - `uuid` (String) The UUID of the policy collection.
 

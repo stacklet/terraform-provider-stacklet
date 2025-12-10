@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-ds\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-ds\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
     {
       "request": {
-        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "description": "Test account group",
@@ -26,7 +26,8 @@
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532"
+              "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532",
+              "roleAssignmentTarget": "account-group:f8511577-a9a1-45b3-b581-c92c7127d532"
             }
           }
         }
@@ -52,10 +53,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"f8511577-a9a1-45b3-b581-c92c7127d532\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"f8511577-a9a1-45b3-b581-c92c7127d532\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532"
@@ -72,16 +73,17 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532"
+            "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532",
+            "roleAssignmentTarget": "account-group:f8511577-a9a1-45b3-b581-c92c7127d532"
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"test-group-ds\",\"uuid\":\"\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"test-group-ds\",\"uuid\":\"\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "test-group-ds",
           "uuid": ""
@@ -98,14 +100,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532"
+            "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532",
+            "roleAssignmentTarget": "account-group:f8511577-a9a1-45b3-b581-c92c7127d532"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "test-group-ds",
           "uuid": ""
@@ -122,14 +125,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532"
+            "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532",
+            "roleAssignmentTarget": "account-group:f8511577-a9a1-45b3-b581-c92c7127d532"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "test-group-ds",
           "uuid": ""
@@ -146,7 +150,8 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532"
+            "uuid": "f8511577-a9a1-45b3-b581-c92c7127d532",
+            "roleAssignmentTarget": "account-group:f8511577-a9a1-45b3-b581-c92c7127d532"
           }
         }
       }

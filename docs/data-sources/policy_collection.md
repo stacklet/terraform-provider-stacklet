@@ -40,7 +40,7 @@ data "stacklet_policy_collection" "by_name" {
 - `dynamic` (Boolean) Whether this is a dynamic policy collection.
 - `dynamic_config` (Attributes) Configuration for dynamic behavior. (see [below for nested schema](#nestedatt--dynamic_config))
 - `id` (String) The GraphQL Node ID of the policy collection.
-- `role_assignment_target` (String) The target identifier for role assignments (e.g., 'policy-collection:uuid'). Use this value when assigning roles to this policy collection.
+- `role_assignment_target` (String) An opaque identifier for role assignments. Use this value when assigning roles to this resource.
 - `system` (Boolean) Whether this is a system policy collection.
 
 <a id="nestedatt--dynamic_config"></a>

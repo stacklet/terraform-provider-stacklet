@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Different account group\",\"name\":\"test-another\",\"provider\":\"Azure\",\"regions\":[]}}": [
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}:{\"input\":{\"description\":\"Different account group\",\"name\":\"test-another\",\"provider\":\"Azure\",\"regions\":[]}}": [
     {
       "request": {
-        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "description": "Different account group",
@@ -22,17 +22,18 @@
               "name": "test-another",
               "provider": "Azure",
               "regions": null,
-              "uuid": "9620b4ba-1204-422d-b604-97d5ded9fa20"
+              "uuid": "9620b4ba-1204-422d-b604-97d5ded9fa20",
+              "roleAssignmentTarget": "account-group:9620b4ba-1204-422d-b604-97d5ded9fa20"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
     {
       "request": {
-        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "description": "Test account group",
@@ -56,17 +57,18 @@
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
+              "uuid": "49cecc24-6cca-4914-be71-f141e67344fa",
+              "roleAssignmentTarget": "account-group:49cecc24-6cca-4914-be71-f141e67344fa"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:UpdateAccountGroupInput!){updateAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Updated account group\",\"dynamicFilter\":null,\"name\":\"test-group-updated\",\"regions\":[\"us-east-1\",\"us-east-2\"],\"uuid\":\"49cecc24-6cca-4914-be71-f141e67344fa\"}}": [
+  "mutation ($input:UpdateAccountGroupInput!){updateAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}:{\"input\":{\"description\":\"Updated account group\",\"dynamicFilter\":null,\"name\":\"test-group-updated\",\"regions\":[\"us-east-1\",\"us-east-2\"],\"uuid\":\"49cecc24-6cca-4914-be71-f141e67344fa\"}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateAccountGroupInput!){updateAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "query": "mutation ($input:UpdateAccountGroupInput!){updateAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "description": "Updated account group",
@@ -93,7 +95,8 @@
                 "us-east-1",
                 "us-east-2"
               ],
-              "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
+              "uuid": "49cecc24-6cca-4914-be71-f141e67344fa",
+              "roleAssignmentTarget": "account-group:49cecc24-6cca-4914-be71-f141e67344fa"
             }
           }
         }
@@ -138,10 +141,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"49cecc24-6cca-4914-be71-f141e67344fa\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"49cecc24-6cca-4914-be71-f141e67344fa\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
@@ -158,14 +161,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
+            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa",
+            "roleAssignmentTarget": "account-group:49cecc24-6cca-4914-be71-f141e67344fa"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
@@ -182,14 +186,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
+            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa",
+            "roleAssignmentTarget": "account-group:49cecc24-6cca-4914-be71-f141e67344fa"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
@@ -206,14 +211,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
+            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa",
+            "roleAssignmentTarget": "account-group:49cecc24-6cca-4914-be71-f141e67344fa"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
@@ -231,14 +237,15 @@
               "us-east-1",
               "us-east-2"
             ],
-            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
+            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa",
+            "roleAssignmentTarget": "account-group:49cecc24-6cca-4914-be71-f141e67344fa"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
@@ -256,16 +263,17 @@
               "us-east-1",
               "us-east-2"
             ],
-            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa"
+            "uuid": "49cecc24-6cca-4914-be71-f141e67344fa",
+            "roleAssignmentTarget": "account-group:49cecc24-6cca-4914-be71-f141e67344fa"
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"9620b4ba-1204-422d-b604-97d5ded9fa20\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"9620b4ba-1204-422d-b604-97d5ded9fa20\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "9620b4ba-1204-422d-b604-97d5ded9fa20"
@@ -280,7 +288,8 @@
             "name": "test-another",
             "provider": "Azure",
             "regions": null,
-            "uuid": "9620b4ba-1204-422d-b604-97d5ded9fa20"
+            "uuid": "9620b4ba-1204-422d-b604-97d5ded9fa20",
+            "roleAssignmentTarget": "account-group:9620b4ba-1204-422d-b604-97d5ded9fa20"
           }
         }
       }

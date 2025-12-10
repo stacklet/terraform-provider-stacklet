@@ -33,7 +33,7 @@ func (d *roleAssignmentsDataSource) Schema(_ context.Context, _ datasource.Schem
 		Description: "Retrieve role assignments for a specific target. This data source allows you to query which principals (users or SSO groups) have been granted roles on a particular target (system, account group, policy collection, or repository).",
 		Attributes: map[string]schema.Attribute{
 			"target": schema.StringAttribute{
-				Description: "The target identifier to query role assignments for (e.g., 'system:all', 'account-group:uuid', 'policy-collection:uuid', 'repository:uuid'). Use the 'target' attribute from resource outputs.",
+				Description: "An opaque target identifier to query role assignments for. Use the 'role_assignment_target' attribute from resource outputs.",
 				Required:    true,
 			},
 			"assignments": schema.ListNestedAttribute{
@@ -50,11 +50,11 @@ func (d *roleAssignmentsDataSource) Schema(_ context.Context, _ datasource.Schem
 							Computed:    true,
 						},
 						"principal": schema.StringAttribute{
-							Description: "The principal identifier (e.g., 'user:123', 'sso-group:456').",
+							Description: "An opaque principal identifier.",
 							Computed:    true,
 						},
 						"target": schema.StringAttribute{
-							Description: "The target identifier (e.g., 'account-group:uuid').",
+							Description: "An opaque target identifier.",
 							Computed:    true,
 						},
 					},

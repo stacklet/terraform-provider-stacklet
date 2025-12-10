@@ -75,7 +75,7 @@ output "user_has_access" {
 
 ### Required
 
-- `target` (String) The target identifier to query role assignments for (e.g., 'system:all', 'account-group:uuid', 'policy-collection:uuid', 'repository:uuid'). Use the 'target' attribute from resource outputs.
+- `target` (String) An opaque target identifier to query role assignments for. Use the 'role_assignment_target' attribute from resource outputs.
 
 ### Read-Only
 
@@ -87,6 +87,6 @@ output "user_has_access" {
 Read-Only:
 
 - `id` (String) The unique identifier of the role assignment.
-- `principal` (String) The principal identifier (e.g., 'user:123', 'sso-group:456').
+- `principal` (String) An opaque principal identifier.
 - `role_name` (String) The name of the role assigned.
-- `target` (String) The target identifier (e.g., 'account-group:uuid').
+- `target` (String) An opaque target identifier.

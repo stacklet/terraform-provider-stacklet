@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":null,\"authUser\":\"\",\"sshPassphrase\":null,\"sshPrivateKey\":null},\"name\":\"test-repo\",\"url\":\"https://github.com/test-org/test-repo\"}}": [
+  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":null,\"authUser\":\"\",\"sshPassphrase\":null,\"sshPrivateKey\":null},\"name\":\"test-repo\",\"url\":\"https://github.com/test-org/test-repo\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "input": {
             "auth": {
@@ -34,7 +34,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba"
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba",
+              "roleAssignmentTarget": "repository:0bfa4b74-bd19-4354-8f9f-91007bb51766"
             }
           }
         }
@@ -61,10 +62,10 @@
       }
     }
   ],
-  "mutation ($input:UpdateRepositoryConfigInput!){updateRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":\"secret\",\"authUser\":\"bill\"},\"description\":null,\"name\":\"test-repo\",\"uuid\":\"0bfa4b74-bd19-4354-8f9f-91007bb51766\"}}": [
+  "mutation ($input:UpdateRepositoryConfigInput!){updateRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":\"secret\",\"authUser\":\"bill\"},\"description\":null,\"name\":\"test-repo\",\"uuid\":\"0bfa4b74-bd19-4354-8f9f-91007bb51766\"}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRepositoryConfigInput!){updateRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "mutation ($input:UpdateRepositoryConfigInput!){updateRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "input": {
             "auth": {
@@ -95,17 +96,18 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba"
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba",
+              "roleAssignmentTarget": "repository:0bfa4b74-bd19-4354-8f9f-91007bb51766"
             }
           }
         }
       }
     }
   ],
-  "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"uuid\":\"0bfa4b74-bd19-4354-8f9f-91007bb51766\"}": [
+  "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"uuid\":\"0bfa4b74-bd19-4354-8f9f-91007bb51766\"}": [
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766"
         }
@@ -128,7 +130,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba"
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba",
+              "roleAssignmentTarget": "repository:0bfa4b74-bd19-4354-8f9f-91007bb51766"
             }
           }
         }
@@ -136,7 +139,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766"
         }
@@ -159,7 +162,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba"
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba",
+              "roleAssignmentTarget": "repository:0bfa4b74-bd19-4354-8f9f-91007bb51766"
             }
           }
         }
@@ -167,7 +171,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766"
         }
@@ -190,7 +194,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba"
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba",
+              "roleAssignmentTarget": "repository:0bfa4b74-bd19-4354-8f9f-91007bb51766"
             }
           }
         }
@@ -198,7 +203,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766"
         }
@@ -221,7 +226,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba"
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba",
+              "roleAssignmentTarget": "repository:0bfa4b74-bd19-4354-8f9f-91007bb51766"
             }
           }
         }
@@ -229,7 +235,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766"
         }
@@ -252,7 +258,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "0bfa4b74-bd19-4354-8f9f-91007bb51766",
-              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba"
+              "webhookURL": "https://api.william.sandbox.stacklet.dev/webhooks/repository/fbd03dfc-6f94-4a12-9491-f66c912f40ba",
+              "roleAssignmentTarget": "repository:0bfa4b74-bd19-4354-8f9f-91007bb51766"
             }
           }
         }

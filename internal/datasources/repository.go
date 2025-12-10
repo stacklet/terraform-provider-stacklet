@@ -83,7 +83,7 @@ func (d *repositoryDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed:    true,
 			},
 			"role_assignment_target": schema.StringAttribute{
-				Description: "The target identifier for role assignments (e.g., 'repository:uuid'). Use this value when assigning roles to this repository.",
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
 				Computed:    true,
 			},
 		},

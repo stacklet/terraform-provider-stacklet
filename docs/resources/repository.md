@@ -80,7 +80,7 @@ resource "stacklet_repository" "example_codecommit" {
 - `has_ssh_passphrase` (Boolean) Whether ssh_passphrase_wo has a value set.
 - `has_ssh_private_key` (Boolean) Whether ssh_private_key_wo has a value set.
 - `id` (String) The GraphQL node ID.
-- `role_assignment_target` (String) The target identifier for role assignments (e.g., 'repository:uuid'). Use this value when assigning roles to this repository.
+- `role_assignment_target` (String) An opaque identifier for role assignments. Use this value when assigning roles to this resource.
 - `ssh_public_key` (String) The public key associated with the value set via ssh_private_key_wo.
 - `system` (Boolean) System repositories cannot be changed.
 - `uuid` (String) The UUID of the repository.

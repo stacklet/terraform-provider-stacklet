@@ -67,10 +67,10 @@
       }
     }
   ],
-  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-mappings\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}:{\"input\":{\"description\":\"Test account group\",\"name\":\"test-group-mappings\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
     {
       "request": {
-        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "description": "Test account group",
@@ -94,7 +94,8 @@
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
+              "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df",
+              "roleAssignmentTarget": "account-group:9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
             }
           }
         }
@@ -562,10 +563,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
@@ -582,14 +583,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
+            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df",
+            "roleAssignmentTarget": "account-group:9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
@@ -606,14 +608,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
+            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df",
+            "roleAssignmentTarget": "account-group:9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
@@ -630,7 +633,8 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
+            "uuid": "9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df",
+            "roleAssignmentTarget": "account-group:9b4b3b2c-20ed-4112-bc3c-fdf030cfe9df"
           }
         }
       }

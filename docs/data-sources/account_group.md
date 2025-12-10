@@ -39,4 +39,4 @@ data "stacklet_account_group" "by_name" {
 - `dynamic_filter` (String) Dynamic filter for accounts matching. Null means not dynamic, empty string matches all accounts.
 - `id` (String) The GraphQL Node ID of the account group.
 - `regions` (List of String) The regions for the account group.
-- `role_assignment_target` (String) The target identifier for role assignments (e.g., 'account-group:uuid'). Use this value when assigning roles to this account group.
+- `role_assignment_target` (String) An opaque identifier for role assignments. Use this value when assigning roles to this resource.

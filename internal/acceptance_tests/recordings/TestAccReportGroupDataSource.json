@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Test account group for report group\",\"name\":\"test-rg-ag\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}:{\"input\":{\"description\":\"Test account group for report group\",\"name\":\"test-rg-ag\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
     {
       "request": {
-        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "description": "Test account group for report group",
@@ -26,7 +26,8 @@
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "6fe0d04e-cc94-48df-823d-ff358fcca4c4"
+              "uuid": "6fe0d04e-cc94-48df-823d-ff358fcca4c4",
+              "roleAssignmentTarget": "account-group:6fe0d04e-cc94-48df-823d-ff358fcca4c4"
             }
           }
         }
@@ -86,10 +87,10 @@
       }
     }
   ],
-  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection for report group\",\"name\":\"test-rg-pc\",\"provider\":\"AWS\"}}": [
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection for report group\",\"name\":\"test-rg-pc\",\"provider\":\"AWS\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "autoUpdate": false,
@@ -112,7 +113,8 @@
               "repositoryConfig": null,
               "repositoryView": null,
               "system": false,
-              "uuid": "c0f9ad92-0651-4451-8cab-af30aa207959"
+              "uuid": "c0f9ad92-0651-4451-8cab-af30aa207959",
+              "roleAssignmentTarget": "policy-collection:c0f9ad92-0651-4451-8cab-af30aa207959"
             }
           }
         }
@@ -305,10 +307,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"6fe0d04e-cc94-48df-823d-ff358fcca4c4\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"6fe0d04e-cc94-48df-823d-ff358fcca4c4\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "6fe0d04e-cc94-48df-823d-ff358fcca4c4"
@@ -325,7 +327,8 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "6fe0d04e-cc94-48df-823d-ff358fcca4c4"
+            "uuid": "6fe0d04e-cc94-48df-823d-ff358fcca4c4",
+            "roleAssignmentTarget": "account-group:6fe0d04e-cc94-48df-823d-ff358fcca4c4"
           }
         }
       }
@@ -367,10 +370,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"c0f9ad92-0651-4451-8cab-af30aa207959\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"c0f9ad92-0651-4451-8cab-af30aa207959\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "c0f9ad92-0651-4451-8cab-af30aa207959"
@@ -388,7 +391,8 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "c0f9ad92-0651-4451-8cab-af30aa207959"
+            "uuid": "c0f9ad92-0651-4451-8cab-af30aa207959",
+            "roleAssignmentTarget": "policy-collection:c0f9ad92-0651-4451-8cab-af30aa207959"
           }
         }
       }

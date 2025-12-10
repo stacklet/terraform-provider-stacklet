@@ -63,7 +63,7 @@ func (d *accountGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				ElementType: types.StringType,
 			},
 			"role_assignment_target": schema.StringAttribute{
-				Description: "The target identifier for role assignments (e.g., 'account-group:uuid'). Use this value when assigning roles to this account group.",
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
 				Computed:    true,
 			},
 		},

@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection\",\"name\":\"test-collection-ds\",\"provider\":\"AWS\"}}": [
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection\",\"name\":\"test-collection-ds\",\"provider\":\"AWS\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "autoUpdate": false,
@@ -25,7 +25,8 @@
               "repositoryConfig": null,
               "repositoryView": null,
               "system": false,
-              "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
+              "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1",
+              "roleAssignmentTarget": "policy-collection:eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
             }
           }
         }
@@ -51,10 +52,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"eb1ee2c8-1915-4ced-98e9-1e0acb518cd1\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"eb1ee2c8-1915-4ced-98e9-1e0acb518cd1\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
@@ -72,16 +73,17 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
+            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1",
+            "roleAssignmentTarget": "policy-collection:eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
           }
         }
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"test-collection-ds\",\"uuid\":\"\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}:{\"name\":\"test-collection-ds\",\"uuid\":\"\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "test-collection-ds",
           "uuid": ""
@@ -99,14 +101,15 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
+            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1",
+            "roleAssignmentTarget": "policy-collection:eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "test-collection-ds",
           "uuid": ""
@@ -124,14 +127,15 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
+            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1",
+            "roleAssignmentTarget": "policy-collection:eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "test-collection-ds",
           "uuid": ""
@@ -149,7 +153,8 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
+            "uuid": "eb1ee2c8-1915-4ced-98e9-1e0acb518cd1",
+            "roleAssignmentTarget": "policy-collection:eb1ee2c8-1915-4ced-98e9-1e0acb518cd1"
           }
         }
       }

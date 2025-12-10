@@ -142,7 +142,7 @@ func (r *policyCollectionResource) Schema(_ context.Context, _ resource.SchemaRe
 				},
 			},
 			"role_assignment_target": schema.StringAttribute{
-				Description: "The target identifier for role assignments (e.g., 'policy-collection:uuid'). Use this value when assigning roles to this policy collection.",
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
