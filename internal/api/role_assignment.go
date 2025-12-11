@@ -40,12 +40,12 @@ func (r *RoleAssignment) GetPrincipal() string {
 
 // roleTarget represents the GraphQL union type for target entities.
 type roleTarget struct {
-	RoleAssignmentTarget string                  `graphql:"roleAssignmentTarget"`
-	RoleScope            *roleTargetType         `graphql:"... on RoleScope"`
-	AccountGroup         *roleTargetType         `graphql:"... on AccountGroup"`
-	PolicyCollection     *roleTargetType         `graphql:"... on PolicyCollection"`
-	Repository           *roleTargetType         `graphql:"... on Repository"`
-	RepositoryConfig     *roleTargetType         `graphql:"... on RepositoryConfig"`
+	RoleAssignmentTarget string          `graphql:"roleAssignmentTarget"`
+	RoleScope            *roleTargetType `graphql:"... on RoleScope"`
+	AccountGroup         *roleTargetType `graphql:"... on AccountGroup"`
+	PolicyCollection     *roleTargetType `graphql:"... on PolicyCollection"`
+	Repository           *roleTargetType `graphql:"... on Repository"`
+	RepositoryConfig     *roleTargetType `graphql:"... on RepositoryConfig"`
 }
 
 // roleTargetType is used for the union type matching.
