@@ -58,89 +58,8 @@ func (r *RoleAssignment) GetTarget() string {
 	return r.Target.RoleAssignmentTarget
 }
 
-// RoleAssignmentInput is the input for creating a role assignment.
-type RoleAssignmentInput struct {
-	Grants  []RoleAssignmentGrant  `json:"grant,omitempty"`
-	Revokes []RoleAssignmentRevoke `json:"revoke,omitempty"`
-}
-
-// RoleAssignmentGrant represents a role to grant.
-type RoleAssignmentGrant struct {
-	Role      string `json:"roleName"`
-	Principal string `json:"principal"`
-	Target    string `json:"target"`
-}
-
-// RoleAssignmentRevoke represents a role to revoke.
-type RoleAssignmentRevoke struct {
-	Role      string `json:"roleName"`
-	Principal string `json:"principal"`
-	Target    string `json:"target"`
-}
-
-func (i RoleAssignmentInput) GetGraphQLType() string {
-	return "UpdateRoleAssignmentInput"
-}
-
 type roleAssignmentAPI struct {
 	c *graphql.Client
-}
-
-// Create creates a role assignment.
-// principal and target are opaque string identifiers (e.g., "user:123", "account-group:uuid").
-func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
-	input := RoleAssignmentInput{
-		Grants: []RoleAssignmentGrant{
-			{
-				Role:      roleName,
-				Principal: principal,
-				Target:    target,
-			},
-		},
-	}
-
-	var mutation struct {
-		Payload struct {
-			Grant []struct {
-				RoleAssignment RoleAssignment
-			}
-		} `graphql:"updateRoleAssignment(input: $input)"`
-	}
-
-	variables := map[string]any{"input": input}
-	if err := r.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
-	}
-
-	// The mutation returns a list of granted assignments
-	if len(mutation.Payload.Grant) == 0 {
-		return nil, APIError{Kind: "API Error", Detail: "No role assignment granted in response"}
-	}
-
-	return &mutation.Payload.Grant[0].RoleAssignment, nil
-}
-
-// Read returns data for a specific role assignment by ID.
-func (r roleAssignmentAPI) Read(ctx context.Context, id string) (*RoleAssignment, error) {
-	var query struct {
-		RoleAssignments struct {
-			Edges []struct {
-				Node RoleAssignment
-			}
-		} `graphql:"roleAssignments(filterElement: $filterElement)"`
-	}
-	variables := map[string]any{
-		"filterElement": newExactMatchFilter("id", id),
-	}
-	if err := r.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
-	}
-
-	if len(query.RoleAssignments.Edges) == 0 {
-		return nil, NotFound{"Role assignment not found"}
-	}
-
-	return &query.RoleAssignments.Edges[0].Node, nil
 }
 
 // List returns role assignments, optionally filtered by target or principal.
@@ -208,33 +127,4 @@ func (r roleAssignmentAPI) ListByTargetString(ctx context.Context, targetStr str
 	}
 
 	return assignments, nil
-}
-
-// Delete removes a role assignment.
-// principal and target are opaque string identifiers (e.g., "user:123", "account-group:uuid").
-func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principal string, target string) error {
-	input := RoleAssignmentInput{
-		Revokes: []RoleAssignmentRevoke{
-			{
-				Role:      roleName,
-				Principal: principal,
-				Target:    target,
-			},
-		},
-	}
-
-	var mutation struct {
-		Payload struct {
-			Revoke []struct {
-				RoleAssignment RoleAssignment
-			}
-		} `graphql:"updateRoleAssignment(input: $input)"`
-	}
-
-	variables := map[string]any{"input": input}
-	if err := r.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
-	}
-
-	return nil
 }
