@@ -13,9 +13,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &roleDataSource{}
-)
+var _ datasource.DataSource = &roleDataSource{}
 
 func newRoleDataSource() datasource.DataSource {
 	return &roleDataSource{}
@@ -47,7 +45,7 @@ func (d *roleDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, r
 				Computed:    true,
 			},
 			"system": schema.BoolAttribute{
-				Description: "Whether this is a system role (cannot be modified).",
+				Description: "Whether this is a system role",
 				Computed:    true,
 			},
 		},

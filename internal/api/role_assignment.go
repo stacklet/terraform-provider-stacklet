@@ -4,10 +4,6 @@ package api
 
 import (
 	"context"
-	"encoding/base64"
-	"encoding/json"
-	"fmt"
-	"strconv"
 
 	"github.com/hasura/go-graphql-client"
 )
@@ -20,182 +16,46 @@ type RoleAssignment struct {
 	Target    roleTarget    `graphql:"target"`
 }
 
+// rolePrincipalPrincipal contains the opaque roleAssignmentPrincipal string.
+type rolePrincipalPrincipal struct {
+	RoleAssignmentPrincipal string `graphql:"roleAssignmentPrincipal"`
+}
+
 // rolePrincipal represents the GraphQL union type for RolePrincipal.
 type rolePrincipal struct {
-	User     *principalUser     `graphql:"... on User"`
-	SSOGroup *principalSSOGroup `graphql:"... on SSOGroup"`
+	User     *rolePrincipalPrincipal `graphql:"... on User"`
+	SSOGroup *rolePrincipalPrincipal `graphql:"... on SSOGroup"`
 }
 
-// principalUser represents a User principal.
-type principalUser struct {
-	ID string `graphql:"id"`
-}
-
-// principalSSOGroup represents an SSOGroup principal.
-type principalSSOGroup struct {
-	ID string `graphql:"id"`
-}
-
-// decodeGraphQLNodeID decodes a GraphQL Node ID and extracts the numeric ID.
-// GraphQL Node IDs are base64-encoded JSON arrays like ["user", "1"].
-func decodeGraphQLNodeID(nodeID string) (int64, error) {
-	decoded, err := base64.StdEncoding.DecodeString(nodeID)
-	if err != nil {
-		return 0, fmt.Errorf("failed to decode base64: %w", err)
+// GetPrincipal extracts the opaque principal identifier string.
+func (r *RoleAssignment) GetPrincipal() string {
+	if r.Principal.User != nil {
+		return r.Principal.User.RoleAssignmentPrincipal
 	}
-
-	var parts []interface{}
-	if err := json.Unmarshal(decoded, &parts); err != nil {
-		return 0, fmt.Errorf("failed to unmarshal JSON: %w", err)
+	if r.Principal.SSOGroup != nil {
+		return r.Principal.SSOGroup.RoleAssignmentPrincipal
 	}
-
-	if len(parts) < 2 {
-		return 0, fmt.Errorf("invalid node ID format: expected at least 2 parts, got %d", len(parts))
-	}
-
-	// The second element is the numeric ID (could be string or number)
-	switch v := parts[1].(type) {
-	case string:
-		id, err := strconv.ParseInt(v, 10, 64)
-		if err != nil {
-			return 0, fmt.Errorf("failed to parse ID as int64: %w", err)
-		}
-		return id, nil
-	case float64:
-		return int64(v), nil
-	default:
-		return 0, fmt.Errorf("unexpected ID type: %T", v)
-	}
+	return ""
 }
 
 // roleTarget represents the GraphQL union type for target entities.
 type roleTarget struct {
-	Typename         string                  `graphql:"__typename"`
-	RoleScope        *targetRoleScope        `graphql:"... on RoleScope"`
-	AccountGroup     *targetAccountGroup     `graphql:"... on AccountGroup"`
-	PolicyCollection *targetPolicyCollection `graphql:"... on PolicyCollection"`
-	Repository       *targetRepository       `graphql:"... on Repository"`
-	RepositoryConfig *targetRepositoryConfig `graphql:"... on RepositoryConfig"`
+	RoleAssignmentTarget string                  `graphql:"roleAssignmentTarget"`
+	RoleScope            *roleTargetType         `graphql:"... on RoleScope"`
+	AccountGroup         *roleTargetType         `graphql:"... on AccountGroup"`
+	PolicyCollection     *roleTargetType         `graphql:"... on PolicyCollection"`
+	Repository           *roleTargetType         `graphql:"... on Repository"`
+	RepositoryConfig     *roleTargetType         `graphql:"... on RepositoryConfig"`
 }
 
-// targetRoleScope represents a system-level (RoleScope) target.
-type targetRoleScope struct {
-	Typename string `graphql:"__typename"`
+// roleTargetType is used for the union type matching.
+type roleTargetType struct {
+	RoleAssignmentTarget string `graphql:"roleAssignmentTarget"`
 }
 
-// targetAccountGroup represents an AccountGroup target.
-type targetAccountGroup struct {
-	UUID string
-}
-
-// targetPolicyCollection represents a PolicyCollection target.
-type targetPolicyCollection struct {
-	UUID string
-}
-
-// targetRepository represents a Repository target.
-type targetRepository struct {
-	UUID string
-}
-
-// targetRepositoryConfig represents a RepositoryConfig target.
-type targetRepositoryConfig struct {
-	UUID string
-}
-
-// RoleAssignmentPrincipal represents the principal (user or SSO group) for a role assignment.
-type RoleAssignmentPrincipal struct {
-	Type string `json:"type"` // "user" or "sso-group"
-	ID   int64  `json:"id"`
-}
-
-// String serializes the principal to the format expected by the GraphQL API.
-func (p RoleAssignmentPrincipal) String() string {
-	return fmt.Sprintf("%s:%d", p.Type, p.ID)
-}
-
-// GetPrincipal extracts the principal information from the GraphQL union type.
-func (r *RoleAssignment) GetPrincipal() RoleAssignmentPrincipal {
-	if r.Principal.User != nil {
-		id, err := decodeGraphQLNodeID(r.Principal.User.ID)
-		if err != nil {
-			// If decoding fails, return empty principal
-			return RoleAssignmentPrincipal{}
-		}
-		return RoleAssignmentPrincipal{
-			Type: "user",
-			ID:   id,
-		}
-	}
-	if r.Principal.SSOGroup != nil {
-		id, err := decodeGraphQLNodeID(r.Principal.SSOGroup.ID)
-		if err != nil {
-			// If decoding fails, return empty principal
-			return RoleAssignmentPrincipal{}
-		}
-		return RoleAssignmentPrincipal{
-			Type: "sso-group",
-			ID:   id,
-		}
-	}
-	return RoleAssignmentPrincipal{}
-}
-
-// RoleAssignmentTarget represents the target entity for a role assignment.
-type RoleAssignmentTarget struct {
-	Type string  `json:"type"`           // "system", "account-group", "policy-collection", "repository"
-	UUID *string `json:"uuid,omitempty"` // Required for all target types except "system"
-}
-
-// String serializes the target to the format expected by the GraphQL API.
-func (t RoleAssignmentTarget) String() string {
-	if t.Type == "system" {
-		return "system:all"
-	}
-	if t.UUID == nil {
-		// Non-system targets require a UUID
-		return ""
-	}
-	return fmt.Sprintf("%s:%s", t.Type, *t.UUID)
-}
-
-// GetTarget extracts the target information from the GraphQL union type.
-func (r *RoleAssignment) GetTarget() RoleAssignmentTarget {
-	if r.Target.RoleScope != nil {
-		return RoleAssignmentTarget{
-			Type: "system",
-			UUID: nil,
-		}
-	}
-	if r.Target.AccountGroup != nil {
-		return RoleAssignmentTarget{
-			Type: "account-group",
-			UUID: &r.Target.AccountGroup.UUID,
-		}
-	}
-	if r.Target.PolicyCollection != nil {
-		return RoleAssignmentTarget{
-			Type: "policy-collection",
-			UUID: &r.Target.PolicyCollection.UUID,
-		}
-	}
-	if r.Target.Repository != nil {
-		return RoleAssignmentTarget{
-			Type: "repository",
-			UUID: &r.Target.Repository.UUID,
-		}
-	}
-	if r.Target.RepositoryConfig != nil {
-		return RoleAssignmentTarget{
-			Type: "repository-config",
-			UUID: &r.Target.RepositoryConfig.UUID,
-		}
-	}
-	// Fallback to system if nothing matches
-	return RoleAssignmentTarget{
-		Type: "system",
-		UUID: nil,
-	}
+// GetTarget extracts the opaque target identifier string.
+func (r *RoleAssignment) GetTarget() string {
+	return r.Target.RoleAssignmentTarget
 }
 
 // RoleAssignmentInput is the input for creating a role assignment.
@@ -227,22 +87,14 @@ type roleAssignmentAPI struct {
 }
 
 // Create creates a role assignment.
-func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principal RoleAssignmentPrincipal, target RoleAssignmentTarget) (*RoleAssignment, error) {
-	// Validate target
-	targetStr := target.String()
-	if targetStr == "" {
-		return nil, APIError{
-			Kind:   "Invalid Input",
-			Detail: fmt.Sprintf("Target type '%s' requires a UUID, but none was provided", target.Type),
-		}
-	}
-
+// principal and target are opaque string identifiers (e.g., "user:123", "account-group:uuid").
+func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
 	input := RoleAssignmentInput{
 		Grants: []RoleAssignmentGrant{
 			{
 				Role:      roleName,
-				Principal: principal.String(),
-				Target:    targetStr,
+				Principal: principal,
+				Target:    target,
 			},
 		},
 	}
@@ -291,8 +143,9 @@ func (r roleAssignmentAPI) Read(ctx context.Context, id string) (*RoleAssignment
 	return &query.RoleAssignments.Edges[0].Node, nil
 }
 
-// List returns role assignments filtered by target or principal.
-func (r roleAssignmentAPI) List(ctx context.Context, target *RoleAssignmentTarget, principal *RoleAssignmentPrincipal) ([]RoleAssignment, error) {
+// List returns role assignments, optionally filtered by target or principal.
+// target and principal are opaque string identifiers. Pass nil to skip filtering.
+func (r roleAssignmentAPI) List(ctx context.Context, target *string, principal *string) ([]RoleAssignment, error) {
 	cursor := ""
 	var query struct {
 		RoleAssignments struct {
@@ -303,17 +156,7 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *RoleAssignmentTarge
 				HasNextPage bool
 				EndCursor   string
 			}
-		} `graphql:"roleAssignments(first: 100, after: $cursor, filterElement: $filterElement)"`
-	}
-
-	// Build filter based on target and/or principal
-	var filterElement FilterElementInput
-	if target != nil {
-		// For now, filter by target type - may need to be enhanced for UUID filtering
-		filterElement = newExactMatchFilter("target.type", target.Type)
-	} else if principal != nil {
-		// Filter by principal type and ID
-		filterElement = newExactMatchFilter("principal.type", principal.Type)
+		} `graphql:"roleAssignments(first: 100, after: $cursor)"`
 	}
 
 	assignments := make([]RoleAssignment, 0)
@@ -321,8 +164,7 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *RoleAssignmentTarge
 	// Paginate through all results
 	for {
 		variables := map[string]any{
-			"cursor":        graphql.String(cursor),
-			"filterElement": filterElement,
+			"cursor": graphql.String(cursor),
 		}
 
 		if err := r.c.Query(ctx, &query, variables); err != nil {
@@ -330,31 +172,16 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *RoleAssignmentTarge
 		}
 
 		for _, edge := range query.RoleAssignments.Edges {
-			// Apply client-side filtering for fields not in the query filter
 			assignment := edge.Node
 
-			// Filter by target if specified
-			if target != nil {
-				assignmentTarget := assignment.GetTarget()
-				if assignmentTarget.Type != target.Type {
-					continue
-				}
-				// Check UUID if provided (for non-system targets)
-				if target.UUID != nil && (assignmentTarget.UUID == nil || *assignmentTarget.UUID != *target.UUID) {
-					continue
-				}
-				// For system target, ensure UUID is nil
-				if target.Type == "system" && assignmentTarget.UUID != nil {
-					continue
-				}
+			// Filter by target if specified (client-side filtering)
+			if target != nil && assignment.GetTarget() != *target {
+				continue
 			}
 
-			// Filter by principal if specified
-			if principal != nil {
-				assignmentPrincipal := assignment.GetPrincipal()
-				if assignmentPrincipal.Type != principal.Type || assignmentPrincipal.ID != principal.ID {
-					continue
-				}
+			// Filter by principal if specified (client-side filtering)
+			if principal != nil && assignment.GetPrincipal() != *principal {
+				continue
 			}
 
 			assignments = append(assignments, assignment)
@@ -375,40 +202,23 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *RoleAssignmentTarge
 func (r roleAssignmentAPI) ListByTargetString(ctx context.Context, targetStr string) ([]RoleAssignment, error) {
 	// Get all role assignments (no server-side filtering for now)
 	// We'll filter client-side by comparing the target strings
-	assignments, err := r.List(ctx, nil, nil)
+	assignments, err := r.List(ctx, &targetStr, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	// Filter by target string
-	filtered := make([]RoleAssignment, 0)
-	for _, assignment := range assignments {
-		assignmentTarget := assignment.GetTarget()
-		if assignmentTarget.String() == targetStr {
-			filtered = append(filtered, assignment)
-		}
-	}
-
-	return filtered, nil
+	return assignments, nil
 }
 
 // Delete removes a role assignment.
-func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principal RoleAssignmentPrincipal, target RoleAssignmentTarget) error {
-	// Validate target
-	targetStr := target.String()
-	if targetStr == "" {
-		return APIError{
-			Kind:   "Invalid Input",
-			Detail: fmt.Sprintf("Target type '%s' requires a UUID, but none was provided", target.Type),
-		}
-	}
-
+// principal and target are opaque string identifiers (e.g., "user:123", "account-group:uuid").
+func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principal string, target string) error {
 	input := RoleAssignmentInput{
 		Revokes: []RoleAssignmentRevoke{
 			{
 				Role:      roleName,
-				Principal: principal.String(),
-				Target:    targetStr,
+				Principal: principal,
+				Target:    target,
 			},
 		},
 	}
