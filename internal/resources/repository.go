@@ -137,6 +137,13 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: "Change value to update ssh_passphrase_wo.",
 				Optional:    true,
 			},
+			"role_assignment_target": schema.StringAttribute{
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
+				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
 		},
 	}
 }

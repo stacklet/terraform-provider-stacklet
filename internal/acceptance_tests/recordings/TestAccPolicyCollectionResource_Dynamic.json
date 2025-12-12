@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":true,\"description\":\"Dynamic policy collection\",\"name\":\"test-collection-dynamic\",\"provider\":\"AWS\",\"repositoryUUID\":\"b6870189-0801-45d2-ac75-172bc96f8154\",\"repositoryView\":{\"branchName\":\"\",\"policyDirectories\":null,\"policyFileSuffix\":null}}}": [
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}:{\"input\":{\"autoUpdate\":true,\"description\":\"Dynamic policy collection\",\"name\":\"test-collection-dynamic\",\"provider\":\"AWS\",\"repositoryUUID\":\"b6870189-0801-45d2-ac75-172bc96f8154\",\"repositoryView\":{\"branchName\":\"\",\"policyDirectories\":null,\"policyFileSuffix\":null}}}": [
     {
       "request": {
-        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "autoUpdate": true,
@@ -41,17 +41,18 @@
                 ]
               },
               "system": false,
-              "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+              "uuid": "ffe6fe01-7568-4852-856a-284790dd5403",
+              "roleAssignmentTarget": "policy-collection:ffe6fe01-7568-4852-856a-284790dd5403"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":null,\"authUser\":\"\",\"sshPassphrase\":null,\"sshPrivateKey\":null},\"name\":\"test-repo\",\"url\":\"https://github.com/test-org/test-repo\"}}": [
+  "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"input\":{\"auth\":{\"authToken\":null,\"authUser\":\"\",\"sshPassphrase\":null,\"sshPrivateKey\":null},\"name\":\"test-repo\",\"url\":\"https://github.com/test-org/test-repo\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "mutation ($input:AddRepositoryConfigInput!){addRepositoryConfig(input: $input){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "input": {
             "auth": {
@@ -83,7 +84,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "b6870189-0801-45d2-ac75-172bc96f8154",
-              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa"
+              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa",
+              "roleAssignmentTarget": "repository:b6870189-0801-45d2-ac75-172bc96f8154"
             }
           }
         }
@@ -110,10 +112,10 @@
       }
     }
   ],
-  "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":true,\"description\":\"Dynamic policy collection updated\",\"name\":\"test-collection-dynamic\",\"provider\":\"AWS\",\"repositoryView\":{\"branchName\":\"\",\"policyDirectories\":[\"dir1\",\"dir2\"],\"policyFileSuffix\":[\".yaml\"]},\"uuid\":\"ffe6fe01-7568-4852-856a-284790dd5403\"}}": [
+  "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}:{\"input\":{\"autoUpdate\":true,\"description\":\"Dynamic policy collection updated\",\"name\":\"test-collection-dynamic\",\"provider\":\"AWS\",\"repositoryView\":{\"branchName\":\"\",\"policyDirectories\":[\"dir1\",\"dir2\"],\"policyFileSuffix\":[\".yaml\"]},\"uuid\":\"ffe6fe01-7568-4852-856a-284790dd5403\"}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "query": "mutation ($input:UpdatePolicyCollectionInput!){updatePolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "autoUpdate": true,
@@ -159,7 +161,8 @@
                 ]
               },
               "system": false,
-              "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+              "uuid": "ffe6fe01-7568-4852-856a-284790dd5403",
+              "roleAssignmentTarget": "policy-collection:ffe6fe01-7568-4852-856a-284790dd5403"
             }
           }
         }
@@ -185,10 +188,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"ffe6fe01-7568-4852-856a-284790dd5403\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"ffe6fe01-7568-4852-856a-284790dd5403\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
@@ -216,14 +219,15 @@
               ]
             },
             "system": false,
-            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403",
+            "roleAssignmentTarget": "policy-collection:ffe6fe01-7568-4852-856a-284790dd5403"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
@@ -251,14 +255,15 @@
               ]
             },
             "system": false,
-            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403",
+            "roleAssignmentTarget": "policy-collection:ffe6fe01-7568-4852-856a-284790dd5403"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
@@ -288,16 +293,17 @@
               ]
             },
             "system": false,
-            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403"
+            "uuid": "ffe6fe01-7568-4852-856a-284790dd5403",
+            "roleAssignmentTarget": "policy-collection:ffe6fe01-7568-4852-856a-284790dd5403"
           }
         }
       }
     }
   ],
-  "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"uuid\":\"b6870189-0801-45d2-ac75-172bc96f8154\"}": [
+  "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}:{\"uuid\":\"b6870189-0801-45d2-ac75-172bc96f8154\"}": [
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
         }
@@ -320,7 +326,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "b6870189-0801-45d2-ac75-172bc96f8154",
-              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa"
+              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa",
+              "roleAssignmentTarget": "repository:b6870189-0801-45d2-ac75-172bc96f8154"
             }
           }
         }
@@ -328,7 +335,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
         }
@@ -351,7 +358,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "b6870189-0801-45d2-ac75-172bc96f8154",
-              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa"
+              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa",
+              "roleAssignmentTarget": "repository:b6870189-0801-45d2-ac75-172bc96f8154"
             }
           }
         }
@@ -359,7 +367,7 @@
     },
     {
       "request": {
-        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
+        "query": "query ($uuid:String!){repositoryConfig(uuid: $uuid){repositoryConfig{id,uuid,url,name,description,webhookURL,system,roleAssignmentTarget,auth{authUser,hasAuthToken,sshPublicKey,hasSshPrivateKey,hasSshPassphrase}},problems{__typename,message}}}",
         "variables": {
           "uuid": "b6870189-0801-45d2-ac75-172bc96f8154"
         }
@@ -382,7 +390,8 @@
               "system": false,
               "url": "https://github.com/test-org/test-repo",
               "uuid": "b6870189-0801-45d2-ac75-172bc96f8154",
-              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa"
+              "webhookURL": "https://api.alberto.sandbox.stacklet.dev/webhooks/repository/71d03ef2-ca23-485c-af2c-587878689baa",
+              "roleAssignmentTarget": "repository:b6870189-0801-45d2-ac75-172bc96f8154"
             }
           }
         }

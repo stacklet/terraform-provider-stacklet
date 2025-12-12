@@ -141,6 +141,13 @@ func (r *policyCollectionResource) Schema(_ context.Context, _ resource.SchemaRe
 					},
 				},
 			},
+			"role_assignment_target": schema.StringAttribute{
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
+				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
 		},
 	}
 }

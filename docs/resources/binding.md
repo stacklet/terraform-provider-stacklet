@@ -82,7 +82,6 @@ resource "stacklet_binding" "example" {
 - `policy_resource_limit` (Block List) Per-policy overrides for resource limits for binding execution. Map keys are policy unqualified names. (see [below for nested schema](#nestedblock--policy_resource_limit))
 - `resource_limits` (Attributes) Default resource limits for binding execution. (see [below for nested schema](#nestedatt--resource_limits))
 - `schedule` (String) The schedule for the binding (e.g., 'rate(1 hour)', 'rate(2 hours)', or cron expression).
-- `security_context` (String) The binding execution security context.
 - `security_context_wo` (String, Sensitive, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The input value for the security context for the execution configuration.
 - `security_context_wo_version` (String) The version for the security context. Must be changed to update security_context_wo.
 - `variables` (String) JSON-encoded dictionary of values used for policy templating.
@@ -90,6 +89,7 @@ resource "stacklet_binding" "example" {
 ### Read-Only
 
 - `id` (String) The GraphQL Node ID of the binding.
+- `security_context` (String) The binding execution security context.
 - `system` (Boolean) Whether the binding is a system one. Always false for resources.
 - `uuid` (String) The UUID of the binding.
 

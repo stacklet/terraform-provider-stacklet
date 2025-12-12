@@ -10,18 +10,19 @@ import (
 )
 
 type RepositoryDataSource struct {
-	ID               types.String `tfsdk:"id"`
-	UUID             types.String `tfsdk:"uuid"`
-	URL              types.String `tfsdk:"url"`
-	Name             types.String `tfsdk:"name"`
-	Description      types.String `tfsdk:"description"`
-	WebhookURL       types.String `tfsdk:"webhook_url"`
-	System           types.Bool   `tfsdk:"system"`
-	AuthUser         types.String `tfsdk:"auth_user"`
-	HasAuthToken     types.Bool   `tfsdk:"has_auth_token"`
-	SSHPublicKey     types.String `tfsdk:"ssh_public_key"`
-	HasSSHPrivateKey types.Bool   `tfsdk:"has_ssh_private_key"`
-	HasSSHPassphrase types.Bool   `tfsdk:"has_ssh_passphrase"`
+	ID                   types.String `tfsdk:"id"`
+	UUID                 types.String `tfsdk:"uuid"`
+	URL                  types.String `tfsdk:"url"`
+	Name                 types.String `tfsdk:"name"`
+	Description          types.String `tfsdk:"description"`
+	WebhookURL           types.String `tfsdk:"webhook_url"`
+	System               types.Bool   `tfsdk:"system"`
+	AuthUser             types.String `tfsdk:"auth_user"`
+	HasAuthToken         types.Bool   `tfsdk:"has_auth_token"`
+	SSHPublicKey         types.String `tfsdk:"ssh_public_key"`
+	HasSSHPrivateKey     types.Bool   `tfsdk:"has_ssh_private_key"`
+	HasSSHPassphrase     types.Bool   `tfsdk:"has_ssh_passphrase"`
+	RoleAssignmentTarget types.String `tfsdk:"role_assignment_target"`
 }
 
 func (m *RepositoryDataSource) Update(repo *api.Repository) diag.Diagnostics {
@@ -39,6 +40,7 @@ func (m *RepositoryDataSource) Update(repo *api.Repository) diag.Diagnostics {
 	m.SSHPublicKey = types.StringPointerValue(repo.Auth.SSHPublicKey)
 	m.HasSSHPrivateKey = types.BoolValue(repo.Auth.HasSshPrivateKey)
 	m.HasSSHPassphrase = types.BoolValue(repo.Auth.HasSshPassphrase)
+	m.RoleAssignmentTarget = types.StringValue(repo.RoleAssignmentTarget)
 
 	return diags
 }

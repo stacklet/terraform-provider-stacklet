@@ -1,0 +1,264 @@
+{
+  "query ($filterElement:FilterElementInput!){roles(filterElement: $filterElement){edges{node{id,name,permissions,system}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"operator\":\"equals\",\"value\":\"owner\"}}}": [
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){roles(filterElement: $filterElement){edges{node{id,name,permissions,system}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "owner"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "roles": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlIiwgIm93bmVyIl0=",
+                  "name": "owner",
+                  "permissions": [
+                    "account:read",
+                    "account:write",
+                    "account-group:read",
+                    "account-group:write",
+                    "binding:read",
+                    "binding:write",
+                    "configuration-profile:read",
+                    "configuration-profile:write",
+                    "policy:read",
+                    "policy:write",
+                    "policy-collection:read",
+                    "policy-collection:write",
+                    "repository:read",
+                    "repository:write",
+                    "role:read",
+                    "role:write"
+                  ],
+                  "system": true
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){roles(filterElement: $filterElement){edges{node{id,name,permissions,system}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "owner"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "roles": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlIiwgIm93bmVyIl0=",
+                  "name": "owner",
+                  "permissions": [
+                    "account:read",
+                    "account:write",
+                    "account-group:read",
+                    "account-group:write",
+                    "binding:read",
+                    "binding:write",
+                    "configuration-profile:read",
+                    "configuration-profile:write",
+                    "policy:read",
+                    "policy:write",
+                    "policy-collection:read",
+                    "policy-collection:write",
+                    "repository:read",
+                    "repository:write",
+                    "role:read",
+                    "role:write"
+                  ],
+                  "system": true
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){roles(filterElement: $filterElement){edges{node{id,name,permissions,system}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "owner"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "roles": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlIiwgIm93bmVyIl0=",
+                  "name": "owner",
+                  "permissions": [
+                    "account:read",
+                    "account:write",
+                    "account-group:read",
+                    "account-group:write",
+                    "binding:read",
+                    "binding:write",
+                    "configuration-profile:read",
+                    "configuration-profile:write",
+                    "policy:read",
+                    "policy:write",
+                    "policy-collection:read",
+                    "policy-collection:write",
+                    "repository:read",
+                    "repository:write",
+                    "role:read",
+                    "role:write"
+                  ],
+                  "system": true
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "query ($filterElement:FilterElementInput!){roles(filterElement: $filterElement){edges{node{id,name,permissions,system}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"operator\":\"equals\",\"value\":\"viewer\"}}}": [
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){roles(filterElement: $filterElement){edges{node{id,name,permissions,system}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "viewer"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "roles": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlIiwgInZpZXdlciJd",
+                  "name": "viewer",
+                  "permissions": [
+                    "account:read",
+                    "account-group:read",
+                    "binding:read",
+                    "configuration-profile:read",
+                    "policy:read",
+                    "policy-collection:read",
+                    "repository:read",
+                    "role:read"
+                  ],
+                  "system": true
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){roles(filterElement: $filterElement){edges{node{id,name,permissions,system}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "viewer"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "roles": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlIiwgInZpZXdlciJd",
+                  "name": "viewer",
+                  "permissions": [
+                    "account:read",
+                    "account-group:read",
+                    "binding:read",
+                    "configuration-profile:read",
+                    "policy:read",
+                    "policy-collection:read",
+                    "repository:read",
+                    "role:read"
+                  ],
+                  "system": true
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){roles(filterElement: $filterElement){edges{node{id,name,permissions,system}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "viewer"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "roles": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlIiwgInZpZXdlciJd",
+                  "name": "viewer",
+                  "permissions": [
+                    "account:read",
+                    "account-group:read",
+                    "binding:read",
+                    "configuration-profile:read",
+                    "policy:read",
+                    "policy-collection:read",
+                    "repository:read",
+                    "role:read"
+                  ],
+                  "system": true
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

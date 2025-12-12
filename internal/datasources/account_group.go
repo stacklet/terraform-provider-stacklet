@@ -62,6 +62,10 @@ func (d *accountGroupDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Computed:    true,
 				ElementType: types.StringType,
 			},
+			"role_assignment_target": schema.StringAttribute{
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
+				Computed:    true,
+			},
 		},
 	}
 }

@@ -82,6 +82,10 @@ func (d *repositoryDataSource) Schema(ctx context.Context, req datasource.Schema
 				Description: "Whether this is a system repository (not user editable).",
 				Computed:    true,
 			},
+			"role_assignment_target": schema.StringAttribute{
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
+				Computed:    true,
+			},
 		},
 	}
 }

@@ -21,7 +21,8 @@ type PolicyCollection struct {
 	RepositoryConfig struct {
 		UUID *string
 	}
-	RepositoryView *RepositoryView
+	RepositoryView       *RepositoryView
+	RoleAssignmentTarget string
 }
 
 type RepositoryViewConfig struct {

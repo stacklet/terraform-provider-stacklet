@@ -85,6 +85,13 @@ func (r *accountGroupResource) Schema(_ context.Context, _ resource.SchemaReques
 				Computed:    true,
 				Default:     schemadefault.EmptyListDefault(types.StringType),
 			},
+			"role_assignment_target": schema.StringAttribute{
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
+				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
 		},
 	}
 }

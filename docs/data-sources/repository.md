@@ -41,6 +41,7 @@ data "stacklet_repository" "by_uuid" {
 - `has_ssh_private_key` (Boolean) Whether the repository has an SSH private key configured.
 - `id` (String) The GraphQL ID of the repository.
 - `name` (String) The name of the repository.
+- `role_assignment_target` (String) An opaque identifier for role assignments. Use this value when assigning roles to this resource.
 - `ssh_public_key` (String) If has_ssh_private_key, identifies that SSH private key.
 - `system` (Boolean) Whether this is a system repository (not user editable).
 - `webhook_url` (String) The URL of the webhook which triggers repository scans.

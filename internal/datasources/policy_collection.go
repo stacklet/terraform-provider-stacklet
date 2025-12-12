@@ -93,6 +93,10 @@ func (d *policyCollectionDataSource) Schema(_ context.Context, _ datasource.Sche
 					},
 				},
 			},
+			"role_assignment_target": schema.StringAttribute{
+				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",
+				Computed:    true,
+			},
 		},
 	}
 }

@@ -1,8 +1,8 @@
 {
-  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}:{\"input\":{\"description\":\"Test account group for binding\",\"name\":\"test-binding-group\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
+  "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}:{\"input\":{\"description\":\"Test account group for binding\",\"name\":\"test-binding-group\",\"provider\":\"AWS\",\"regions\":[\"us-east-1\"]}}": [
     {
       "request": {
-        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions}}}",
+        "query": "mutation ($input:AddAccountGroupInput!){addAccountGroup(input: $input){group{id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "description": "Test account group for binding",
@@ -26,7 +26,8 @@
               "regions": [
                 "us-east-1"
               ],
-              "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
+              "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054",
+              "roleAssignmentTarget": "account-group:c46757b0-d765-44e2-ae55-9b4aab609054"
             }
           }
         }
@@ -90,10 +91,10 @@
       }
     }
   ],
-  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection for binding\",\"name\":\"test-binding-collection\",\"provider\":\"AWS\"}}": [
+  "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}:{\"input\":{\"autoUpdate\":false,\"description\":\"Test policy collection for binding\",\"name\":\"test-binding-collection\",\"provider\":\"AWS\"}}": [
     {
       "request": {
-        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}}",
+        "query": "mutation ($input:AddPolicyCollectionInput!){addPolicyCollection(input: $input){collection{id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}}",
         "variables": {
           "input": {
             "autoUpdate": false,
@@ -116,7 +117,8 @@
               "repositoryConfig": null,
               "repositoryView": null,
               "system": false,
-              "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
+              "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7",
+              "roleAssignmentTarget": "policy-collection:149f9967-8e40-4342-80d5-6c7a90d1f2a7"
             }
           }
         }
@@ -300,10 +302,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}:{\"name\":\"\",\"uuid\":\"c46757b0-d765-44e2-ae55-9b4aab609054\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"c46757b0-d765-44e2-ae55-9b4aab609054\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
@@ -320,14 +322,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
+            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054",
+            "roleAssignmentTarget": "account-group:c46757b0-d765-44e2-ae55-9b4aab609054"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
@@ -344,14 +347,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
+            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054",
+            "roleAssignmentTarget": "account-group:c46757b0-d765-44e2-ae55-9b4aab609054"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
@@ -368,14 +372,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
+            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054",
+            "roleAssignmentTarget": "account-group:c46757b0-d765-44e2-ae55-9b4aab609054"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
@@ -392,14 +397,15 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
+            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054",
+            "roleAssignmentTarget": "account-group:c46757b0-d765-44e2-ae55-9b4aab609054"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions}}",
+        "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
@@ -416,7 +422,8 @@
             "regions": [
               "us-east-1"
             ],
-            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054"
+            "uuid": "c46757b0-d765-44e2-ae55-9b4aab609054",
+            "roleAssignmentTarget": "account-group:c46757b0-d765-44e2-ae55-9b4aab609054"
           }
         }
       }
@@ -610,10 +617,10 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}:{\"name\":\"\",\"uuid\":\"149f9967-8e40-4342-80d5-6c7a90d1f2a7\"}": [
+  "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"149f9967-8e40-4342-80d5-6c7a90d1f2a7\"}": [
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
@@ -631,14 +638,15 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
+            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7",
+            "roleAssignmentTarget": "policy-collection:149f9967-8e40-4342-80d5-6c7a90d1f2a7"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
@@ -656,14 +664,15 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
+            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7",
+            "roleAssignmentTarget": "policy-collection:149f9967-8e40-4342-80d5-6c7a90d1f2a7"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
@@ -681,14 +690,15 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
+            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7",
+            "roleAssignmentTarget": "policy-collection:149f9967-8e40-4342-80d5-6c7a90d1f2a7"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
@@ -706,14 +716,15 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
+            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7",
+            "roleAssignmentTarget": "policy-collection:149f9967-8e40-4342-80d5-6c7a90d1f2a7"
           }
         }
       }
     },
     {
       "request": {
-        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix}}}",
+        "query": "query ($name:String!$uuid:String!){policyCollection(uuid: $uuid, name: $name){id,uuid,name,description,provider,autoUpdate,system,isDynamic,repositoryConfig{uuid},repositoryView{namespace,branchName,policyDirectories,policyFileSuffix},roleAssignmentTarget}}",
         "variables": {
           "name": "",
           "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
@@ -731,7 +742,8 @@
             "repositoryConfig": null,
             "repositoryView": null,
             "system": false,
-            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7"
+            "uuid": "149f9967-8e40-4342-80d5-6c7a90d1f2a7",
+            "roleAssignmentTarget": "policy-collection:149f9967-8e40-4342-80d5-6c7a90d1f2a7"
           }
         }
       }
