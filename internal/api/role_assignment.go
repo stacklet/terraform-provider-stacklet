@@ -115,16 +115,3 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *string, principal *
 
 	return assignments, nil
 }
-
-// ListByTargetString returns role assignments filtered by an opaque target string.
-// The target string should be in the format "type:id" (e.g., "account-group:uuid", "system:all").
-func (r roleAssignmentAPI) ListByTargetString(ctx context.Context, targetStr string) ([]RoleAssignment, error) {
-	// Get all role assignments (no server-side filtering for now)
-	// We'll filter client-side by comparing the target strings
-	assignments, err := r.List(ctx, &targetStr, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return assignments, nil
-}
