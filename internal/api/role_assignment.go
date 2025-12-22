@@ -62,6 +62,67 @@ type roleAssignmentAPI struct {
 	c *graphql.Client
 }
 
+// Create assigns a role to a principal on a target.
+// roleName is the name of the role to assign.
+// principal and target are opaque string identifiers.
+func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
+	var mutation struct {
+		Payload struct {
+			Assignment RoleAssignment
+		} `graphql:"assignRole(roleName: $roleName, principal: $principal, target: $target)"`
+	}
+	variables := map[string]any{
+		"roleName":  graphql.String(roleName),
+		"principal": graphql.String(principal),
+		"target":    graphql.String(target),
+	}
+	if err := r.c.Mutate(ctx, &mutation, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	return &mutation.Payload.Assignment, nil
+}
+
+// Read returns a single role assignment by ID.
+func (r roleAssignmentAPI) Read(ctx context.Context, id string) (*RoleAssignment, error) {
+	var query struct {
+		RoleAssignment RoleAssignment `graphql:"roleAssignment(id: $id)"`
+	}
+
+	variables := map[string]any{
+		"id": graphql.String(id),
+	}
+	if err := r.c.Query(ctx, &query, variables); err != nil {
+		return nil, NewAPIError(err)
+	}
+
+	if query.RoleAssignment.ID == "" {
+		return nil, NotFound{"Role assignment not found"}
+	}
+
+	return &query.RoleAssignment, nil
+}
+
+// Delete removes a role assignment.
+// roleName is the name of the role to unassign.
+// principal and target are opaque string identifiers.
+func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principal string, target string) error {
+	var mutation struct {
+		Payload struct {
+			Success bool
+		} `graphql:"unassignRole(roleName: $roleName, principal: $principal, target: $target)"`
+	}
+	variables := map[string]any{
+		"roleName":  graphql.String(roleName),
+		"principal": graphql.String(principal),
+		"target":    graphql.String(target),
+	}
+	if err := r.c.Mutate(ctx, &mutation, variables); err != nil {
+		return NewAPIError(err)
+	}
+	return nil
+}
+
 // List returns role assignments, optionally filtered by target or principal.
 // target and principal are opaque string identifiers. Pass nil to skip filtering.
 func (r roleAssignmentAPI) List(ctx context.Context, target *string, principal *string) ([]RoleAssignment, error) {
