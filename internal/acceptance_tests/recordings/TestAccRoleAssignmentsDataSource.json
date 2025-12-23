@@ -1,0 +1,145 @@
+{
+  "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\"}": [
+    {
+      "request": {
+        "query": "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "variables": {
+          "cursor": ""
+        }
+      },
+      "response": {
+        "data": {
+          "roleAssignments": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:1"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              }
+            ],
+            "pageInfo": {
+              "endCursor": "eJw9yDEKwCAMAMCvlMz2RSISNENoTIPGwd9XKLgdF8E6a2FDyYqNQn+FfpE6+8q+7HhOrhCuCMOxPEJ+Y22su+BgrOHUtnSKpPQB+x0jFA==",
+              "hasNextPage": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "variables": {
+          "cursor": ""
+        }
+      },
+      "response": {
+        "data": {
+          "roleAssignments": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:1"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              }
+            ],
+            "pageInfo": {
+              "endCursor": "eJw9yDEKwCAMAMCvlMz2RSISNENoTIPGwd9XKLgdF8E6a2FDyYqNQn+FfpE6+8q+7HhOrhCuCMOxPEJ+Y22su+BgrOHUtnSKpPQB+x0jFA==",
+              "hasNextPage": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "variables": {
+          "cursor": ""
+        }
+      },
+      "response": {
+        "data": {
+          "roleAssignments": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:1"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              }
+            ],
+            "pageInfo": {
+              "endCursor": "eJw9yDEKwCAMAMCvlMz2RSISNENoTIPGwd9XKLgdF8E6a2FDyYqNQn+FfpE6+8q+7HhOrhCuCMOxPEJ+Y22su+BgrOHUtnSKpPQB+x0jFA==",
+              "hasNextPage": false
+            }
+          }
+        }
+      }
+    }
+  ]
+}

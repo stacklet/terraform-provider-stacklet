@@ -50,4 +50,4 @@ output "owner_permissions" {
 
 - `id` (String) The GraphQL Node ID of the role.
 - `permissions` (List of String) The list of permissions granted by this role.
-- `system` (Boolean) Whether this is a system role (cannot be modified).
+- `system` (Boolean) Whether this is a system role
