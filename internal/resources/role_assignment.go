@@ -4,6 +4,7 @@ package resources
 
 import (
 	"context"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -98,7 +99,15 @@ func (r *roleAssignmentResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	assignment, err := r.api.RoleAssignment.Read(ctx, state.ID.ValueString())
+	// Extract the composite key from state
+	roleName, principal, target, diags := state.ToAPIParams(ctx)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read using the composite key (roleName, principal, target)
+	assignment, err := r.api.RoleAssignment.Read(ctx, roleName, principal, target)
 	if err != nil {
 		handleAPIError(ctx, &resp.State, &resp.Diagnostics, err)
 		return
@@ -137,5 +146,35 @@ func (r *roleAssignmentResource) Delete(ctx context.Context, req resource.Delete
 }
 
 func (r *roleAssignmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	importState(ctx, req, resp, []string{"id"})
+	// Role assignments must be imported using the composite key: "role_name,principal,target"
+	// Example: "viewer,user:1,account-group:abc-123"
+	parts := strings.Split(req.ID, ",")
+	if len(parts) != 3 {
+		resp.Diagnostics.AddError(
+			"Invalid Import ID",
+			"Role assignment import ID must be in the format: role_name,principal,target\n"+
+				"Example: viewer,user:1,account-group:abc-123",
+		)
+		return
+	}
+
+	roleName := strings.TrimSpace(parts[0])
+	principal := strings.TrimSpace(parts[1])
+	target := strings.TrimSpace(parts[2])
+
+	// Read the role assignment using the composite key
+	assignment, err := r.api.RoleAssignment.Read(ctx, roleName, principal, target)
+	if err != nil {
+		errors.AddDiagError(&resp.Diagnostics, err)
+		return
+	}
+
+	// Update state with the retrieved assignment
+	var state models.RoleAssignmentResource
+	resp.Diagnostics.Append(state.Update(ctx, assignment)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }

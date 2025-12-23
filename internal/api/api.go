@@ -22,8 +22,10 @@ type API struct {
 	Repository              repositoryAPI
 	Role                    roleAPI
 	RoleAssignment          roleAssignmentAPI
+	SSOGroup                ssoGroupAPI
 	System                  systemAPI
 	Template                templateAPI
+	User                    userAPI
 }
 
 // New creates an API wrapper.
@@ -42,7 +44,9 @@ func New(c *graphql.Client) *API {
 		Repository:              repositoryAPI{c},
 		Role:                    roleAPI{c},
 		RoleAssignment:          roleAssignmentAPI{c},
+		SSOGroup:                ssoGroupAPI{c},
 		System:                  systemAPI{c},
 		Template:                templateAPI{c},
+		User:                    userAPI{c},
 	}
 }
