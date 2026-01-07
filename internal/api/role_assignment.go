@@ -82,12 +82,28 @@ type GrantRoleAssignmentPayload struct {
 	RoleAssignment *RoleAssignment
 }
 
+func (p GrantRoleAssignmentPayload) Error() string {
+	if p.ErrorMessage == nil {
+		return ""
+	}
+
+	return *p.ErrorMessage
+}
+
 // RevokeRoleAssignmentPayload represents the result of revoking a role assignment.
 type RevokeRoleAssignmentPayload struct {
 	ErrorMessage *string
 	Removed      struct {
 		ID string
 	}
+}
+
+func (p RevokeRoleAssignmentPayload) Error() string {
+	if p.ErrorMessage == nil {
+		return ""
+	}
+
+	return *p.ErrorMessage
 }
 
 // Create assigns a role to a principal on a target.
