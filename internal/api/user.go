@@ -17,10 +17,6 @@ type User struct {
 	DisplayName             *string
 	Email                   *string
 	Groups                  []string
-	ImplicitRoles           []string
-	InheritedRoles          []string
-	Key                     int
-	LastLogin               *string
 	Name                    *string
 	RoleAssignmentPrincipal string
 	Roles                   []string

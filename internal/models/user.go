@@ -20,10 +20,6 @@ type UserDataSource struct {
 	DisplayName             types.String `tfsdk:"display_name"`
 	Email                   types.String `tfsdk:"email"`
 	Groups                  types.List   `tfsdk:"groups"`
-	ImplicitRoles           types.List   `tfsdk:"implicit_roles"`
-	InheritedRoles          types.List   `tfsdk:"inherited_roles"`
-	Key                     types.Int64  `tfsdk:"key"`
-	LastLogin               types.String `tfsdk:"last_login"`
 	Name                    types.String `tfsdk:"name"`
 	RoleAssignmentPrincipal types.String `tfsdk:"role_assignment_principal"`
 	Roles                   types.List   `tfsdk:"roles"`
@@ -38,8 +34,6 @@ func (m *UserDataSource) Update(ctx context.Context, user *api.User) diag.Diagno
 	m.Active = types.BoolValue(user.Active)
 	m.DisplayName = types.StringPointerValue(user.DisplayName)
 	m.Email = types.StringPointerValue(user.Email)
-	m.Key = types.Int64Value(int64(user.Key))
-	m.LastLogin = types.StringPointerValue(user.LastLogin)
 	m.Name = types.StringPointerValue(user.Name)
 	m.RoleAssignmentPrincipal = types.StringValue(user.RoleAssignmentPrincipal)
 	m.SSOUser = types.BoolValue(user.SSOUser)
@@ -56,14 +50,6 @@ func (m *UserDataSource) Update(ctx context.Context, user *api.User) diag.Diagno
 	groups, d := types.ListValueFrom(ctx, types.StringType, user.Groups)
 	diags.Append(d...)
 	m.Groups = groups
-
-	implicitRoles, d := types.ListValueFrom(ctx, types.StringType, user.ImplicitRoles)
-	diags.Append(d...)
-	m.ImplicitRoles = implicitRoles
-
-	inheritedRoles, d := types.ListValueFrom(ctx, types.StringType, user.InheritedRoles)
-	diags.Append(d...)
-	m.InheritedRoles = inheritedRoles
 
 	roles, d := types.ListValueFrom(ctx, types.StringType, user.Roles)
 	diags.Append(d...)

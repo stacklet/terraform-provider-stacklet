@@ -15,7 +15,7 @@ Manages role assignments for principals (users or SSO groups) on targets (system
 ```terraform
 # Fetch user information
 data "stacklet_user" "example_user" {
-  email = "user@example.com"
+  username = "example-user"
 }
 
 # Fetch SSO group information
