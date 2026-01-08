@@ -13,6 +13,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
+	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
 )
 
 var (
@@ -62,6 +63,9 @@ func (r *notificationTemplateResource) Schema(_ context.Context, _ resource.Sche
 			"content": schema.StringAttribute{
 				Description: "The template content.",
 				Required:    true,
+				PlanModifiers: []planmodifier.String{
+					planmodifiers.TrimWhiteSpace(),
+				},
 			},
 		},
 	}
