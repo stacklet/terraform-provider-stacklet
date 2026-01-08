@@ -12,14 +12,10 @@ import (
 type User struct {
 	ID                      string
 	Active                  bool
-	AllRoles                []string
-	AssignedRoles           []string
 	DisplayName             *string
 	Email                   *string
-	Groups                  []string
 	Name                    *string
 	RoleAssignmentPrincipal string
-	Roles                   []string
 	SSOUser                 bool
 	Username                *string
 }
