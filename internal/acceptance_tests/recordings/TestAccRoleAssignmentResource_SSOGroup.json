@@ -1,0 +1,24 @@
+{
+  "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"value\":\"All aws accounts\"}}}": [
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "value": "All aws accounts"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "ssoGroups": {
+            "edges": []
+          }
+        }
+      }
+    }
+  ]
+}
