@@ -16,7 +16,3 @@ output "user_name" {
 output "user_email" {
   value = data.stacklet_user.example.email
 }
-
-output "user_roles" {
-  value = data.stacklet_user.example.roles
-}
