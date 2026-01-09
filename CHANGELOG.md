@@ -1,4 +1,4 @@
-## 0.6.0 - 2026-01-08
+## 0.6.0 - 2026-01-09
 
 - Fix: mark binding "security_context" as purely computed
 - Add: support for the following resource types
