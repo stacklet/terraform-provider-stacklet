@@ -9,7 +9,7 @@
   - `stacklet_sso_group`
   - `stacklet_role`
 - Fix: Issue where notification_templates with trailing or leading whitespace 
-  would cause a terraform failure because it was removed on the returned response
+  would cause a terraform failure because it was removed on the returned response (#166)
 
 
 ## 0.5.1 - 2025-11-26
