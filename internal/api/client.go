@@ -5,6 +5,7 @@ package api
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -39,7 +40,10 @@ type authTransport struct {
 }
 
 func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Set("Authorization", t.APIKey)
+	if t.APIKey == "" {
+		return nil, fmt.Errorf("no API key provided")
+	}
+	req.Header.Set("Authorization", "Bearer "+t.APIKey)
 	return t.Base.RoundTrip(req)
 }
 
