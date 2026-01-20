@@ -1,0 +1,199 @@
+{
+  "mutation ($input:AddAPIKeyInput!){addAPIKey(input: $input){key{id,identity,description,expiresAt,revokedAt},secret,problems{__typename,message}}}:{\"input\":{\"description\":\"\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddAPIKeyInput!){addAPIKey(input: $input){key{id,identity,description,expiresAt,revokedAt},secret,problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "description": ""
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAPIKey": {
+            "key": {
+              "description": "",
+              "expiresAt": null,
+              "id": "WyJhcGkta2V5IiwgInN0a3BfbzJ6U2FzSnoiXQ==",
+              "identity": "stkp_o2zSasJz",
+              "revokedAt": null
+            },
+            "problems": [],
+            "secret": "stkp_o2zSasJz_XGxXZWeYEx2KiTjFw26Tt3C649Eu6N"
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RevokeAPIKeysInput!){revokeAPIKeys(input: $input){problems{__typename,message}}}:{\"input\":{\"identities\":[\"stkp_o2zSasJz\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RevokeAPIKeysInput!){revokeAPIKeys(input: $input){problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "identities": [
+              "stkp_o2zSasJz"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "revokeAPIKeys": {
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateAPIKeyInput!){updateAPIKey(input: $input){key{id,identity,description,expiresAt,revokedAt},problems{__typename,message}}}:{\"input\":{\"description\":\"Updated API key\",\"identity\":\"stkp_o2zSasJz\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateAPIKeyInput!){updateAPIKey(input: $input){key{id,identity,description,expiresAt,revokedAt},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "description": "Updated API key",
+            "identity": "stkp_o2zSasJz"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateAPIKey": {
+            "key": {
+              "description": "Updated API key",
+              "expiresAt": null,
+              "id": "WyJhcGkta2V5IiwgInN0a3BfbzJ6U2FzSnoiXQ==",
+              "identity": "stkp_o2zSasJz",
+              "revokedAt": null
+            },
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}:{\"filterElement\":{\"single\":{\"name\":\"identity\",\"value\":\"stkp_o2zSasJz\"}}}": [
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "identity",
+              "value": "stkp_o2zSasJz"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "apiKeys": {
+            "edges": [
+              {
+                "node": {
+                  "description": "",
+                  "expiresAt": null,
+                  "id": "WyJhcGkta2V5IiwgInN0a3BfbzJ6U2FzSnoiXQ==",
+                  "identity": "stkp_o2zSasJz",
+                  "revokedAt": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "identity",
+              "value": "stkp_o2zSasJz"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "apiKeys": {
+            "edges": [
+              {
+                "node": {
+                  "description": "",
+                  "expiresAt": null,
+                  "id": "WyJhcGkta2V5IiwgInN0a3BfbzJ6U2FzSnoiXQ==",
+                  "identity": "stkp_o2zSasJz",
+                  "revokedAt": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "identity",
+              "value": "stkp_o2zSasJz"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "apiKeys": {
+            "edges": [
+              {
+                "node": {
+                  "description": "Updated API key",
+                  "expiresAt": null,
+                  "id": "WyJhcGkta2V5IiwgInN0a3BfbzJ6U2FzSnoiXQ==",
+                  "identity": "stkp_o2zSasJz",
+                  "revokedAt": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "identity",
+              "value": "stkp_o2zSasJz"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "apiKeys": {
+            "edges": [
+              {
+                "node": {
+                  "description": "Updated API key",
+                  "expiresAt": null,
+                  "id": "WyJhcGkta2V5IiwgInN0a3BfbzJ6U2FzSnoiXQ==",
+                  "identity": "stkp_o2zSasJz",
+                  "revokedAt": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

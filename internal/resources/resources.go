@@ -15,6 +15,7 @@ func Resources() []func() resource.Resource {
 		newAccountGroupMappingResource,
 		newAccountGroupResource,
 		newAccountResource,
+		newAPIKeyResource,
 		newBindingResource,
 		newConfigurationProfileAccountOwnersResource,
 		newConfigurationProfileEmailResource,

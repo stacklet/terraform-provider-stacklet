@@ -1,0 +1,172 @@
+{
+  "mutation ($input:AddAPIKeyInput!){addAPIKey(input: $input){key{id,identity,description,expiresAt,revokedAt},secret,problems{__typename,message}}}:{\"input\":{\"description\":\"Test API key\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddAPIKeyInput!){addAPIKey(input: $input){key{id,identity,description,expiresAt,revokedAt},secret,problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "description": "Test API key"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addAPIKey": {
+            "key": {
+              "description": "Test API key",
+              "expiresAt": null,
+              "id": "WyJhcGkta2V5IiwgInN0a3BfTlFjbWZxWloiXQ==",
+              "identity": "stkp_NQcmfqZZ",
+              "revokedAt": null
+            },
+            "problems": [],
+            "secret": "stkp_NQcmfqZZ_LBEawZLFU2aJ3DiinKKNPx6K2tEqnU"
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RevokeAPIKeysInput!){revokeAPIKeys(input: $input){problems{__typename,message}}}:{\"input\":{\"identities\":[\"stkp_NQcmfqZZ\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RevokeAPIKeysInput!){revokeAPIKeys(input: $input){problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "identities": [
+              "stkp_NQcmfqZZ"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "revokeAPIKeys": {
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}:{\"filterElement\":{\"single\":{\"name\":\"identity\",\"value\":\"stkp_NQcmfqZZ\"}}}": [
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "identity",
+              "value": "stkp_NQcmfqZZ"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "apiKeys": {
+            "edges": [
+              {
+                "node": {
+                  "description": "Test API key",
+                  "expiresAt": null,
+                  "id": "WyJhcGkta2V5IiwgInN0a3BfTlFjbWZxWloiXQ==",
+                  "identity": "stkp_NQcmfqZZ",
+                  "revokedAt": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "identity",
+              "value": "stkp_NQcmfqZZ"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "apiKeys": {
+            "edges": [
+              {
+                "node": {
+                  "description": "Test API key",
+                  "expiresAt": null,
+                  "id": "WyJhcGkta2V5IiwgInN0a3BfTlFjbWZxWloiXQ==",
+                  "identity": "stkp_NQcmfqZZ",
+                  "revokedAt": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "identity",
+              "value": "stkp_NQcmfqZZ"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "apiKeys": {
+            "edges": [
+              {
+                "node": {
+                  "description": "Test API key",
+                  "expiresAt": null,
+                  "id": "WyJhcGkta2V5IiwgInN0a3BfTlFjbWZxWloiXQ==",
+                  "identity": "stkp_NQcmfqZZ",
+                  "revokedAt": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){apiKeys(filterElement: $filterElement){edges{node{id,identity,description,expiresAt,revokedAt}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "identity",
+              "value": "stkp_NQcmfqZZ"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "apiKeys": {
+            "edges": [
+              {
+                "node": {
+                  "description": "Test API key",
+                  "expiresAt": null,
+                  "id": "WyJhcGkta2V5IiwgInN0a3BfTlFjbWZxWloiXQ==",
+                  "identity": "stkp_NQcmfqZZ",
+                  "revokedAt": null
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

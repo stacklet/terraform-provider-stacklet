@@ -11,6 +11,7 @@ func DataSources() []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		newAccountDataSource,
 		newAccountGroupDataSource,
+		newAPIKeyDataSource,
 		newBindingDataSource,
 		newConfigurationProfileAccountOwnersDataSource,
 		newConfigurationProfileEmailDataSource,
