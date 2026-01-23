@@ -195,7 +195,8 @@ from terraform.  To enable debug:
 ## Release process
 
 1. Update the [Changelog](./CHANGELOG.md) with an entry for the new release.
-2. Create a release tag with `just tag-release X.Y.Z`.
+2. Create a release tag with `just tag-release X.Y.Z <ref>` on the desired
+   commit (default `HEAD`).
 3. Push the tag upstream. This will start the Release workflow which creates
    the release on GitHub and builds packages.  Once it completes, the relase
    will be published and the Terraform registry will pick up the new release

@@ -1,3 +1,10 @@
+## 0.6.1 - 2026-01-23
+
+- Fix: add `Bearer` type in `Authorization` header
+- Add: `User-Agent` header in GraphQL requests
+- Chore: update golang version and dependencies
+
+
 ## 0.6.0 - 2026-01-09
 
 - Fix: mark binding "security_context" as purely computed

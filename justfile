@@ -116,5 +116,5 @@ validate-tf: build
     done
 
 # Create release tag for the specified version (without leading 'v')
-tag-release version:
-    git tag -a v{{ version }} -m 'Version {{ version }}'
+tag-release version ref="HEAD":
+    git tag -a v{{ version }} -m 'Version {{ version }}' {{ ref }}
