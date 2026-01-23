@@ -16,13 +16,14 @@ import (
 )
 
 // NewClient returns a configured graphql Client.
-func NewClient(ctx context.Context, endpoint string, apiKey string) *graphql.Client {
+func NewClient(ctx context.Context, endpoint string, apiKey string, version string) *graphql.Client {
 	tfLog := hclog.LevelFromString(os.Getenv("TF_LOG"))
 	logBody := tfLog == hclog.Debug || tfLog == hclog.Trace
 
 	httpClient := &http.Client{
 		Transport: &authTransport{
-			APIKey: apiKey,
+			APIKey:  apiKey,
+			Version: version,
 			Base: &logTransport{
 				Ctx:     ctx,
 				Base:    http.DefaultTransport,
@@ -35,8 +36,9 @@ func NewClient(ctx context.Context, endpoint string, apiKey string) *graphql.Cli
 
 // authTransport is an http.Transport that adds authorization header.
 type authTransport struct {
-	APIKey string
-	Base   http.RoundTripper
+	APIKey  string
+	Version string
+	Base    http.RoundTripper
 }
 
 func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -44,6 +46,7 @@ func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		return nil, fmt.Errorf("no API key provided")
 	}
 	req.Header.Set("Authorization", "Bearer "+t.APIKey)
+	req.Header.Set("User-Agent", "terraform-provider-stacklet/"+t.Version)
 	return t.Base.RoundTrip(req)
 }
 
