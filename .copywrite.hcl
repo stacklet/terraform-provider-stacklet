@@ -2,8 +2,7 @@ schema_version = 1
 
 project {
   license          = ""
-  copyright_holder = "2025 - Stacklet, Inc."
-  copyright_year   = 2025
+  copyright_holder = "2026 - Stacklet, Inc."
 
   header_ignore = [
     ".github/**",
