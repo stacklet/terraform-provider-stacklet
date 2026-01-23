@@ -1,8 +1,8 @@
 package := "./internal/..."
 
 # Build the provider
-build:
-    go build -o terraform-provider-stacklet
+build *args:
+    go build -o terraform-provider-stacklet {{ args }}
 
 # Format code
 format: format-go format-tf
