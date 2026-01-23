@@ -27,7 +27,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
         with:
-          go-version: ${{ env.GO_TOOL_VERSION }}
+          go-version: ${{ env.GOLANG_TOOL_VERSION }}
 
       - name: Lint
         uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
@@ -59,7 +59,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
         with:
-          go-version: ${{ env.GO_TOOL_VERSION }}
+          go-version: ${{ env.GOLANG_TOOL_VERSION }}
 
       - name: Lint
         run: |
@@ -85,7 +85,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
         with:
-          go-version: ${{ env.GO_TOOL_VERSION }}
+          go-version: ${{ env.GOLANG_TOOL_VERSION }}
 
       - name: Lint
         run: |
@@ -111,7 +111,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
         with:
-          go-version: ${{ env.GO_TOOL_VERSION }}
+          go-version: ${{ env.GOLANG_TOOL_VERSION }}
 
       - name: Lint
         run: |
@@ -136,7 +136,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
         with:
-          go-version: ${{ env.GO_TOOL_VERSION }}
+          go-version: ${{ env.GOLANG_TOOL_VERSION }}
 
       - name: Test
         env:
