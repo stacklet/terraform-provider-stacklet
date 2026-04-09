@@ -13,7 +13,7 @@ format-tf:
 
 # Format golang code
 format-go:
-    go fmt ./...    
+    go fmt ./...
 
 # Run linters
 lint: lint-go lint-tf lint-docs lint-copyright
