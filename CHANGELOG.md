@@ -1,3 +1,9 @@
+## 0.6.2 - 2026-04-09
+
+- Fix: preserve null variables when API returns empty object for account
+- Chore: dependencies update
+
+
 ## 0.6.1 - 2026-01-23
 
 - Fix: add `Bearer` type in `Authorization` header
