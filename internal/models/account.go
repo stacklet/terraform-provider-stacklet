@@ -52,3 +52,18 @@ type AccountResource struct {
 	SecurityContextWO        types.String `tfsdk:"security_context_wo"`
 	SecurityContextWOVersion types.String `tfsdk:"security_context_wo_version"`
 }
+
+func (m *AccountResource) Update(account *api.Account) diag.Diagnostics {
+	// Save original value for resource-specific logic
+	originalVariables := m.Variables
+
+	diags := m.AccountDataSource.Update(account)
+
+	// the API returns an empty dictionary for both null or empty strings. In
+	// that case don't modify the expected value.
+	if m.Variables.ValueString() == "{}" {
+		m.Variables = originalVariables
+	}
+
+	return diags
+}
