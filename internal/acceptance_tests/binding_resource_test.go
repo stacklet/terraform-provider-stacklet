@@ -207,6 +207,48 @@ func TestAccBindingResource_SecurityContext(t *testing.T) {
 	runRecordedAccTest(t, "TestAccBindingResource_SecurityContext", steps)
 }
 
+func TestAccBindingResource_DryRunFalse(t *testing.T) {
+	dryRunFalseConfig := `
+					resource "stacklet_account_group" "test" {
+						name = "{{.Prefix}}-binding-dry-run-false-group"
+						description = "Test account group for binding"
+						cloud_provider = "AWS"
+						regions = ["us-east-1"]
+					}
+
+					resource "stacklet_policy_collection" "test" {
+						name = "{{.Prefix}}-binding-dry-run-false-collection"
+						description = "Test policy collection for binding"
+						cloud_provider = "AWS"
+					}
+
+					resource "stacklet_binding" "test" {
+						name = "{{.Prefix}}-binding-dry-run-false"
+						description = "Test binding"
+						account_group_uuid = stacklet_account_group.test.uuid
+						policy_collection_uuid = stacklet_policy_collection.test.uuid
+						dry_run = false
+					}
+				`
+	steps := []resource.TestStep{
+		{
+			Config: dryRunFalseConfig,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_binding.test", "dry_run", "false"),
+			),
+		},
+		// Verify no perpetual diff — a second plan with dry_run = false must be empty.
+		{
+			Config:   dryRunFalseConfig,
+			PlanOnly: true,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("stacklet_binding.test", "dry_run", "false"),
+			),
+		},
+	}
+	runRecordedAccTest(t, "TestAccBindingResource_DryRunFalse", steps)
+}
+
 func TestAccBindingResource_ResourceLimits(t *testing.T) {
 	steps := []resource.TestStep{
 		{
