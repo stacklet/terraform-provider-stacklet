@@ -95,6 +95,7 @@ func (m *BindingResource) Update(ctx context.Context, binding *api.Binding) diag
 	// Save original values for resource-specific logic
 	originalVariables := m.Variables
 	originalResourceLimits := m.ResourceLimits
+	originalDryRun := m.DryRun
 
 	diags := m.BindingDataSource.Update(ctx, binding)
 
@@ -102,6 +103,12 @@ func (m *BindingResource) Update(ctx context.Context, binding *api.Binding) diag
 	// that case don't modify the expected value.
 	if m.Variables.ValueString() == "{}" {
 		m.Variables = originalVariables
+	}
+
+	// The API omits executionConfig.dryRun when the value is false (treats null ≡ false).
+	// Preserve the configured value to prevent a perpetual null→false diff.
+	if m.DryRun.IsNull() && !originalDryRun.IsNull() {
+		m.DryRun = originalDryRun
 	}
 
 	// if default resource limits are set in the config but empty, apply default
