@@ -1,3 +1,9 @@
+## 0.6.3 - 2026-04-22
+
+- Fix: preserve `dry_run = false` state to prevent perpetual plan diff (#200)
+- Chore: update Terraform framework related dependencies (#195)
+
+
 ## 0.6.2 - 2026-04-09
 
 - Fix: preserve null variables when API returns empty object for account
