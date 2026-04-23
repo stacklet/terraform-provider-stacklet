@@ -34,10 +34,10 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:1\",\"roleName\":\"editor\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:1\",\"roleName\":\"editor\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage},revoke{errorMessage,removed{id}}}}",
         "variables": {
           "input": {
             "grant": [
@@ -55,27 +55,7 @@
           "updateRoleAssignment": {
             "grant": [
               {
-                "errorMessage": null,
-                "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA5Il0=",
-                  "principal": {
-                    "roleAssignmentPrincipal": "user:1"
-                  },
-                  "role": {
-                    "id": "WyJyb2xlIiwgIjQiXQ==",
-                    "name": "editor",
-                    "permissions": [
-                      "EDIT",
-                      "REMOVE",
-                      "VIEW",
-                      "VIEW_ACL"
-                    ],
-                    "system": true
-                  },
-                  "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
-                  }
-                }
+                "errorMessage": null
               }
             ],
             "revoke": []
@@ -84,10 +64,10 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:1\",\"roleName\":\"viewer\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:1\",\"roleName\":\"viewer\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage},revoke{errorMessage,removed{id}}}}",
         "variables": {
           "input": {
             "grant": [
@@ -105,24 +85,7 @@
           "updateRoleAssignment": {
             "grant": [
               {
-                "errorMessage": null,
-                "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA4Il0=",
-                  "principal": {
-                    "roleAssignmentPrincipal": "user:1"
-                  },
-                  "role": {
-                    "id": "WyJyb2xlIiwgIjMiXQ==",
-                    "name": "viewer",
-                    "permissions": [
-                      "VIEW"
-                    ],
-                    "system": true
-                  },
-                  "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
-                  }
-                }
+                "errorMessage": null
               }
             ],
             "revoke": []
@@ -131,10 +94,10 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:1\",\"roleName\":\"editor\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:1\",\"roleName\":\"editor\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage},revoke{errorMessage,removed{id}}}}",
         "variables": {
           "input": {
             "revoke": [
@@ -164,10 +127,10 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:1\",\"roleName\":\"viewer\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:1\",\"roleName\":\"viewer\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage},revoke{errorMessage,removed{id}}}}",
         "variables": {
           "input": {
             "revoke": [

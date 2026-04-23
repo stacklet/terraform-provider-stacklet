@@ -78,16 +78,7 @@ type UpdateRoleAssignmentInput struct {
 
 // GrantRoleAssignmentPayload represents the result of granting a role assignment.
 type GrantRoleAssignmentPayload struct {
-	ErrorMessage   *string
-	RoleAssignment *RoleAssignment
-}
-
-func (p GrantRoleAssignmentPayload) Error() string {
-	if p.ErrorMessage == nil {
-		return ""
-	}
-
-	return *p.ErrorMessage
+	ErrorMessage *string
 }
 
 // RevokeRoleAssignmentPayload represents the result of revoking a role assignment.
@@ -145,20 +136,14 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 			return nil, NewAPIError(fmt.Errorf("failed to grant role assignment: %s", *grantPayload.ErrorMessage))
 		}
 
-		// The ID returned from the mutation may not match the actual persisted assignment
-		// Query to get the actual role assignment by the unique (role, principal, target) combination
-		if grantPayload.RoleAssignment != nil {
-			// List assignments filtered by target and principal, then find the matching role
-			assignments, err := r.List(ctx, &target, &principal)
-			if err != nil {
-				return nil, err
-			}
+		assignments, err := r.List(ctx, &target, &principal)
+		if err != nil {
+			return nil, err
+		}
 
-			// Find the assignment with the matching role name
-			for _, assignment := range assignments {
-				if assignment.Role.Name == roleName {
-					return &assignment, nil
-				}
+		for _, assignment := range assignments {
+			if assignment.Role.Name == roleName {
+				return &assignment, nil
 			}
 		}
 	}
