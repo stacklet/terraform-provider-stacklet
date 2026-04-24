@@ -76,13 +76,20 @@ type UpdateRoleAssignmentInput struct {
 	Revoke []RoleAssignmentInput `json:"revoke,omitempty"`
 }
 
-// GrantRoleAssignmentPayload represents the result of granting a role assignment.
-type GrantRoleAssignmentPayload struct {
-	ErrorMessage   *string
-	RoleAssignment *RoleAssignment
+// grantRoleAssignmentPayload represents the result of granting a role assignment.
+type grantRoleAssignmentPayload struct {
+	ErrorMessage *string
+	// Minimal struct instead of *RoleAssignment: the full type includes
+	// Role.Permissions []string, a nested slice inside Grant
+	// []grantRoleAssignmentPayload that breaks go-graphql-client's
+	// template-copy decoder. We only need the ID to confirm the assignment was
+	// created.  This is similar to
+	// https://github.com/hasura/go-graphql-client/issues/152 and
+	// https://github.com/hasura/go-graphql-client/issues/158
+	RoleAssignment *struct{ ID string }
 }
 
-func (p GrantRoleAssignmentPayload) Error() string {
+func (p grantRoleAssignmentPayload) Error() string {
 	if p.ErrorMessage == nil {
 		return ""
 	}
@@ -90,15 +97,15 @@ func (p GrantRoleAssignmentPayload) Error() string {
 	return *p.ErrorMessage
 }
 
-// RevokeRoleAssignmentPayload represents the result of revoking a role assignment.
-type RevokeRoleAssignmentPayload struct {
+// revokeRoleAssignmentPayload represents the result of revoking a role assignment.
+type revokeRoleAssignmentPayload struct {
 	ErrorMessage *string
 	Removed      struct {
 		ID string
 	}
 }
 
-func (p RevokeRoleAssignmentPayload) Error() string {
+func (p revokeRoleAssignmentPayload) Error() string {
 	if p.ErrorMessage == nil {
 		return ""
 	}
@@ -110,11 +117,9 @@ func (p RevokeRoleAssignmentPayload) Error() string {
 // roleName is the name of the role to assign.
 // principal and target are opaque string identifiers.
 func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
-	// Use updateRoleAssignment mutation with grant list
 	var mutation struct {
 		UpdateRoleAssignment struct {
-			Grant  []GrantRoleAssignmentPayload
-			Revoke []RevokeRoleAssignmentPayload
+			Grant []grantRoleAssignmentPayload
 		} `graphql:"updateRoleAssignment(input: $input)"`
 	}
 
@@ -128,42 +133,24 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 		},
 	}
 
-	variables := map[string]any{
-		"input": input,
-	}
-
-	if err := r.c.Mutate(ctx, &mutation, variables); err != nil {
+	if err := r.c.Mutate(ctx, &mutation, map[string]any{"input": input}); err != nil {
 		return nil, NewAPIError(err)
 	}
 
-	// Check if we have a grant result
-	if len(mutation.UpdateRoleAssignment.Grant) > 0 {
-		grantPayload := mutation.UpdateRoleAssignment.Grant[0]
-
-		// Check for errors
-		if grantPayload.ErrorMessage != nil && *grantPayload.ErrorMessage != "" {
-			return nil, NewAPIError(fmt.Errorf("failed to grant role assignment: %s", *grantPayload.ErrorMessage))
-		}
-
-		// The ID returned from the mutation may not match the actual persisted assignment
-		// Query to get the actual role assignment by the unique (role, principal, target) combination
-		if grantPayload.RoleAssignment != nil {
-			// List assignments filtered by target and principal, then find the matching role
-			assignments, err := r.List(ctx, &target, &principal)
-			if err != nil {
-				return nil, err
-			}
-
-			// Find the assignment with the matching role name
-			for _, assignment := range assignments {
-				if assignment.Role.Name == roleName {
-					return &assignment, nil
-				}
-			}
-		}
+	if len(mutation.UpdateRoleAssignment.Grant) == 0 {
+		return nil, NotFound{"Role assignment not found after creation"}
 	}
 
-	return nil, NotFound{"Role assignment not found after creation"}
+	grantPayload := mutation.UpdateRoleAssignment.Grant[0]
+	if grantPayload.Error() != "" {
+		return nil, NewAPIError(fmt.Errorf("failed to grant role assignment: %w", grantPayload))
+	}
+
+	if grantPayload.RoleAssignment == nil {
+		return nil, NotFound{"Role assignment not found after creation"}
+	}
+
+	return r.Read(ctx, roleName, principal, target)
 }
 
 // Read returns a single role assignment by the unique combination of roleName, principal, and target.
@@ -192,8 +179,7 @@ func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principa
 	// Use updateRoleAssignment mutation with revoke list
 	var mutation struct {
 		UpdateRoleAssignment struct {
-			Grant  []GrantRoleAssignmentPayload
-			Revoke []RevokeRoleAssignmentPayload
+			Revoke []revokeRoleAssignmentPayload
 		} `graphql:"updateRoleAssignment(input: $input)"`
 	}
 
@@ -218,8 +204,8 @@ func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principa
 	// Check if we have a revoke result with an error
 	if len(mutation.UpdateRoleAssignment.Revoke) > 0 {
 		revokePayload := mutation.UpdateRoleAssignment.Revoke[0]
-		if revokePayload.ErrorMessage != nil && *revokePayload.ErrorMessage != "" {
-			return NewAPIError(fmt.Errorf("failed to revoke role assignment: %s", *revokePayload.ErrorMessage))
+		if revokePayload.Error() != "" {
+			return NewAPIError(fmt.Errorf("failed to revoke role assignment: %w", revokePayload))
 		}
 	}
 

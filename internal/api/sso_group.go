@@ -35,6 +35,31 @@ func (i upsertSSOGroupInput) GetGraphQLType() string {
 	return "UpsertSSOGroupsInput"
 }
 
+type upsertSSOGroupPayload struct {
+	ErrorMessage *string
+	SSOGroup     *SSOGroup
+}
+
+func (p upsertSSOGroupPayload) Error() string {
+	if p.ErrorMessage == nil {
+		return ""
+	}
+
+	return *p.ErrorMessage
+}
+
+type removeSSOGroupPayload struct {
+	ErrorMessage *string
+}
+
+func (p removeSSOGroupPayload) Error() string {
+	if p.ErrorMessage == nil {
+		return ""
+	}
+
+	return *p.ErrorMessage
+}
+
 type removeSSOGroupsInput struct {
 	Names []string `json:"names"`
 }
@@ -76,10 +101,7 @@ func (a ssoGroupAPI) Read(ctx context.Context, name string) (*SSOGroup, error) {
 func (a ssoGroupAPI) Upsert(ctx context.Context, input SSOGroupInput) (*SSOGroup, error) {
 	var mutation struct {
 		Payload struct {
-			Response []struct {
-				ErrorMessage *string
-				SSOGroup     *SSOGroup
-			}
+			Response []upsertSSOGroupPayload
 		} `graphql:"upsertSSOGroups(input: $input)"`
 	}
 	variables := map[string]any{
@@ -95,8 +117,8 @@ func (a ssoGroupAPI) Upsert(ctx context.Context, input SSOGroupInput) (*SSOGroup
 		return nil, NotFound{"SSO group not found after upsert"}
 	}
 	payload := mutation.Payload.Response[0]
-	if payload.ErrorMessage != nil && *payload.ErrorMessage != "" {
-		return nil, NewAPIError(fmt.Errorf("failed to upsert SSO group: %s", *payload.ErrorMessage))
+	if payload.Error() != "" {
+		return nil, NewAPIError(fmt.Errorf("failed to upsert SSO group: %w", payload))
 	}
 	if payload.SSOGroup == nil {
 		return nil, NotFound{"SSO group not found after upsert"}
@@ -108,9 +130,7 @@ func (a ssoGroupAPI) Upsert(ctx context.Context, input SSOGroupInput) (*SSOGroup
 func (a ssoGroupAPI) Delete(ctx context.Context, name string) error {
 	var mutation struct {
 		Payload struct {
-			Response []struct {
-				ErrorMessage *string
-			}
+			Response []removeSSOGroupPayload
 		} `graphql:"removeSSOGroups(input: $input)"`
 	}
 	variables := map[string]any{
@@ -121,8 +141,8 @@ func (a ssoGroupAPI) Delete(ctx context.Context, name string) error {
 	}
 	if len(mutation.Payload.Response) > 0 {
 		payload := mutation.Payload.Response[0]
-		if payload.ErrorMessage != nil && *payload.ErrorMessage != "" {
-			return NewAPIError(fmt.Errorf("failed to remove SSO group: %s", *payload.ErrorMessage))
+		if payload.Error() != "" {
+			return NewAPIError(fmt.Errorf("failed to remove SSO group: %w", payload))
 		}
 	}
 	return nil
