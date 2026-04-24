@@ -4,7 +4,6 @@ package acceptance_tests
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -12,12 +11,7 @@ import (
 )
 
 func TestAccRoleAssignmentResource(t *testing.T) {
-	testUsername := os.Getenv("TF_ACC_TEST_USERNAME")
-
-	if testUsername == "" {
-		t.Skip("TF_ACC_TEST_USERNAME environment variable must be set to run this test")
-	}
-
+	testUsername := getenvOrSkip(t, "TF_ACC_TEST_USERNAME")
 	userDataSourceConfig := fmt.Sprintf(`username = %q`, testUsername)
 
 	steps := []resource.TestStep{
@@ -94,12 +88,7 @@ func TestAccRoleAssignmentResource(t *testing.T) {
 }
 
 func TestAccRoleAssignmentResource_SSOGroup(t *testing.T) {
-	// Require TF_ACC_TEST_SSO_GROUP environment variable
-	testSSOGroup := os.Getenv("TF_ACC_TEST_SSO_GROUP")
-	if testSSOGroup == "" {
-		t.Skip("TF_ACC_TEST_SSO_GROUP environment variable must be set to run this test")
-	}
-
+	testSSOGroup := getenvOrSkip(t, "TF_ACC_TEST_SSO_GROUP")
 	steps := []resource.TestStep{
 		// Create role assignment for SSO group
 		{
@@ -126,20 +115,13 @@ func TestAccRoleAssignmentResource_SSOGroup(t *testing.T) {
 }
 
 func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
-	testUsername := os.Getenv("TF_ACC_TEST_USERNAME")
-
-	if testUsername == "" {
-		t.Skip("TF_ACC_TEST_USERNAME environment variable must be set to run this test")
-	}
-
-	userDataSourceConfig := fmt.Sprintf(`username = %q`, testUsername)
-
+	testUsername := getenvOrSkip(t, "TF_ACC_TEST_USERNAME")
 	steps := []resource.TestStep{
 		// Create role assignment on account group target
 		{
 			Config: fmt.Sprintf(`
 				data "stacklet_user" "test" {
-					%s
+					username = %q
 				}
 
 				resource "stacklet_account_group" "test" {
@@ -154,7 +136,7 @@ func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
 					principal = data.stacklet_user.test.role_assignment_principal
 					target    = stacklet_account_group.test.role_assignment_target
 				}
-			`, userDataSourceConfig),
+			`, testUsername),
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_role_assignment.test", "role_name", "viewer"),
 				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "id"),

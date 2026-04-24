@@ -43,17 +43,10 @@ output "user_email" {
 ### Read-Only
 
 - `active` (Boolean) Whether the user is active in the system.
-- `all_roles` (List of String) All roles (assigned, implicit, and inherited) for the user.
-- `assigned_roles` (List of String) Roles directly assigned to the user.
 - `display_name` (String) The display name of the user.
 - `email` (String) The email address of the user.
-- `groups` (List of String) Groups the user belongs to.
 - `id` (String) The GraphQL Node ID of the user.
-- `implicit_roles` (List of String) Roles implicitly granted to the user.
-- `inherited_roles` (List of String) Roles inherited by the user.
-- `key` (Number) The numeric key of the user.
-- `last_login` (String) The timestamp of the user's last login.
+- `key` (Number) The numeric key identifier of the user.
 - `name` (String) The name of the user.
 - `role_assignment_principal` (String) An opaque principal identifier for role assignments. Use this value when creating role assignments.
-- `roles` (List of String) Roles assigned to the user.
 - `sso_user` (Boolean) Whether the user is an SSO user.

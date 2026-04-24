@@ -1,0 +1,106 @@
+{
+  "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}:{\"filterElement\":{\"single\":{\"name\":\"username\",\"value\":\"test_at_stacklet.io\"}}}": [
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "username",
+              "value": "test_at_stacklet.io"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "users": {
+            "edges": [
+              {
+                "node": {
+                  "active": true,
+                  "displayName": null,
+                  "email": "test@stacklet.io",
+                  "id": "WyJ1c2VyIiwgIjIxIl0=",
+                  "key": 21,
+                  "name": "test-user",
+                  "roleAssignmentPrincipal": "user:21",
+                  "ssoUser": false,
+                  "username": "test_at_stacklet.io"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "username",
+              "value": "test_at_stacklet.io"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "users": {
+            "edges": [
+              {
+                "node": {
+                  "active": true,
+                  "displayName": null,
+                  "email": "test@stacklet.io",
+                  "id": "WyJ1c2VyIiwgIjIxIl0=",
+                  "key": 21,
+                  "name": "test-user",
+                  "roleAssignmentPrincipal": "user:21",
+                  "ssoUser": false,
+                  "username": "test_at_stacklet.io"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "username",
+              "value": "test_at_stacklet.io"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "users": {
+            "edges": [
+              {
+                "node": {
+                  "active": true,
+                  "displayName": null,
+                  "email": "test@stacklet.io",
+                  "id": "WyJ1c2VyIiwgIjIxIl0=",
+                  "key": 21,
+                  "name": "test-user",
+                  "roleAssignmentPrincipal": "user:21",
+                  "ssoUser": false,
+                  "username": "test_at_stacklet.io"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
