@@ -1,4 +1,4 @@
-// Copyright (c) 2025 - Stacklet, Inc.
+// Copyright Stacklet, Inc. 2025, 2026
 
 package providerdata
 
