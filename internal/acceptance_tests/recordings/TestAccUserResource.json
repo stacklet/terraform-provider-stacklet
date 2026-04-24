@@ -1,17 +1,17 @@
 {
-  "mutation ($input:AddUserInput!){addUser(input: $input){user{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}:{\"input\":{\"email\":\"test@stacklet.io\",\"name\":\"test-user-ds\",\"roles\":[\"admin\"],\"ssoUser\":false,\"username\":\"test_user_ds\"}}": [
+  "mutation ($input:AddUserInput!){addUser(input: $input){user{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}:{\"input\":{\"email\":\"test@stacklet.io\",\"name\":\"test-user\",\"roles\":[\"admin\"],\"ssoUser\":false,\"username\":\"test_user\"}}": [
     {
       "request": {
         "query": "mutation ($input:AddUserInput!){addUser(input: $input){user{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}",
         "variables": {
           "input": {
             "email": "test@stacklet.io",
-            "name": "test-user-ds",
+            "name": "test-user",
             "roles": [
               "admin"
             ],
             "ssoUser": false,
-            "username": "test_user_ds"
+            "username": "test_user"
           }
         }
       },
@@ -22,24 +22,56 @@
               "active": true,
               "displayName": null,
               "email": "test@stacklet.io",
-              "id": "WyJ1c2VyIiwgIjMzIl0=",
-              "key": 33,
-              "name": "test-user-ds",
-              "roleAssignmentPrincipal": "user:33",
+              "id": "WyJ1c2VyIiwgIjMyIl0=",
+              "key": 32,
+              "name": "test-user",
+              "roleAssignmentPrincipal": "user:32",
               "ssoUser": false,
-              "username": "test_user_ds"
+              "username": "test_user"
             }
           }
         }
       }
     }
   ],
-  "mutation ($key:Int!){removeUser(key: $key){removed{id}}}:{\"key\":33}": [
+  "mutation ($input:UpdateUserInput!){updateUser(input: $input){user{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}:{\"input\":{\"displayName\":\"Test User\",\"email\":\"test+updated@stacklet.io\",\"key\":32,\"name\":\"test-user-updated\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateUserInput!){updateUser(input: $input){user{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}",
+        "variables": {
+          "input": {
+            "displayName": "Test User",
+            "email": "test+updated@stacklet.io",
+            "key": 32,
+            "name": "test-user-updated"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateUser": {
+            "user": {
+              "active": true,
+              "displayName": "Test User",
+              "email": "test+updated@stacklet.io",
+              "id": "WyJ1c2VyIiwgIjMyIl0=",
+              "key": 32,
+              "name": "test-user-updated",
+              "roleAssignmentPrincipal": "user:32",
+              "ssoUser": false,
+              "username": "test_user"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($key:Int!){removeUser(key: $key){removed{id}}}:{\"key\":32}": [
     {
       "request": {
         "query": "mutation ($key:Int!){removeUser(key: $key){removed{id}}}",
         "variables": {
-          "key": 33
+          "key": 32
         }
       },
       "response": {
@@ -47,7 +79,7 @@
           "removeUser": {
             "removed": [
               {
-                "id": "WyJ1c2VyIiwgIjMzIl0="
+                "id": "WyJ1c2VyIiwgIjMyIl0="
               }
             ]
           }
@@ -55,7 +87,7 @@
       }
     }
   ],
-  "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}:{\"filterElement\":{\"single\":{\"name\":\"username\",\"value\":\"test_user_ds\"}}}": [
+  "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}:{\"filterElement\":{\"single\":{\"name\":\"username\",\"value\":\"test_user\"}}}": [
     {
       "request": {
         "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}",
@@ -63,7 +95,7 @@
           "filterElement": {
             "single": {
               "name": "username",
-              "value": "test_user_ds"
+              "value": "test_user"
             }
           }
         }
@@ -77,12 +109,12 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjMzIl0=",
-                  "key": 33,
-                  "name": "test-user-ds",
-                  "roleAssignmentPrincipal": "user:33",
+                  "id": "WyJ1c2VyIiwgIjMyIl0=",
+                  "key": 32,
+                  "name": "test-user",
+                  "roleAssignmentPrincipal": "user:32",
                   "ssoUser": false,
-                  "username": "test_user_ds"
+                  "username": "test_user"
                 }
               }
             ]
@@ -97,7 +129,7 @@
           "filterElement": {
             "single": {
               "name": "username",
-              "value": "test_user_ds"
+              "value": "test_user"
             }
           }
         }
@@ -111,12 +143,12 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjMzIl0=",
-                  "key": 33,
-                  "name": "test-user-ds",
-                  "roleAssignmentPrincipal": "user:33",
+                  "id": "WyJ1c2VyIiwgIjMyIl0=",
+                  "key": 32,
+                  "name": "test-user",
+                  "roleAssignmentPrincipal": "user:32",
                   "ssoUser": false,
-                  "username": "test_user_ds"
+                  "username": "test_user"
                 }
               }
             ]
@@ -131,7 +163,7 @@
           "filterElement": {
             "single": {
               "name": "username",
-              "value": "test_user_ds"
+              "value": "test_user"
             }
           }
         }
@@ -145,12 +177,12 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjMzIl0=",
-                  "key": 33,
-                  "name": "test-user-ds",
-                  "roleAssignmentPrincipal": "user:33",
+                  "id": "WyJ1c2VyIiwgIjMyIl0=",
+                  "key": 32,
+                  "name": "test-user",
+                  "roleAssignmentPrincipal": "user:32",
                   "ssoUser": false,
-                  "username": "test_user_ds"
+                  "username": "test_user"
                 }
               }
             ]
@@ -165,7 +197,7 @@
           "filterElement": {
             "single": {
               "name": "username",
-              "value": "test_user_ds"
+              "value": "test_user"
             }
           }
         }
@@ -177,14 +209,14 @@
               {
                 "node": {
                   "active": true,
-                  "displayName": null,
-                  "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjMzIl0=",
-                  "key": 33,
-                  "name": "test-user-ds",
-                  "roleAssignmentPrincipal": "user:33",
+                  "displayName": "Test User",
+                  "email": "test+updated@stacklet.io",
+                  "id": "WyJ1c2VyIiwgIjMyIl0=",
+                  "key": 32,
+                  "name": "test-user-updated",
+                  "roleAssignmentPrincipal": "user:32",
                   "ssoUser": false,
-                  "username": "test_user_ds"
+                  "username": "test_user"
                 }
               }
             ]

@@ -3,27 +3,31 @@
 package acceptance_tests
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccUserDataSource(t *testing.T) {
-	testUsername := getenvOrSkip(t, "TF_ACC_TEST_USERNAME")
 	steps := []resource.TestStep{
 		{
-			Config: fmt.Sprintf(`
- 				data "stacklet_user" "test" {
-					username = "%s"
+			Config: `
+				resource "stacklet_user" "test" {
+					name     = "{{.Prefix}}-user-ds"
+					username = "test_user_ds"
+					email    = "test@stacklet.io"
 				}
-			`, testUsername),
+
+				data "stacklet_user" "test" {
+					username = stacklet_user.test.username
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("data.stacklet_user.test", "username", testUsername),
+				resource.TestCheckResourceAttr("data.stacklet_user.test", "username", "test_user_ds"),
+				resource.TestCheckResourceAttr("data.stacklet_user.test", "name", prefixName("user-ds")),
+				resource.TestCheckResourceAttr("data.stacklet_user.test", "email", "test@stacklet.io"),
 				resource.TestCheckResourceAttrSet("data.stacklet_user.test", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_user.test", "key"),
-				resource.TestCheckResourceAttrSet("data.stacklet_user.test", "name"),
-				resource.TestCheckResourceAttrSet("data.stacklet_user.test", "email"),
 				resource.TestCheckResourceAttrSet("data.stacklet_user.test", "role_assignment_principal"),
 				resource.TestCheckResourceAttrSet("data.stacklet_user.test", "active"),
 				resource.TestCheckResourceAttrSet("data.stacklet_user.test", "sso_user"),

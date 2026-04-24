@@ -30,5 +30,6 @@ func Resources() []func() resource.Resource {
 		newReportGroupResource,
 		newRepositoryResource,
 		newRoleAssignmentResource,
+		newUserResource,
 	}
 }

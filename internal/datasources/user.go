@@ -84,6 +84,6 @@ func (d *userDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	resp.Diagnostics.Append(data.Update(ctx, user)...)
+	resp.Diagnostics.Append(data.Update(user)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
