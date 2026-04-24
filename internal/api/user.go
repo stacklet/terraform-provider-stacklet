@@ -76,7 +76,7 @@ func (u userAPI) Read(ctx context.Context, username string) (*User, error) {
 	return &query.Users.Edges[0].Node, nil
 }
 
-// Create creates an account group.
+// Create creates a user.
 func (a userAPI) Create(ctx context.Context, i UserCreateInput) (*User, error) {
 	var mutation struct {
 		Payload struct {
