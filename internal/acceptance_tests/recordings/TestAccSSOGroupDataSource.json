@@ -1,0 +1,91 @@
+{
+  "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"value\":\"test-sso\"}}}": [
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "value": "test-sso"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "ssoGroups": {
+            "edges": [
+              {
+                "node": {
+                  "displayName": null,
+                  "id": "WyJzc28tZ3JvdXAiLCAiMiJd",
+                  "name": "test-sso",
+                  "roleAssignmentPrincipal": "sso-group:2"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "value": "test-sso"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "ssoGroups": {
+            "edges": [
+              {
+                "node": {
+                  "displayName": null,
+                  "id": "WyJzc28tZ3JvdXAiLCAiMiJd",
+                  "name": "test-sso",
+                  "roleAssignmentPrincipal": "sso-group:2"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "value": "test-sso"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "ssoGroups": {
+            "edges": [
+              {
+                "node": {
+                  "displayName": null,
+                  "id": "WyJzc28tZ3JvdXAiLCAiMiJd",
+                  "name": "test-sso",
+                  "roleAssignmentPrincipal": "sso-group:2"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -15,6 +15,7 @@ type User struct {
 	DisplayName             *string
 	Email                   *string
 	Name                    *string
+	Key                     int64
 	RoleAssignmentPrincipal string
 	SSOUser                 bool
 	Username                *string

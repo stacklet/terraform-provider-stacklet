@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
@@ -39,16 +38,6 @@ func (d *userDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, r
 				Description: "Whether the user is active in the system.",
 				Computed:    true,
 			},
-			"all_roles": schema.ListAttribute{
-				Description: "All roles (assigned, implicit, and inherited) for the user.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
-			"assigned_roles": schema.ListAttribute{
-				Description: "Roles directly assigned to the user.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
 			"display_name": schema.StringAttribute{
 				Description: "The display name of the user.",
 				Computed:    true,
@@ -57,27 +46,8 @@ func (d *userDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, r
 				Description: "The email address of the user.",
 				Computed:    true,
 			},
-			"groups": schema.ListAttribute{
-				Description: "Groups the user belongs to.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
-			"implicit_roles": schema.ListAttribute{
-				Description: "Roles implicitly granted to the user.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
-			"inherited_roles": schema.ListAttribute{
-				Description: "Roles inherited by the user.",
-				Computed:    true,
-				ElementType: types.StringType,
-			},
 			"key": schema.Int64Attribute{
-				Description: "The numeric key of the user.",
-				Computed:    true,
-			},
-			"last_login": schema.StringAttribute{
-				Description: "The timestamp of the user's last login.",
+				Description: "The numeric key identifier of the user.",
 				Computed:    true,
 			},
 			"name": schema.StringAttribute{
@@ -87,11 +57,6 @@ func (d *userDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, r
 			"role_assignment_principal": schema.StringAttribute{
 				Description: "An opaque principal identifier for role assignments. Use this value when creating role assignments.",
 				Computed:    true,
-			},
-			"roles": schema.ListAttribute{
-				Description: "Roles assigned to the user.",
-				Computed:    true,
-				ElementType: types.StringType,
 			},
 			"sso_user": schema.BoolAttribute{
 				Description: "Whether the user is an SSO user.",
