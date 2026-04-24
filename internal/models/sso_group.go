@@ -3,8 +3,6 @@
 package models
 
 import (
-	"context"
-
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
@@ -19,7 +17,7 @@ type SSOGroupDataSource struct {
 	RoleAssignmentPrincipal types.String `tfsdk:"role_assignment_principal"`
 }
 
-func (m *SSOGroupDataSource) Update(ctx context.Context, ssoGroup *api.SSOGroup) diag.Diagnostics {
+func (m *SSOGroupDataSource) Update(ssoGroup *api.SSOGroup) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = types.StringValue(ssoGroup.ID)
@@ -28,4 +26,9 @@ func (m *SSOGroupDataSource) Update(ctx context.Context, ssoGroup *api.SSOGroup)
 	m.RoleAssignmentPrincipal = types.StringValue(ssoGroup.RoleAssignmentPrincipal)
 
 	return diags
+}
+
+// SSOGroupResource is the model for SSO group resources.
+type SSOGroupResource struct {
+	SSOGroupDataSource
 }

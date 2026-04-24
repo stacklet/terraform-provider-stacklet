@@ -20,21 +20,56 @@
             "group": {
               "description": "Test account group for role assignment",
               "dynamicFilter": null,
-              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjFjNWY0NDgwLTllMjgtNDU0OC04MjEzLWIwZWQxYzY1YzBhYSJd",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgImYwNDEzZTgwLTFmZDYtNDk3Yy1iMDllLWI3NTI0Y2ZhMGVlNCJd",
               "name": "test-role-assignment-test",
               "provider": "AWS",
               "regions": [
                 "us-east-1"
               ],
-              "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa",
-              "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+              "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4",
+              "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
             }
           }
         }
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:1\",\"roleName\":\"editor\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
+  "mutation ($input:AddUserInput!){addUser(input: $input){user{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}:{\"input\":{\"email\":\"test@stacklet.io\",\"name\":\"test-role-user\",\"roles\":[\"admin\"],\"ssoUser\":false,\"username\":\"test_role_user\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddUserInput!){addUser(input: $input){user{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}",
+        "variables": {
+          "input": {
+            "email": "test@stacklet.io",
+            "name": "test-role-user",
+            "roles": [
+              "admin"
+            ],
+            "ssoUser": false,
+            "username": "test_role_user"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addUser": {
+            "user": {
+              "active": true,
+              "displayName": null,
+              "email": "test@stacklet.io",
+              "id": "WyJ1c2VyIiwgIjM2Il0=",
+              "key": 36,
+              "name": "test-role-user",
+              "roleAssignmentPrincipal": "user:36",
+              "ssoUser": false,
+              "username": "test_role_user"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:36\",\"roleName\":\"editor\",\"target\":\"account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
@@ -42,9 +77,9 @@
           "input": {
             "grant": [
               {
-                "principal": "user:1",
+                "principal": "user:36",
                 "roleName": "editor",
-                "target": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                "target": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
               }
             ]
           }
@@ -57,9 +92,9 @@
               {
                 "errorMessage": null,
                 "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA5Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYxIl0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjQiXQ==",
@@ -73,7 +108,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
                   }
                 }
               }
@@ -84,7 +119,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:1\",\"roleName\":\"viewer\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:36\",\"roleName\":\"viewer\",\"target\":\"account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
@@ -92,9 +127,9 @@
           "input": {
             "grant": [
               {
-                "principal": "user:1",
+                "principal": "user:36",
                 "roleName": "viewer",
-                "target": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                "target": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
               }
             ]
           }
@@ -107,9 +142,9 @@
               {
                 "errorMessage": null,
                 "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA4Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYwIl0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -120,7 +155,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
                   }
                 }
               }
@@ -131,7 +166,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:1\",\"roleName\":\"editor\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:36\",\"roleName\":\"editor\",\"target\":\"account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
@@ -139,9 +174,9 @@
           "input": {
             "revoke": [
               {
-                "principal": "user:1",
+                "principal": "user:36",
                 "roleName": "editor",
-                "target": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                "target": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
               }
             ]
           }
@@ -155,7 +190,7 @@
               {
                 "errorMessage": null,
                 "removed": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA5Il0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYxIl0="
                 }
               }
             ]
@@ -164,7 +199,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:1\",\"roleName\":\"viewer\",\"target\":\"account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:36\",\"roleName\":\"viewer\",\"target\":\"account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
@@ -172,9 +207,9 @@
           "input": {
             "revoke": [
               {
-                "principal": "user:1",
+                "principal": "user:36",
                 "roleName": "viewer",
-                "target": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                "target": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
               }
             ]
           }
@@ -188,7 +223,7 @@
               {
                 "errorMessage": null,
                 "removed": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA4Il0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYwIl0="
                 }
               }
             ]
@@ -197,19 +232,40 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}": [
+  "mutation ($key:Int!){removeUser(key: $key){removed{id}}}:{\"key\":36}": [
+    {
+      "request": {
+        "query": "mutation ($key:Int!){removeUser(key: $key){removed{id}}}",
+        "variables": {
+          "key": 36
+        }
+      },
+      "response": {
+        "data": {
+          "removeUser": {
+            "removed": [
+              {
+                "id": "WyJ1c2VyIiwgIjM2Il0="
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"f0413e80-1fd6-497c-b09e-b7524cfa0ee4\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
         "variables": {
-          "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+          "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
         }
       },
       "response": {
         "data": {
           "removeAccountGroup": {
             "group": {
-              "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+              "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
             }
           }
         }
@@ -230,6 +286,52 @@
             "edges": [
               {
                 "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU4Il0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:1"
@@ -257,32 +359,36 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
-                    "id": "WyJyb2xlIiwgIjUiXQ==",
-                    "name": "owner",
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
                     "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
                       "EDIT",
                       "EDIT_ACL",
+                      "LOGIN",
                       "REMOVE",
                       "VIEW",
-                      "VIEW_ACL"
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
                     ],
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA4Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYwIl0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -293,13 +399,40 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yOEKwiAQAOBXCX/vQJeGPcsY4zqvOHIqTou9fY2gfx/fpEqVRFIwLglXHmqO/BOnJm1f2l7+7l2CGk6T2hrSM3IDDKukb6mX8JvrISTKPTV41NzLEYbc3Vqv4cqjB+usBz+aM9w0B0MXRxpRzfMHonEt1Q==",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -319,6 +452,52 @@
             "edges": [
               {
                 "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU4Il0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:1"
@@ -346,32 +525,36 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
-                    "id": "WyJyb2xlIiwgIjUiXQ==",
-                    "name": "owner",
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
                     "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
                       "EDIT",
                       "EDIT_ACL",
+                      "LOGIN",
                       "REMOVE",
                       "VIEW",
-                      "VIEW_ACL"
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
                     ],
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA4Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYwIl0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -382,13 +565,40 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yOEKwiAQAOBXCX/vQJeGPcsY4zqvOHIqTou9fY2gfx/fpEqVRFIwLglXHmqO/BOnJm1f2l7+7l2CGk6T2hrSM3IDDKukb6mX8JvrISTKPTV41NzLEYbc3Vqv4cqjB+usBz+aM9w0B0MXRxpRzfMHonEt1Q==",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -408,6 +618,52 @@
             "edges": [
               {
                 "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU4Il0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:1"
@@ -435,32 +691,36 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
-                    "id": "WyJyb2xlIiwgIjUiXQ==",
-                    "name": "owner",
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
                     "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
                       "EDIT",
                       "EDIT_ACL",
+                      "LOGIN",
                       "REMOVE",
                       "VIEW",
-                      "VIEW_ACL"
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
                     ],
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA4Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYwIl0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -471,13 +731,40 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yOEKwiAQAOBXCX/vQJeGPcsY4zqvOHIqTou9fY2gfx/fpEqVRFIwLglXHmqO/BOnJm1f2l7+7l2CGk6T2hrSM3IDDKukb6mX8JvrISTKPTV41NzLEYbc3Vqv4cqjB+usBz+aM9w0B0MXRxpRzfMHonEt1Q==",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -497,6 +784,52 @@
             "edges": [
               {
                 "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU4Il0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:1"
@@ -524,32 +857,36 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
-                    "id": "WyJyb2xlIiwgIjUiXQ==",
-                    "name": "owner",
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
                     "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
                       "EDIT",
                       "EDIT_ACL",
+                      "LOGIN",
                       "REMOVE",
                       "VIEW",
-                      "VIEW_ACL"
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
                     ],
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA4Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYwIl0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -560,13 +897,40 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yOEKwiAQAOBXCX/vQJeGPcsY4zqvOHIqTou9fY2gfx/fpEqVRFIwLglXHmqO/BOnJm1f2l7+7l2CGk6T2hrSM3IDDKukb6mX8JvrISTKPTV41NzLEYbc3Vqv4cqjB+usBz+aM9w0B0MXRxpRzfMHonEt1Q==",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -586,6 +950,52 @@
             "edges": [
               {
                 "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU4Il0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:1"
@@ -613,32 +1023,36 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
-                    "id": "WyJyb2xlIiwgIjUiXQ==",
-                    "name": "owner",
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
                     "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
                       "EDIT",
                       "EDIT_ACL",
+                      "LOGIN",
                       "REMOVE",
                       "VIEW",
-                      "VIEW_ACL"
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
                     ],
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA4Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYwIl0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -649,13 +1063,40 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yOEKwiAQAOBXCX/vQJeGPcsY4zqvOHIqTou9fY2gfx/fpEqVRFIwLglXHmqO/BOnJm1f2l7+7l2CGk6T2hrSM3IDDKukb6mX8JvrISTKPTV41NzLEYbc3Vqv4cqjB+usBz+aM9w0B0MXRxpRzfMHonEt1Q==",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -675,6 +1116,52 @@
             "edges": [
               {
                 "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU4Il0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:1"
@@ -702,9 +1189,36 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA5Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYxIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjQiXQ==",
@@ -718,36 +1232,40 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
                   }
                 }
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "sso-group:2"
                   },
                   "role": {
-                    "id": "WyJyb2xlIiwgIjUiXQ==",
-                    "name": "owner",
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
                     "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
                       "EDIT",
                       "EDIT_ACL",
+                      "LOGIN",
                       "REMOVE",
                       "VIEW",
-                      "VIEW_ACL"
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
                     ],
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yFEKwjAMANCrSL8XaGcr9SxjjJhFKXZpqSmy2+sQ/Hu8ydSWhFLFvAhuPLSS+ScWTbovute/e0+rGU6TeSnSM7MCrluSb5nyFm4HkKh0UXi00usRjsLd+2jhymMEH3yEOLoz3Cyvji6BLKKZ5w9s4S1u",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -765,6 +1283,52 @@
         "data": {
           "roleAssignments": {
             "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU4Il0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
+                  }
+                }
+              },
               {
                 "node": {
                   "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
@@ -794,9 +1358,36 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA5Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTU5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "user:36"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYxIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:36"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjQiXQ==",
@@ -810,36 +1401,40 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
                   }
                 }
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:1"
+                    "roleAssignmentPrincipal": "sso-group:2"
                   },
                   "role": {
-                    "id": "WyJyb2xlIiwgIjUiXQ==",
-                    "name": "owner",
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
                     "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
                       "EDIT",
                       "EDIT_ACL",
+                      "LOGIN",
                       "REMOVE",
                       "VIEW",
-                      "VIEW_ACL"
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
                     ],
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+                    "roleAssignmentTarget": "system:all"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yFEKwjAMANCrSL8XaGcr9SxjjJhFKXZpqSmy2+sQ/Hu8ydSWhFLFvAhuPLSS+ScWTbovute/e0+rGU6TeSnSM7MCrluSb5nyFm4HkKh0UXi00usRjsLd+2jhymMEH3yEOLoz3Cyvji6BLKKZ5w9s4S1u",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -847,15 +1442,15 @@
       }
     }
   ],
-  "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,allRoles,assignedRoles,displayName,email,groups,implicitRoles,inheritedRoles,key,lastLogin,name,roleAssignmentPrincipal,roles,ssoUser,username}}}}:{\"filterElement\":{\"single\":{\"name\":\"username\",\"value\":\"stacklet-admin\"}}}": [
+  "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}:{\"filterElement\":{\"single\":{\"name\":\"username\",\"value\":\"test_role_user\"}}}": [
     {
       "request": {
-        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,allRoles,assignedRoles,displayName,email,groups,implicitRoles,inheritedRoles,key,lastLogin,name,roleAssignmentPrincipal,roles,ssoUser,username}}}}",
+        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}",
         "variables": {
           "filterElement": {
             "single": {
               "name": "username",
-              "value": "stacklet-admin"
+              "value": "test_role_user"
             }
           }
         }
@@ -867,29 +1462,14 @@
               {
                 "node": {
                   "active": true,
-                  "allRoles": [
-                    "admin"
-                  ],
-                  "assignedRoles": [
-                    "admin"
-                  ],
-                  "displayName": "chris@stacklet.io",
-                  "email": "chris@stacklet.io",
-                  "groups": [],
-                  "id": "WyJ1c2VyIiwgIjEiXQ==",
-                  "implicitRoles": [
-                    "admin"
-                  ],
-                  "inheritedRoles": [],
-                  "key": 1,
-                  "lastLogin": "2025-12-22T16:37:48.216675+00:00",
-                  "name": "chris@stacklet.io",
-                  "roleAssignmentPrincipal": "user:1",
-                  "roles": [
-                    "admin"
-                  ],
+                  "displayName": null,
+                  "email": "test@stacklet.io",
+                  "id": "WyJ1c2VyIiwgIjM2Il0=",
+                  "key": 36,
+                  "name": "test-role-user",
+                  "roleAssignmentPrincipal": "user:36",
                   "ssoUser": false,
-                  "username": "stacklet-admin"
+                  "username": "test_role_user"
                 }
               }
             ]
@@ -899,12 +1479,12 @@
     },
     {
       "request": {
-        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,allRoles,assignedRoles,displayName,email,groups,implicitRoles,inheritedRoles,key,lastLogin,name,roleAssignmentPrincipal,roles,ssoUser,username}}}}",
+        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}",
         "variables": {
           "filterElement": {
             "single": {
               "name": "username",
-              "value": "stacklet-admin"
+              "value": "test_role_user"
             }
           }
         }
@@ -916,29 +1496,14 @@
               {
                 "node": {
                   "active": true,
-                  "allRoles": [
-                    "admin"
-                  ],
-                  "assignedRoles": [
-                    "admin"
-                  ],
-                  "displayName": "chris@stacklet.io",
-                  "email": "chris@stacklet.io",
-                  "groups": [],
-                  "id": "WyJ1c2VyIiwgIjEiXQ==",
-                  "implicitRoles": [
-                    "admin"
-                  ],
-                  "inheritedRoles": [],
-                  "key": 1,
-                  "lastLogin": "2025-12-22T16:37:48.216675+00:00",
-                  "name": "chris@stacklet.io",
-                  "roleAssignmentPrincipal": "user:1",
-                  "roles": [
-                    "admin"
-                  ],
+                  "displayName": null,
+                  "email": "test@stacklet.io",
+                  "id": "WyJ1c2VyIiwgIjM2Il0=",
+                  "key": 36,
+                  "name": "test-role-user",
+                  "roleAssignmentPrincipal": "user:36",
                   "ssoUser": false,
-                  "username": "stacklet-admin"
+                  "username": "test_role_user"
                 }
               }
             ]
@@ -948,12 +1513,12 @@
     },
     {
       "request": {
-        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,allRoles,assignedRoles,displayName,email,groups,implicitRoles,inheritedRoles,key,lastLogin,name,roleAssignmentPrincipal,roles,ssoUser,username}}}}",
+        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,displayName,email,name,key,roleAssignmentPrincipal,ssoUser,username}}}}",
         "variables": {
           "filterElement": {
             "single": {
               "name": "username",
-              "value": "stacklet-admin"
+              "value": "test_role_user"
             }
           }
         }
@@ -965,225 +1530,14 @@
               {
                 "node": {
                   "active": true,
-                  "allRoles": [
-                    "admin"
-                  ],
-                  "assignedRoles": [
-                    "admin"
-                  ],
-                  "displayName": "chris@stacklet.io",
-                  "email": "chris@stacklet.io",
-                  "groups": [],
-                  "id": "WyJ1c2VyIiwgIjEiXQ==",
-                  "implicitRoles": [
-                    "admin"
-                  ],
-                  "inheritedRoles": [],
-                  "key": 1,
-                  "lastLogin": "2025-12-22T16:37:48.216675+00:00",
-                  "name": "chris@stacklet.io",
-                  "roleAssignmentPrincipal": "user:1",
-                  "roles": [
-                    "admin"
-                  ],
+                  "displayName": null,
+                  "email": "test@stacklet.io",
+                  "id": "WyJ1c2VyIiwgIjM2Il0=",
+                  "key": 36,
+                  "name": "test-role-user",
+                  "roleAssignmentPrincipal": "user:36",
                   "ssoUser": false,
-                  "username": "stacklet-admin"
-                }
-              }
-            ]
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,allRoles,assignedRoles,displayName,email,groups,implicitRoles,inheritedRoles,key,lastLogin,name,roleAssignmentPrincipal,roles,ssoUser,username}}}}",
-        "variables": {
-          "filterElement": {
-            "single": {
-              "name": "username",
-              "value": "stacklet-admin"
-            }
-          }
-        }
-      },
-      "response": {
-        "data": {
-          "users": {
-            "edges": [
-              {
-                "node": {
-                  "active": true,
-                  "allRoles": [
-                    "admin"
-                  ],
-                  "assignedRoles": [
-                    "admin"
-                  ],
-                  "displayName": "chris@stacklet.io",
-                  "email": "chris@stacklet.io",
-                  "groups": [],
-                  "id": "WyJ1c2VyIiwgIjEiXQ==",
-                  "implicitRoles": [
-                    "admin"
-                  ],
-                  "inheritedRoles": [],
-                  "key": 1,
-                  "lastLogin": "2025-12-22T16:37:48.216675+00:00",
-                  "name": "chris@stacklet.io",
-                  "roleAssignmentPrincipal": "user:1",
-                  "roles": [
-                    "admin"
-                  ],
-                  "ssoUser": false,
-                  "username": "stacklet-admin"
-                }
-              }
-            ]
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,allRoles,assignedRoles,displayName,email,groups,implicitRoles,inheritedRoles,key,lastLogin,name,roleAssignmentPrincipal,roles,ssoUser,username}}}}",
-        "variables": {
-          "filterElement": {
-            "single": {
-              "name": "username",
-              "value": "stacklet-admin"
-            }
-          }
-        }
-      },
-      "response": {
-        "data": {
-          "users": {
-            "edges": [
-              {
-                "node": {
-                  "active": true,
-                  "allRoles": [
-                    "admin"
-                  ],
-                  "assignedRoles": [
-                    "admin"
-                  ],
-                  "displayName": "chris@stacklet.io",
-                  "email": "chris@stacklet.io",
-                  "groups": [],
-                  "id": "WyJ1c2VyIiwgIjEiXQ==",
-                  "implicitRoles": [
-                    "admin"
-                  ],
-                  "inheritedRoles": [],
-                  "key": 1,
-                  "lastLogin": "2025-12-22T16:37:48.216675+00:00",
-                  "name": "chris@stacklet.io",
-                  "roleAssignmentPrincipal": "user:1",
-                  "roles": [
-                    "admin"
-                  ],
-                  "ssoUser": false,
-                  "username": "stacklet-admin"
-                }
-              }
-            ]
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,allRoles,assignedRoles,displayName,email,groups,implicitRoles,inheritedRoles,key,lastLogin,name,roleAssignmentPrincipal,roles,ssoUser,username}}}}",
-        "variables": {
-          "filterElement": {
-            "single": {
-              "name": "username",
-              "value": "stacklet-admin"
-            }
-          }
-        }
-      },
-      "response": {
-        "data": {
-          "users": {
-            "edges": [
-              {
-                "node": {
-                  "active": true,
-                  "allRoles": [
-                    "admin"
-                  ],
-                  "assignedRoles": [
-                    "admin"
-                  ],
-                  "displayName": "chris@stacklet.io",
-                  "email": "chris@stacklet.io",
-                  "groups": [],
-                  "id": "WyJ1c2VyIiwgIjEiXQ==",
-                  "implicitRoles": [
-                    "admin"
-                  ],
-                  "inheritedRoles": [],
-                  "key": 1,
-                  "lastLogin": "2025-12-22T16:37:48.216675+00:00",
-                  "name": "chris@stacklet.io",
-                  "roleAssignmentPrincipal": "user:1",
-                  "roles": [
-                    "admin"
-                  ],
-                  "ssoUser": false,
-                  "username": "stacklet-admin"
-                }
-              }
-            ]
-          }
-        }
-      }
-    },
-    {
-      "request": {
-        "query": "query ($filterElement:FilterElementInput!){users(filterElement: $filterElement){edges{node{id,active,allRoles,assignedRoles,displayName,email,groups,implicitRoles,inheritedRoles,key,lastLogin,name,roleAssignmentPrincipal,roles,ssoUser,username}}}}",
-        "variables": {
-          "filterElement": {
-            "single": {
-              "name": "username",
-              "value": "stacklet-admin"
-            }
-          }
-        }
-      },
-      "response": {
-        "data": {
-          "users": {
-            "edges": [
-              {
-                "node": {
-                  "active": true,
-                  "allRoles": [
-                    "admin"
-                  ],
-                  "assignedRoles": [
-                    "admin"
-                  ],
-                  "displayName": "chris@stacklet.io",
-                  "email": "chris@stacklet.io",
-                  "groups": [],
-                  "id": "WyJ1c2VyIiwgIjEiXQ==",
-                  "implicitRoles": [
-                    "admin"
-                  ],
-                  "inheritedRoles": [],
-                  "key": 1,
-                  "lastLogin": "2025-12-22T16:37:48.216675+00:00",
-                  "name": "chris@stacklet.io",
-                  "roleAssignmentPrincipal": "user:1",
-                  "roles": [
-                    "admin"
-                  ],
-                  "ssoUser": false,
-                  "username": "stacklet-admin"
+                  "username": "test_role_user"
                 }
               }
             ]
@@ -1192,13 +1546,13 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"1c5f4480-9e28-4548-8213-b0ed1c65c0aa\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"f0413e80-1fd6-497c-b09e-b7524cfa0ee4\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+          "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
         }
       },
       "response": {
@@ -1206,14 +1560,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjFjNWY0NDgwLTllMjgtNDU0OC04MjEzLWIwZWQxYzY1YzBhYSJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImYwNDEzZTgwLTFmZDYtNDk3Yy1iMDllLWI3NTI0Y2ZhMGVlNCJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa",
-            "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+            "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4",
+            "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
           }
         }
       }
@@ -1223,7 +1577,7 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+          "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
         }
       },
       "response": {
@@ -1231,14 +1585,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjFjNWY0NDgwLTllMjgtNDU0OC04MjEzLWIwZWQxYzY1YzBhYSJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImYwNDEzZTgwLTFmZDYtNDk3Yy1iMDllLWI3NTI0Y2ZhMGVlNCJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa",
-            "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+            "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4",
+            "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
           }
         }
       }
@@ -1248,7 +1602,7 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+          "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
         }
       },
       "response": {
@@ -1256,14 +1610,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjFjNWY0NDgwLTllMjgtNDU0OC04MjEzLWIwZWQxYzY1YzBhYSJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImYwNDEzZTgwLTFmZDYtNDk3Yy1iMDllLWI3NTI0Y2ZhMGVlNCJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:1c5f4480-9e28-4548-8213-b0ed1c65c0aa",
-            "uuid": "1c5f4480-9e28-4548-8213-b0ed1c65c0aa"
+            "roleAssignmentTarget": "account-group:f0413e80-1fd6-497c-b09e-b7524cfa0ee4",
+            "uuid": "f0413e80-1fd6-497c-b09e-b7524cfa0ee4"
           }
         }
       }

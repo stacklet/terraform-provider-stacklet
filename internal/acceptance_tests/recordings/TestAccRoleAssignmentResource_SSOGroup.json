@@ -1,5 +1,378 @@
 {
-  "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"value\":\"All aws accounts\"}}}": [
+  "mutation ($input:RemoveSSOGroupsInput!){removeSSOGroups(input: $input){response{errorMessage}}}:{\"input\":{\"names\":[\"test-sso-role-group\"]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemoveSSOGroupsInput!){removeSSOGroups(input: $input){response{errorMessage}}}",
+        "variables": {
+          "input": {
+            "names": [
+              "test-sso-role-group"
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removeSSOGroups": {
+            "response": [
+              {
+                "errorMessage": null
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"sso-group:11\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
+        "variables": {
+          "input": {
+            "grant": [
+              {
+                "principal": "sso-group:11",
+                "roleName": "viewer",
+                "target": "system:all"
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateRoleAssignment": {
+            "grant": [
+              {
+                "errorMessage": null,
+                "roleAssignment": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:11"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjMiXQ==",
+                    "name": "viewer",
+                    "permissions": [
+                      "VIEW"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              }
+            ],
+            "revoke": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"sso-group:11\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
+        "variables": {
+          "input": {
+            "revoke": [
+              {
+                "principal": "sso-group:11",
+                "roleName": "viewer",
+                "target": "system:all"
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateRoleAssignment": {
+            "grant": [],
+            "revoke": [
+              {
+                "errorMessage": null,
+                "removed": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYzIl0="
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpsertSSOGroupsInput!){upsertSSOGroups(input: $input){response{errorMessage,ssoGroup{id,displayName,name,roleAssignmentPrincipal}}}}:{\"input\":{\"groups\":[{\"displayName\":null,\"name\":\"test-sso-role-group\"}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpsertSSOGroupsInput!){upsertSSOGroups(input: $input){response{errorMessage,ssoGroup{id,displayName,name,roleAssignmentPrincipal}}}}",
+        "variables": {
+          "input": {
+            "groups": [
+              {
+                "displayName": null,
+                "name": "test-sso-role-group"
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "upsertSSOGroups": {
+            "response": [
+              {
+                "errorMessage": null,
+                "ssoGroup": {
+                  "displayName": null,
+                  "id": "WyJzc28tZ3JvdXAiLCAiMTEiXQ==",
+                  "name": "test-sso-role-group",
+                  "roleAssignmentPrincipal": "sso-group:11"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\"}": [
+    {
+      "request": {
+        "query": "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "variables": {
+          "cursor": ""
+        }
+      },
+      "response": {
+        "data": {
+          "roleAssignments": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:1"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:11"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjMiXQ==",
+                    "name": "viewer",
+                    "permissions": [
+                      "VIEW"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              }
+            ],
+            "pageInfo": {
+              "endCursor": "eJw9ytEKgCAMQNFfiT3rF4mI1IiBTnFb4d9nBL0dLjdAH8Q79VwS54putIKfkJV0Jp39txkd4LYAiqJepPl39+do1leHi/DG8UqmKNYltlJifADjGyWH",
+              "hasNextPage": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "variables": {
+          "cursor": ""
+        }
+      },
+      "response": {
+        "data": {
+          "roleAssignments": {
+            "edges": [
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTIzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjUiXQ==",
+                    "name": "owner",
+                    "permissions": [
+                      "EDIT",
+                      "EDIT_ACL",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:4974dff8-49bc-4881-b982-6db745424e34"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMSJd",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:1"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYzIl0=",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:11"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjMiXQ==",
+                    "name": "viewer",
+                    "permissions": [
+                      "VIEW"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
+              }
+            ],
+            "pageInfo": {
+              "endCursor": "eJw9ytEKgCAMQNFfiT3rF4mI1IiBTnFb4d9nBL0dLjdAH8Q79VwS54putIKfkJV0Jp39txkd4LYAiqJepPl39+do1leHi/DG8UqmKNYltlJifADjGyWH",
+              "hasNextPage": false
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"value\":\"test-sso-role-group\"}}}": [
     {
       "request": {
         "query": "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}",
@@ -7,7 +380,7 @@
           "filterElement": {
             "single": {
               "name": "name",
-              "value": "All aws accounts"
+              "value": "test-sso-role-group"
             }
           }
         }
@@ -15,7 +388,16 @@
       "response": {
         "data": {
           "ssoGroups": {
-            "edges": []
+            "edges": [
+              {
+                "node": {
+                  "displayName": null,
+                  "id": "WyJzc28tZ3JvdXAiLCAiMTEiXQ==",
+                  "name": "test-sso-role-group",
+                  "roleAssignmentPrincipal": "sso-group:11"
+                }
+              }
+            ]
           }
         }
       }

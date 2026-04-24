@@ -1,12 +1,12 @@
 {
-  "mutation ($input:RemoveSSOGroupsInput!){removeSSOGroups(input: $input){response{errorMessage}}}:{\"input\":{\"names\":[\"test-sso-group-ds\"]}}": [
+  "mutation ($input:RemoveSSOGroupsInput!){removeSSOGroups(input: $input){response{errorMessage}}}:{\"input\":{\"names\":[\"test-sso-group\"]}}": [
     {
       "request": {
         "query": "mutation ($input:RemoveSSOGroupsInput!){removeSSOGroups(input: $input){response{errorMessage}}}",
         "variables": {
           "input": {
             "names": [
-              "test-sso-group-ds"
+              "test-sso-group"
             ]
           }
         }
@@ -24,7 +24,41 @@
       }
     }
   ],
-  "mutation ($input:UpsertSSOGroupsInput!){upsertSSOGroups(input: $input){response{errorMessage,ssoGroup{id,displayName,name,roleAssignmentPrincipal}}}}:{\"input\":{\"groups\":[{\"displayName\":null,\"name\":\"test-sso-group-ds\"}]}}": [
+  "mutation ($input:UpsertSSOGroupsInput!){upsertSSOGroups(input: $input){response{errorMessage,ssoGroup{id,displayName,name,roleAssignmentPrincipal}}}}:{\"input\":{\"groups\":[{\"displayName\":\"Test SSO Group\",\"name\":\"test-sso-group\"}]}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpsertSSOGroupsInput!){upsertSSOGroups(input: $input){response{errorMessage,ssoGroup{id,displayName,name,roleAssignmentPrincipal}}}}",
+        "variables": {
+          "input": {
+            "groups": [
+              {
+                "displayName": "Test SSO Group",
+                "name": "test-sso-group"
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "upsertSSOGroups": {
+            "response": [
+              {
+                "errorMessage": null,
+                "ssoGroup": {
+                  "displayName": "Test SSO Group",
+                  "id": "WyJzc28tZ3JvdXAiLCAiNSJd",
+                  "name": "test-sso-group",
+                  "roleAssignmentPrincipal": "sso-group:5"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpsertSSOGroupsInput!){upsertSSOGroups(input: $input){response{errorMessage,ssoGroup{id,displayName,name,roleAssignmentPrincipal}}}}:{\"input\":{\"groups\":[{\"displayName\":null,\"name\":\"test-sso-group\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpsertSSOGroupsInput!){upsertSSOGroups(input: $input){response{errorMessage,ssoGroup{id,displayName,name,roleAssignmentPrincipal}}}}",
@@ -33,7 +67,7 @@
             "groups": [
               {
                 "displayName": null,
-                "name": "test-sso-group-ds"
+                "name": "test-sso-group"
               }
             ]
           }
@@ -47,9 +81,9 @@
                 "errorMessage": null,
                 "ssoGroup": {
                   "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiNyJd",
-                  "name": "test-sso-group-ds",
-                  "roleAssignmentPrincipal": "sso-group:7"
+                  "id": "WyJzc28tZ3JvdXAiLCAiNSJd",
+                  "name": "test-sso-group",
+                  "roleAssignmentPrincipal": "sso-group:5"
                 }
               }
             ]
@@ -58,7 +92,7 @@
       }
     }
   ],
-  "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"value\":\"test-sso-group-ds\"}}}": [
+  "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"value\":\"test-sso-group\"}}}": [
     {
       "request": {
         "query": "query ($filterElement:FilterElementInput!){ssoGroups(filterElement: $filterElement){edges{node{id,displayName,name,roleAssignmentPrincipal}}}}",
@@ -66,7 +100,7 @@
           "filterElement": {
             "single": {
               "name": "name",
-              "value": "test-sso-group-ds"
+              "value": "test-sso-group"
             }
           }
         }
@@ -78,9 +112,9 @@
               {
                 "node": {
                   "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiNyJd",
-                  "name": "test-sso-group-ds",
-                  "roleAssignmentPrincipal": "sso-group:7"
+                  "id": "WyJzc28tZ3JvdXAiLCAiNSJd",
+                  "name": "test-sso-group",
+                  "roleAssignmentPrincipal": "sso-group:5"
                 }
               }
             ]
@@ -95,7 +129,7 @@
           "filterElement": {
             "single": {
               "name": "name",
-              "value": "test-sso-group-ds"
+              "value": "test-sso-group"
             }
           }
         }
@@ -107,9 +141,9 @@
               {
                 "node": {
                   "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiNyJd",
-                  "name": "test-sso-group-ds",
-                  "roleAssignmentPrincipal": "sso-group:7"
+                  "id": "WyJzc28tZ3JvdXAiLCAiNSJd",
+                  "name": "test-sso-group",
+                  "roleAssignmentPrincipal": "sso-group:5"
                 }
               }
             ]
@@ -124,7 +158,7 @@
           "filterElement": {
             "single": {
               "name": "name",
-              "value": "test-sso-group-ds"
+              "value": "test-sso-group"
             }
           }
         }
@@ -136,9 +170,9 @@
               {
                 "node": {
                   "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiNyJd",
-                  "name": "test-sso-group-ds",
-                  "roleAssignmentPrincipal": "sso-group:7"
+                  "id": "WyJzc28tZ3JvdXAiLCAiNSJd",
+                  "name": "test-sso-group",
+                  "roleAssignmentPrincipal": "sso-group:5"
                 }
               }
             ]
@@ -153,7 +187,7 @@
           "filterElement": {
             "single": {
               "name": "name",
-              "value": "test-sso-group-ds"
+              "value": "test-sso-group"
             }
           }
         }
@@ -164,10 +198,10 @@
             "edges": [
               {
                 "node": {
-                  "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiNyJd",
-                  "name": "test-sso-group-ds",
-                  "roleAssignmentPrincipal": "sso-group:7"
+                  "displayName": "Test SSO Group",
+                  "id": "WyJzc28tZ3JvdXAiLCAiNSJd",
+                  "name": "test-sso-group",
+                  "roleAssignmentPrincipal": "sso-group:5"
                 }
               }
             ]
