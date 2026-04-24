@@ -3,8 +3,6 @@
 package models
 
 import (
-	"context"
-
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
@@ -24,7 +22,7 @@ type UserDataSource struct {
 	Username                types.String `tfsdk:"username"`
 }
 
-func (m *UserDataSource) Update(ctx context.Context, user *api.User) diag.Diagnostics {
+func (m *UserDataSource) Update(user *api.User) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = types.StringValue(user.ID)
@@ -38,4 +36,9 @@ func (m *UserDataSource) Update(ctx context.Context, user *api.User) diag.Diagno
 	m.Username = types.StringPointerValue(user.Username)
 
 	return diags
+}
+
+// UserResource is the model for user resources.
+type UserResource struct {
+	UserDataSource
 }

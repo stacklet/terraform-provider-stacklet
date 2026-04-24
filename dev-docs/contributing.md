@@ -48,14 +48,10 @@ RBAC tests require existing user and SSO group identities from your Stacklet env
 
 ```bash
 # Required environment variables for RBAC tests
-# For user tests
 export TF_ACC_TEST_USERNAME="username"
-
-# For SSO group tests
 export TF_ACC_TEST_SSO_GROUP="YourSSOGroupName"
 
 # Record RBAC tests
-just test-record TestAccUserDataSource
 just test-record TestAccSSOGroupDataSource
 just test-record TestAccRoleAssignmentResource
 ```
