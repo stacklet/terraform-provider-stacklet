@@ -38,7 +38,7 @@ lint-copyright:
 
 # Run tests using recorded API requests/responses.
 test *args:
-    TF_ACC=1 go test {{ package }} {{ args }}
+    TF_ACC=1 STACKLET_UNRELEASED_FEATURES=1 go test {{ package }} {{ args }}
 
 # Run tests against a live deployment. Requires real STACKLET_ENDPOINT and STACKLET_API_KEY or logged in stacklet-admin.
 test-live *args:
