@@ -1,3 +1,13 @@
+## 0.7.0 - 2026-04-27
+
+- Add: support for the following resources
+  - `stacklet_user`
+  - `stacklet_sso_group`
+- Fix: remove unused fields in `stacklet_user` datasource
+- Fix: graphql query errors in `stacklet_role_assignment` resource (#205)
+- Chore: udpate dependnecies
+
+
 ## 0.6.3 - 2026-04-22
 
 - Fix: preserve `dry_run = false` state to prevent perpetual plan diff (#200)
