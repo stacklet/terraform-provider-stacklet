@@ -24,15 +24,15 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"sso-group:11\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"sso-group:15\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id}}}}",
         "variables": {
           "input": {
             "grant": [
               {
-                "principal": "sso-group:11",
+                "principal": "sso-group:15",
                 "roleName": "viewer",
                 "target": "system:all"
               }
@@ -47,39 +47,24 @@
               {
                 "errorMessage": null,
                 "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYzIl0=",
-                  "principal": {
-                    "roleAssignmentPrincipal": "sso-group:11"
-                  },
-                  "role": {
-                    "id": "WyJyb2xlIiwgIjMiXQ==",
-                    "name": "viewer",
-                    "permissions": [
-                      "VIEW"
-                    ],
-                    "system": true
-                  },
-                  "target": {
-                    "roleAssignmentTarget": "system:all"
-                  }
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc5Il0="
                 }
               }
-            ],
-            "revoke": []
+            ]
           }
         }
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"sso-group:11\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"sso-group:15\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},revoke{errorMessage,removed{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}",
         "variables": {
           "input": {
             "revoke": [
               {
-                "principal": "sso-group:11",
+                "principal": "sso-group:15",
                 "roleName": "viewer",
                 "target": "system:all"
               }
@@ -90,12 +75,11 @@
       "response": {
         "data": {
           "updateRoleAssignment": {
-            "grant": [],
             "revoke": [
               {
                 "errorMessage": null,
                 "removed": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYzIl0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc5Il0="
                 }
               }
             ]
@@ -127,9 +111,9 @@
                 "errorMessage": null,
                 "ssoGroup": {
                   "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiMTEiXQ==",
+                  "id": "WyJzc28tZ3JvdXAiLCAiMTUiXQ==",
                   "name": "test-sso-role-group",
-                  "roleAssignmentPrincipal": "sso-group:11"
+                  "roleAssignmentPrincipal": "sso-group:15"
                 }
               }
             ]
@@ -229,9 +213,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYzIl0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "sso-group:11"
+                    "roleAssignmentPrincipal": "sso-group:15"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -345,9 +329,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTYzIl0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc5Il0=",
                   "principal": {
-                    "roleAssignmentPrincipal": "sso-group:11"
+                    "roleAssignmentPrincipal": "sso-group:15"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -392,9 +376,9 @@
               {
                 "node": {
                   "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiMTEiXQ==",
+                  "id": "WyJzc28tZ3JvdXAiLCAiMTUiXQ==",
                   "name": "test-sso-role-group",
-                  "roleAssignmentPrincipal": "sso-group:11"
+                  "roleAssignmentPrincipal": "sso-group:15"
                 }
               }
             ]
