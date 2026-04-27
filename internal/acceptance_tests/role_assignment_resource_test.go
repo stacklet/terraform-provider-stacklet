@@ -10,16 +10,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
-func TestAccRoleAssignmentResource(t *testing.T) {
-	testUsername := getenvOrSkip(t, "TF_ACC_TEST_USERNAME")
-	userDataSourceConfig := fmt.Sprintf(`username = %q`, testUsername)
-
+func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
 	steps := []resource.TestStep{
 		// Create and Read testing - role assignment on account group
 		{
-			Config: fmt.Sprintf(`
-				data "stacklet_user" "test" {
-					%s
+			Config: `
+				resource "stacklet_user" "test" {
+					name     = "{{.Prefix}}-role-user"
+					username = "{{.Prefix}}_role_user"
+					email    = "test@stacklet.io"
 				}
 
 				resource "stacklet_account_group" "test" {
@@ -31,10 +30,10 @@ func TestAccRoleAssignmentResource(t *testing.T) {
 
 				resource "stacklet_role_assignment" "test" {
 					role_name = "viewer"
-					principal = data.stacklet_user.test.role_assignment_principal
+					principal = stacklet_user.test.role_assignment_principal
 					target    = stacklet_account_group.test.role_assignment_target
 				}
-			`, userDataSourceConfig),
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_role_assignment.test", "role_name", "viewer"),
 				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "id"),
@@ -47,7 +46,6 @@ func TestAccRoleAssignmentResource(t *testing.T) {
 			ResourceName:      "stacklet_role_assignment.test",
 			ImportState:       true,
 			ImportStateVerify: true,
-			// Role assignments use composite key: role_name,principal,target
 			ImportStateIdFunc: func(s *terraform.State) (string, error) {
 				rs := s.RootModule().Resources["stacklet_role_assignment.test"]
 				roleName := rs.Primary.Attributes["role_name"]
@@ -58,9 +56,11 @@ func TestAccRoleAssignmentResource(t *testing.T) {
 		},
 		// Test replacement with different role
 		{
-			Config: fmt.Sprintf(`
-				data "stacklet_user" "test" {
-					%s
+			Config: `
+				resource "stacklet_user" "test" {
+					name     = "{{.Prefix}}-role-user"
+					username = "{{.Prefix}}_role_user"
+					email    = "test@stacklet.io"
 				}
 
 				resource "stacklet_account_group" "test" {
@@ -72,10 +72,10 @@ func TestAccRoleAssignmentResource(t *testing.T) {
 
 				resource "stacklet_role_assignment" "test" {
 					role_name = "editor"
-					principal = data.stacklet_user.test.role_assignment_principal
+					principal = stacklet_user.test.role_assignment_principal
 					target    = stacklet_account_group.test.role_assignment_target
 				}
-			`, userDataSourceConfig),
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_role_assignment.test", "role_name", "editor"),
 				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "id"),
@@ -84,25 +84,23 @@ func TestAccRoleAssignmentResource(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccRoleAssignmentResource", steps)
+	runRecordedAccTest(t, "TestAccRoleAssignmentResource_AccountGroup", steps)
 }
 
 func TestAccRoleAssignmentResource_SSOGroup(t *testing.T) {
-	testSSOGroup := getenvOrSkip(t, "TF_ACC_TEST_SSO_GROUP")
 	steps := []resource.TestStep{
-		// Create role assignment for SSO group
 		{
-			Config: fmt.Sprintf(`
-				data "stacklet_sso_group" "test" {
-					name = %q
+			Config: `
+				resource "stacklet_sso_group" "test" {
+					name = "{{.Prefix}}-sso-role-group"
 				}
 
 				resource "stacklet_role_assignment" "test" {
 					role_name = "viewer"
-					principal = data.stacklet_sso_group.test.role_assignment_principal
+					principal = stacklet_sso_group.test.role_assignment_principal
 					target    = "system:all"
 				}
-			`, testSSOGroup),
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_role_assignment.test", "role_name", "viewer"),
 				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "id"),
@@ -112,38 +110,4 @@ func TestAccRoleAssignmentResource_SSOGroup(t *testing.T) {
 		},
 	}
 	runRecordedAccTest(t, "TestAccRoleAssignmentResource_SSOGroup", steps)
-}
-
-func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
-	testUsername := getenvOrSkip(t, "TF_ACC_TEST_USERNAME")
-	steps := []resource.TestStep{
-		// Create role assignment on account group target
-		{
-			Config: fmt.Sprintf(`
-				data "stacklet_user" "test" {
-					username = %q
-				}
-
-				resource "stacklet_account_group" "test" {
-					name           = "{{.Prefix}}-role-test-group"
-					description    = "Test account group for role assignment"
-					cloud_provider = "AWS"
-					regions        = ["us-east-1"]
-				}
-
-				resource "stacklet_role_assignment" "test" {
-					role_name = "viewer"
-					principal = data.stacklet_user.test.role_assignment_principal
-					target    = stacklet_account_group.test.role_assignment_target
-				}
-			`, testUsername),
-			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_role_assignment.test", "role_name", "viewer"),
-				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "id"),
-				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "principal"),
-				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "target"),
-			),
-		},
-	}
-	runRecordedAccTest(t, "TestAccRoleAssignmentResource_AccountGroup", steps)
 }

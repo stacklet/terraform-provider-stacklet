@@ -122,14 +122,6 @@ func getenv(name, fallback string) string {
 	return value
 }
 
-func getenvOrSkip(t *testing.T, name string) string {
-	value := os.Getenv(name)
-	if value == "" {
-		t.Skipf("%s environment variable must be set to run this test", name)
-	}
-	return value
-}
-
 func renderConfigs(t *testing.T, testSteps []resource.TestStep) {
 	data := getConfigData()
 	for i, step := range testSteps {

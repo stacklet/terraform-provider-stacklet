@@ -63,6 +63,6 @@ func (d *ssoGroupDataSource) Read(ctx context.Context, req datasource.ReadReques
 		return
 	}
 
-	resp.Diagnostics.Append(data.Update(ctx, ssoGroup)...)
+	resp.Diagnostics.Append(data.Update(ssoGroup)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

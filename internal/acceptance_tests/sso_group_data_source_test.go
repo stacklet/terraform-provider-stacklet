@@ -3,24 +3,25 @@
 package acceptance_tests
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccSSOGroupDataSource(t *testing.T) {
-	testSSOGroup := getenvOrSkip(t, "TF_ACC_TEST_SSO_GROUP")
 	steps := []resource.TestStep{
 		{
-			Config: fmt.Sprintf(`
-				data "stacklet_sso_group" "test" {
-				  name = %q
+			Config: `
+				resource "stacklet_sso_group" "test" {
+					name = "{{.Prefix}}-sso-group-ds"
 				}
-			`, testSSOGroup),
+
+				data "stacklet_sso_group" "test" {
+					name = stacklet_sso_group.test.name
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				// Check SSO group attributes
-				resource.TestCheckResourceAttr("data.stacklet_sso_group.test", "name", testSSOGroup),
+				resource.TestCheckResourceAttr("data.stacklet_sso_group.test", "name", prefixName("sso-group-ds")),
 				resource.TestCheckResourceAttrSet("data.stacklet_sso_group.test", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_sso_group.test", "role_assignment_principal"),
 			),

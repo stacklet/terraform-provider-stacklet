@@ -42,22 +42,6 @@ When API changes or new tests are added:
    just test -run TestAccAccountResource
    ```
 
-### RBAC Tests (Special Requirements)
-
-RBAC tests require existing user and SSO group identities from your Stacklet environment:
-
-```bash
-# Required environment variables for RBAC tests
-export TF_ACC_TEST_USERNAME="username"
-export TF_ACC_TEST_SSO_GROUP="YourSSOGroupName"
-
-# Record RBAC tests
-just test-record TestAccSSOGroupDataSource
-just test-record TestAccRoleAssignmentResource
-```
-
-Tests will automatically skip if these environment variables are not set.
-
 ## Key Resources
 
 See `internal/resources/resources.go` and `internal/datasources/datasources.go` for complete lists.
