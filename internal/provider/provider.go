@@ -34,7 +34,8 @@ type stackletProviderModel struct {
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &stackletProvider{
-			version: version,
+			version:           version,
+			includeUnreleased: os.Getenv("STACKLET_UNRELEASED_FEATURES") != "",
 		}
 	}
 }
@@ -44,6 +45,9 @@ type stackletProvider struct {
 	// provider is built and run locally, and "test" when running acceptance
 	// testing.
 	version string
+
+	// whether to include unreleased resources/datasources
+	includeUnreleased bool
 }
 
 // Metadata returns the provider type name.
@@ -146,12 +150,12 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 
 // DataSources defines the data sources implemented in the provider.
 func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-	return datasources.DataSources()
+	return datasources.DataSources(p.includeUnreleased)
 }
 
 // Resources defines the resources implemented in the provider.
 func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resource {
-	return resources.Resources()
+	return resources.Resources(p.includeUnreleased)
 }
 
 type credentials struct {

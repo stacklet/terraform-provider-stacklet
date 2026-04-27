@@ -7,8 +7,8 @@ import (
 )
 
 // DataSources returns all available datasources..
-func DataSources() []func() datasource.DataSource {
-	return []func() datasource.DataSource{
+func DataSources(includeUnreleased bool) []func() datasource.DataSource {
+	dataSources := []func() datasource.DataSource{
 		newAccountDataSource,
 		newAccountGroupDataSource,
 		newBindingDataSource,
@@ -27,9 +27,16 @@ func DataSources() []func() datasource.DataSource {
 		newPolicyDataSource,
 		newReportgroupDataSource,
 		newRepositoryDataSource,
-		newRoleDataSource,
 		newRoleAssignmentsDataSource,
+		newRoleDataSource,
 		newSSOGroupDataSource,
 		newUserDataSource,
 	}
+	unreleasedDataSources := []func() datasource.DataSource{
+		newGCPIntegrationSurfaceDataSource,
+	}
+	if includeUnreleased {
+		dataSources = append(dataSources, unreleasedDataSources...)
+	}
+	return dataSources
 }

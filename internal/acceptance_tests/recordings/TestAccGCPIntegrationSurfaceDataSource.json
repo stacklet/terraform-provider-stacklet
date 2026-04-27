@@ -1,0 +1,70 @@
+{
+  "{gcpIntegrationSurface{trustAws{accountId,assetdbRoleName,costQueryRoleName,executionRoleName,platformRoleName},awsRelay{busArn,roleArn}}}": [
+    {
+      "request": {
+        "query": "{gcpIntegrationSurface{trustAws{accountId,assetdbRoleName,costQueryRoleName,executionRoleName,platformRoleName},awsRelay{busArn,roleArn}}}"
+      },
+      "response": {
+        "data": {
+          "gcpIntegrationSurface": {
+            "awsRelay": {
+              "busArn": "arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay",
+              "roleArn": "arn:aws:iam::905418385756:role/ack-gcp-enclave"
+            },
+            "trustAws": {
+              "accountId": "905418385756",
+              "assetdbRoleName": "ack-collector",
+              "costQueryRoleName": "ack-cur-read",
+              "executionRoleName": "ack-stacklet-execution",
+              "platformRoleName": "ack-stacklet-platform"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{gcpIntegrationSurface{trustAws{accountId,assetdbRoleName,costQueryRoleName,executionRoleName,platformRoleName},awsRelay{busArn,roleArn}}}"
+      },
+      "response": {
+        "data": {
+          "gcpIntegrationSurface": {
+            "awsRelay": {
+              "busArn": "arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay",
+              "roleArn": "arn:aws:iam::905418385756:role/ack-gcp-enclave"
+            },
+            "trustAws": {
+              "accountId": "905418385756",
+              "assetdbRoleName": "ack-collector",
+              "costQueryRoleName": "ack-cur-read",
+              "executionRoleName": "ack-stacklet-execution",
+              "platformRoleName": "ack-stacklet-platform"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{gcpIntegrationSurface{trustAws{accountId,assetdbRoleName,costQueryRoleName,executionRoleName,platformRoleName},awsRelay{busArn,roleArn}}}"
+      },
+      "response": {
+        "data": {
+          "gcpIntegrationSurface": {
+            "awsRelay": {
+              "busArn": "arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay",
+              "roleArn": "arn:aws:iam::905418385756:role/ack-gcp-enclave"
+            },
+            "trustAws": {
+              "accountId": "905418385756",
+              "assetdbRoleName": "ack-collector",
+              "costQueryRoleName": "ack-cur-read",
+              "executionRoleName": "ack-stacklet-execution",
+              "platformRoleName": "ack-stacklet-platform"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

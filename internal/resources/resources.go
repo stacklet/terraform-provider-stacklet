@@ -7,8 +7,8 @@ import (
 )
 
 // Resources returns all available resources.
-func Resources() []func() resource.Resource {
-	return []func() resource.Resource{
+func Resources(includeUnreleased bool) []func() resource.Resource {
+	resources := []func() resource.Resource{
 		newAccountDiscoveryAWSResource,
 		newAccountDiscoveryAzureResource,
 		newAccountDiscoveryGCPResource,
@@ -33,4 +33,9 @@ func Resources() []func() resource.Resource {
 		newSSOGroupResource,
 		newUserResource,
 	}
+	unreleasedResources := []func() resource.Resource{}
+	if includeUnreleased {
+		resources = append(resources, unreleasedResources...)
+	}
+	return resources
 }
