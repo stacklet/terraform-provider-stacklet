@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
-func TestAccRoleAssignmentResource(t *testing.T) {
+func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
 	steps := []resource.TestStep{
 		// Create and Read testing - role assignment on account group
 		{
@@ -84,7 +84,7 @@ func TestAccRoleAssignmentResource(t *testing.T) {
 			),
 		},
 	}
-	runRecordedAccTest(t, "TestAccRoleAssignmentResource", steps)
+	runRecordedAccTest(t, "TestAccRoleAssignmentResource_AccountGroup", steps)
 }
 
 func TestAccRoleAssignmentResource_SSOGroup(t *testing.T) {
