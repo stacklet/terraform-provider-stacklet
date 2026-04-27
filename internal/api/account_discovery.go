@@ -87,6 +87,14 @@ func (i AccountDiscoveryGCPInput) GetGraphQLType() string {
 	return "UpsertGCPAccountDiscoveryInput"
 }
 
+type accountDiscoveryRemoveInput struct {
+	ID graphql.ID `json:"id"`
+}
+
+func (i accountDiscoveryRemoveInput) GetGraphQLType() string {
+	return "RemoveAccountDiscoveryInput"
+}
+
 type updateAccountDiscoveryScheduleInput struct {
 	Schedules []accountDiscoveryScheduleInput `json:"schedules"`
 }
@@ -161,6 +169,20 @@ func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscove
 		return nil, NewAPIError(err)
 	}
 	return &mutation.Payload.AccountDiscovery, nil
+}
+
+// Remove deletes an account discovery by its GraphQL node ID.
+func (a accountDiscoveryAPI) Remove(ctx context.Context, id string) error {
+	var mutation struct {
+		Payload struct {
+			Problems []Problem
+		} `graphql:"removeAccountDiscovery(input: $input)"`
+	}
+	variables := map[string]any{"input": accountDiscoveryRemoveInput{ID: graphql.ID(id)}}
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return NewAPIError(err)
+	}
+	return fromProblems(ctx, mutation.Payload.Problems)
 }
 
 // UpdateSuspended updates the susended flag for an account discovery.
