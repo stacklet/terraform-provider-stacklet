@@ -99,17 +99,8 @@ func (m *BindingResource) Update(ctx context.Context, binding *api.Binding) diag
 
 	diags := m.BindingDataSource.Update(ctx, binding)
 
-	// the API returns an empty dictionary for both null or empty strings. In
-	// that case don't modify the expected value.
-	if m.Variables.ValueString() == "{}" {
-		m.Variables = originalVariables
-	}
-
-	// The API omits executionConfig.dryRun when the value is false (treats null ≡ false).
-	// Preserve the configured value to prevent a perpetual null→false diff.
-	if m.DryRun.IsNull() && !originalDryRun.IsNull() {
-		m.DryRun = originalDryRun
-	}
+	m.Variables = typehelpers.PreserveIfEmptyJSON(m.Variables, originalVariables)
+	m.DryRun = typehelpers.PreserveIfNull(m.DryRun, originalDryRun)
 
 	// if default resource limits are set in the config but empty, apply default
 	if binding.DefaultResourceLimits() == nil && !originalResourceLimits.IsNull() {
