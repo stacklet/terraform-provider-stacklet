@@ -1,0 +1,463 @@
+{
+  "mutation ($input:DeleteGCPIntegrationInput!){deleteGCPIntegration(input: $input){problems{__typename,message}}}:{\"input\":{\"key\":\"test-gcp-integration\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:DeleteGCPIntegrationInput!){deleteGCPIntegration(input: $input){problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "key": "test-gcp-integration"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "deleteGCPIntegration": {
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpsertGCPIntegrationInput!){upsertGCPIntegration(input: $input){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}:{\"input\":{\"accessConfigBlob\":null,\"customerConfig\":{\"costSources\":[{\"billingTable\":\"my-billing-project.my_dataset.gcp_billing_export\"},{\"billingTable\":\"my-billing-project.my_dataset.gcp_billing_export_v2\"}],\"infrastructure\":{\"createProject\":null,\"projectId\":\"test-stacklet-project\",\"resourceLocation\":\"us-east1\",\"resourcePrefix\":\"stacklet\"},\"organizations\":[{\"folderIds\":[\"111111111\",\"222222222\"],\"orgId\":\"123456789\",\"projectIds\":[\"my-project-1\",\"my-project-2\"]}],\"securityContexts\":[{\"extraRoles\":[\"roles/MyRole\",\"roles/MyOtherRole\"],\"name\":\"custom-ctx\"}]},\"key\":\"test-gcp-integration\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpsertGCPIntegrationInput!){upsertGCPIntegration(input: $input){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "accessConfigBlob": null,
+            "customerConfig": {
+              "costSources": [
+                {
+                  "billingTable": "my-billing-project.my_dataset.gcp_billing_export"
+                },
+                {
+                  "billingTable": "my-billing-project.my_dataset.gcp_billing_export_v2"
+                }
+              ],
+              "infrastructure": {
+                "createProject": null,
+                "projectId": "test-stacklet-project",
+                "resourceLocation": "us-east1",
+                "resourcePrefix": "stacklet"
+              },
+              "organizations": [
+                {
+                  "folderIds": [
+                    "111111111",
+                    "222222222"
+                  ],
+                  "orgId": "123456789",
+                  "projectIds": [
+                    "my-project-1",
+                    "my-project-2"
+                  ]
+                }
+              ],
+              "securityContexts": [
+                {
+                  "extraRoles": [
+                    "roles/MyRole",
+                    "roles/MyOtherRole"
+                  ],
+                  "name": "custom-ctx"
+                }
+              ]
+            },
+            "key": "test-gcp-integration"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "upsertGCPIntegration": {
+            "gcpIntegration": {
+              "accessConfig": null,
+              "customerConfig": {
+                "costSources": [
+                  {
+                    "billingTable": "my-billing-project.my_dataset.gcp_billing_export"
+                  },
+                  {
+                    "billingTable": "my-billing-project.my_dataset.gcp_billing_export_v2"
+                  }
+                ],
+                "infrastructure": {
+                  "createProject": null,
+                  "projectId": "test-stacklet-project",
+                  "resourceLocation": "us-east1",
+                  "resourcePrefix": "stacklet"
+                },
+                "organizations": [
+                  {
+                    "folderIds": [
+                      "111111111",
+                      "222222222"
+                    ],
+                    "orgId": "123456789",
+                    "projectIds": [
+                      "my-project-1",
+                      "my-project-2"
+                    ]
+                  }
+                ],
+                "securityContexts": [
+                  {
+                    "extraRoles": [
+                      "roles/MyOtherRole",
+                      "roles/MyRole"
+                    ],
+                    "name": "custom-ctx"
+                  }
+                ],
+                "terraformModule": {
+                  "repositoryURL": "https://github.com/stacklet/terraform-gcp-enclave",
+                  "source": "stacklet/enclave/gcp",
+                  "variablesJSON": "{\"cost_sources\": [{\"billing_table\": \"my-billing-project.my_dataset.gcp_billing_export\"}, {\"billing_table\": \"my-billing-project.my_dataset.gcp_billing_export_v2\"}], \"infrastructure\": {\"create_project\": null, \"project_id\": \"test-stacklet-project\", \"resource_location\": \"us-east1\", \"resource_prefix\": \"stacklet\"}, \"integration_surface\": {\"aws_relay\": {\"bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay\", \"role_arn\": \"arn:aws:iam::905418385756:role/ack-gcp-enclave\"}, \"trust_aws\": {\"account_id\": \"905418385756\", \"assetdb_role_name\": \"ack-collector\", \"cost_query_role_name\": \"ack-cur-read\", \"execution_role_name\": \"ack-stacklet-execution\", \"platform_role_name\": \"ack-stacklet-platform\"}}, \"organizations\": [{\"folder_ids\": [\"111111111\", \"222222222\"], \"org_id\": \"123456789\", \"project_ids\": [\"my-project-1\", \"my-project-2\"]}], \"roundtrip_digest\": \"7eed5efa6f9f8b16f02ac362ceed4699\", \"security_contexts\": [{\"extra_roles\": [\"roles/MyOtherRole\", \"roles/MyRole\"], \"name\": \"custom-ctx\"}]}",
+                  "version": "0.1.0"
+                }
+              },
+              "id": "WyJnY3AtaW50ZWdyYXRpb24iLCAidGVzdC1nY3AtaW50ZWdyYXRpb24iXQ==",
+              "key": "test-gcp-integration"
+            },
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpsertGCPIntegrationInput!){upsertGCPIntegration(input: $input){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}:{\"input\":{\"accessConfigBlob\":null,\"customerConfig\":{\"costSources\":[{\"billingTable\":\"my-billing-project.my_dataset.gcp_billing_export\"}],\"infrastructure\":{\"createProject\":null,\"projectId\":\"test-stacklet-project\",\"resourceLocation\":\"us-central1\",\"resourcePrefix\":\"stacklet\"},\"organizations\":[{\"folderIds\":[\"111111111\"],\"orgId\":\"123456789\",\"projectIds\":[\"my-project-1\"]}],\"securityContexts\":[{\"extraRoles\":[\"roles/MyRole\"],\"name\":\"custom-ctx\"}]},\"key\":\"test-gcp-integration\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpsertGCPIntegrationInput!){upsertGCPIntegration(input: $input){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "accessConfigBlob": null,
+            "customerConfig": {
+              "costSources": [
+                {
+                  "billingTable": "my-billing-project.my_dataset.gcp_billing_export"
+                }
+              ],
+              "infrastructure": {
+                "createProject": null,
+                "projectId": "test-stacklet-project",
+                "resourceLocation": "us-central1",
+                "resourcePrefix": "stacklet"
+              },
+              "organizations": [
+                {
+                  "folderIds": [
+                    "111111111"
+                  ],
+                  "orgId": "123456789",
+                  "projectIds": [
+                    "my-project-1"
+                  ]
+                }
+              ],
+              "securityContexts": [
+                {
+                  "extraRoles": [
+                    "roles/MyRole"
+                  ],
+                  "name": "custom-ctx"
+                }
+              ]
+            },
+            "key": "test-gcp-integration"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "upsertGCPIntegration": {
+            "gcpIntegration": {
+              "accessConfig": null,
+              "customerConfig": {
+                "costSources": [
+                  {
+                    "billingTable": "my-billing-project.my_dataset.gcp_billing_export"
+                  }
+                ],
+                "infrastructure": {
+                  "createProject": null,
+                  "projectId": "test-stacklet-project",
+                  "resourceLocation": "us-central1",
+                  "resourcePrefix": "stacklet"
+                },
+                "organizations": [
+                  {
+                    "folderIds": [
+                      "111111111"
+                    ],
+                    "orgId": "123456789",
+                    "projectIds": [
+                      "my-project-1"
+                    ]
+                  }
+                ],
+                "securityContexts": [
+                  {
+                    "extraRoles": [
+                      "roles/MyRole"
+                    ],
+                    "name": "custom-ctx"
+                  }
+                ],
+                "terraformModule": {
+                  "repositoryURL": "https://github.com/stacklet/terraform-gcp-enclave",
+                  "source": "stacklet/enclave/gcp",
+                  "variablesJSON": "{\"cost_sources\": [{\"billing_table\": \"my-billing-project.my_dataset.gcp_billing_export\"}], \"infrastructure\": {\"create_project\": null, \"project_id\": \"test-stacklet-project\", \"resource_location\": \"us-central1\", \"resource_prefix\": \"stacklet\"}, \"integration_surface\": {\"aws_relay\": {\"bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay\", \"role_arn\": \"arn:aws:iam::905418385756:role/ack-gcp-enclave\"}, \"trust_aws\": {\"account_id\": \"905418385756\", \"assetdb_role_name\": \"ack-collector\", \"cost_query_role_name\": \"ack-cur-read\", \"execution_role_name\": \"ack-stacklet-execution\", \"platform_role_name\": \"ack-stacklet-platform\"}}, \"organizations\": [{\"folder_ids\": [\"111111111\"], \"org_id\": \"123456789\", \"project_ids\": [\"my-project-1\"]}], \"roundtrip_digest\": \"94f6dbb3fb0c93dedca3485599350a49\", \"security_contexts\": [{\"extra_roles\": [\"roles/MyRole\"], \"name\": \"custom-ctx\"}]}",
+                  "version": "0.1.0"
+                }
+              },
+              "id": "WyJnY3AtaW50ZWdyYXRpb24iLCAidGVzdC1nY3AtaW50ZWdyYXRpb24iXQ==",
+              "key": "test-gcp-integration"
+            },
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "query ($key:String!){gcpIntegration(key: $key){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}:{\"key\":\"test-gcp-integration\"}": [
+    {
+      "request": {
+        "query": "query ($key:String!){gcpIntegration(key: $key){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}",
+        "variables": {
+          "key": "test-gcp-integration"
+        }
+      },
+      "response": {
+        "data": {
+          "gcpIntegration": {
+            "gcpIntegration": {
+              "accessConfig": null,
+              "customerConfig": {
+                "costSources": [
+                  {
+                    "billingTable": "my-billing-project.my_dataset.gcp_billing_export"
+                  }
+                ],
+                "infrastructure": {
+                  "createProject": null,
+                  "projectId": "test-stacklet-project",
+                  "resourceLocation": "us-central1",
+                  "resourcePrefix": "stacklet"
+                },
+                "organizations": [
+                  {
+                    "folderIds": [
+                      "111111111"
+                    ],
+                    "orgId": "123456789",
+                    "projectIds": [
+                      "my-project-1"
+                    ]
+                  }
+                ],
+                "securityContexts": [
+                  {
+                    "extraRoles": [
+                      "roles/MyRole"
+                    ],
+                    "name": "custom-ctx"
+                  }
+                ],
+                "terraformModule": {
+                  "repositoryURL": "https://github.com/stacklet/terraform-gcp-enclave",
+                  "source": "stacklet/enclave/gcp",
+                  "variablesJSON": "{\"cost_sources\": [{\"billing_table\": \"my-billing-project.my_dataset.gcp_billing_export\"}], \"infrastructure\": {\"create_project\": null, \"project_id\": \"test-stacklet-project\", \"resource_location\": \"us-central1\", \"resource_prefix\": \"stacklet\"}, \"integration_surface\": {\"aws_relay\": {\"bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay\", \"role_arn\": \"arn:aws:iam::905418385756:role/ack-gcp-enclave\"}, \"trust_aws\": {\"account_id\": \"905418385756\", \"assetdb_role_name\": \"ack-collector\", \"cost_query_role_name\": \"ack-cur-read\", \"execution_role_name\": \"ack-stacklet-execution\", \"platform_role_name\": \"ack-stacklet-platform\"}}, \"organizations\": [{\"folder_ids\": [\"111111111\"], \"org_id\": \"123456789\", \"project_ids\": [\"my-project-1\"]}], \"roundtrip_digest\": \"94f6dbb3fb0c93dedca3485599350a49\", \"security_contexts\": [{\"extra_roles\": [\"roles/MyRole\"], \"name\": \"custom-ctx\"}]}",
+                  "version": "0.1.0"
+                }
+              },
+              "id": "WyJnY3AtaW50ZWdyYXRpb24iLCAidGVzdC1nY3AtaW50ZWdyYXRpb24iXQ==",
+              "key": "test-gcp-integration"
+            },
+            "problems": []
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!){gcpIntegration(key: $key){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}",
+        "variables": {
+          "key": "test-gcp-integration"
+        }
+      },
+      "response": {
+        "data": {
+          "gcpIntegration": {
+            "gcpIntegration": {
+              "accessConfig": null,
+              "customerConfig": {
+                "costSources": [
+                  {
+                    "billingTable": "my-billing-project.my_dataset.gcp_billing_export"
+                  }
+                ],
+                "infrastructure": {
+                  "createProject": null,
+                  "projectId": "test-stacklet-project",
+                  "resourceLocation": "us-central1",
+                  "resourcePrefix": "stacklet"
+                },
+                "organizations": [
+                  {
+                    "folderIds": [
+                      "111111111"
+                    ],
+                    "orgId": "123456789",
+                    "projectIds": [
+                      "my-project-1"
+                    ]
+                  }
+                ],
+                "securityContexts": [
+                  {
+                    "extraRoles": [
+                      "roles/MyRole"
+                    ],
+                    "name": "custom-ctx"
+                  }
+                ],
+                "terraformModule": {
+                  "repositoryURL": "https://github.com/stacklet/terraform-gcp-enclave",
+                  "source": "stacklet/enclave/gcp",
+                  "variablesJSON": "{\"cost_sources\": [{\"billing_table\": \"my-billing-project.my_dataset.gcp_billing_export\"}], \"infrastructure\": {\"create_project\": null, \"project_id\": \"test-stacklet-project\", \"resource_location\": \"us-central1\", \"resource_prefix\": \"stacklet\"}, \"integration_surface\": {\"aws_relay\": {\"bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay\", \"role_arn\": \"arn:aws:iam::905418385756:role/ack-gcp-enclave\"}, \"trust_aws\": {\"account_id\": \"905418385756\", \"assetdb_role_name\": \"ack-collector\", \"cost_query_role_name\": \"ack-cur-read\", \"execution_role_name\": \"ack-stacklet-execution\", \"platform_role_name\": \"ack-stacklet-platform\"}}, \"organizations\": [{\"folder_ids\": [\"111111111\"], \"org_id\": \"123456789\", \"project_ids\": [\"my-project-1\"]}], \"roundtrip_digest\": \"94f6dbb3fb0c93dedca3485599350a49\", \"security_contexts\": [{\"extra_roles\": [\"roles/MyRole\"], \"name\": \"custom-ctx\"}]}",
+                  "version": "0.1.0"
+                }
+              },
+              "id": "WyJnY3AtaW50ZWdyYXRpb24iLCAidGVzdC1nY3AtaW50ZWdyYXRpb24iXQ==",
+              "key": "test-gcp-integration"
+            },
+            "problems": []
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!){gcpIntegration(key: $key){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}",
+        "variables": {
+          "key": "test-gcp-integration"
+        }
+      },
+      "response": {
+        "data": {
+          "gcpIntegration": {
+            "gcpIntegration": {
+              "accessConfig": null,
+              "customerConfig": {
+                "costSources": [
+                  {
+                    "billingTable": "my-billing-project.my_dataset.gcp_billing_export"
+                  }
+                ],
+                "infrastructure": {
+                  "createProject": null,
+                  "projectId": "test-stacklet-project",
+                  "resourceLocation": "us-central1",
+                  "resourcePrefix": "stacklet"
+                },
+                "organizations": [
+                  {
+                    "folderIds": [
+                      "111111111"
+                    ],
+                    "orgId": "123456789",
+                    "projectIds": [
+                      "my-project-1"
+                    ]
+                  }
+                ],
+                "securityContexts": [
+                  {
+                    "extraRoles": [
+                      "roles/MyRole"
+                    ],
+                    "name": "custom-ctx"
+                  }
+                ],
+                "terraformModule": {
+                  "repositoryURL": "https://github.com/stacklet/terraform-gcp-enclave",
+                  "source": "stacklet/enclave/gcp",
+                  "variablesJSON": "{\"cost_sources\": [{\"billing_table\": \"my-billing-project.my_dataset.gcp_billing_export\"}], \"infrastructure\": {\"create_project\": null, \"project_id\": \"test-stacklet-project\", \"resource_location\": \"us-central1\", \"resource_prefix\": \"stacklet\"}, \"integration_surface\": {\"aws_relay\": {\"bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay\", \"role_arn\": \"arn:aws:iam::905418385756:role/ack-gcp-enclave\"}, \"trust_aws\": {\"account_id\": \"905418385756\", \"assetdb_role_name\": \"ack-collector\", \"cost_query_role_name\": \"ack-cur-read\", \"execution_role_name\": \"ack-stacklet-execution\", \"platform_role_name\": \"ack-stacklet-platform\"}}, \"organizations\": [{\"folder_ids\": [\"111111111\"], \"org_id\": \"123456789\", \"project_ids\": [\"my-project-1\"]}], \"roundtrip_digest\": \"94f6dbb3fb0c93dedca3485599350a49\", \"security_contexts\": [{\"extra_roles\": [\"roles/MyRole\"], \"name\": \"custom-ctx\"}]}",
+                  "version": "0.1.0"
+                }
+              },
+              "id": "WyJnY3AtaW50ZWdyYXRpb24iLCAidGVzdC1nY3AtaW50ZWdyYXRpb24iXQ==",
+              "key": "test-gcp-integration"
+            },
+            "problems": []
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($key:String!){gcpIntegration(key: $key){gcpIntegration{id,key,customerConfig{infrastructure{projectId,resourceLocation,resourcePrefix,createProject{billingAccountId,orgId,folderId,labels{key,value}}},organizations{orgId,folderIds,projectIds},costSources{billingTable},securityContexts{name,extraRoles},terraformModule{repositoryURL,source,version,variablesJSON}},accessConfig{infrastructure{projectId,relay{oauthId},wif{audience,principals{readOnly,costQuery}},baselineRoles},organizations{id,name,folders{id,name},projects{id,number}},costSources{billingTable,location},securityContexts{name,extraRoles,principal},roundtripDigest}},problems{__typename,message}}}",
+        "variables": {
+          "key": "test-gcp-integration"
+        }
+      },
+      "response": {
+        "data": {
+          "gcpIntegration": {
+            "gcpIntegration": {
+              "accessConfig": null,
+              "customerConfig": {
+                "costSources": [
+                  {
+                    "billingTable": "my-billing-project.my_dataset.gcp_billing_export"
+                  },
+                  {
+                    "billingTable": "my-billing-project.my_dataset.gcp_billing_export_v2"
+                  }
+                ],
+                "infrastructure": {
+                  "createProject": null,
+                  "projectId": "test-stacklet-project",
+                  "resourceLocation": "us-east1",
+                  "resourcePrefix": "stacklet"
+                },
+                "organizations": [
+                  {
+                    "folderIds": [
+                      "111111111",
+                      "222222222"
+                    ],
+                    "orgId": "123456789",
+                    "projectIds": [
+                      "my-project-1",
+                      "my-project-2"
+                    ]
+                  }
+                ],
+                "securityContexts": [
+                  {
+                    "extraRoles": [
+                      "roles/MyOtherRole",
+                      "roles/MyRole"
+                    ],
+                    "name": "custom-ctx"
+                  }
+                ],
+                "terraformModule": {
+                  "repositoryURL": "https://github.com/stacklet/terraform-gcp-enclave",
+                  "source": "stacklet/enclave/gcp",
+                  "variablesJSON": "{\"cost_sources\": [{\"billing_table\": \"my-billing-project.my_dataset.gcp_billing_export\"}, {\"billing_table\": \"my-billing-project.my_dataset.gcp_billing_export_v2\"}], \"infrastructure\": {\"create_project\": null, \"project_id\": \"test-stacklet-project\", \"resource_location\": \"us-east1\", \"resource_prefix\": \"stacklet\"}, \"integration_surface\": {\"aws_relay\": {\"bus_arn\": \"arn:aws:events:eu-north-1:905418385756:event-bus/ack-gcp-relay\", \"role_arn\": \"arn:aws:iam::905418385756:role/ack-gcp-enclave\"}, \"trust_aws\": {\"account_id\": \"905418385756\", \"assetdb_role_name\": \"ack-collector\", \"cost_query_role_name\": \"ack-cur-read\", \"execution_role_name\": \"ack-stacklet-execution\", \"platform_role_name\": \"ack-stacklet-platform\"}}, \"organizations\": [{\"folder_ids\": [\"111111111\", \"222222222\"], \"org_id\": \"123456789\", \"project_ids\": [\"my-project-1\", \"my-project-2\"]}], \"roundtrip_digest\": \"7eed5efa6f9f8b16f02ac362ceed4699\", \"security_contexts\": [{\"extra_roles\": [\"roles/MyOtherRole\", \"roles/MyRole\"], \"name\": \"custom-ctx\"}]}",
+                  "version": "0.1.0"
+                }
+              },
+              "id": "WyJnY3AtaW50ZWdyYXRpb24iLCAidGVzdC1nY3AtaW50ZWdyYXRpb24iXQ==",
+              "key": "test-gcp-integration"
+            },
+            "problems": []
+          }
+        }
+      }
+    }
+  ]
+}

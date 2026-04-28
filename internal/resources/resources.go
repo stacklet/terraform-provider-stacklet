@@ -33,7 +33,9 @@ func Resources(includeUnreleased bool) []func() resource.Resource {
 		newSSOGroupResource,
 		newUserResource,
 	}
-	unreleasedResources := []func() resource.Resource{}
+	unreleasedResources := []func() resource.Resource{
+		newGCPIntegrationResource,
+	}
 	if includeUnreleased {
 		resources = append(resources, unreleasedResources...)
 	}

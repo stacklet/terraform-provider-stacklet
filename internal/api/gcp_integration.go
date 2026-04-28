@@ -38,10 +38,10 @@ type GCPIntegrationCustomerInfrastructure struct {
 // GCPIntegrationCustomerCreateProject holds configuration for integration
 // project creation.
 type GCPIntegrationCustomerCreateProject struct {
-	BillingAccountID string  `graphql:"billingAccountId"`
-	OrgID            *string `graphql:"orgId"`
-	FolderID         *string `graphql:"folderId"`
-	Labels           []Tag
+	BillingAccountID string   `graphql:"billingAccountId"`
+	OrgID            *string  `graphql:"orgId"`
+	FolderID         *string  `graphql:"folderId"`
+	Labels           TagsList `graphql:"labels"`
 }
 
 // GCPIntegrationCustomerOrganization identifies a GCP organization Stacklet will manage.
@@ -131,6 +131,67 @@ type GCPIntegrationAccessSecurityContext struct {
 	Principal  string
 }
 
+// GCPIntegrationInput is the input for creating or updating a GCP integration.
+type GCPIntegrationInput struct {
+	Key              string                             `json:"key"`
+	CustomerConfig   *GCPIntegrationCustomerConfigInput `json:"customerConfig"`
+	AccessConfigBlob *string                            `json:"accessConfigBlob"`
+}
+
+func (i GCPIntegrationInput) GetGraphQLType() string {
+	return "UpsertGCPIntegrationInput"
+}
+
+// GCPIntegrationCustomerConfigInput is the input for the customer config of GCP integration.
+type GCPIntegrationCustomerConfigInput struct {
+	Infrastructure   *GCPIntegrationCustomerInfrastructureInput    `json:"infrastructure"`
+	Organizations    *[]GCPIntegrationCustomerOrganizationInput    `json:"organizations"`
+	CostSources      *[]GCPIntegrationCustomerCostSourceInput      `json:"costSources"`
+	SecurityContexts *[]GCPIntegrationCustomerSecurityContextInput `json:"securityContexts"`
+}
+
+// GCPIntegrationCustomerInfrastructureInput is the input for infrastructure config of the GCP integration.
+type GCPIntegrationCustomerInfrastructureInput struct {
+	ProjectID        *string                                   `json:"projectId"`
+	ResourceLocation *string                                   `json:"resourceLocation"`
+	ResourcePrefix   *string                                   `json:"resourcePrefix"`
+	CreateProject    *GCPIntegrationCustomerCreateProjectInput `json:"createProject"`
+}
+
+// GCPIntegrationCustomerCreateProjectInput is the input for project details of the GCP integration.
+type GCPIntegrationCustomerCreateProjectInput struct {
+	BillingAccountID *string  `json:"billingAccountId"`
+	OrgID            *string  `json:"orgId"`
+	FolderID         *string  `json:"folderId"`
+	Labels           TagsList `json:"labels"`
+}
+
+// GCPIntegrationCustomerOrganizationInput is the input for one organization config of the GCP integration.
+type GCPIntegrationCustomerOrganizationInput struct {
+	OrgID      string   `json:"orgId"`
+	FolderIDs  []string `json:"folderIds"`
+	ProjectIDs []string `json:"projectIds"`
+}
+
+// GCPIntegrationCustomerCostSourceInput is the input for one cost source of the GCP integration.
+type GCPIntegrationCustomerCostSourceInput struct {
+	BillingTable string `json:"billingTable"`
+}
+
+// GCPIntegrationCustomerSecurityContextInput is the input for a security context of the GCP integration.
+type GCPIntegrationCustomerSecurityContextInput struct {
+	Name       string   `json:"name"`
+	ExtraRoles []string `json:"extraRoles"`
+}
+
+type gcpIntegrationDeleteInput struct {
+	Key string `json:"key"`
+}
+
+func (i gcpIntegrationDeleteInput) GetGraphQLType() string {
+	return "DeleteGCPIntegrationInput"
+}
+
 type gcpIntegrationAPI struct {
 	c *client
 }
@@ -153,4 +214,37 @@ func (a gcpIntegrationAPI) Read(ctx context.Context, key string) (*GCPIntegratio
 		return nil, NotFound{"GCP integration not found"}
 	}
 	return query.Payload.GCPIntegration, nil
+}
+
+// Upsert creates or updates a GCP integration.
+func (a gcpIntegrationAPI) Upsert(ctx context.Context, input GCPIntegrationInput) (*GCPIntegration, error) {
+	var mutation struct {
+		Payload struct {
+			GCPIntegration *GCPIntegration `graphql:"gcpIntegration"`
+			Problems       []problem
+		} `graphql:"upsertGCPIntegration(input: $input)"`
+	}
+	if err := a.c.Mutate(ctx, &mutation, map[string]any{"input": input}); err != nil {
+		return nil, err
+	}
+	if err := fromProblems(ctx, mutation.Payload.Problems); err != nil {
+		return nil, err
+	}
+	if mutation.Payload.GCPIntegration == nil {
+		return nil, NotFound{"GCP integration not found after upsert"}
+	}
+	return mutation.Payload.GCPIntegration, nil
+}
+
+// Delete removes a GCP integration by key.
+func (a gcpIntegrationAPI) Delete(ctx context.Context, key string) error {
+	var mutation struct {
+		Payload struct {
+			Problems []problem
+		} `graphql:"deleteGCPIntegration(input: $input)"`
+	}
+	if err := a.c.Mutate(ctx, &mutation, map[string]any{"input": gcpIntegrationDeleteInput{Key: key}}); err != nil {
+		return err
+	}
+	return fromProblems(ctx, mutation.Payload.Problems)
 }
