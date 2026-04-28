@@ -171,7 +171,15 @@ func (r *accountDiscoveryAWSResource) Update(ctx context.Context, req resource.U
 }
 
 func (r *accountDiscoveryAWSResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	resp.Diagnostics.AddError("Delete error", "Resource can't be deleted. Set `suspended = true` instead.")
+	var state models.AccountDiscoveryAWSResource
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if err := r.api.AccountDiscovery.Remove(ctx, state.ID.ValueString()); err != nil {
+		errors.AddDiagError(&resp.Diagnostics, err)
+	}
 }
 
 func (r *accountDiscoveryAWSResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
