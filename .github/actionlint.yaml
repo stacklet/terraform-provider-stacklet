@@ -1,0 +1,4 @@
+paths:
+  .github/workflows/release.yaml:
+    ignore:
+      - 'constant expression "false" in condition'

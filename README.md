@@ -100,7 +100,7 @@ resource "stacklet_policy_collection_mapping" "one" {
 resource "stacklet_account" "two" {
   cloud_provider = "AWS"
   key            = "000000000000" # AWS account ID
-  name           = "test-acccount"
+  name           = "test-account"
   short_name     = "tftest"
   description    = "Test account"
   email          = "cloud-team@example.com"
@@ -198,6 +198,6 @@ from terraform.  To enable debug:
 2. Create a release tag with `just tag-release X.Y.Z <ref>` on the desired
    commit (default `HEAD`).
 3. Push the tag upstream. This will start the Release workflow which creates
-   the release on GitHub and builds packages.  Once it completes, the relase
+   the release on GitHub and builds packages.  Once it completes, the release
    will be published and the Terraform registry will pick up the new release
    automatically.

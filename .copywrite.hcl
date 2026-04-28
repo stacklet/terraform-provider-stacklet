@@ -8,6 +8,7 @@ project {
     ".github/**",
     ".golangci.yaml",
     ".goreleaser.yaml",
+    ".pre-commit-config.yaml",
     "examples/**",
     "go.*",
   ]

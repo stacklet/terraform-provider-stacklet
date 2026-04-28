@@ -16,7 +16,11 @@ format-go:
     go fmt ./...
 
 # Run linters
-lint: lint-go lint-tf lint-docs lint-copyright
+lint: lint-go lint-tf lint-docs lint-copyright lint-pre-commit
+
+# Run pre-commit linters
+lint-pre-commit:
+    uvx prek run --all-files
 
 # Run linters for terraform
 lint-tf:
