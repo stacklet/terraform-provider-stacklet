@@ -59,11 +59,7 @@ func (m *AccountResource) Update(account *api.Account) diag.Diagnostics {
 
 	diags := m.AccountDataSource.Update(account)
 
-	// the API returns an empty dictionary for both null or empty strings. In
-	// that case don't modify the expected value.
-	if m.Variables.ValueString() == "{}" {
-		m.Variables = originalVariables
-	}
+	m.Variables = typehelpers.PreserveIfEmptyJSON(m.Variables, originalVariables)
 
 	return diags
 }
