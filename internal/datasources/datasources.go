@@ -33,6 +33,7 @@ func DataSources(includeUnreleased bool) []func() datasource.DataSource {
 		newUserDataSource,
 	}
 	unreleasedDataSources := []func() datasource.DataSource{
+		newGCPIntegrationDataSource,
 		newGCPIntegrationSurfaceDataSource,
 	}
 	if includeUnreleased {
