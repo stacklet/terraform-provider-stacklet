@@ -27,7 +27,7 @@ type Policy struct {
 }
 
 type policyAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for a policy.
@@ -41,7 +41,7 @@ func (a policyAPI) Read(ctx context.Context, uuid string, name string, version i
 		"version": graphql.Int(version),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if query.Policy.ID == "" {

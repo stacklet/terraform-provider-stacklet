@@ -67,7 +67,7 @@ type RepositoryViewInput struct {
 }
 
 type policyCollectionAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for an account.
@@ -80,7 +80,7 @@ func (a policyCollectionAPI) Read(ctx context.Context, uuid string, name string)
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if query.PolicyCollection.ID == "" {
@@ -99,7 +99,7 @@ func (a policyCollectionAPI) Create(ctx context.Context, i PolicyCollectionCreat
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	return &mutation.Payload.Collection, nil
 }
@@ -113,7 +113,7 @@ func (a policyCollectionAPI) Update(ctx context.Context, i PolicyCollectionUpdat
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Collection, nil
@@ -132,7 +132,7 @@ func (a policyCollectionAPI) Delete(ctx context.Context, uuid string) error {
 		"uuid": graphql.String(uuid),
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

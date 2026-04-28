@@ -4,7 +4,7 @@
 package api
 
 import (
-	"github.com/hasura/go-graphql-client"
+	"context"
 )
 
 // API provides access to the GraphQL API.
@@ -30,7 +30,8 @@ type API struct {
 }
 
 // New creates an API wrapper.
-func New(c *graphql.Client) *API {
+func New(ctx context.Context, config ClientConfig) *API {
+	c := newClient(ctx, config)
 	return &API{
 		Account:                 accountAPI{c},
 		AccountDiscovery:        accountDiscoveryAPI{c},

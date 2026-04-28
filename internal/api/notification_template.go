@@ -26,7 +26,7 @@ type TemplateInput struct {
 }
 
 type templateAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for a notification template.
@@ -36,7 +36,7 @@ func (a templateAPI) Read(ctx context.Context, name string) (*Template, error) {
 	}
 
 	if err := a.c.Query(ctx, &query, map[string]any{"name": graphql.String(name)}); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	if query.Template.ID == "" {
 		return nil, NotFound{"Template not found"}
@@ -54,7 +54,7 @@ func (a templateAPI) Upsert(ctx context.Context, input TemplateInput) (*Template
 	}
 	err := a.c.Mutate(ctx, &mutation, map[string]any{"input": input})
 	if err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Template, nil
@@ -66,7 +66,7 @@ func (a templateAPI) Delete(ctx context.Context, name string) error {
 		ID string `graphql:"removeTemplate(name: $name)"`
 	}
 	if err := a.c.Mutate(ctx, &mutation, map[string]any{"name": graphql.String(name)}); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

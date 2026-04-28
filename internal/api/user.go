@@ -48,7 +48,7 @@ func (i UserUpdateInput) GetGraphQLType() string {
 }
 
 type userAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for a user by username.
@@ -66,7 +66,7 @@ func (u userAPI) Read(ctx context.Context, username string) (*User, error) {
 		"filterElement": newSimpleFilter("username", username),
 	}
 	if err := u.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if len(query.Users.Edges) == 0 {
@@ -86,7 +86,7 @@ func (a userAPI) Create(ctx context.Context, i UserCreateInput) (*User, error) {
 
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.User, nil
@@ -101,7 +101,7 @@ func (a userAPI) Update(ctx context.Context, i UserUpdateInput) (*User, error) {
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.User, nil
@@ -118,7 +118,7 @@ func (a userAPI) Delete(ctx context.Context, key int64) error {
 	}
 	variables := map[string]any{"key": graphql.Int(key)}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

@@ -41,7 +41,7 @@ func (i removeAccountGroupMappingsInput) GetGraphQLType() string {
 }
 
 type accountGroupMappingAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for an account group mapping.
@@ -66,7 +66,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 	}
 
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if len(query.AccountGroup.AccountMappings.Edges) == 0 {
@@ -103,7 +103,7 @@ func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, g
 
 	err := a.c.Mutate(ctx, &mutation, variables)
 	if err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &AccountGroupMapping{
@@ -128,7 +128,7 @@ func (a accountGroupMappingAPI) Delete(ctx context.Context, id string) error {
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

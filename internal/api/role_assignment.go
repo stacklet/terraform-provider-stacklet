@@ -60,7 +60,7 @@ func (r *RoleAssignment) GetTarget() string {
 }
 
 type roleAssignmentAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // RoleAssignmentInput represents the input for granting or revoking a role assignment.
@@ -134,7 +134,7 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 	}
 
 	if err := r.c.Mutate(ctx, &mutation, map[string]any{"input": input}); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if len(mutation.UpdateRoleAssignment.Grant) == 0 {
@@ -143,7 +143,7 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 
 	grantPayload := mutation.UpdateRoleAssignment.Grant[0]
 	if grantPayload.Error() != "" {
-		return nil, NewAPIError(fmt.Errorf("failed to grant role assignment: %w", grantPayload))
+		return nil, newAPIError(fmt.Errorf("failed to grant role assignment: %w", grantPayload))
 	}
 
 	if grantPayload.RoleAssignment == nil {
@@ -198,14 +198,14 @@ func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principa
 	}
 
 	if err := r.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 
 	// Check if we have a revoke result with an error
 	if len(mutation.UpdateRoleAssignment.Revoke) > 0 {
 		revokePayload := mutation.UpdateRoleAssignment.Revoke[0]
 		if revokePayload.Error() != "" {
-			return NewAPIError(fmt.Errorf("failed to revoke role assignment: %w", revokePayload))
+			return newAPIError(fmt.Errorf("failed to revoke role assignment: %w", revokePayload))
 		}
 	}
 
@@ -237,7 +237,7 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *string, principal *
 		}
 
 		if err := r.c.Query(ctx, &query, variables); err != nil {
-			return nil, NewAPIError(err)
+			return nil, err
 		}
 
 		for _, edge := range query.RoleAssignments.Edges {

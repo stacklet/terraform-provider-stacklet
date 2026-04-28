@@ -109,7 +109,7 @@ type accountDiscoveryScheduleInput struct {
 }
 
 type accountDiscoveryAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for an account discovery.
@@ -119,7 +119,7 @@ func (a accountDiscoveryAPI) Read(ctx context.Context, name string) (*AccountDis
 	}
 	variables := map[string]any{"name": graphql.String(name)}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if query.AccountDiscovery.ID == "" {
@@ -138,7 +138,7 @@ func (a accountDiscoveryAPI) UpsertAWS(ctx context.Context, input AccountDiscove
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	return &mutation.Payload.AccountDiscovery, nil
 }
@@ -152,7 +152,7 @@ func (a accountDiscoveryAPI) UpsertAzure(ctx context.Context, input AccountDisco
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	return &mutation.Payload.AccountDiscovery, nil
 }
@@ -166,7 +166,7 @@ func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscove
 	}
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	return &mutation.Payload.AccountDiscovery, nil
 }
@@ -175,12 +175,12 @@ func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscove
 func (a accountDiscoveryAPI) Remove(ctx context.Context, id string) error {
 	var mutation struct {
 		Payload struct {
-			Problems []Problem
+			Problems []problem
 		} `graphql:"removeAccountDiscovery(input: $input)"`
 	}
 	variables := map[string]any{"input": accountDiscoveryRemoveInput{ID: graphql.ID(id)}}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return fromProblems(ctx, mutation.Payload.Problems)
 }
@@ -203,7 +203,7 @@ func (a accountDiscoveryAPI) UpdateSuspended(ctx context.Context, id string, sus
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.AccountDiscoveries[0], nil

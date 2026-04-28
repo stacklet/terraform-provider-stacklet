@@ -3,11 +3,11 @@
 package providerdata
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hasura/go-graphql-client"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 )
@@ -18,9 +18,9 @@ type providerData struct {
 }
 
 // New returns configured provider data.
-func New(client *graphql.Client) *providerData {
+func New(ctx context.Context, config api.ClientConfig) *providerData {
 	return &providerData{
-		API: api.New(client),
+		API: api.New(ctx, config),
 	}
 }
 

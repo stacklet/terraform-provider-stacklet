@@ -132,7 +132,7 @@ type GCPIntegrationAccessSecurityContext struct {
 }
 
 type gcpIntegrationAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for a GCP integration by key.
@@ -140,11 +140,11 @@ func (a gcpIntegrationAPI) Read(ctx context.Context, key string) (*GCPIntegratio
 	var query struct {
 		Payload struct {
 			GCPIntegration *GCPIntegration `graphql:"gcpIntegration"`
-			Problems       []Problem
+			Problems       []problem
 		} `graphql:"gcpIntegration(key: $key)"`
 	}
 	if err := a.c.Query(ctx, &query, map[string]any{"key": graphql.String(key)}); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	if err := fromProblems(ctx, query.Payload.Problems); err != nil {
 		return nil, err

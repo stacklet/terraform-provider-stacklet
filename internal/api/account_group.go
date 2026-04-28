@@ -47,7 +47,7 @@ func (i AccountGroupUpdateInput) GetGraphQLType() string {
 }
 
 type accountGroupAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for an account group.
@@ -61,7 +61,7 @@ func (a accountGroupAPI) Read(ctx context.Context, uuid string, name string) (*A
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if query.AccountGroup.ID == "" {
@@ -80,7 +80,7 @@ func (a accountGroupAPI) Create(ctx context.Context, i AccountGroupCreateInput) 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Group, nil
@@ -95,7 +95,7 @@ func (a accountGroupAPI) Update(ctx context.Context, i AccountGroupUpdateInput) 
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Group, nil
@@ -112,7 +112,7 @@ func (a accountGroupAPI) Delete(ctx context.Context, uuid string) error {
 	}
 	variables := map[string]any{"uuid": graphql.String(uuid)}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

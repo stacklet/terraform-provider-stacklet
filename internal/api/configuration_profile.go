@@ -289,7 +289,7 @@ func (i emailConfigurationInput) GetGraphQLType() string {
 }
 
 type configurationProfileAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 const configurationScopeGlobal = "0"
@@ -304,7 +304,7 @@ func (a configurationProfileAPI) Read(ctx context.Context, name ConfigurationPro
 		"scope": graphql.String(configurationScopeGlobal),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if query.Configuration.ID == "" {
@@ -370,7 +370,7 @@ func (a configurationProfileAPI) UpsertJira(ctx context.Context, input JiraConfi
 	}
 
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if mutation.Payload.Configuration.ID == "" {
@@ -395,7 +395,7 @@ func (a configurationProfileAPI) UpsertAccountOwners(ctx context.Context, input 
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if mutation.Payload.Configuration.ID == "" {
@@ -420,7 +420,7 @@ func (a configurationProfileAPI) UpsertResourceOwner(ctx context.Context, input 
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if mutation.Payload.Configuration.ID == "" {
@@ -446,7 +446,7 @@ func (a configurationProfileAPI) UpsertSlack(ctx context.Context, config SlackCo
 	}
 
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if mutation.Payload.Configuration.ID == "" {
@@ -472,7 +472,7 @@ func (a configurationProfileAPI) UpsertServiceNow(ctx context.Context, config Se
 	}
 
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if mutation.Payload.Configuration.ID == "" {
@@ -498,7 +498,7 @@ func (a configurationProfileAPI) UpsertSymphony(ctx context.Context, config Symp
 	}
 
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if mutation.Payload.Configuration.ID == "" {
@@ -524,7 +524,7 @@ func (a configurationProfileAPI) UpsertEmail(ctx context.Context, input EmailCon
 	}
 
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if mutation.Payload.Configuration.ID == "" {
@@ -550,7 +550,7 @@ func (a configurationProfileAPI) UpsertMSTeams(ctx context.Context, input MSTeam
 	}
 
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if mutation.Payload.Configuration.ID == "" {
@@ -570,7 +570,7 @@ func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationP
 		"scope": graphql.String(configurationScopeGlobal),
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

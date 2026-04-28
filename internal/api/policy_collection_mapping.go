@@ -48,7 +48,7 @@ func (i removePolicyCollectionMappingInput) GetGraphQLType() string {
 }
 
 type policyCollectionMappingAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for a policy collection mapping.
@@ -59,7 +59,7 @@ func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID str
 				Edges []struct {
 					Node PolicyCollectionMapping
 				}
-				Problems []Problem
+				Problems []problem
 			} `graphql:"policyMappings(filterElement: $policyFilter)"`
 		} `graphql:"policyCollection(uuid: $uuid)"`
 	}
@@ -68,7 +68,7 @@ func (a policyCollectionMappingAPI) Read(ctx context.Context, collectionUUID str
 		"policyFilter": newExactMatchFilter("uuid", policyUUID),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	if err := fromProblems(ctx, query.PolicyCollection.PolicyMappings.Problems); err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (a policyCollectionMappingAPI) Upsert(ctx context.Context, input PolicyColl
 
 	err := a.c.Mutate(ctx, &mutation, variables)
 	if err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Mappings[0], nil
@@ -117,7 +117,7 @@ func (a policyCollectionMappingAPI) Delete(ctx context.Context, id string) error
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }
