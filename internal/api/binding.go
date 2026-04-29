@@ -129,7 +129,7 @@ func (i BindingUpdateInput) GetGraphQLType() string {
 }
 
 type bindingAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for a binding.
@@ -142,7 +142,7 @@ func (a bindingAPI) Read(ctx context.Context, uuid string, name string) (*Bindin
 		"name": graphql.String(name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	if query.Binding.ID == "" {
 		return nil, NotFound{"Binding not found"}
@@ -160,7 +160,7 @@ func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (*Binding,
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Binding, nil
@@ -175,7 +175,7 @@ func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (*Binding,
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Binding, nil
@@ -194,7 +194,7 @@ func (a bindingAPI) Delete(ctx context.Context, uuid string) error {
 		"uuid": graphql.String(uuid),
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

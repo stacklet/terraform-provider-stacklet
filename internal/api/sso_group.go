@@ -5,8 +5,6 @@ package api
 import (
 	"context"
 	"fmt"
-
-	"github.com/hasura/go-graphql-client"
 )
 
 // SSOGroup is the data returned by reading SSO group data.
@@ -69,7 +67,7 @@ func (i removeSSOGroupsInput) GetGraphQLType() string {
 }
 
 type ssoGroupAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for an SSO group by name.
@@ -87,7 +85,7 @@ func (a ssoGroupAPI) Read(ctx context.Context, name string) (*SSOGroup, error) {
 		"filterElement": newSimpleFilter("name", name),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if len(query.SSOGroups.Edges) == 0 {
@@ -110,7 +108,7 @@ func (a ssoGroupAPI) Upsert(ctx context.Context, input SSOGroupInput) (*SSOGroup
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if len(mutation.Payload.Response) == 0 {
@@ -118,7 +116,7 @@ func (a ssoGroupAPI) Upsert(ctx context.Context, input SSOGroupInput) (*SSOGroup
 	}
 	payload := mutation.Payload.Response[0]
 	if payload.Error() != "" {
-		return nil, NewAPIError(fmt.Errorf("failed to upsert SSO group: %w", payload))
+		return nil, newAPIError(fmt.Errorf("failed to upsert SSO group: %w", payload))
 	}
 	if payload.SSOGroup == nil {
 		return nil, NotFound{"SSO group not found after upsert"}
@@ -137,12 +135,12 @@ func (a ssoGroupAPI) Delete(ctx context.Context, name string) error {
 		"input": removeSSOGroupsInput{Names: []string{name}},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	if len(mutation.Payload.Response) > 0 {
 		payload := mutation.Payload.Response[0]
 		if payload.Error() != "" {
-			return NewAPIError(fmt.Errorf("failed to remove SSO group: %w", payload))
+			return newAPIError(fmt.Errorf("failed to remove SSO group: %w", payload))
 		}
 	}
 	return nil

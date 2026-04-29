@@ -141,7 +141,14 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 	}
 
 	// Make provider data accessible to the Configure method of resources and data sources
-	providerData := providerdata.New(api.NewClient(ctx, creds.Endpoint, creds.APIKey, p.version))
+	providerData := providerdata.New(
+		ctx,
+		api.ClientConfig{
+			Endpoint: creds.Endpoint,
+			APIKey:   creds.APIKey,
+			Version:  p.version,
+		},
+	)
 	resp.ResourceData = providerData
 	resp.DataSourceData = providerData
 

@@ -56,7 +56,7 @@ func (i AccountUpdateInput) GetGraphQLType() string {
 }
 
 type accountAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for an account.
@@ -69,7 +69,7 @@ func (a accountAPI) Read(ctx context.Context, cloudProvider string, key string) 
 		"key":      graphql.String(key),
 	}
 	if err := a.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if query.Account.ID == "" || !query.Account.Active {
@@ -88,7 +88,7 @@ func (a accountAPI) Create(ctx context.Context, i AccountCreateInput) (*Account,
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Account, nil
@@ -103,7 +103,7 @@ func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (*Account,
 	}
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	return &mutation.Payload.Account, nil
@@ -123,7 +123,7 @@ func (a accountAPI) Delete(ctx context.Context, cloudProvider string, key string
 		"key":      graphql.String(key),
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

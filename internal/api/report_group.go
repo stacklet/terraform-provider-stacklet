@@ -182,7 +182,7 @@ func (i upsertReportGroupsInput) GetGraphQLType() string {
 }
 
 type reportGroupAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for a report group.
@@ -192,7 +192,7 @@ func (a reportGroupAPI) Read(ctx context.Context, name string) (*ReportGroup, er
 	}
 
 	if err := a.c.Query(ctx, &query, map[string]any{"name": graphql.String(name)}); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if query.ReportGroup.ID == "" {
@@ -215,7 +215,7 @@ func (a reportGroupAPI) Upsert(ctx context.Context, input ReportGroupInput) (*Re
 		},
 	}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if len(mutation.Payload.ReportGroups) == 0 {
@@ -230,7 +230,7 @@ func (a reportGroupAPI) Delete(ctx context.Context, name string) error {
 		IDs []string `graphql:"removeReportGroups(names: $names)"`
 	}
 	if err := a.c.Mutate(ctx, &mutation, map[string]any{"names": []graphql.String{graphql.String(name)}}); err != nil {
-		return NewAPIError(err)
+		return err
 	}
 	return nil
 }

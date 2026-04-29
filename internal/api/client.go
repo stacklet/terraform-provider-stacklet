@@ -15,15 +15,45 @@ import (
 	"github.com/hasura/go-graphql-client"
 )
 
-// NewClient returns a configured graphql Client.
-func NewClient(ctx context.Context, endpoint string, apiKey string, version string) *graphql.Client {
+// / ClientConfig is the configuration for the API client.
+type ClientConfig struct {
+	Endpoint string
+	APIKey   string
+	Version  string
+}
+
+// client is the wrapper for the GraphQL client.
+type client struct {
+	c *graphql.Client
+}
+
+// Query makes a GraphQL query call.
+func (c *client) Query(ctx context.Context, q any, variables map[string]any) error {
+	err := c.c.Query(ctx, q, variables)
+	if err != nil {
+		return newAPIError(err)
+	}
+	return nil
+}
+
+// Mutate makes a GraphQL mutation call.
+func (c *client) Mutate(ctx context.Context, m any, variables map[string]any) error {
+	err := c.c.Mutate(ctx, m, variables)
+	if err != nil {
+		return newAPIError(err)
+	}
+	return nil
+}
+
+// newClient returns a configured graphql Client.
+func newClient(ctx context.Context, config ClientConfig) *client {
 	tfLog := hclog.LevelFromString(os.Getenv("TF_LOG"))
 	logBody := tfLog == hclog.Debug || tfLog == hclog.Trace
 
 	httpClient := &http.Client{
 		Transport: &authTransport{
-			APIKey:  apiKey,
-			Version: version,
+			APIKey:  config.APIKey,
+			Version: config.Version,
 			Base: &logTransport{
 				Ctx:     ctx,
 				Base:    http.DefaultTransport,
@@ -31,7 +61,7 @@ func NewClient(ctx context.Context, endpoint string, apiKey string, version stri
 			},
 		},
 	}
-	return graphql.NewClient(endpoint, httpClient)
+	return &client{c: graphql.NewClient(config.Endpoint, httpClient)}
 }
 
 // authTransport is an http.Transport that adds authorization header.

@@ -17,7 +17,7 @@ type Role struct {
 }
 
 type roleAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Read returns data for a role by name.
@@ -33,7 +33,7 @@ func (r roleAPI) Read(ctx context.Context, name string) (*Role, error) {
 		"filterElement": newExactMatchFilter("name", name),
 	}
 	if err := r.c.Query(ctx, &query, variables); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 
 	if len(query.Roles.Edges) == 0 {
@@ -67,7 +67,7 @@ func (r roleAPI) List(ctx context.Context) ([]Role, error) {
 		}
 
 		if err := r.c.Query(ctx, &query, variables); err != nil {
-			return nil, NewAPIError(err)
+			return nil, err
 		}
 
 		for _, edge := range query.Roles.Edges {

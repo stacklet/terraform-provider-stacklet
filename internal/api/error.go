@@ -8,25 +8,25 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-// APIError represent an error interacting with the API.
-type APIError struct {
+// apiError represent an error interacting with the API.
+type apiError struct {
 	Kind   string
 	Detail string
 }
 
 // Error returns the error summary message.
-func (e APIError) Summary() string {
+func (e apiError) Summary() string {
 	return e.Kind
 }
 
 // Error returns the error message.
-func (e APIError) Error() string {
+func (e apiError) Error() string {
 	return e.Detail
 }
 
-// newAPIError returns an APIError from an error.
-func NewAPIError(err error) APIError {
-	return APIError{Kind: "API Error", Detail: err.Error()}
+// newAPIError returns an apiError from an error.
+func newAPIError(err error) apiError {
+	return apiError{Kind: "API Error", Detail: err.Error()}
 }
 
 // NotFound represents an error raised when an API resource is not found.
@@ -45,7 +45,7 @@ func (e NotFound) Error() string {
 }
 
 // fromProblems returns an error from a list of API problems.
-func fromProblems(ctx context.Context, problems []Problem) error {
+func fromProblems(ctx context.Context, problems []problem) error {
 	if len(problems) == 0 {
 		return nil
 	}
@@ -56,11 +56,11 @@ func fromProblems(ctx context.Context, problems []Problem) error {
 	if problems[0].Kind == "NotFound" {
 		return NotFound{problems[0].Message}
 	}
-	return APIError{Kind: problems[0].Kind, Detail: problems[0].Message}
+	return apiError{Kind: problems[0].Kind, Detail: problems[0].Message}
 }
 
-// Problem contains the details for an API query error.
-type Problem struct {
+// problem contains the details for an API query error.
+type problem struct {
 	Kind    string `graphql:"__typename"`
 	Message string
 }

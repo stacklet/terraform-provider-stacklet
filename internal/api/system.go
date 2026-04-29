@@ -4,8 +4,6 @@ package api
 
 import (
 	"context"
-
-	"github.com/hasura/go-graphql-client"
 )
 
 // Platform is the data returned by reading platform data.
@@ -52,7 +50,7 @@ type GCPIntegrationSurfaceAwsRelay struct {
 }
 
 type systemAPI struct {
-	c *graphql.Client
+	c *client
 }
 
 // Platform returns platform details.
@@ -61,7 +59,7 @@ func (a systemAPI) Platform(ctx context.Context) (*Platform, error) {
 		Platform Platform `graphql:"platform"`
 	}
 	if err := a.c.Query(ctx, &query, nil); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	return &query.Platform, nil
 }
@@ -72,7 +70,7 @@ func (a systemAPI) MSTeamsIntegrationSurface(ctx context.Context) (*MSTeamsInteg
 		MSTeamsIntegrationSurface MSTeamsIntegrationSurface `graphql:"msTeamsIntegrationSurface"`
 	}
 	if err := a.c.Query(ctx, &query, nil); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	return &query.MSTeamsIntegrationSurface, nil
 }
@@ -83,7 +81,7 @@ func (a systemAPI) GCPIntegrationSurface(ctx context.Context) (*GCPIntegrationSu
 		GCPIntegrationSurface GCPIntegrationSurface `graphql:"gcpIntegrationSurface"`
 	}
 	if err := a.c.Query(ctx, &query, nil); err != nil {
-		return nil, NewAPIError(err)
+		return nil, err
 	}
 	return &query.GCPIntegrationSurface, nil
 }
