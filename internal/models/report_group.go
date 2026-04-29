@@ -33,7 +33,7 @@ type ReportGroupDataSource struct {
 func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(rg.ID)
+	m.ID = typehelpers.GraphQLIDValue(rg.ID)
 	m.Name = types.StringValue(rg.Name)
 	m.Enabled = types.BoolValue(rg.Enabled)
 	m.Bindings = typehelpers.StringsList(rg.Bindings)

@@ -35,7 +35,7 @@ type BindingDataSource struct {
 func (m *BindingDataSource) Update(ctx context.Context, binding *api.Binding) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(binding.ID)
+	m.ID = typehelpers.GraphQLIDValue(binding.ID)
 	m.UUID = types.StringValue(binding.UUID)
 	m.Name = types.StringValue(binding.Name)
 	m.Description = types.StringPointerValue(binding.Description)

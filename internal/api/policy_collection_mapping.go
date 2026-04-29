@@ -10,7 +10,7 @@ import (
 
 // PolicyCollectionMapping is the data returned by reading a policy collection mapping.
 type PolicyCollectionMapping struct {
-	ID     string
+	ID     graphql.ID
 	Policy struct {
 		UUID    string
 		Version int
@@ -107,7 +107,7 @@ func (a policyCollectionMappingAPI) Delete(ctx context.Context, id string) error
 	var mutation struct {
 		Payload struct {
 			Removed []struct {
-				ID string
+				ID graphql.ID
 			}
 		} `graphql:"removePolicyCollectionMappings(input: $input)"`
 	}

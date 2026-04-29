@@ -10,7 +10,7 @@ import (
 
 // AccountGroupMapping is the data returned by reading an account group mapping data.
 type AccountGroupMapping struct {
-	ID         string
+	ID         graphql.ID
 	GroupUUID  string
 	AccountKey string
 }
@@ -51,7 +51,7 @@ func (a accountGroupMappingAPI) Read(ctx context.Context, accountKey string, gro
 			AccountMappings struct {
 				Edges []struct {
 					Node struct {
-						ID      string
+						ID      graphql.ID
 						Account struct {
 							Key string
 						}
@@ -86,7 +86,7 @@ func (a accountGroupMappingAPI) Create(ctx context.Context, accountKey string, g
 	var mutation struct {
 		Payload struct {
 			Mappings []struct {
-				ID string
+				ID graphql.ID
 			}
 		} `graphql:"upsertAccountGroupMappings(input: $input)"`
 	}
@@ -118,7 +118,7 @@ func (a accountGroupMappingAPI) Delete(ctx context.Context, id string) error {
 	var mutation struct {
 		Payload struct {
 			Removed []struct {
-				ID string
+				ID graphql.ID
 			}
 		} `graphql:"removeAccountGroupMappings(input: $input)"`
 	}

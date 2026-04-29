@@ -10,7 +10,7 @@ import (
 
 // Template is the data returned for a notification template.
 type Template struct {
-	ID          string
+	ID          graphql.ID
 	Name        string
 	Description *string
 	Transport   *string
@@ -63,7 +63,7 @@ func (a templateAPI) Upsert(ctx context.Context, input TemplateInput) (*Template
 // Delete removes a notification template.
 func (a templateAPI) Delete(ctx context.Context, name string) error {
 	var mutation struct {
-		ID string `graphql:"removeTemplate(name: $name)"`
+		ID graphql.ID `graphql:"removeTemplate(name: $name)"`
 	}
 	if err := a.c.Mutate(ctx, &mutation, map[string]any{"name": graphql.String(name)}); err != nil {
 		return err

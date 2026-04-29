@@ -44,7 +44,7 @@ func (c ConfigurationProfileMSTeamsDataSource) AttributeTypes() map[string]attr.
 func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(cp.ID)
+	m.ID = typehelpers.GraphQLIDValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 
 	channelMappings, d := typehelpers.ObjectList[MSTeamsChannelMapping](

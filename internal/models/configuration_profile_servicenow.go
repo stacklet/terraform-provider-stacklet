@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // ConfigurationProfileServiceNowDataSource is the model for ServiceNow configuration profile data sources.
@@ -25,7 +26,7 @@ func (m *ConfigurationProfileServiceNowDataSource) Update(cp api.ConfigurationPr
 
 	config := cp.Record.ServiceNowConfiguration
 
-	m.ID = types.StringValue(cp.ID)
+	m.ID = typehelpers.GraphQLIDValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 	m.Endpoint = types.StringValue(config.Endpoint)
 	m.Username = types.StringValue(config.User)

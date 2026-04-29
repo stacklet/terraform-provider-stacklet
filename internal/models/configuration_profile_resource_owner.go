@@ -25,7 +25,7 @@ func (m *ConfigurationProfileResourceOwnerDataSource) Update(cp api.Configuratio
 
 	config := cp.Record.ResourceOwnerConfiguration
 
-	m.ID = types.StringValue(cp.ID)
+	m.ID = typehelpers.GraphQLIDValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 	m.Default = typehelpers.StringsList(config.Default)
 	m.OrgDomain = types.StringPointerValue(config.OrgDomain)

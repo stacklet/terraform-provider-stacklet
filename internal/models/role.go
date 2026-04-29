@@ -10,6 +10,7 @@ import (
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // RoleDataSource is the model for role data sources.
@@ -23,7 +24,7 @@ type RoleDataSource struct {
 func (m *RoleDataSource) Update(ctx context.Context, role *api.Role) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(role.ID)
+	m.ID = typehelpers.GraphQLIDValue(role.ID)
 	m.Name = types.StringValue(role.Name)
 	m.System = types.BoolValue(role.System)
 

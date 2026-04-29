@@ -28,7 +28,7 @@ func (m *ConfigurationProfileSlackDataSource) Update(cp api.ConfigurationProfile
 
 	slackConfig := cp.Record.SlackConfiguration
 
-	m.ID = types.StringValue(cp.ID)
+	m.ID = typehelpers.GraphQLIDValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 	m.Token = types.StringPointerValue(slackConfig.Token)
 	m.UserFields = typehelpers.StringsList(slackConfig.UserFields)

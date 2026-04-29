@@ -27,7 +27,7 @@ func (m *ConfigurationProfileAccountOwnersDataSource) Update(cp api.Configuratio
 
 	config := cp.Record.AccountOwnersConfiguration
 
-	m.ID = types.StringValue(cp.ID)
+	m.ID = typehelpers.GraphQLIDValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 	m.OrgDomain = types.StringPointerValue(config.OrgDomain)
 	m.OrgDomainTag = types.StringPointerValue(config.OrgDomainTag)

@@ -31,7 +31,7 @@ type PolicyCollectionResource struct {
 func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection *api.PolicyCollection) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(policyCollection.ID)
+	m.ID = typehelpers.GraphQLIDValue(policyCollection.ID)
 	m.UUID = types.StringValue(policyCollection.UUID)
 	m.Name = types.StringValue(policyCollection.Name)
 	m.Description = types.StringPointerValue(policyCollection.Description)

@@ -26,7 +26,7 @@ type PlatformDataSource struct {
 func (m *PlatformDataSource) Update(ctx context.Context, platform *api.Platform) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(platform.ID)
+	m.ID = typehelpers.GraphQLIDValue(platform.ID)
 	m.ExternalID = types.StringPointerValue(platform.ExternalID)
 	m.ExecutionRegions = typehelpers.StringsList(platform.ExecutionRegions)
 

@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // RoleAssignmentResource is the model for role assignment resources.
@@ -25,7 +26,7 @@ type RoleAssignmentResource struct {
 func (m *RoleAssignmentResource) Update(ctx context.Context, assignment *api.RoleAssignment) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(assignment.ID)
+	m.ID = typehelpers.GraphQLIDValue(assignment.ID)
 	m.RoleName = types.StringValue(assignment.Role.Name)
 	m.Principal = types.StringValue(assignment.GetPrincipal())
 	m.Target = types.StringValue(assignment.GetTarget())
@@ -76,7 +77,7 @@ func (m *RoleAssignmentsDataSource) Update(ctx context.Context, assignments []ap
 	items := make([]RoleAssignmentItem, 0, len(assignments))
 	for _, assignment := range assignments {
 		item := RoleAssignmentItem{
-			ID:        types.StringValue(assignment.ID),
+			ID:        typehelpers.GraphQLIDValue(assignment.ID),
 			RoleName:  types.StringValue(assignment.Role.Name),
 			Principal: types.StringValue(assignment.GetPrincipal()),
 			Target:    types.StringValue(assignment.GetTarget()),

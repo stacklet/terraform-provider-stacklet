@@ -10,7 +10,7 @@ import (
 
 // Account is the data returned by reading policy collection data.
 type PolicyCollection struct {
-	ID               string
+	ID               graphql.ID
 	UUID             string
 	Name             string
 	Description      *string

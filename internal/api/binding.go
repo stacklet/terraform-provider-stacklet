@@ -10,7 +10,7 @@ import (
 
 // Binding is the data returned by reading binding details.
 type Binding struct {
-	ID           string
+	ID           graphql.ID
 	UUID         string
 	Name         string
 	Description  *string

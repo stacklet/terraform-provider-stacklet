@@ -26,7 +26,7 @@ type ConfigurationProfileEmailDataSource struct {
 func (m *ConfigurationProfileEmailDataSource) Update(ctx context.Context, cp api.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(cp.ID)
+	m.ID = typehelpers.GraphQLIDValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 	m.From = types.StringValue(cp.Record.EmailConfiguration.FromEmail)
 	m.SESRegion = types.StringPointerValue(cp.Record.EmailConfiguration.SESRegion)

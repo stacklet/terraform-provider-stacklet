@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // ConfigurationProfileSymphonyDataSource is the model for Symphony configuration profile data sources.
@@ -23,7 +24,7 @@ func (m *ConfigurationProfileSymphonyDataSource) Update(cp api.ConfigurationProf
 
 	config := cp.Record.SymphonyConfiguration
 
-	m.ID = types.StringValue(cp.ID)
+	m.ID = typehelpers.GraphQLIDValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 	m.AgentDomain = types.StringValue(config.AgentDomain)
 	m.ServiceAccount = types.StringValue(config.ServiceAccount)

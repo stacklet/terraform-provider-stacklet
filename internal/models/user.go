@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // UserDataSource is the model for user data sources.
@@ -25,7 +26,7 @@ type UserDataSource struct {
 func (m *UserDataSource) Update(user *api.User) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(user.ID)
+	m.ID = typehelpers.GraphQLIDValue(user.ID)
 	m.Active = types.BoolValue(user.Active)
 	m.DisplayName = types.StringPointerValue(user.DisplayName)
 	m.Email = types.StringPointerValue(user.Email)

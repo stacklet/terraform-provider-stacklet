@@ -10,7 +10,7 @@ import (
 )
 
 type Repository struct {
-	ID                   string
+	ID                   graphql.ID
 	UUID                 string
 	URL                  string
 	Name                 string

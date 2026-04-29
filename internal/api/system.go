@@ -4,11 +4,13 @@ package api
 
 import (
 	"context"
+
+	"github.com/hasura/go-graphql-client"
 )
 
 // Platform is the data returned by reading platform data.
 type Platform struct {
-	ID                       string
+	ID                       graphql.ID
 	ExternalID               *string `graphql:"externalID"`
 	ExecutionRegions         []string
 	AWSOrgReadCustomerConfig PlatformCustomerConfig `graphql:"awsOrgReadCustomerConfig"`
