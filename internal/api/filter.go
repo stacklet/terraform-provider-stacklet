@@ -9,6 +9,10 @@ type filterElementInput struct {
 	Single *filterValueInput `json:"single,omitempty"`
 }
 
+func (i filterElementInput) GetGraphQLType() string {
+	return "FilterElementInput"
+}
+
 // filterValueInput is a filter for a single value.
 type filterValueInput struct {
 	Name     string `json:"name"`
