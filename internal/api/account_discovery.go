@@ -95,15 +95,15 @@ func (i accountDiscoveryRemoveInput) GetGraphQLType() string {
 	return "RemoveAccountDiscoveryInput"
 }
 
-type updateAccountDiscoveryScheduleInput struct {
-	Schedules []accountDiscoveryScheduleInput `json:"schedules"`
+type accountDiscoveryScheduleInput struct {
+	Schedules []accountDiscoveryScheduleItemInput `json:"schedules"`
 }
 
-func (i updateAccountDiscoveryScheduleInput) GetGraphQLType() string {
+func (i accountDiscoveryScheduleInput) GetGraphQLType() string {
 	return "UpdateAccountDiscoveryScheduleInput"
 }
 
-type accountDiscoveryScheduleInput struct {
+type accountDiscoveryScheduleItemInput struct {
 	Discovery graphql.ID      `json:"discovery"`
 	Suspended graphql.Boolean `json:"suspended"`
 }
@@ -193,8 +193,8 @@ func (a accountDiscoveryAPI) UpdateSuspended(ctx context.Context, id string, sus
 		} `graphql:"updateAccountDiscoverySchedule(input: $input)"`
 	}
 	variables := map[string]any{
-		"input": updateAccountDiscoveryScheduleInput{
-			Schedules: []accountDiscoveryScheduleInput{
+		"input": accountDiscoveryScheduleInput{
+			Schedules: []accountDiscoveryScheduleItemInput{
 				{
 					Discovery: graphql.ID(id),
 					Suspended: graphql.Boolean(suspended),
