@@ -5,11 +5,13 @@ package api
 import (
 	"context"
 	"fmt"
+
+	"github.com/hasura/go-graphql-client"
 )
 
 // SSOGroup is the data returned by reading SSO group data.
 type SSOGroup struct {
-	ID                      string
+	ID                      graphql.ID
 	DisplayName             *string
 	Name                    string
 	RoleAssignmentPrincipal string

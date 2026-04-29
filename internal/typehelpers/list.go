@@ -3,10 +3,17 @@
 package typehelpers
 
 import (
+	"github.com/hasura/go-graphql-client"
+
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+// GraphQLIDValue converts a graphql.ID to a types.String.
+func GraphQLIDValue(id graphql.ID) types.String {
+	return types.StringValue(string(id))
+}
 
 // StringsList returns a list of values of string type.
 func StringsList(l []string) types.List {

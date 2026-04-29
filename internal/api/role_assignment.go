@@ -11,7 +11,7 @@ import (
 
 // RoleAssignment is the data returned by reading role assignment data.
 type RoleAssignment struct {
-	ID        string
+	ID        graphql.ID
 	Role      Role
 	Principal rolePrincipal `graphql:"principal"`
 	Target    roleTarget    `graphql:"target"`
@@ -86,7 +86,7 @@ type grantRoleAssignmentPayload struct {
 	// created.  This is similar to
 	// https://github.com/hasura/go-graphql-client/issues/152 and
 	// https://github.com/hasura/go-graphql-client/issues/158
-	RoleAssignment *struct{ ID string }
+	RoleAssignment *struct{ ID graphql.ID }
 }
 
 func (p grantRoleAssignmentPayload) Error() string {
@@ -101,7 +101,7 @@ func (p grantRoleAssignmentPayload) Error() string {
 type revokeRoleAssignmentPayload struct {
 	ErrorMessage *string
 	Removed      struct {
-		ID string
+		ID graphql.ID
 	}
 }
 

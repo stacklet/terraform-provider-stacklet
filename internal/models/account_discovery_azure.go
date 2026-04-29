@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // AccountDiscoveryAzureResource is the model for Azure account discovery resources.
@@ -23,7 +24,7 @@ type AccountDiscoveryAzureResource struct {
 func (m *AccountDiscoveryAzureResource) Update(accountDiscovery *api.AccountDiscovery) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(accountDiscovery.ID)
+	m.ID = typehelpers.GraphQLIDValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
 	m.Description = types.StringPointerValue(accountDiscovery.Description)
 	m.Suspended = types.BoolValue(accountDiscovery.Schedule.Suspended)

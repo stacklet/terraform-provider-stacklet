@@ -28,7 +28,7 @@ type AccountDataSource struct {
 func (m *AccountDataSource) Update(account *api.Account) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(account.ID)
+	m.ID = typehelpers.GraphQLIDValue(account.ID)
 	m.Key = types.StringValue(account.Key)
 	m.Name = types.StringValue(account.Name)
 	m.ShortName = types.StringPointerValue(account.ShortName)

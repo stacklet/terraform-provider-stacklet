@@ -10,7 +10,7 @@ import (
 
 // Policy is the data returned by reading policy data.
 type Policy struct {
-	ID              string
+	ID              graphql.ID
 	UUID            string
 	Name            string
 	Description     *string

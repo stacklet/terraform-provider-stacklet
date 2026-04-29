@@ -44,7 +44,7 @@ func (m *ConfigurationProfileJiraDataSource) Update(cp api.ConfigurationProfile)
 
 	jiraConfig := cp.Record.JiraConfiguration
 
-	m.ID = types.StringValue(cp.ID)
+	m.ID = typehelpers.GraphQLIDValue(cp.ID)
 	m.Profile = types.StringValue(cp.Profile)
 	m.URL = types.StringPointerValue(jiraConfig.URL)
 	m.User = types.StringValue(jiraConfig.User)

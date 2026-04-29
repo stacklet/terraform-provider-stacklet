@@ -10,7 +10,7 @@ import (
 
 // Role is the data returned by reading role data.
 type Role struct {
-	ID          string
+	ID          graphql.ID
 	Name        string
 	Permissions []string
 	System      bool

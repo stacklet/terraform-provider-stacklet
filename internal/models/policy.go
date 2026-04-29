@@ -10,6 +10,7 @@ import (
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // PolicyDataSource is the model for policy data sources.
@@ -33,7 +34,7 @@ type PolicyDataSource struct {
 func (m *PolicyDataSource) Update(ctx context.Context, policy *api.Policy) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(policy.ID)
+	m.ID = typehelpers.GraphQLIDValue(policy.ID)
 	m.UUID = types.StringValue(policy.UUID)
 	m.Name = types.StringValue(policy.Name)
 	m.Description = types.StringPointerValue(policy.Description)

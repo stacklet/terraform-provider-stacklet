@@ -10,7 +10,7 @@ import (
 
 // User is the data returned by reading user data.
 type User struct {
-	ID                      string
+	ID                      graphql.ID
 	Active                  bool
 	DisplayName             *string
 	Email                   *string
@@ -112,7 +112,7 @@ func (a userAPI) Delete(ctx context.Context, key int64) error {
 	var mutation struct {
 		Payload struct {
 			Removed []struct {
-				ID string
+				ID graphql.ID
 			}
 		} `graphql:"removeUser(key: $key)"`
 	}

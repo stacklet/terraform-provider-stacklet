@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // SSOGroupDataSource is the model for SSO group data sources.
@@ -20,7 +21,7 @@ type SSOGroupDataSource struct {
 func (m *SSOGroupDataSource) Update(ssoGroup *api.SSOGroup) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(ssoGroup.ID)
+	m.ID = typehelpers.GraphQLIDValue(ssoGroup.ID)
 	m.DisplayName = types.StringPointerValue(ssoGroup.DisplayName)
 	m.Name = types.StringValue(ssoGroup.Name)
 	m.RoleAssignmentPrincipal = types.StringValue(ssoGroup.RoleAssignmentPrincipal)

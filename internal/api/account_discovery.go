@@ -10,7 +10,7 @@ import (
 
 // Account is the data returned by reading account data.
 type AccountDiscovery struct {
-	ID          string
+	ID          graphql.ID
 	Name        string
 	Description *string
 	Provider    CloudProvider

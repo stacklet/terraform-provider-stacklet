@@ -23,7 +23,7 @@ type GCPIntegrationDataSource struct {
 func (m *GCPIntegrationDataSource) Update(integration *api.GCPIntegration) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(string(integration.ID))
+	m.ID = typehelpers.GraphQLIDValue(integration.ID)
 	m.Key = types.StringValue(integration.Key)
 
 	customerConfig, d := m.buildCustomerConfig(integration.CustomerConfig)

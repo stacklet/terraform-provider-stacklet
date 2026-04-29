@@ -10,7 +10,7 @@ import (
 
 // AccountGroup is the data returned by reading account group data.
 type AccountGroup struct {
-	ID                   string
+	ID                   graphql.ID
 	UUID                 string
 	Name                 string
 	Description          *string

@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // AccountGroupMappingResource is the model for an account group mapping resource.
@@ -19,7 +20,7 @@ type AccountGroupMappingResource struct {
 func (m *AccountGroupMappingResource) Update(accountGroupMapping *api.AccountGroupMapping) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(accountGroupMapping.ID)
+	m.ID = typehelpers.GraphQLIDValue(accountGroupMapping.ID)
 	m.GroupUUID = types.StringValue(accountGroupMapping.GroupUUID)
 	m.AccountKey = types.StringValue(accountGroupMapping.AccountKey)
 

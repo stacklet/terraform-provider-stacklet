@@ -10,7 +10,7 @@ import (
 
 // ReportGroup is the data for a notification report group.
 type ReportGroup struct {
-	ID                 string
+	ID                 graphql.ID
 	Name               string
 	Enabled            bool
 	Bindings           []string
@@ -227,7 +227,7 @@ func (a reportGroupAPI) Upsert(ctx context.Context, input ReportGroupInput) (*Re
 // Delete removes a report group.
 func (a reportGroupAPI) Delete(ctx context.Context, name string) error {
 	var mutation struct {
-		IDs []string `graphql:"removeReportGroups(names: $names)"`
+		IDs []graphql.ID `graphql:"removeReportGroups(names: $names)"`
 	}
 	if err := a.c.Mutate(ctx, &mutation, map[string]any{"names": []graphql.String{graphql.String(name)}}); err != nil {
 		return err

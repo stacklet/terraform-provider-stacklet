@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 // PolicyCollectionMappingResource is the model for a policy collection mapping resource.
@@ -20,7 +21,7 @@ type PolicyCollectionMappingResource struct {
 func (m *PolicyCollectionMappingResource) Update(policyCollectionMapping *api.PolicyCollectionMapping) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(policyCollectionMapping.ID)
+	m.ID = typehelpers.GraphQLIDValue(policyCollectionMapping.ID)
 	m.CollectionUUID = types.StringValue(policyCollectionMapping.Collection.UUID)
 	m.PolicyUUID = types.StringValue(policyCollectionMapping.Policy.UUID)
 	m.PolicyVersion = types.Int32Value(int32(policyCollectionMapping.Policy.Version))

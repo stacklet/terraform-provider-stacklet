@@ -113,7 +113,7 @@ func (r *accountDiscoveryAWSResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	accountDiscovery, err = r.api.AccountDiscovery.UpdateSuspended(ctx, accountDiscovery.ID, plan.Suspended.ValueBool())
+	accountDiscovery, err = r.api.AccountDiscovery.UpdateSuspended(ctx, string(accountDiscovery.ID), plan.Suspended.ValueBool())
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
@@ -160,7 +160,7 @@ func (r *accountDiscoveryAWSResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	accountDiscovery, err = r.api.AccountDiscovery.UpdateSuspended(ctx, accountDiscovery.ID, plan.Suspended.ValueBool())
+	accountDiscovery, err = r.api.AccountDiscovery.UpdateSuspended(ctx, string(accountDiscovery.ID), plan.Suspended.ValueBool())
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return

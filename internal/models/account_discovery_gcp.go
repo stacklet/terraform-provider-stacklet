@@ -30,7 +30,7 @@ type AccountDiscoveryGCPResource struct {
 func (m *AccountDiscoveryGCPResource) Update(accountDiscovery *api.AccountDiscovery) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(accountDiscovery.ID)
+	m.ID = typehelpers.GraphQLIDValue(accountDiscovery.ID)
 	m.Name = types.StringValue(accountDiscovery.Name)
 	m.Description = types.StringPointerValue(accountDiscovery.Description)
 	m.Suspended = types.BoolValue(accountDiscovery.Schedule.Suspended)

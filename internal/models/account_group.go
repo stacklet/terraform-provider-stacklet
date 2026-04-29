@@ -25,7 +25,7 @@ type AccountGroupResource struct {
 func (m *AccountGroupResource) Update(accountGroup *api.AccountGroup) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(accountGroup.ID)
+	m.ID = typehelpers.GraphQLIDValue(accountGroup.ID)
 	m.UUID = types.StringValue(accountGroup.UUID)
 	m.Name = types.StringValue(accountGroup.Name)
 	m.Description = types.StringPointerValue(accountGroup.Description)

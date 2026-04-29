@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
 type RepositoryDataSource struct {
@@ -28,7 +29,7 @@ type RepositoryDataSource struct {
 func (m *RepositoryDataSource) Update(repo *api.Repository) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.ID = types.StringValue(repo.ID)
+	m.ID = typehelpers.GraphQLIDValue(repo.ID)
 	m.UUID = types.StringValue(repo.UUID)
 	m.URL = types.StringValue(repo.URL)
 	m.Name = types.StringValue(repo.Name)

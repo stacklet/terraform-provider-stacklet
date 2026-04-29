@@ -10,7 +10,7 @@ import (
 
 // Account is the data returned by reading account data.
 type Account struct {
-	ID              string
+	ID              graphql.ID
 	Key             string
 	Name            string
 	ShortName       *string

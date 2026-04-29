@@ -13,7 +13,7 @@ type UUID string
 
 // ConfigurationProfile is the data returned for configuration profiles.
 type ConfigurationProfile struct {
-	ID      string
+	ID      graphql.ID
 	Profile string
 	Record  struct {
 		TypeName                   string                     `graphql:"__typename"`
@@ -563,7 +563,7 @@ func (a configurationProfileAPI) UpsertMSTeams(ctx context.Context, input MSTeam
 // Delete removes a configuation profile.
 func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationProfileName) error {
 	var mutation struct {
-		ID string `graphql:"removeProfile(scope: $scope, name: $name)"`
+		ID graphql.ID `graphql:"removeProfile(scope: $scope, name: $name)"`
 	}
 	variables := map[string]any{
 		"name":  graphql.String(string(name)),
