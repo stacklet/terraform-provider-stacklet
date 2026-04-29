@@ -104,28 +104,7 @@ func (d *configurationProfileMSTeamsDataSource) Schema(_ context.Context, _ data
 						ElementType: types.StringType,
 						Computed:    true,
 					},
-					"terraform_module": schema.SingleNestedAttribute{
-						Description: "Terraform module configuration.",
-						Computed:    true,
-						Attributes: map[string]schema.Attribute{
-							"repository_url": schema.StringAttribute{
-								Description: "The repository URL.",
-								Computed:    true,
-							},
-							"source": schema.StringAttribute{
-								Description: "The module source.",
-								Computed:    true,
-							},
-							"version": schema.StringAttribute{
-								Description: "The module version.",
-								Computed:    true,
-							},
-							"variables_json": schema.StringAttribute{
-								Description: "The module variables as JSON.",
-								Computed:    true,
-							},
-						},
-					},
+					"terraform_module": models.TerraformModule{}.DataSourceSchemaAttribute(),
 				},
 			},
 			"entity_details": schema.SingleNestedAttribute{

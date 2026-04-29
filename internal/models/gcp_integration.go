@@ -140,15 +140,7 @@ func (m GCPIntegrationDataSource) buildCustomerCreateProject(cp *api.GCPIntegrat
 		return nullObj, diags
 	}
 
-	labels, d := typehelpers.ObjectList[Tag](
-		cp.Labels,
-		func(t api.Tag) (map[string]attr.Value, diag.Diagnostics) {
-			return map[string]attr.Value{
-				"key":   types.StringValue(t.Key),
-				"value": types.StringValue(t.Value),
-			}, nil
-		},
-	)
+	labels, d := api.TagsList(cp.Labels).TagsMap()
 	diags.Append(d...)
 	if diags.HasError() {
 		return nullObj, diags
@@ -372,7 +364,7 @@ type GCPIntegrationCustomerCreateProjectModel struct {
 	BillingAccountID types.String `tfsdk:"billing_account_id"`
 	OrgID            types.String `tfsdk:"org_id"`
 	FolderID         types.String `tfsdk:"folder_id"`
-	Labels           types.List   `tfsdk:"labels"`
+	Labels           types.Map    `tfsdk:"labels"`
 }
 
 func (m GCPIntegrationCustomerCreateProjectModel) AttributeTypes() map[string]attr.Type {
@@ -380,7 +372,7 @@ func (m GCPIntegrationCustomerCreateProjectModel) AttributeTypes() map[string]at
 		"billing_account_id": types.StringType,
 		"org_id":             types.StringType,
 		"folder_id":          types.StringType,
-		"labels":             types.ListType{ElemType: types.ObjectType{AttrTypes: Tag{}.AttributeTypes()}},
+		"labels":             types.MapType{ElemType: types.StringType},
 	}
 }
 

@@ -50,58 +50,14 @@ func (d *platformDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 				Description: "Customer configuration for AWS accounts.",
 				Computed:    true,
 				Attributes: map[string]schema.Attribute{
-					"terraform_module": schema.SingleNestedAttribute{
-						Description: "Terraform module configuration for account setup.",
-						Computed:    true,
-						Attributes: map[string]schema.Attribute{
-							"repository_url": schema.StringAttribute{
-								Description: "Module repository URL.",
-								Computed:    true,
-							},
-							"source": schema.StringAttribute{
-								Description: "Module source.",
-								Computed:    true,
-							},
-							"variables_json": schema.StringAttribute{
-								Description: "JSON-encoded variables for module configuration.",
-								Computed:    true,
-							},
-							"version": schema.StringAttribute{
-								Description: "Module version.",
-								Computed:    true,
-								Optional:    true,
-							},
-						},
-					},
+					"terraform_module": models.TerraformModule{}.DataSourceSchemaAttribute(),
 				},
 			},
 			"aws_org_read_customer_config": schema.SingleNestedAttribute{
 				Description: "Customer configuration for AWS organization read access.",
 				Computed:    true,
 				Attributes: map[string]schema.Attribute{
-					"terraform_module": schema.SingleNestedAttribute{
-						Description: "Terraform module configuration for organization read access setup.",
-						Computed:    true,
-						Attributes: map[string]schema.Attribute{
-							"repository_url": schema.StringAttribute{
-								Description: "Module repository URL.",
-								Computed:    true,
-							},
-							"source": schema.StringAttribute{
-								Description: "Module source.",
-								Computed:    true,
-							},
-							"variables_json": schema.StringAttribute{
-								Description: "JSON-encoded variables for module configuration.",
-								Computed:    true,
-							},
-							"version": schema.StringAttribute{
-								Description: "Module version.",
-								Computed:    true,
-								Optional:    true,
-							},
-						},
-					},
+					"terraform_module": models.TerraformModule{}.DataSourceSchemaAttribute(),
 				},
 			},
 		},

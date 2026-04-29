@@ -4,6 +4,8 @@ package models
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	dsSchema "github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	resSchema "github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,15 +26,52 @@ func (c TerraformModule) AttributeTypes() map[string]attr.Type {
 	}
 }
 
-// Tag is the model for tags.
-type Tag struct {
-	Key   types.String `tfsdk:"key"`
-	Value types.String `tfsdk:"value"`
+func (c TerraformModule) ResourceSchemaAttribute() resSchema.SingleNestedAttribute {
+	return resSchema.SingleNestedAttribute{
+		Description: "Terraform module configuration.",
+		Computed:    true,
+		Attributes: map[string]resSchema.Attribute{
+			"repository_url": resSchema.StringAttribute{
+				Description: "The repository URL.",
+				Computed:    true,
+			},
+			"source": resSchema.StringAttribute{
+				Description: "The module source.",
+				Computed:    true,
+			},
+			"version": resSchema.StringAttribute{
+				Description: "The module version.",
+				Computed:    true,
+			},
+			"variables_json": resSchema.StringAttribute{
+				Description: "The module variables as JSON.",
+				Computed:    true,
+			},
+		},
+	}
 }
 
-func (t Tag) AttributeTypes() map[string]attr.Type {
-	return map[string]attr.Type{
-		"key":   types.StringType,
-		"value": types.StringType,
+func (c TerraformModule) DataSourceSchemaAttribute() dsSchema.SingleNestedAttribute {
+	return dsSchema.SingleNestedAttribute{
+		Description: "Terraform module configuration.",
+		Computed:    true,
+		Attributes: map[string]dsSchema.Attribute{
+			"repository_url": dsSchema.StringAttribute{
+				Description: "The repository URL.",
+				Computed:    true,
+			},
+			"source": dsSchema.StringAttribute{
+				Description: "The module source.",
+				Computed:    true,
+			},
+			"version": dsSchema.StringAttribute{
+				Description: "The module version.",
+				Computed:    true,
+			},
+			"variables_json": dsSchema.StringAttribute{
+				Description: "The module variables as JSON.",
+				Computed:    true,
+			},
+		},
 	}
 }
