@@ -69,7 +69,7 @@ type BindingExecutionConfig struct {
 	Variables       *string                                `json:"variables"`
 }
 
-// BindingExecutionConfigDryRun holds the dry run confiuration for a binding execution config.
+// BindingExecutionConfigDryRun holds the dry run configuration for a binding execution config.
 type BindingExecutionConfigDryRun struct {
 	Default bool `json:"default"`
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// EmtpyListDefault returns an empty default for a resource field.
+// EmptyListDefault returns an empty default for a resource field.
 func EmptyListDefault(attrType attr.Type) defaults.List {
 	return listdefault.StaticValue(types.ListValueMust(attrType, []attr.Value{}))
 }

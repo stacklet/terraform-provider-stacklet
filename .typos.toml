@@ -1,0 +1,6 @@
+[files]
+extend-exclude = [ "internal/acceptance_tests/recordings/*.json", ".pre-commit-config.yaml" ]
+
+[default.extend-words]
+# Hashicorp think they're hilarious
+"copywrite" = "copywrite"

@@ -11,7 +11,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
-// AcountDataSource is the model for account data sources.
+// AccountDataSource is the model for account data sources.
 type AccountDataSource struct {
 	ID              types.String `tfsdk:"id"`
 	Key             types.String `tfsdk:"key"`

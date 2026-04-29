@@ -171,7 +171,7 @@ func (i msteamsConfigurationInput) GetGraphQLType() string {
 	return "MSTeamsConfigurationInput"
 }
 
-// JiraConfiguation is the configuration for Jira profiles.
+// JiraConfiguration is the configuration for Jira profiles.
 type JiraConfiguration struct {
 	URL      *string       `graphql:"url" json:"url"`
 	Projects []JiraProject `json:"projects"`
@@ -179,7 +179,7 @@ type JiraConfiguration struct {
 	APIKey   string        `json:"apiKey"`
 }
 
-// JiraPorject is the configuration for a Jira project.
+// JiraProject is the configuration for a Jira project.
 type JiraProject struct {
 	ClosedStatus string `json:"closedStatus"`
 	IssueType    string `json:"issueType"`
@@ -198,7 +198,7 @@ func (i jiraConfigurationInput) GetGraphQLType() string {
 	return "JiraConfigurationInput"
 }
 
-// ResourceOwnerConfiguration is the configuation for resource owner.
+// ResourceOwnerConfiguration is the configuration for resource owner.
 type ResourceOwnerConfiguration struct {
 	// "default" is present with different type in both resource and account, so it must be aliased
 	Default      []string `graphql:"resourceOwnerDefault: default" json:"default"`
@@ -560,7 +560,7 @@ func (a configurationProfileAPI) UpsertMSTeams(ctx context.Context, input MSTeam
 	return &mutation.Payload.Configuration, nil
 }
 
-// Delete removes a configuation profile.
+// Delete removes a configuration profile.
 func (a configurationProfileAPI) Delete(ctx context.Context, name ConfigurationProfileName) error {
 	var mutation struct {
 		ID graphql.ID `graphql:"removeProfile(scope: $scope, name: $name)"`

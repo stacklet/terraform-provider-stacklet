@@ -1,3 +1,5 @@
 golang        1.25
 golangci-lint v2.8.0
 just          1.50.0
+uv            0.8.14
+
