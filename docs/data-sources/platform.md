@@ -33,20 +33,17 @@ data "stacklet_platform" "example" {}
 
 Read-Only:
 
-- `terraform_module` (Attributes) Terraform module configuration for account setup. (see [below for nested schema](#nestedatt--aws_account_customer_config--terraform_module))
+- `terraform_module` (Attributes) Terraform module configuration. (see [below for nested schema](#nestedatt--aws_account_customer_config--terraform_module))
 
 <a id="nestedatt--aws_account_customer_config--terraform_module"></a>
 ### Nested Schema for `aws_account_customer_config.terraform_module`
 
-Optional:
-
-- `version` (String) Module version.
-
 Read-Only:
 
-- `repository_url` (String) Module repository URL.
-- `source` (String) Module source.
-- `variables_json` (String) JSON-encoded variables for module configuration.
+- `repository_url` (String) The repository URL.
+- `source` (String) The module source.
+- `variables_json` (String) The module variables as JSON.
+- `version` (String) The module version.
 
 
 
@@ -55,17 +52,14 @@ Read-Only:
 
 Read-Only:
 
-- `terraform_module` (Attributes) Terraform module configuration for organization read access setup. (see [below for nested schema](#nestedatt--aws_org_read_customer_config--terraform_module))
+- `terraform_module` (Attributes) Terraform module configuration. (see [below for nested schema](#nestedatt--aws_org_read_customer_config--terraform_module))
 
 <a id="nestedatt--aws_org_read_customer_config--terraform_module"></a>
 ### Nested Schema for `aws_org_read_customer_config.terraform_module`
 
-Optional:
-
-- `version` (String) Module version.
-
 Read-Only:
 
-- `repository_url` (String) Module repository URL.
-- `source` (String) Module source.
-- `variables_json` (String) JSON-encoded variables for module configuration.
+- `repository_url` (String) The repository URL.
+- `source` (String) The module source.
+- `variables_json` (String) The module variables as JSON.
+- `version` (String) The module version.

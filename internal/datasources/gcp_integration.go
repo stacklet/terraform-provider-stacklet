@@ -30,25 +30,6 @@ func (d *gcpIntegrationDataSource) Metadata(_ context.Context, req datasource.Me
 }
 
 func (d *gcpIntegrationDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
-	terraformModuleAttrs := map[string]schema.Attribute{
-		"repository_url": schema.StringAttribute{
-			Description: "The Terraform module repository URL.",
-			Computed:    true,
-		},
-		"source": schema.StringAttribute{
-			Description: "The Terraform module source.",
-			Computed:    true,
-		},
-		"version": schema.StringAttribute{
-			Description: "The Terraform module version.",
-			Computed:    true,
-		},
-		"variables_json": schema.StringAttribute{
-			Description: "The Terraform module variables as JSON.",
-			Computed:    true,
-		},
-	}
-
 	resp.Schema = schema.Schema{
 		Description: "Retrieve information about a GCP integration.",
 		Attributes: map[string]schema.Attribute{
@@ -96,19 +77,10 @@ func (d *gcpIntegrationDataSource) Schema(_ context.Context, _ datasource.Schema
 										Description: "The folder in which to create the project.",
 										Computed:    true,
 									},
-									"labels": schema.ListNestedAttribute{
+									"labels": schema.MapAttribute{
 										Description: "Labels applied to the created project.",
-										Computed:    true,
-										NestedObject: schema.NestedAttributeObject{
-											Attributes: map[string]schema.Attribute{
-												"key": schema.StringAttribute{
-													Computed: true,
-												},
-												"value": schema.StringAttribute{
-													Computed: true,
-												},
-											},
-										},
+										Optional:    true,
+										ElementType: types.StringType,
 									},
 								},
 							},
@@ -165,11 +137,7 @@ func (d *gcpIntegrationDataSource) Schema(_ context.Context, _ datasource.Schema
 							},
 						},
 					},
-					"terraform_module": schema.SingleNestedAttribute{
-						Description: "Terraform module to deploy this integration, computed by Stacklet.",
-						Computed:    true,
-						Attributes:  terraformModuleAttrs,
-					},
+					"terraform_module": models.TerraformModule{}.DataSourceSchemaAttribute(),
 				},
 			},
 			"access_config": schema.SingleNestedAttribute{
