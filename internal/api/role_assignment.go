@@ -63,17 +63,17 @@ type roleAssignmentAPI struct {
 	c *client
 }
 
-// RoleAssignmentInput represents the input for granting or revoking a role assignment.
-type RoleAssignmentInput struct {
+// roleAssignmentInput represents the input for granting or revoking a role assignment.
+type roleAssignmentInput struct {
 	RoleName  string `json:"roleName"`
 	Principal string `json:"principal"`
 	Target    string `json:"target"`
 }
 
-// UpdateRoleAssignmentInput represents the input for the updateRoleAssignment mutation.
-type UpdateRoleAssignmentInput struct {
-	Grant  []RoleAssignmentInput `json:"grant,omitempty"`
-	Revoke []RoleAssignmentInput `json:"revoke,omitempty"`
+// updateRoleAssignmentInput represents the input for the updateRoleAssignment mutation.
+type updateRoleAssignmentInput struct {
+	Grant  []roleAssignmentInput `json:"grant,omitempty"`
+	Revoke []roleAssignmentInput `json:"revoke,omitempty"`
 }
 
 // grantRoleAssignmentPayload represents the result of granting a role assignment.
@@ -123,8 +123,8 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 		} `graphql:"updateRoleAssignment(input: $input)"`
 	}
 
-	input := UpdateRoleAssignmentInput{
-		Grant: []RoleAssignmentInput{
+	input := updateRoleAssignmentInput{
+		Grant: []roleAssignmentInput{
 			{
 				RoleName:  roleName,
 				Principal: principal,
@@ -183,8 +183,8 @@ func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principa
 		} `graphql:"updateRoleAssignment(input: $input)"`
 	}
 
-	input := UpdateRoleAssignmentInput{
-		Revoke: []RoleAssignmentInput{
+	input := updateRoleAssignmentInput{
+		Revoke: []roleAssignmentInput{
 			{
 				RoleName:  roleName,
 				Principal: principal,
