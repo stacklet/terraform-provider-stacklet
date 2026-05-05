@@ -1,10 +1,17 @@
 {
-  "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\"}": [
+  "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\",\"filterElement\":{\"single\":{\"name\":\"target\",\"operator\":\"equals\",\"value\":\"system:all\"}}}": [
     {
       "request": {
-        "query": "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
-          "cursor": ""
+          "cursor": "",
+          "filterElement": {
+            "single": {
+              "name": "target",
+              "operator": "equals",
+              "value": "system:all"
+            }
+          }
         }
       },
       "response": {
@@ -37,10 +44,37 @@
                     "roleAssignmentTarget": "system:all"
                   }
                 }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yDEKwCAMAMCvlMz2RSISNENoTIPGwd9XKLgdF8E6a2FDyYqNQn+FfpE6+8q+7HhOrhCuCMOxPEJ+Y22su+BgrOHUtnSKpPQB+x0jFA==",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -49,9 +83,16 @@
     },
     {
       "request": {
-        "query": "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
-          "cursor": ""
+          "cursor": "",
+          "filterElement": {
+            "single": {
+              "name": "target",
+              "operator": "equals",
+              "value": "system:all"
+            }
+          }
         }
       },
       "response": {
@@ -84,10 +125,37 @@
                     "roleAssignmentTarget": "system:all"
                   }
                 }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yDEKwCAMAMCvlMz2RSISNENoTIPGwd9XKLgdF8E6a2FDyYqNQn+FfpE6+8q+7HhOrhCuCMOxPEJ+Y22su+BgrOHUtnSKpPQB+x0jFA==",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
@@ -96,9 +164,16 @@
     },
     {
       "request": {
-        "query": "query ($cursor:String!){roleAssignments(first: 100, after: $cursor){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
-          "cursor": ""
+          "cursor": "",
+          "filterElement": {
+            "single": {
+              "name": "target",
+              "operator": "equals",
+              "value": "system:all"
+            }
+          }
         }
       },
       "response": {
@@ -131,10 +206,37 @@
                     "roleAssignmentTarget": "system:all"
                   }
                 }
+              },
+              {
+                "node": {
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMzEiXQ==",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:2"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjIiXQ==",
+                    "name": "admin",
+                    "permissions": [
+                      "ADD",
+                      "DEPLOY_POLICIES",
+                      "EDIT",
+                      "EDIT_ACL",
+                      "LOGIN",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL",
+                      "VIEW_RESOURCES"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
+                }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9yDEKwCAMAMCvlMz2RSISNENoTIPGwd9XKLgdF8E6a2FDyYqNQn+FfpE6+8q+7HhOrhCuCMOxPEJ+Y22su+BgrOHUtnSKpPQB+x0jFA==",
+              "endCursor": "eJw9xzEKwCAMAMCvlMz2RSISNEMgRjFx8Pe1FLrdRRiTtfBAyYqNwuxCn0idfWff4/daXCFcEZzMb7N+Algb6wvb5tSOdImk9AAh9SDF",
               "hasNextPage": false
             }
           }
