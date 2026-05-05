@@ -124,38 +124,38 @@ func (a repositoryAPI) Read(ctx context.Context, uuid string) (*Repository, erro
 
 func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error) {
 	cursor := ""
-	var q struct {
-		Conn struct {
-			Edges []struct {
-				Node struct {
-					URL  string
-					UUID string
-				}
-			}
-			PageInfo struct {
-				HasNextPage bool
-				EndCursor   string
-			}
-			Problems []problem
-		} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
-	}
 	for {
+		var query struct {
+			Conn struct {
+				Edges []struct {
+					Node struct {
+						URL  string
+						UUID string
+					}
+				}
+				PageInfo struct {
+					HasNextPage bool
+					EndCursor   string
+				}
+				Problems []problem
+			} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
+		}
 		variables := map[string]any{"cursor": graphql.String(cursor)}
-		if err := a.c.Query(ctx, &q, variables); err != nil {
+		if err := a.c.Query(ctx, &query, variables); err != nil {
 			return "", err
 		}
-		if err := fromProblems(ctx, q.Conn.Problems); err != nil {
+		if err := fromProblems(ctx, query.Conn.Problems); err != nil {
 			return "", err
 		}
-		for _, edge := range q.Conn.Edges {
+		for _, edge := range query.Conn.Edges {
 			if edge.Node.URL == url {
 				return edge.Node.UUID, nil
 			}
 		}
-		if !q.Conn.PageInfo.HasNextPage {
+		if !query.Conn.PageInfo.HasNextPage {
 			return "", NotFound{"Repository not found"}
 		}
-		cursor = q.Conn.PageInfo.EndCursor
+		cursor = query.Conn.PageInfo.EndCursor
 	}
 }
 

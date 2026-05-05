@@ -20,14 +20,14 @@
             "group": {
               "description": "Test account group for role assignment",
               "dynamicFilter": null,
-              "id": "WyJhY2NvdW50LWdyb3VwIiwgImM5ZGM4MGI5LWM3MmMtNGYwZS05ZDBjLTcwZmVlNmY1YTRhMiJd",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgImViN2MzMzI4LWExZjUtNDZjYS05NGVmLTVlYzE2MjNiN2ZmNCJd",
               "name": "test-role-assignment-test",
               "provider": "AWS",
               "regions": [
                 "us-east-1"
               ],
-              "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2",
-              "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+              "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4",
+              "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
             }
           }
         }
@@ -57,10 +57,10 @@
               "active": true,
               "displayName": null,
               "email": "test@stacklet.io",
-              "id": "WyJ1c2VyIiwgIjM5Il0=",
-              "key": 39,
+              "id": "WyJ1c2VyIiwgIjQzIl0=",
+              "key": 43,
               "name": "test-role-user",
-              "roleAssignmentPrincipal": "user:39",
+              "roleAssignmentPrincipal": "user:43",
               "ssoUser": false,
               "username": "test_role_user"
             }
@@ -69,17 +69,17 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:39\",\"roleName\":\"editor\",\"target\":\"account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:43\",\"roleName\":\"editor\",\"target\":\"account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}",
         "variables": {
           "input": {
             "grant": [
               {
-                "principal": "user:39",
+                "principal": "user:43",
                 "roleName": "editor",
-                "target": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                "target": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
               }
             ]
           }
@@ -92,7 +92,24 @@
               {
                 "errorMessage": null,
                 "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc3Il0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNiJd",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:43"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjQiXQ==",
+                    "name": "editor",
+                    "permissions": [
+                      "EDIT",
+                      "REMOVE",
+                      "VIEW",
+                      "VIEW_ACL"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
+                  }
                 }
               }
             ]
@@ -101,17 +118,17 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:39\",\"roleName\":\"viewer\",\"target\":\"account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:43\",\"roleName\":\"viewer\",\"target\":\"account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}",
         "variables": {
           "input": {
             "grant": [
               {
-                "principal": "user:39",
+                "principal": "user:43",
                 "roleName": "viewer",
-                "target": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                "target": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
               }
             ]
           }
@@ -124,7 +141,21 @@
               {
                 "errorMessage": null,
                 "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc2Il0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNSJd",
+                  "principal": {
+                    "roleAssignmentPrincipal": "user:43"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjMiXQ==",
+                    "name": "viewer",
+                    "permissions": [
+                      "VIEW"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
+                  }
                 }
               }
             ]
@@ -133,7 +164,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:39\",\"roleName\":\"editor\",\"target\":\"account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:43\",\"roleName\":\"editor\",\"target\":\"account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}",
@@ -141,9 +172,9 @@
           "input": {
             "revoke": [
               {
-                "principal": "user:39",
+                "principal": "user:43",
                 "roleName": "editor",
-                "target": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                "target": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
               }
             ]
           }
@@ -156,7 +187,7 @@
               {
                 "errorMessage": null,
                 "removed": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc3Il0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNiJd"
                 }
               }
             ]
@@ -165,7 +196,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:39\",\"roleName\":\"viewer\",\"target\":\"account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:43\",\"roleName\":\"viewer\",\"target\":\"account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}",
@@ -173,9 +204,9 @@
           "input": {
             "revoke": [
               {
-                "principal": "user:39",
+                "principal": "user:43",
                 "roleName": "viewer",
-                "target": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                "target": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
               }
             ]
           }
@@ -188,7 +219,7 @@
               {
                 "errorMessage": null,
                 "removed": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc2Il0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNSJd"
                 }
               }
             ]
@@ -197,12 +228,12 @@
       }
     }
   ],
-  "mutation ($key:Int!){removeUser(key: $key){removed{id}}}:{\"key\":39}": [
+  "mutation ($key:Int!){removeUser(key: $key){removed{id}}}:{\"key\":43}": [
     {
       "request": {
         "query": "mutation ($key:Int!){removeUser(key: $key){removed{id}}}",
         "variables": {
-          "key": 39
+          "key": 43
         }
       },
       "response": {
@@ -210,7 +241,7 @@
           "removeUser": {
             "removed": [
               {
-                "id": "WyJ1c2VyIiwgIjM5Il0="
+                "id": "WyJ1c2VyIiwgIjQzIl0="
               }
             ]
           }
@@ -218,19 +249,19 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2\"}": [
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
         "variables": {
-          "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+          "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
         }
       },
       "response": {
         "data": {
           "removeAccountGroup": {
             "group": {
-              "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+              "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
             }
           }
         }
@@ -274,7 +305,7 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc1Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwMyJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:2"
                   },
@@ -291,7 +322,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -324,9 +355,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc0Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjIiXQ==",
@@ -351,9 +382,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc2Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -364,7 +395,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -440,7 +471,7 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc1Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwMyJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:2"
                   },
@@ -457,7 +488,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -490,9 +521,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc0Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjIiXQ==",
@@ -517,9 +548,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc2Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -530,7 +561,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -606,7 +637,7 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc1Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwMyJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:2"
                   },
@@ -623,7 +654,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -656,9 +687,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc0Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjIiXQ==",
@@ -683,9 +714,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc2Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -696,7 +727,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -772,7 +803,7 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc1Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwMyJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:2"
                   },
@@ -789,7 +820,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -822,9 +853,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc0Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjIiXQ==",
@@ -849,9 +880,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc2Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -862,7 +893,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -938,7 +969,7 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc1Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwMyJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:2"
                   },
@@ -955,7 +986,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -988,9 +1019,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc0Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjIiXQ==",
@@ -1015,9 +1046,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc2Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -1028,7 +1059,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -1104,7 +1135,7 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc1Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwMyJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:2"
                   },
@@ -1121,7 +1152,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -1154,9 +1185,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc0Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjIiXQ==",
@@ -1181,9 +1212,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNiJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjQiXQ==",
@@ -1197,7 +1228,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -1273,7 +1304,7 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc1Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwMyJd",
                   "principal": {
                     "roleAssignmentPrincipal": "user:2"
                   },
@@ -1290,7 +1321,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -1323,9 +1354,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc0Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjIiXQ==",
@@ -1350,9 +1381,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc3Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNiJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:39"
+                    "roleAssignmentPrincipal": "user:43"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjQiXQ==",
@@ -1366,7 +1397,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+                    "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
                   }
                 }
               },
@@ -1429,10 +1460,10 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjM5Il0=",
-                  "key": 39,
+                  "id": "WyJ1c2VyIiwgIjQzIl0=",
+                  "key": 43,
                   "name": "test-role-user",
-                  "roleAssignmentPrincipal": "user:39",
+                  "roleAssignmentPrincipal": "user:43",
                   "ssoUser": false,
                   "username": "test_role_user"
                 }
@@ -1463,10 +1494,10 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjM5Il0=",
-                  "key": 39,
+                  "id": "WyJ1c2VyIiwgIjQzIl0=",
+                  "key": 43,
                   "name": "test-role-user",
-                  "roleAssignmentPrincipal": "user:39",
+                  "roleAssignmentPrincipal": "user:43",
                   "ssoUser": false,
                   "username": "test_role_user"
                 }
@@ -1497,10 +1528,10 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjM5Il0=",
-                  "key": 39,
+                  "id": "WyJ1c2VyIiwgIjQzIl0=",
+                  "key": 43,
                   "name": "test-role-user",
-                  "roleAssignmentPrincipal": "user:39",
+                  "roleAssignmentPrincipal": "user:43",
                   "ssoUser": false,
                   "username": "test_role_user"
                 }
@@ -1511,13 +1542,13 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+          "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
         }
       },
       "response": {
@@ -1525,14 +1556,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImM5ZGM4MGI5LWM3MmMtNGYwZS05ZDBjLTcwZmVlNmY1YTRhMiJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImViN2MzMzI4LWExZjUtNDZjYS05NGVmLTVlYzE2MjNiN2ZmNCJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2",
-            "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+            "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4",
+            "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
           }
         }
       }
@@ -1542,7 +1573,7 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+          "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
         }
       },
       "response": {
@@ -1550,14 +1581,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImM5ZGM4MGI5LWM3MmMtNGYwZS05ZDBjLTcwZmVlNmY1YTRhMiJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImViN2MzMzI4LWExZjUtNDZjYS05NGVmLTVlYzE2MjNiN2ZmNCJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2",
-            "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+            "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4",
+            "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
           }
         }
       }
@@ -1567,7 +1598,7 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+          "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
         }
       },
       "response": {
@@ -1575,14 +1606,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgImM5ZGM4MGI5LWM3MmMtNGYwZS05ZDBjLTcwZmVlNmY1YTRhMiJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgImViN2MzMzI4LWExZjUtNDZjYS05NGVmLTVlYzE2MjNiN2ZmNCJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2",
-            "uuid": "c9dc80b9-c72c-4f0e-9d0c-70fee6f5a4a2"
+            "roleAssignmentTarget": "account-group:eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4",
+            "uuid": "eb7c3328-a1f5-46ca-94ef-5ec1623b7ff4"
           }
         }
       }

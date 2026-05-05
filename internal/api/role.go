@@ -46,22 +46,20 @@ func (r roleAPI) Read(ctx context.Context, name string) (*Role, error) {
 // List returns all roles.
 func (r roleAPI) List(ctx context.Context) ([]Role, error) {
 	cursor := ""
-	var query struct {
-		Roles struct {
-			Edges []struct {
-				Node Role
-			}
-			PageInfo struct {
-				HasNextPage bool
-				EndCursor   string
-			}
-		} `graphql:"roles(first: 100, after: $cursor)"`
-	}
-
 	roles := make([]Role, 0)
-
 	// Paginate through all results
 	for {
+		var query struct {
+			Roles struct {
+				Edges []struct {
+					Node Role
+				}
+				PageInfo struct {
+					HasNextPage bool
+					EndCursor   string
+				}
+			} `graphql:"roles(first: 100, after: $cursor)"`
+		}
 		variables := map[string]any{
 			"cursor": graphql.String(cursor),
 		}

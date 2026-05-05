@@ -24,15 +24,15 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id}}}}:{\"input\":{\"grant\":[{\"principal\":\"sso-group:15\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"sso-group:17\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}",
         "variables": {
           "input": {
             "grant": [
               {
-                "principal": "sso-group:15",
+                "principal": "sso-group:17",
                 "roleName": "viewer",
                 "target": "system:all"
               }
@@ -47,7 +47,21 @@
               {
                 "errorMessage": null,
                 "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc5Il0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNyJd",
+                  "principal": {
+                    "roleAssignmentPrincipal": "sso-group:17"
+                  },
+                  "role": {
+                    "id": "WyJyb2xlIiwgIjMiXQ==",
+                    "name": "viewer",
+                    "permissions": [
+                      "VIEW"
+                    ],
+                    "system": true
+                  },
+                  "target": {
+                    "roleAssignmentTarget": "system:all"
+                  }
                 }
               }
             ]
@@ -56,7 +70,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"sso-group:15\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"sso-group:17\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}",
@@ -64,7 +78,7 @@
           "input": {
             "revoke": [
               {
-                "principal": "sso-group:15",
+                "principal": "sso-group:17",
                 "roleName": "viewer",
                 "target": "system:all"
               }
@@ -79,7 +93,7 @@
               {
                 "errorMessage": null,
                 "removed": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc5Il0="
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNyJd"
                 }
               }
             ]
@@ -111,9 +125,9 @@
                 "errorMessage": null,
                 "ssoGroup": {
                   "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiMTUiXQ==",
+                  "id": "WyJzc28tZ3JvdXAiLCAiMTciXQ==",
                   "name": "test-sso-role-group",
-                  "roleAssignmentPrincipal": "sso-group:15"
+                  "roleAssignmentPrincipal": "sso-group:17"
                 }
               }
             ]
@@ -213,9 +227,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc5Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNyJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "sso-group:15"
+                    "roleAssignmentPrincipal": "sso-group:17"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -329,9 +343,9 @@
               },
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiOTc5Il0=",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAwNyJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "sso-group:15"
+                    "roleAssignmentPrincipal": "sso-group:17"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -376,9 +390,9 @@
               {
                 "node": {
                   "displayName": null,
-                  "id": "WyJzc28tZ3JvdXAiLCAiMTUiXQ==",
+                  "id": "WyJzc28tZ3JvdXAiLCAiMTciXQ==",
                   "name": "test-sso-role-group",
-                  "roleAssignmentPrincipal": "sso-group:15"
+                  "roleAssignmentPrincipal": "sso-group:17"
                 }
               }
             ]

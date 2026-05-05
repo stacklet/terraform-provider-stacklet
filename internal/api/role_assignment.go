@@ -80,15 +80,8 @@ func (i roleAssignmentInput) GetGraphQLType() string {
 
 // grantRoleAssignmentPayload represents the result of granting a role assignment.
 type grantRoleAssignmentPayload struct {
-	ErrorMessage *string
-	// Minimal struct instead of *RoleAssignment: the full type includes
-	// Role.Permissions []string, a nested slice inside Grant
-	// []grantRoleAssignmentPayload that breaks go-graphql-client's
-	// template-copy decoder. We only need the ID to confirm the assignment was
-	// created.  This is similar to
-	// https://github.com/hasura/go-graphql-client/issues/152 and
-	// https://github.com/hasura/go-graphql-client/issues/158
-	RoleAssignment *struct{ ID graphql.ID }
+	ErrorMessage   *string
+	RoleAssignment *RoleAssignment
 }
 
 func (p grantRoleAssignmentPayload) Error() string {
@@ -218,22 +211,20 @@ func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principa
 // target and principal are opaque string identifiers. Pass nil to skip filtering.
 func (r roleAssignmentAPI) List(ctx context.Context, target *string, principal *string) ([]RoleAssignment, error) {
 	cursor := ""
-	var query struct {
-		RoleAssignments struct {
-			Edges []struct {
-				Node RoleAssignment
-			}
-			PageInfo struct {
-				HasNextPage bool
-				EndCursor   string
-			}
-		} `graphql:"roleAssignments(first: 100, after: $cursor)"`
-	}
-
 	assignments := make([]RoleAssignment, 0)
-
 	// Paginate through all results
 	for {
+		var query struct {
+			RoleAssignments struct {
+				Edges []struct {
+					Node RoleAssignment
+				}
+				PageInfo struct {
+					HasNextPage bool
+					EndCursor   string
+				}
+			} `graphql:"roleAssignments(first: 100, after: $cursor)"`
+		}
 		variables := map[string]any{
 			"cursor": graphql.String(cursor),
 		}
