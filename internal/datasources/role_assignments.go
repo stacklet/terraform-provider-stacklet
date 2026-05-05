@@ -71,16 +71,12 @@ func (d *roleAssignmentsDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	// Query role assignments for the target
-	// We pass the opaque target string directly to the API for filtering
-	targetStr := data.Target.ValueString()
-	assignments, err := d.api.RoleAssignment.List(ctx, &targetStr, nil)
+	assignments, err := d.api.RoleAssignment.List(ctx, data.Target.ValueString())
 	if err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	// Update the data model with results
 	resp.Diagnostics.Append(data.Update(ctx, assignments)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

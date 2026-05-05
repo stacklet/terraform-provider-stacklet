@@ -80,15 +80,8 @@ func (i roleAssignmentInput) GetGraphQLType() string {
 
 // grantRoleAssignmentPayload represents the result of granting a role assignment.
 type grantRoleAssignmentPayload struct {
-	ErrorMessage *string
-	// Minimal struct instead of *RoleAssignment: the full type includes
-	// Role.Permissions []string, a nested slice inside Grant
-	// []grantRoleAssignmentPayload that breaks go-graphql-client's
-	// template-copy decoder. We only need the ID to confirm the assignment was
-	// created.  This is similar to
-	// https://github.com/hasura/go-graphql-client/issues/152 and
-	// https://github.com/hasura/go-graphql-client/issues/158
-	RoleAssignment *struct{ ID graphql.ID }
+	ErrorMessage   *string
+	RoleAssignment *RoleAssignment
 }
 
 func (p grantRoleAssignmentPayload) Error() string {
@@ -158,19 +151,23 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 // Read returns a single role assignment by the unique combination of roleName, principal, and target.
 // The roleAssignments API doesn't support filtering by ID, so we use the composite key to identify the assignment.
 func (r roleAssignmentAPI) Read(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
-	// Fetch role assignments filtered by principal and target
-	assignments, err := r.List(ctx, &target, &principal)
+	filter := newCompositeFilter(
+		[]filterElementInput{
+			newExactMatchFilter("role-name", roleName),
+			newExactMatchFilter("target", target),
+		},
+		filterBooleanAND,
+	)
+	assignments, err := r.list(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
 
-	// Find the assignment with the matching role name
 	for _, assignment := range assignments {
-		if assignment.Role.Name == roleName {
+		if assignment.GetPrincipal() == principal {
 			return &assignment, nil
 		}
 	}
-
 	return nil, NotFound{"Role assignment not found"}
 }
 
@@ -214,28 +211,29 @@ func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principa
 	return nil
 }
 
-// List returns role assignments, optionally filtered by target or principal.
-// target and principal are opaque string identifiers. Pass nil to skip filtering.
-func (r roleAssignmentAPI) List(ctx context.Context, target *string, principal *string) ([]RoleAssignment, error) {
+// List returns role assignments for a target.
+func (r roleAssignmentAPI) List(ctx context.Context, target string) ([]RoleAssignment, error) {
+	return r.list(ctx, newExactMatchFilter("target", target))
+}
+
+func (r roleAssignmentAPI) list(ctx context.Context, filter filterElementInput) ([]RoleAssignment, error) {
 	cursor := ""
-	var query struct {
-		RoleAssignments struct {
-			Edges []struct {
-				Node RoleAssignment
-			}
-			PageInfo struct {
-				HasNextPage bool
-				EndCursor   string
-			}
-		} `graphql:"roleAssignments(first: 100, after: $cursor)"`
-	}
-
 	assignments := make([]RoleAssignment, 0)
-
-	// Paginate through all results
 	for {
+		var query struct {
+			RoleAssignments struct {
+				Edges []struct {
+					Node RoleAssignment
+				}
+				PageInfo struct {
+					HasNextPage bool
+					EndCursor   string
+				}
+			} `graphql:"roleAssignments(first: 100, after: $cursor, filterElement: $filterElement)"`
+		}
 		variables := map[string]any{
-			"cursor": graphql.String(cursor),
+			"cursor":        graphql.String(cursor),
+			"filterElement": filter,
 		}
 
 		if err := r.c.Query(ctx, &query, variables); err != nil {
@@ -243,22 +241,8 @@ func (r roleAssignmentAPI) List(ctx context.Context, target *string, principal *
 		}
 
 		for _, edge := range query.RoleAssignments.Edges {
-			assignment := edge.Node
-
-			// Filter by target if specified (client-side filtering)
-			if target != nil && assignment.GetTarget() != *target {
-				continue
-			}
-
-			// Filter by principal if specified (client-side filtering)
-			if principal != nil && assignment.GetPrincipal() != *principal {
-				continue
-			}
-
-			assignments = append(assignments, assignment)
+			assignments = append(assignments, edge.Node)
 		}
-
-		// Check if there are more pages
 		if !query.RoleAssignments.PageInfo.HasNextPage {
 			break
 		}
