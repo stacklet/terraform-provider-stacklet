@@ -140,7 +140,7 @@ func (m GCPIntegrationDataSource) buildCustomerCreateProject(cp *api.GCPIntegrat
 		return nullObj, diags
 	}
 
-	labels, d := api.TagsList(cp.Labels).TagsMap()
+	labels, d := cp.Labels.TagsMap()
 	diags.Append(d...)
 	if diags.HasError() {
 		return nullObj, diags
@@ -557,4 +557,29 @@ func (m GCPIntegrationAccessSecurityContextModel) AttributeTypes() map[string]at
 		"extra_roles": types.ListType{ElemType: types.StringType},
 		"principal":   types.StringType,
 	}
+}
+
+// GCPIntegrationCustomerConfigInputModel is the model for user-provided GCP integration customer configuration.
+type GCPIntegrationCustomerConfigInputModel struct {
+	Infrastructure   types.Object `tfsdk:"infrastructure"`
+	Organizations    types.List   `tfsdk:"organizations"`
+	CostSources      types.List   `tfsdk:"cost_sources"`
+	SecurityContexts types.List   `tfsdk:"security_contexts"`
+}
+
+func (m GCPIntegrationCustomerConfigInputModel) AttributeTypes() map[string]attr.Type {
+	return map[string]attr.Type{
+		"infrastructure":    types.ObjectType{AttrTypes: GCPIntegrationCustomerInfraModel{}.AttributeTypes()},
+		"organizations":     types.ListType{ElemType: types.ObjectType{AttrTypes: GCPIntegrationCustomerOrgModel{}.AttributeTypes()}},
+		"cost_sources":      types.ListType{ElemType: types.ObjectType{AttrTypes: GCPIntegrationCustomerCostSourceModel{}.AttributeTypes()}},
+		"security_contexts": types.ListType{ElemType: types.ObjectType{AttrTypes: GCPIntegrationCustomerSecurityContextModel{}.AttributeTypes()}},
+	}
+}
+
+// GCPIntegrationResource is the model for the GCP integration resource.
+type GCPIntegrationResource struct {
+	GCPIntegrationDataSource
+
+	CustomerConfigInput   types.Object `tfsdk:"customer_config_input"`
+	AccessConfigBlobInput types.String `tfsdk:"access_config_blob_input"`
 }
