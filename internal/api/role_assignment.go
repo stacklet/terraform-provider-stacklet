@@ -151,11 +151,14 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 // Read returns a single role assignment by the unique combination of roleName, principal, and target.
 // The roleAssignments API doesn't support filtering by ID, so we use the composite key to identify the assignment.
 func (r roleAssignmentAPI) Read(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
-	filters := []filterElementInput{
-		newExactMatchFilter("role-name", roleName),
-		newExactMatchFilter("target", target),
-	}
-	assignments, err := r.list(ctx, newCompositeFilter(filters, filterBooleanAND))
+	filter := newCompositeFilter(
+		[]filterElementInput{
+			newExactMatchFilter("role-name", roleName),
+			newExactMatchFilter("target", target),
+		},
+		filterBooleanAND,
+	)
+	assignments, err := r.list(ctx, filter)
 	if err != nil {
 		return nil, err
 	}

@@ -1,4 +1,4 @@
-# Caveats/workaround to consider
+# Caveats/workarounds to consider
 
 ## go-graphql-client
 
