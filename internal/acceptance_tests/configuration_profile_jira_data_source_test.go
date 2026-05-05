@@ -9,23 +9,24 @@ import (
 )
 
 func TestAccConfigurationProfileJiraDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_configuration_profile_jira" "test" {
+			url = "https://example.atlassian.net"
+			user = "test@example.com"
+			api_key_wo = "test-api-key"
+			api_key_wo_version = "1"
+
+			project {
+				name = "Test Project"
+				project = "TEST"
+				issue_type = "Task"
+				closed_status = "Done"
+			}
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_configuration_profile_jira" "test" {
-					url = "https://example.atlassian.net"
-					user = "test@example.com"
-					api_key_wo = "test-api-key"
-					api_key_wo_version = "1"
-
-					project {
-						name = "Test Project"
-						project = "TEST"
-						issue_type = "Task"
-						closed_status = "Done"
-					}
-				}
-
+			Config: baseline + `
 				data "stacklet_configuration_profile_jira" "test" {
 					depends_on = [stacklet_configuration_profile_jira.test]
 				}

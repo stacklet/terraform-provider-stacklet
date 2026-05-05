@@ -9,19 +9,20 @@ import (
 )
 
 func TestAccPolicyCollectionDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_policy_collection" "test" {
+			name = "{{.Prefix}}-collection-ds"
+			description = "Test policy collection"
+			cloud_provider = "AWS"
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-					resource "stacklet_policy_collection" "test" {
-						name = "{{.Prefix}}-collection-ds"
-						description = "Test policy collection"
-						cloud_provider = "AWS"
-					}
-
-					data "stacklet_policy_collection" "test" {
-						name = stacklet_policy_collection.test.name
-					}
-				`,
+			Config: baseline + `
+				data "stacklet_policy_collection" "test" {
+					name = stacklet_policy_collection.test.name
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.stacklet_policy_collection.test", "name", prefixName("collection-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_policy_collection.test", "description", "Test policy collection"),

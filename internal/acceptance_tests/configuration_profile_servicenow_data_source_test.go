@@ -9,21 +9,22 @@ import (
 )
 
 func TestAccConfigurationProfileServiceNowDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_configuration_profile_servicenow" "test" {
+			endpoint = "https://dev12345.service-now.com"
+			username = "test-user"
+			password_wo = "test-password"
+			password_wo_version = "1"
+			issue_type = "incident"
+			closed_state = "closed"
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_configuration_profile_servicenow" "test" {
-					endpoint = "https://dev12345.service-now.com"
-					username = "test-user"
-					password_wo = "test-password"
-					password_wo_version = "1"
-					issue_type = "incident"
-					closed_state = "closed"
-				}
-
+			Config: baseline + `
 				data "stacklet_configuration_profile_servicenow" "test" {
-                    depends_on = [stacklet_configuration_profile_servicenow.test]
-                }
+					depends_on = [stacklet_configuration_profile_servicenow.test]
+				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("data.stacklet_configuration_profile_servicenow.test", "id"),

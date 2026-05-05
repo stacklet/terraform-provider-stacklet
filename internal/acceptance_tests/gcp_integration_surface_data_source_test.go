@@ -12,8 +12,8 @@ func TestAccGCPIntegrationSurfaceDataSource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					data "stacklet_gcp_integration_surface" "test" {}
-				`,
+				data "stacklet_gcp_integration_surface" "test" {}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("data.stacklet_gcp_integration_surface.test", "trust_aws.account_id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_gcp_integration_surface.test", "trust_aws.assetdb_role_name"),

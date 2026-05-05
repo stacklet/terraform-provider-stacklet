@@ -13,12 +13,12 @@ func TestAccPolicyCollectionResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-					resource "stacklet_policy_collection" "test" {
-						name = "{{.Prefix}}-collection"
-						description = "Test policy collection"
-						cloud_provider = "AWS"
-					}
-				`,
+				resource "stacklet_policy_collection" "test" {
+					name = "{{.Prefix}}-collection"
+					description = "Test policy collection"
+					cloud_provider = "AWS"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_policy_collection.test", "name", prefixName("collection")),
 				resource.TestCheckResourceAttr("stacklet_policy_collection.test", "description", "Test policy collection"),
@@ -35,12 +35,12 @@ func TestAccPolicyCollectionResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-					resource "stacklet_policy_collection" "test" {
-						name = "{{.Prefix}}-collection-updated"
-						description = "Updated policy collection"
-						cloud_provider = "AWS"
-					}
-				`,
+				resource "stacklet_policy_collection" "test" {
+					name = "{{.Prefix}}-collection-updated"
+					description = "Updated policy collection"
+					cloud_provider = "AWS"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_policy_collection.test", "name", prefixName("collection-updated")),
 				resource.TestCheckResourceAttr("stacklet_policy_collection.test", "description", "Updated policy collection"),
@@ -52,25 +52,26 @@ func TestAccPolicyCollectionResource(t *testing.T) {
 }
 
 func TestAccPolicyCollectionResource_Dynamic(t *testing.T) {
+	baseline := `
+		resource "stacklet_repository" "test" {
+			url = "https://github.com/test-org/test-repo"
+			name = "{{.Prefix}}-repo"
+		}
+	`
 	steps := []resource.TestStep{
 		// Create and Read testing
 		{
-			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
+			Config: baseline + `
+				resource "stacklet_policy_collection" "test" {
+					name = "{{.Prefix}}-collection-dynamic"
+					cloud_provider = "AWS"
+					description = "Dynamic policy collection"
+					auto_update = true
+					dynamic_config = {
+						repository_uuid = stacklet_repository.test.uuid
 					}
-
-					resource "stacklet_policy_collection" "test" {
-						name = "{{.Prefix}}-collection-dynamic"
-                        cloud_provider = "AWS"
-						description = "Dynamic policy collection"
-                        auto_update = true
-						dynamic_config = {
-							repository_uuid = stacklet_repository.test.uuid
-						}
-					}
-				`,
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_policy_collection.test", "name", prefixName("collection-dynamic")),
 				resource.TestCheckResourceAttr("stacklet_policy_collection.test", "auto_update", "true"),
@@ -87,24 +88,19 @@ func TestAccPolicyCollectionResource_Dynamic(t *testing.T) {
 		},
 		// Update and Read testing
 		{
-			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
+			Config: baseline + `
+				resource "stacklet_policy_collection" "test" {
+					name = "{{.Prefix}}-collection-dynamic"
+					cloud_provider = "AWS"
+					description = "Dynamic policy collection updated"
+					auto_update = true
+					dynamic_config = {
+						repository_uuid = stacklet_repository.test.uuid
+						policy_directories = ["dir1", "dir2"]
+						policy_file_suffixes = [".yaml"]
 					}
-
-					resource "stacklet_policy_collection" "test" {
-						name = "{{.Prefix}}-collection-dynamic"
-						cloud_provider = "AWS"
-						description = "Dynamic policy collection updated"
-						auto_update = true
-						dynamic_config = {
-							repository_uuid = stacklet_repository.test.uuid
-                            policy_directories = ["dir1", "dir2"]
-                            policy_file_suffixes = [".yaml"]
-						}
-					}
-				`,
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_policy_collection.test", "name", prefixName("collection-dynamic")),
 				resource.TestCheckResourceAttr("stacklet_policy_collection.test", "auto_update", "true"),

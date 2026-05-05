@@ -9,58 +9,58 @@ import (
 )
 
 func TestAccBindingDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_account_group" "test" {
+			name = "{{.Prefix}}-binding-ds-group"
+			description = "Test account group for binding data source"
+			cloud_provider = "AWS"
+			regions = ["us-east-1"]
+		}
+
+		resource "stacklet_policy_collection" "test" {
+			name = "{{.Prefix}}-binding-ds-collection"
+			description = "Test policy collection for binding data source"
+			cloud_provider = "AWS"
+		}
+
+		resource "stacklet_binding" "test" {
+			name = "{{.Prefix}}-binding-ds"
+			description = "Test binding for data source"
+			account_group_uuid = stacklet_account_group.test.uuid
+			policy_collection_uuid = stacklet_policy_collection.test.uuid
+			auto_deploy = true
+			schedule = "rate(1 hour)"
+			dry_run = true
+			resource_limits = {
+				max_count = 10
+				max_percentage = 20
+				requires_both = true
+			}
+			policy_resource_limit {
+				policy_name = "policy"
+				max_count = 90
+				max_percentage = 50.0
+				requires_both = true
+			}
+			variables = jsonencode({
+				environment = "test"
+				region = "us-east-1"
+			})
+		}
+	`
 	steps := []resource.TestStep{
-		// Create a binding to test the data source
 		{
-			Config: `
-					resource "stacklet_account_group" "test" {
-						name = "{{.Prefix}}-binding-ds-group"
-						description = "Test account group for binding data source"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
-					}
+			Config: baseline + `
+				# Test lookup by name
+				data "stacklet_binding" "by_name" {
+					name = stacklet_binding.test.name
+				}
 
-					resource "stacklet_policy_collection" "test" {
-						name = "{{.Prefix}}-binding-ds-collection"
-						description = "Test policy collection for binding data source"
-						cloud_provider = "AWS"
-					}
-
-					resource "stacklet_binding" "test" {
-						name = "{{.Prefix}}-binding-ds"
-						description = "Test binding for data source"
-						account_group_uuid = stacklet_account_group.test.uuid
-						policy_collection_uuid = stacklet_policy_collection.test.uuid
-						auto_deploy = true
-						schedule = "rate(1 hour)"
-						dry_run = true
-						resource_limits = {
-							max_count = 10
-							max_percentage = 20
-							requires_both = true
-						}
-						policy_resource_limit {
-							policy_name = "policy"
-							max_count = 90
-							max_percentage = 50.0
-							requires_both = true
-						}
-						variables = jsonencode({
-							environment = "test"
-							region = "us-east-1"
-						})
-					}
-
-					# Test lookup by name
-					data "stacklet_binding" "by_name" {
-						name = stacklet_binding.test.name
-					}
-
-					# Test lookup by UUID
-					data "stacklet_binding" "by_uuid" {
-						uuid = stacklet_binding.test.uuid
-					}
-				`,
+				# Test lookup by UUID
+				data "stacklet_binding" "by_uuid" {
+					uuid = stacklet_binding.test.uuid
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				// Verify lookup by name
 				resource.TestCheckResourceAttr("data.stacklet_binding.by_name", "name", prefixName("binding-ds")),

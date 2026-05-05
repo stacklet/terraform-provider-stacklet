@@ -9,25 +9,26 @@ import (
 )
 
 func TestAccConfigurationProfileSlackDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_configuration_profile_slack" "test" {
+			user_fields = ["username", "email"]
+
+			webhook {
+				name = "bar"
+				url_wo = "https://example.com/webhooks/one"
+				url_wo_version = "1"
+			}
+
+			webhook {
+				name = "foo"
+				url_wo = "https://example.com/webhooks/two"
+				url_wo_version = "1"
+			}
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_configuration_profile_slack" "test" {
- 	                user_fields = ["username", "email"]
-
-					webhook {
-						name = "bar"
-						url_wo = "https://example.com/webhooks/one"
-						url_wo_version = "1"
-					}
-
-					webhook {
-						name = "foo"
-						url_wo = "https://example.com/webhooks/two"
-						url_wo_version = "1"
-					}
-				}
-
+			Config: baseline + `
 				data "stacklet_configuration_profile_slack" "test" {
 					depends_on = [stacklet_configuration_profile_slack.test]
 				}

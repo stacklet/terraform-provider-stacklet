@@ -9,22 +9,21 @@ import (
 )
 
 func TestAccNotificationTemplateDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_notification_template" "test" {
+			name = "{{.Prefix}}-notification-template"
+			description = "Test notification template"
+			transport = "email"
+			content = "sample content"
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-					resource "stacklet_notification_template" "test" {
-						name = "{{.Prefix}}-notification-template"
-						description = "Test notification template"
-						transport = "email"
-						content = "sample content"
-					}
-
-					data "stacklet_notification_template" "test" {
-						name = "{{.Prefix}}-notification-template"
-
-		                depends_on = [stacklet_notification_template.test]
-	                }	             
-				`,
+			Config: baseline + `
+				data "stacklet_notification_template" "test" {
+					name = stacklet_notification_template.test.name
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("data.stacklet_notification_template.test", "id"),
 				resource.TestCheckResourceAttr("data.stacklet_notification_template.test", "name", prefixName("notification-template")),

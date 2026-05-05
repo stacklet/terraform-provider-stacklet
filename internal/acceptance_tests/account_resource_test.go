@@ -13,20 +13,20 @@ func TestAccAccountResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-					resource "stacklet_account" "test" {
-						name = "{{.Prefix}}-account"
-						key = "999999999999"
-						cloud_provider = "AWS"
-						description = "Test AWS account"
-						short_name = "{{.Prefix}}-account"
-						email = "test@example.com"
-						variables = jsonencode({
-                            environment = "test"
-                        })
-                        security_context_wo = "arn:aws:iam::123456789012:role/stacklet-execution"
-                        security_context_wo_version = "1"
-					}
-				`,
+				resource "stacklet_account" "test" {
+					name = "{{.Prefix}}-account"
+					key = "999999999999"
+					cloud_provider = "AWS"
+					description = "Test AWS account"
+					short_name = "{{.Prefix}}-account"
+					email = "test@example.com"
+					variables = jsonencode({
+						environment = "test"
+					})
+					security_context_wo = "arn:aws:iam::123456789012:role/stacklet-execution"
+					security_context_wo_version = "1"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account.test", "name", prefixName("account")),
 				resource.TestCheckResourceAttr("stacklet_account.test", "key", "999999999999"),
@@ -54,20 +54,20 @@ func TestAccAccountResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-					resource "stacklet_account" "test" {
-						name = "{{.Prefix}}-account-updated"
-						key = "999999999999"
-						cloud_provider = "AWS"
-						description = "Updated AWS account"
-						short_name = "{{.Prefix}}-account-updated"
-						email = "updated@example.com"
-						variables = jsonencode({
-                            environment = "staging"
-                        })
-                        security_context_wo = "arn:aws:iam::123456789012:role/stacklet-execution-new"
-                        security_context_wo_version = "2"
-					}
-				`,
+				resource "stacklet_account" "test" {
+					name = "{{.Prefix}}-account-updated"
+					key = "999999999999"
+					cloud_provider = "AWS"
+					description = "Updated AWS account"
+					short_name = "{{.Prefix}}-account-updated"
+					email = "updated@example.com"
+					variables = jsonencode({
+						environment = "staging"
+					})
+					security_context_wo = "arn:aws:iam::123456789012:role/stacklet-execution-new"
+					security_context_wo_version = "2"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account.test", "name", prefixName("account-updated")),
 				resource.TestCheckResourceAttr("stacklet_account.test", "key", "999999999999"),

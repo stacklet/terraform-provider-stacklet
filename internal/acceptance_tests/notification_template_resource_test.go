@@ -13,13 +13,13 @@ func TestAccNotificationTemplateResource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_notification_template" "test" {
-						name = "{{.Prefix}}-notification-template"
-						description = "Test notification template"
-						transport = "email"
-						content = "sample content"
-					}
-				`,
+				resource "stacklet_notification_template" "test" {
+					name = "{{.Prefix}}-notification-template"
+					description = "Test notification template"
+					transport = "email"
+					content = "sample content"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_notification_template.test", "id"),
 				resource.TestCheckResourceAttr("stacklet_notification_template.test", "name", prefixName("notification-template")),
@@ -38,13 +38,13 @@ func TestAccNotificationTemplateResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-					resource "stacklet_notification_template" "test" {
-						name = "{{.Prefix}}-notification-template"
-						description = "Test updated notification template"
-						transport = "slack"
-						content = "sample updated content"
-					}
-				`,
+				resource "stacklet_notification_template" "test" {
+					name = "{{.Prefix}}-notification-template"
+					description = "Test updated notification template"
+					transport = "slack"
+					content = "sample updated content"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_notification_template.test", "description", "Test updated notification template"),
 				resource.TestCheckResourceAttr("stacklet_notification_template.test", "transport", "slack"),
@@ -54,13 +54,13 @@ func TestAccNotificationTemplateResource(t *testing.T) {
 		// Test that updating name causes replacement
 		{
 			Config: `
-					resource "stacklet_notification_template" "test" {
-						name = "{{.Prefix}}-notification-template-renamed"
-						description = "Test updated notification template"
-						transport = "slack"
-						content = "sample updated content"
-					}
-				`,
+				resource "stacklet_notification_template" "test" {
+					name = "{{.Prefix}}-notification-template-renamed"
+					description = "Test updated notification template"
+					transport = "slack"
+					content = "sample updated content"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_notification_template.test", "name", prefixName("notification-template-renamed")),
 				resource.TestCheckResourceAttr("stacklet_notification_template.test", "description", "Test updated notification template"),

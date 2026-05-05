@@ -14,13 +14,13 @@ func TestAccAccountGroupResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-					resource "stacklet_account_group" "test" {
-						name = "{{.Prefix}}-group"
-						description = "Test account group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
-					}
-				`,
+				resource "stacklet_account_group" "test" {
+					name = "{{.Prefix}}-group"
+					description = "Test account group"
+					cloud_provider = "AWS"
+					regions = ["us-east-1"]
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("group")),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "description", "Test account group"),
@@ -40,13 +40,13 @@ func TestAccAccountGroupResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-					resource "stacklet_account_group" "test" {
-						name = "{{.Prefix}}-group-updated"
-						description = "Updated account group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1", "us-east-2"]
-					}
-				`,
+				resource "stacklet_account_group" "test" {
+					name = "{{.Prefix}}-group-updated"
+					description = "Updated account group"
+					cloud_provider = "AWS"
+					regions = ["us-east-1", "us-east-2"]
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("group-updated")),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "description", "Updated account group"),
@@ -56,15 +56,14 @@ func TestAccAccountGroupResource(t *testing.T) {
 				resource.TestCheckResourceAttrSet("stacklet_account_group.test", "uuid"),
 			),
 		},
-		//
 		{
 			Config: `
-					resource "stacklet_account_group" "different" {
-						name = "{{.Prefix}}-another"
-						description = "Different account group"
-						cloud_provider = "Azure"
-					}
-				`,
+				resource "stacklet_account_group" "different" {
+					name = "{{.Prefix}}-another"
+					description = "Different account group"
+					cloud_provider = "Azure"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group.different", "name", prefixName("another")),
 				resource.TestCheckResourceAttr("stacklet_account_group.different", "description", "Different account group"),
@@ -82,13 +81,13 @@ func TestAccAccountGroupResource_Dynamic(t *testing.T) {
 		// Create account group without dynamic filter
 		{
 			Config: `
-					resource "stacklet_account_group" "test" {
-						name = "{{.Prefix}}-dynamic-group"
-						description = "Test dynamic account group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
-					}
-				`,
+				resource "stacklet_account_group" "test" {
+					name = "{{.Prefix}}-dynamic-group"
+					description = "Test dynamic account group"
+					cloud_provider = "AWS"
+					regions = ["us-east-1"]
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("dynamic-group")),
 				resource.TestCheckNoResourceAttr("stacklet_account_group.test", "dynamic_filter"),
@@ -97,14 +96,14 @@ func TestAccAccountGroupResource_Dynamic(t *testing.T) {
 		// Add dynamic filter - should trigger recreation
 		{
 			Config: `
-					resource "stacklet_account_group" "test" {
-						name = "{{.Prefix}}-dynamic-group"
-						description = "Test dynamic account group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
-						dynamic_filter = "tag:Environment=prod"
-					}
-				`,
+				resource "stacklet_account_group" "test" {
+					name = "{{.Prefix}}-dynamic-group"
+					description = "Test dynamic account group"
+					cloud_provider = "AWS"
+					regions = ["us-east-1"]
+					dynamic_filter = "tag:Environment=prod"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("dynamic-group")),
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "dynamic_filter", "tag:Environment=prod"),
@@ -118,13 +117,13 @@ func TestAccAccountGroupResource_Dynamic(t *testing.T) {
 		// Remove dynamic filter - should trigger recreation
 		{
 			Config: `
-					resource "stacklet_account_group" "test" {
-						name = "{{.Prefix}}-dynamic-group"
-						description = "Test dynamic account group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
-					}
-				`,
+				resource "stacklet_account_group" "test" {
+					name = "{{.Prefix}}-dynamic-group"
+					description = "Test dynamic account group"
+					cloud_provider = "AWS"
+					regions = ["us-east-1"]
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group.test", "name", prefixName("dynamic-group")),
 				resource.TestCheckNoResourceAttr("stacklet_account_group.test", "dynamic_filter"),

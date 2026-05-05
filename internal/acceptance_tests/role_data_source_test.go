@@ -12,14 +12,14 @@ func TestAccRoleDataSource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-                    data "stacklet_role" "owner" {
-                      name = "owner"
-                    }
+				data "stacklet_role" "owner" {
+					name = "owner"
+				}
 
-                    data "stacklet_role" "viewer" {
-                      name = "viewer"
-                    }
-				`,
+				data "stacklet_role" "viewer" {
+					name = "viewer"
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				// Check owner role
 				resource.TestCheckResourceAttr("data.stacklet_role.owner", "name", "owner"),

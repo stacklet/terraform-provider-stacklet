@@ -3,7 +3,6 @@
 package acceptance_tests
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -11,53 +10,24 @@ import (
 )
 
 func TestAccRepositoryDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_repository" "test" {
+			name = "{{.Prefix}}-repo-ds"
+			url = "https://github.com/test-org/test-repo"
+			description = "Test repository"
+		}
+	`
 	steps := []resource.TestStep{
-		// Create a resource first
 		{
-			Config: `
-					resource "stacklet_repository" "test" {
-						name = "{{.Prefix}}-repo-ds"
-						url = "https://github.com/test-org/test-repo"
-						description = "Test repository"
-					}
-				`,
-			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttrSet("stacklet_repository.test", "id"),
-				resource.TestCheckResourceAttrSet("stacklet_repository.test", "uuid"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("repo-ds")),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
-				resource.TestCheckResourceAttr("stacklet_repository.test", "description", "Test repository"),
-				resource.TestCheckNoResourceAttr("stacklet_repository.test", "auth_token"),
-				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_private_key"),
-				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_passphrase"),
-				// Add a custom check that logs all attributes
-				func(s *terraform.State) error {
-					rs, ok := s.RootModule().Resources["stacklet_repository.test"]
-					if !ok {
-						return fmt.Errorf("resource not found")
-					}
-					t.Logf("Resource Attributes: %#v", rs.Primary.Attributes)
-					return nil
-				},
-			),
-		},
-		// Read testing by uuid
-		{
-			Config: `
-					resource "stacklet_repository" "test" {
-						name = "{{.Prefix}}-repo-ds"
-						url = "https://github.com/test-org/test-repo"
-						description = "Test repository"
-					}
+			Config: baseline + `
+				data "stacklet_repository" "test_uuid" {
+					uuid = stacklet_repository.test.uuid
+				}
 
-					data "stacklet_repository" "test_uuid" {
-						uuid = stacklet_repository.test.uuid
-					}
-
-					data "stacklet_repository" "test_url" {
-						url = stacklet_repository.test.url
-					}
-				`,
+				data "stacklet_repository" "test_url" {
+					url = stacklet_repository.test.url
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				// Check resource attributes
 				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("repo-ds")),

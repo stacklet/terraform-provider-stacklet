@@ -12,8 +12,8 @@ func TestAccPlatformDataSource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					data "stacklet_platform" "test" {}
-				`,
+				data "stacklet_platform" "test" {}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("data.stacklet_platform.test", "id"),
 				resource.TestCheckResourceAttrSet("data.stacklet_platform.test", "external_id"),

@@ -9,36 +9,37 @@ import (
 )
 
 func TestAccAccountGroupMappingResource(t *testing.T) {
+	baseline := `
+		resource "stacklet_account" "test1" {
+			name = "{{.Prefix}}-account-1"
+			key = "111111111111"
+			cloud_provider = "AWS"
+			description = "Test AWS account 1"
+		}
+
+		resource "stacklet_account" "test2" {
+			name = "{{.Prefix}}-account-2"
+			key = "222222222222"
+			cloud_provider = "AWS"
+			description = "Test AWS account 2"
+		}
+
+		resource "stacklet_account_group" "test" {
+			name = "{{.Prefix}}-group-mappings"
+			description = "Test account group"
+			cloud_provider = "AWS"
+			regions = ["us-east-1"]
+		}
+	`
 	steps := []resource.TestStep{
 		// Create and Read testing
 		{
-			Config: `
-					resource "stacklet_account" "test1" {
-						name = "{{.Prefix}}-account-1"
-						key = "111111111111"
-						cloud_provider = "AWS"
-						description = "Test AWS account 1"
-					}
-
-					resource "stacklet_account" "test2" {
-						name = "{{.Prefix}}-account-2"
-						key = "222222222222"
-						cloud_provider = "AWS"
-						description = "Test AWS account 2"
-					}
-
-					resource "stacklet_account_group" "test" {
-						name = "{{.Prefix}}-group-mappings"
-						description = "Test account group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
-					}
-
-					resource "stacklet_account_group_mapping" "test" {
-						group_uuid = stacklet_account_group.test.uuid
-						account_key = stacklet_account.test1.key
-					}
-				`,
+			Config: baseline + `
+				resource "stacklet_account_group_mapping" "test" {
+					group_uuid = stacklet_account_group.test.uuid
+					account_key = stacklet_account.test1.key
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "account_key", "111111111111"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "id"),
@@ -57,33 +58,12 @@ func TestAccAccountGroupMappingResource(t *testing.T) {
 		},
 		// Update and Read testing
 		{
-			Config: `
-					resource "stacklet_account" "test1" {
-						name = "{{.Prefix}}-account-1"
-						key = "111111111111"
-						cloud_provider = "AWS"
-						description = "Test AWS account 1"
-					}
-
-					resource "stacklet_account" "test2" {
-						name = "{{.Prefix}}-account-2"
-						key = "222222222222"
-						cloud_provider = "AWS"
-						description = "Test AWS account 2"
-					}
-
-					resource "stacklet_account_group" "test" {
-						name = "{{.Prefix}}-group-mappings"
-						description = "Test account group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
-					}
-
-					resource "stacklet_account_group_mapping" "test" {
-						group_uuid = stacklet_account_group.test.uuid
-						account_key = stacklet_account.test2.key
-					}
-				`,
+			Config: baseline + `
+				resource "stacklet_account_group_mapping" "test" {
+					group_uuid = stacklet_account_group.test.uuid
+					account_key = stacklet_account.test2.key
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_account_group_mapping.test", "account_key", "222222222222"),
 				resource.TestCheckResourceAttrSet("stacklet_account_group_mapping.test", "id"),
