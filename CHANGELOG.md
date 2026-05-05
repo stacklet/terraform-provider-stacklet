@@ -1,3 +1,11 @@
+## 0.7.1 - 2026-05-05
+
+- Fix: properly handle paginated queries, previously reusing the same query
+  object (specifically fixing `stacklet_role_assignment` resource query
+  failures)
+- Feat: support removal of account discoveries
+- Chore: improve linting
+
 ## 0.7.0 - 2026-04-27
 
 - Add: support for the following resources
