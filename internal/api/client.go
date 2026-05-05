@@ -15,16 +15,18 @@ import (
 	"github.com/hasura/go-graphql-client"
 )
 
-// / ClientConfig is the configuration for the API client.
+// ClientConfig is the configuration for the API client.
 type ClientConfig struct {
 	Endpoint string
 	APIKey   string
 	Version  string
+	PageSize int
 }
 
 // client is the wrapper for the GraphQL client.
 type client struct {
-	c *graphql.Client
+	c        *graphql.Client
+	pageSize int
 }
 
 // Query makes a GraphQL query call.
@@ -61,7 +63,10 @@ func newClient(ctx context.Context, config ClientConfig) *client {
 			},
 		},
 	}
-	return &client{c: graphql.NewClient(config.Endpoint, httpClient)}
+	return &client{
+		c:        graphql.NewClient(config.Endpoint, httpClient),
+		pageSize: config.PageSize,
+	}
 }
 
 // authTransport is an http.Transport that adds authorization header.

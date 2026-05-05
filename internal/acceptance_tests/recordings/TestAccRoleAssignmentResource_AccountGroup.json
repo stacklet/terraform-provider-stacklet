@@ -20,14 +20,14 @@
             "group": {
               "description": "Test account group for role assignment",
               "dynamicFilter": null,
-              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjI0YmUwNzVlLTcyMWEtNDg5My05MTVkLTM5MjU1MTFjYTMwYSJd",
+              "id": "WyJhY2NvdW50LWdyb3VwIiwgIjhkN2YxYTRiLTAyYWItNDk4Ni05YTRjLTk3NWFlMzhhNzlhNSJd",
               "name": "test-role-assignment-test",
               "provider": "AWS",
               "regions": [
                 "us-east-1"
               ],
-              "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a",
-              "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+              "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5",
+              "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
             }
           }
         }
@@ -57,10 +57,10 @@
               "active": true,
               "displayName": null,
               "email": "test@stacklet.io",
-              "id": "WyJ1c2VyIiwgIjQ1Il0=",
-              "key": 45,
+              "id": "WyJ1c2VyIiwgIjUzIl0=",
+              "key": 53,
               "name": "test-role-user",
-              "roleAssignmentPrincipal": "user:45",
+              "roleAssignmentPrincipal": "user:53",
               "ssoUser": false,
               "username": "test_role_user"
             }
@@ -69,7 +69,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:45\",\"roleName\":\"editor\",\"target\":\"account-group:24be075e-721a-4893-915d-3925511ca30a\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:53\",\"roleName\":\"editor\",\"target\":\"account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}",
@@ -77,9 +77,9 @@
           "input": {
             "grant": [
               {
-                "principal": "user:45",
+                "principal": "user:53",
                 "roleName": "editor",
-                "target": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                "target": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
               }
             ]
           }
@@ -92,9 +92,9 @@
               {
                 "errorMessage": null,
                 "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNiJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3MCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjQiXQ==",
@@ -108,7 +108,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
@@ -118,7 +118,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:45\",\"roleName\":\"viewer\",\"target\":\"account-group:24be075e-721a-4893-915d-3925511ca30a\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"user:53\",\"roleName\":\"viewer\",\"target\":\"account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}",
@@ -126,9 +126,9 @@
           "input": {
             "grant": [
               {
-                "principal": "user:45",
+                "principal": "user:53",
                 "roleName": "viewer",
-                "target": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                "target": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
               }
             ]
           }
@@ -141,9 +141,9 @@
               {
                 "errorMessage": null,
                 "roleAssignment": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNSJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA2OSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -154,7 +154,7 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
@@ -164,7 +164,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:45\",\"roleName\":\"editor\",\"target\":\"account-group:24be075e-721a-4893-915d-3925511ca30a\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:53\",\"roleName\":\"editor\",\"target\":\"account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}",
@@ -172,9 +172,9 @@
           "input": {
             "revoke": [
               {
-                "principal": "user:45",
+                "principal": "user:53",
                 "roleName": "editor",
-                "target": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                "target": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
               }
             ]
           }
@@ -187,7 +187,7 @@
               {
                 "errorMessage": null,
                 "removed": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNiJd"
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3MCJd"
                 }
               }
             ]
@@ -196,7 +196,7 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:45\",\"roleName\":\"viewer\",\"target\":\"account-group:24be075e-721a-4893-915d-3925511ca30a\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}:{\"input\":{\"revoke\":[{\"principal\":\"user:53\",\"roleName\":\"viewer\",\"target\":\"account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5\"}]}}": [
     {
       "request": {
         "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){revoke{errorMessage,removed{id}}}}",
@@ -204,9 +204,9 @@
           "input": {
             "revoke": [
               {
-                "principal": "user:45",
+                "principal": "user:53",
                 "roleName": "viewer",
-                "target": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                "target": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
               }
             ]
           }
@@ -219,7 +219,7 @@
               {
                 "errorMessage": null,
                 "removed": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNSJd"
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA2OSJd"
                 }
               }
             ]
@@ -228,12 +228,12 @@
       }
     }
   ],
-  "mutation ($key:Int!){removeUser(key: $key){removed{id}}}:{\"key\":45}": [
+  "mutation ($key:Int!){removeUser(key: $key){removed{id}}}:{\"key\":53}": [
     {
       "request": {
         "query": "mutation ($key:Int!){removeUser(key: $key){removed{id}}}",
         "variables": {
-          "key": 45
+          "key": 53
         }
       },
       "response": {
@@ -241,7 +241,7 @@
           "removeUser": {
             "removed": [
               {
-                "id": "WyJ1c2VyIiwgIjQ1Il0="
+                "id": "WyJ1c2VyIiwgIjUzIl0="
               }
             ]
           }
@@ -249,29 +249,29 @@
       }
     }
   ],
-  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"24be075e-721a-4893-915d-3925511ca30a\"}": [
+  "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}:{\"uuid\":\"8d7f1a4b-02ab-4986-9a4c-975ae38a79a5\"}": [
     {
       "request": {
         "query": "mutation ($uuid:String!){removeAccountGroup(uuid: $uuid){group{uuid}}}",
         "variables": {
-          "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+          "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
         }
       },
       "response": {
         "data": {
           "removeAccountGroup": {
             "group": {
-              "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+              "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
             }
           }
         }
       }
     }
   ],
-  "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\",\"filterElement\":{\"multiple\":{\"operands\":[{\"single\":{\"name\":\"role-name\",\"operator\":\"equals\",\"value\":\"editor\"}},{\"single\":{\"name\":\"target\",\"operator\":\"equals\",\"value\":\"account-group:24be075e-721a-4893-915d-3925511ca30a\"}}],\"operator\":\"AND\"}}}": [
+  "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\",\"filterElement\":{\"multiple\":{\"operands\":[{\"single\":{\"name\":\"role-name\",\"operator\":\"equals\",\"value\":\"editor\"}},{\"single\":{\"name\":\"target\",\"operator\":\"equals\",\"value\":\"account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5\"}}],\"operator\":\"AND\"}},\"pageSize\":1}": [
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {
@@ -288,13 +288,14 @@
                   "single": {
                     "name": "target",
                     "operator": "equals",
-                    "value": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "value": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               ],
               "operator": "AND"
             }
-          }
+          },
+          "pageSize": 1
         }
       },
       "response": {
@@ -303,9 +304,9 @@
             "edges": [
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNiJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3MCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjQiXQ==",
@@ -319,13 +320,13 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9ykEKwyAQQNGrlFlHiBpJPUsIMtWhDKQqZlzk9m0TyO7x+QvUxjlyxS1k/NDQykaXKAvLEeSot3vnBMNjAaFdwrn2ndovASWWcgpjLD2LerfS6z+Y6UXj7EjNRqOant4qr11S1hvntI5oR4R1/QK6oS3F",
+              "endCursor": "eJw9yk0KwyAQQOGrFNcZ6I+pepYQZKLTMpCqmJlFbt82he4+Hm8yrXNJ3HCNBV809LrST1SEZY+yt79VOZvhNBmhTeKx6kb9kwxllnoIU6paBJ69avsGn93jgnaB8xUXsMHfIaBNENyIdPPoAo5mnt/OEi6e",
               "hasNextPage": false
             }
           }
@@ -334,7 +335,7 @@
     },
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {
@@ -351,13 +352,14 @@
                   "single": {
                     "name": "target",
                     "operator": "equals",
-                    "value": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "value": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               ],
               "operator": "AND"
             }
-          }
+          },
+          "pageSize": 1
         }
       },
       "response": {
@@ -366,9 +368,9 @@
             "edges": [
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNiJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA3MCJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjQiXQ==",
@@ -382,13 +384,13 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9ykEKwyAQQNGrlFlHiBpJPUsIMtWhDKQqZlzk9m0TyO7x+QvUxjlyxS1k/NDQykaXKAvLEeSot3vnBMNjAaFdwrn2ndovASWWcgpjLD2LerfS6z+Y6UXj7EjNRqOant4qr11S1hvntI5oR4R1/QK6oS3F",
+              "endCursor": "eJw9yk0KwyAQQOGrFNcZ6I+pepYQZKLTMpCqmJlFbt82he4+Hm8yrXNJ3HCNBV809LrST1SEZY+yt79VOZvhNBmhTeKx6kb9kwxllnoIU6paBJ69avsGn93jgnaB8xUXsMHfIaBNENyIdPPoAo5mnt/OEi6e",
               "hasNextPage": false
             }
           }
@@ -396,10 +398,10 @@
       }
     }
   ],
-  "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\",\"filterElement\":{\"multiple\":{\"operands\":[{\"single\":{\"name\":\"role-name\",\"operator\":\"equals\",\"value\":\"viewer\"}},{\"single\":{\"name\":\"target\",\"operator\":\"equals\",\"value\":\"account-group:24be075e-721a-4893-915d-3925511ca30a\"}}],\"operator\":\"AND\"}}}": [
+  "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\",\"filterElement\":{\"multiple\":{\"operands\":[{\"single\":{\"name\":\"role-name\",\"operator\":\"equals\",\"value\":\"viewer\"}},{\"single\":{\"name\":\"target\",\"operator\":\"equals\",\"value\":\"account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5\"}}],\"operator\":\"AND\"}},\"pageSize\":1}": [
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {
@@ -416,13 +418,14 @@
                   "single": {
                     "name": "target",
                     "operator": "equals",
-                    "value": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "value": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               ],
               "operator": "AND"
             }
-          }
+          },
+          "pageSize": 1
         }
       },
       "response": {
@@ -431,9 +434,9 @@
             "edges": [
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNSJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA2OSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -444,13 +447,13 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9ykEKgzAQQNGrlFkbMInB5iwiYYxDGbBJiJMWb99aobvH509QKqfIBbeQ8EldzRtdoiQsR5Cj/N0ar9DdJhDaJfzWtlP9JngxvS9hjLklUY+aWzmDGRbqR0dqNBrVcPdWee1WZb1xTuuItkeY5w+9mS3Q",
+              "endCursor": "eJw9ylsKwyAQQNGtlPnOQB+m6lpCkImZloFUxYwt2X0fgf4dLneAUiVFKbSERA/ual54FycV3YJu5e/WZIbuMIDyquG3tpXrJ8FT+LWLYswtKd5rbuUb3GxvJzITHs80ofHuip5MRG974osj66mHcXwD0QouqQ==",
               "hasNextPage": false
             }
           }
@@ -459,7 +462,7 @@
     },
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {
@@ -476,13 +479,14 @@
                   "single": {
                     "name": "target",
                     "operator": "equals",
-                    "value": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "value": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               ],
               "operator": "AND"
             }
-          }
+          },
+          "pageSize": 1
         }
       },
       "response": {
@@ -491,9 +495,9 @@
             "edges": [
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNSJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA2OSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -504,13 +508,13 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9ykEKgzAQQNGrlFkbMInB5iwiYYxDGbBJiJMWb99aobvH509QKqfIBbeQ8EldzRtdoiQsR5Cj/N0ar9DdJhDaJfzWtlP9JngxvS9hjLklUY+aWzmDGRbqR0dqNBrVcPdWee1WZb1xTuuItkeY5w+9mS3Q",
+              "endCursor": "eJw9ylsKwyAQQNGtlPnOQB+m6lpCkImZloFUxYwt2X0fgf4dLneAUiVFKbSERA/ual54FycV3YJu5e/WZIbuMIDyquG3tpXrJ8FT+LWLYswtKd5rbuUb3GxvJzITHs80ofHuip5MRG974osj66mHcXwD0QouqQ==",
               "hasNextPage": false
             }
           }
@@ -519,7 +523,7 @@
     },
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {
@@ -536,13 +540,14 @@
                   "single": {
                     "name": "target",
                     "operator": "equals",
-                    "value": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "value": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               ],
               "operator": "AND"
             }
-          }
+          },
+          "pageSize": 1
         }
       },
       "response": {
@@ -551,9 +556,9 @@
             "edges": [
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNSJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA2OSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -564,13 +569,13 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9ykEKgzAQQNGrlFkbMInB5iwiYYxDGbBJiJMWb99aobvH509QKqfIBbeQ8EldzRtdoiQsR5Cj/N0ar9DdJhDaJfzWtlP9JngxvS9hjLklUY+aWzmDGRbqR0dqNBrVcPdWee1WZb1xTuuItkeY5w+9mS3Q",
+              "endCursor": "eJw9ylsKwyAQQNGtlPnOQB+m6lpCkImZloFUxYwt2X0fgf4dLneAUiVFKbSERA/ual54FycV3YJu5e/WZIbuMIDyquG3tpXrJ8FT+LWLYswtKd5rbuUb3GxvJzITHs80ofHuip5MRG974osj66mHcXwD0QouqQ==",
               "hasNextPage": false
             }
           }
@@ -579,7 +584,7 @@
     },
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {
@@ -596,13 +601,14 @@
                   "single": {
                     "name": "target",
                     "operator": "equals",
-                    "value": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "value": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               ],
               "operator": "AND"
             }
-          }
+          },
+          "pageSize": 1
         }
       },
       "response": {
@@ -611,9 +617,9 @@
             "edges": [
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNSJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA2OSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -624,13 +630,13 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9ykEKgzAQQNGrlFkbMInB5iwiYYxDGbBJiJMWb99aobvH509QKqfIBbeQ8EldzRtdoiQsR5Cj/N0ar9DdJhDaJfzWtlP9JngxvS9hjLklUY+aWzmDGRbqR0dqNBrVcPdWee1WZb1xTuuItkeY5w+9mS3Q",
+              "endCursor": "eJw9ylsKwyAQQNGtlPnOQB+m6lpCkImZloFUxYwt2X0fgf4dLneAUiVFKbSERA/ual54FycV3YJu5e/WZIbuMIDyquG3tpXrJ8FT+LWLYswtKd5rbuUb3GxvJzITHs80ofHuip5MRG974osj66mHcXwD0QouqQ==",
               "hasNextPage": false
             }
           }
@@ -639,7 +645,7 @@
     },
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!){roleAssignments(first: 100, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {
@@ -656,13 +662,14 @@
                   "single": {
                     "name": "target",
                     "operator": "equals",
-                    "value": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "value": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               ],
               "operator": "AND"
             }
-          }
+          },
+          "pageSize": 1
         }
       },
       "response": {
@@ -671,9 +678,9 @@
             "edges": [
               {
                 "node": {
-                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTAxNSJd",
+                  "id": "WyJyb2xlX2Fzc2lnbm1lbnQiLCAiMTA2OSJd",
                   "principal": {
-                    "roleAssignmentPrincipal": "user:45"
+                    "roleAssignmentPrincipal": "user:53"
                   },
                   "role": {
                     "id": "WyJyb2xlIiwgIjMiXQ==",
@@ -684,13 +691,13 @@
                     "system": true
                   },
                   "target": {
-                    "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a"
+                    "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
                   }
                 }
               }
             ],
             "pageInfo": {
-              "endCursor": "eJw9ykEKgzAQQNGrlFkbMInB5iwiYYxDGbBJiJMWb99aobvH509QKqfIBbeQ8EldzRtdoiQsR5Cj/N0ar9DdJhDaJfzWtlP9JngxvS9hjLklUY+aWzmDGRbqR0dqNBrVcPdWee1WZb1xTuuItkeY5w+9mS3Q",
+              "endCursor": "eJw9ylsKwyAQQNGtlPnOQB+m6lpCkImZloFUxYwt2X0fgf4dLneAUiVFKbSERA/ual54FycV3YJu5e/WZIbuMIDyquG3tpXrJ8FT+LWLYswtKd5rbuUb3GxvJzITHs80ofHuip5MRG974osj66mHcXwD0QouqQ==",
               "hasNextPage": false
             }
           }
@@ -720,10 +727,10 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjQ1Il0=",
-                  "key": 45,
+                  "id": "WyJ1c2VyIiwgIjUzIl0=",
+                  "key": 53,
                   "name": "test-role-user",
-                  "roleAssignmentPrincipal": "user:45",
+                  "roleAssignmentPrincipal": "user:53",
                   "ssoUser": false,
                   "username": "test_role_user"
                 }
@@ -754,10 +761,10 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjQ1Il0=",
-                  "key": 45,
+                  "id": "WyJ1c2VyIiwgIjUzIl0=",
+                  "key": 53,
                   "name": "test-role-user",
-                  "roleAssignmentPrincipal": "user:45",
+                  "roleAssignmentPrincipal": "user:53",
                   "ssoUser": false,
                   "username": "test_role_user"
                 }
@@ -788,10 +795,10 @@
                   "active": true,
                   "displayName": null,
                   "email": "test@stacklet.io",
-                  "id": "WyJ1c2VyIiwgIjQ1Il0=",
-                  "key": 45,
+                  "id": "WyJ1c2VyIiwgIjUzIl0=",
+                  "key": 53,
                   "name": "test-role-user",
-                  "roleAssignmentPrincipal": "user:45",
+                  "roleAssignmentPrincipal": "user:53",
                   "ssoUser": false,
                   "username": "test_role_user"
                 }
@@ -802,13 +809,13 @@
       }
     }
   ],
-  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"24be075e-721a-4893-915d-3925511ca30a\"}": [
+  "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}:{\"name\":\"\",\"uuid\":\"8d7f1a4b-02ab-4986-9a4c-975ae38a79a5\"}": [
     {
       "request": {
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+          "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
         }
       },
       "response": {
@@ -816,14 +823,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjI0YmUwNzVlLTcyMWEtNDg5My05MTVkLTM5MjU1MTFjYTMwYSJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjhkN2YxYTRiLTAyYWItNDk4Ni05YTRjLTk3NWFlMzhhNzlhNSJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a",
-            "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+            "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5",
+            "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
           }
         }
       }
@@ -833,7 +840,7 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+          "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
         }
       },
       "response": {
@@ -841,14 +848,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjI0YmUwNzVlLTcyMWEtNDg5My05MTVkLTM5MjU1MTFjYTMwYSJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjhkN2YxYTRiLTAyYWItNDk4Ni05YTRjLTk3NWFlMzhhNzlhNSJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a",
-            "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+            "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5",
+            "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
           }
         }
       }
@@ -858,7 +865,7 @@
         "query": "query ($name:String!$uuid:String!){accountGroup(uuid: $uuid, name: $name){id,uuid,name,description,dynamicFilter,provider,regions,roleAssignmentTarget}}",
         "variables": {
           "name": "",
-          "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+          "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
         }
       },
       "response": {
@@ -866,14 +873,14 @@
           "accountGroup": {
             "description": "Test account group for role assignment",
             "dynamicFilter": null,
-            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjI0YmUwNzVlLTcyMWEtNDg5My05MTVkLTM5MjU1MTFjYTMwYSJd",
+            "id": "WyJhY2NvdW50LWdyb3VwIiwgIjhkN2YxYTRiLTAyYWItNDk4Ni05YTRjLTk3NWFlMzhhNzlhNSJd",
             "name": "test-role-assignment-test",
             "provider": "AWS",
             "regions": [
               "us-east-1"
             ],
-            "roleAssignmentTarget": "account-group:24be075e-721a-4893-915d-3925511ca30a",
-            "uuid": "24be075e-721a-4893-915d-3925511ca30a"
+            "roleAssignmentTarget": "account-group:8d7f1a4b-02ab-4986-9a4c-975ae38a79a5",
+            "uuid": "8d7f1a4b-02ab-4986-9a4c-975ae38a79a5"
           }
         }
       }

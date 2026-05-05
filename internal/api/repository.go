@@ -138,9 +138,12 @@ func (a repositoryAPI) FindByURL(ctx context.Context, url string) (string, error
 					EndCursor   string
 				}
 				Problems []problem
-			} `graphql:"repositoryConfigs(first: 100, after: $cursor)"`
+			} `graphql:"repositoryConfigs(first: $pageSize, after: $cursor)"`
 		}
-		variables := map[string]any{"cursor": graphql.String(cursor)}
+		variables := map[string]any{
+			"pageSize": a.c.pageSize,
+			"cursor":   graphql.String(cursor),
+		}
 		if err := a.c.Query(ctx, &query, variables); err != nil {
 			return "", err
 		}

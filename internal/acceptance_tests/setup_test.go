@@ -14,18 +14,20 @@ func TestMain(m *testing.M) {
 }
 
 func ensureVars() {
-	// Only set vars when running tests in replay mode.
+	// make it easier to get tests with paginated responses
+	mustSetenv("STACKLET_PAGE_SIZE", "1")
+
+	// Only set authentication-related vars when running tests in replay mode.
 	if os.Getenv("TF_ACC") == "" || testMode() != TestModeReplay {
 		return
 	}
 
-	vars := map[string]string{
-		"STACKLET_ENDPOINT": "https://fake",
-		"STACKLET_API_KEY":  "fake",
-	}
-	for name, value := range vars {
-		if err := os.Setenv(name, value); err != nil {
-			panic(err)
-		}
+	mustSetenv("STACKLET_ENDPOINT", "https://fake")
+	mustSetenv("STACKLET_API_KEY", "fake")
+}
+
+func mustSetenv(name string, value string) {
+	if err := os.Setenv(name, value); err != nil {
+		panic(err)
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"os"
 	"path"
+	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	tfpath "github.com/hashicorp/terraform-plugin-framework/path"
@@ -31,13 +32,18 @@ type stackletProviderModel struct {
 	APIKey   types.String `tfsdk:"api_key"`
 }
 
-func New(version string) func() provider.Provider {
+func New(version string) (func() provider.Provider, error) {
+	pageSize, err := getEnvInt("STACKLET_PAGE_SIZE", 100)
+	if err != nil {
+		return nil, err
+	}
 	return func() provider.Provider {
 		return &stackletProvider{
 			version:           version,
 			includeUnreleased: os.Getenv("STACKLET_UNRELEASED_FEATURES") != "",
+			apiPageSize:       pageSize,
 		}
-	}
+	}, nil
 }
 
 type stackletProvider struct {
@@ -48,6 +54,9 @@ type stackletProvider struct {
 
 	// whether to include unreleased resources/datasources
 	includeUnreleased bool
+
+	// page size for paginated
+	apiPageSize int
 }
 
 // Metadata returns the provider type name.
@@ -147,6 +156,7 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 			Endpoint: creds.Endpoint,
 			APIKey:   creds.APIKey,
 			Version:  p.version,
+			PageSize: p.apiPageSize,
 		},
 	)
 	resp.ResourceData = providerData
@@ -209,4 +219,14 @@ func getCredentials(config stackletProviderModel) *credentials {
 	}
 
 	return &creds
+}
+
+// getEnvInt returns an integer from an environment variable, fallback if
+// unset.
+func getEnvInt(name string, fallback int) (int, error) {
+	valueStr := os.Getenv(name)
+	if valueStr == "" {
+		return fallback, nil
+	}
+	return strconv.Atoi(valueStr)
 }
