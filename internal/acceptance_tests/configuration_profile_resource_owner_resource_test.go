@@ -30,7 +30,7 @@ func TestAccConfigurationProfileResourceOwnerResource(t *testing.T) {
 				resource "stacklet_configuration_profile_resource_owner" "test" {
 					default = ["owner1@example.com", "owner2@example.com"]
 					org_domain = "example.com"
-                    org_domain_tag = "domain"
+					org_domain_tag = "domain"
 					tags = ["owner", "team"]
 				}
 			`,

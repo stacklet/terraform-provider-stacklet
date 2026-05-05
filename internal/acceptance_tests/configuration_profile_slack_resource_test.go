@@ -15,7 +15,7 @@ func TestAccConfigurationProfileSlackResource(t *testing.T) {
 		{
 			Config: `
 				resource "stacklet_configuration_profile_slack" "test" {
- 	                user_fields = ["username", "email"]
+					user_fields = ["username", "email"]
 
 					webhook {
 						name = "foo"
@@ -136,13 +136,13 @@ func TestAccConfigurationProfileSlackResource_URLChange(t *testing.T) {
 				resource "stacklet_configuration_profile_slack" "test" {
 					webhook {
 						name = "foo"
-						url_wo = "https://example.com/webhooks/one-new"	
+						url_wo = "https://example.com/webhooks/one-new"
 						url_wo_version = "1"
 					}
 
 					webhook {
 						name = "bar"
-						url_wo = "https://example.com/webhooks/two"	
+						url_wo = "https://example.com/webhooks/two"
 						url_wo_version = "1"
 					}
 				}
@@ -172,13 +172,13 @@ func TestAccConfigurationProfileSlackResource_URLChange(t *testing.T) {
 				resource "stacklet_configuration_profile_slack" "test" {
 					webhook {
 						name = "foo"
-						url_wo = "https://example.com/webhooks/one-new"	
+						url_wo = "https://example.com/webhooks/one-new"
 						url_wo_version = "2"
 					}
 
 					webhook {
 						name = "bar"
-						url_wo = "https://example.com/webhooks/two"	
+						url_wo = "https://example.com/webhooks/two"
 						url_wo_version = "1"
 					}
 				}

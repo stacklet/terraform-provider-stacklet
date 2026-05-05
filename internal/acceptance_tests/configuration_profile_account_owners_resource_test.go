@@ -36,7 +36,7 @@ func TestAccConfigurationProfileAccountOwnersResource(t *testing.T) {
 						}
 					]
 					org_domain = "example.com"
-                    org_domain_tag = "domain"
+					org_domain_tag = "domain"
 					tags = ["owner", "team"]
 				}
 			`,

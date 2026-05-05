@@ -12,14 +12,14 @@ func TestAccPolicyDataSource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-                    data "stacklet_policy" "p1" {
-                      name = "cost-aws:aws-elb-unattached-inform"
-                    }
+				data "stacklet_policy" "p1" {
+					name = "cost-aws:aws-elb-unattached-inform"
+				}
 
-                    data "stacklet_policy" "p2" {
-                      uuid = data.stacklet_policy.p1.uuid
-                    }
-				`,
+				data "stacklet_policy" "p2" {
+					uuid = data.stacklet_policy.p1.uuid
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.stacklet_policy.p1", "name", "cost-aws:aws-elb-unattached-inform"),
 				resource.TestCheckResourceAttr("data.stacklet_policy.p1", "cloud_provider", "AWS"),

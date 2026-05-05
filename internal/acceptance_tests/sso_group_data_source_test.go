@@ -9,13 +9,14 @@ import (
 )
 
 func TestAccSSOGroupDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_sso_group" "test" {
+			name = "{{.Prefix}}-sso-group-ds"
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_sso_group" "test" {
-					name = "{{.Prefix}}-sso-group-ds"
-				}
-
+			Config: baseline + `
 				data "stacklet_sso_group" "test" {
 					name = stacklet_sso_group.test.name
 				}

@@ -9,22 +9,23 @@ import (
 )
 
 func TestAccConfigurationProfileAccountOwnersDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_configuration_profile_account_owners" "test" {
+			default = [
+				{
+					account = "123456789012"
+					owners = ["owner1@example.com", "owner2@example.com"]
+				}
+			]
+			org_domain = "example.com"
+			tags = ["owner", "team"]
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_configuration_profile_account_owners" "test" {
-					default = [
-						{
-							account = "123456789012"
-							owners = ["owner1@example.com", "owner2@example.com"]
-						}
-					]
-					org_domain = "example.com"
-					tags = ["owner", "team"]
-				}
-
+			Config: baseline + `
 				data "stacklet_configuration_profile_account_owners" "test" {
-                    depends_on = [stacklet_configuration_profile_account_owners.test]
+					depends_on = [stacklet_configuration_profile_account_owners.test]
 				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(

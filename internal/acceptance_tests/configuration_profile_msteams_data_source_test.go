@@ -9,37 +9,38 @@ import (
 )
 
 func TestAccConfigurationProfileMSTeamsDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_configuration_profile_msteams" "test" {
+			access_config_input = {
+				client_id        = "e90b9a7a-f726-44f4-af92-9e5827c465f8"
+				roundtrip_digest = "724ba7cc82663bc247b5a100b3ca2ece"
+				tenant_id        = "408b7351-82bd-44b5-aed5-59198cd1c1c6"
+			}
+
+			customer_config_input = {
+				prefix = "stacklet-test"
+				tags = {
+					env = "test"
+					team = "platform"
+				}
+			}
+
+			channel_mapping {
+				name       = "alerts"
+				team_id    = "e22bd265-dfcb-448d-a05b-e4d110d2266e"
+				channel_id = "19:hZZSubNbJL7A5cYRGKnK_AiL3ytC2gNl6yFh8_LVzbM1@thread.tacv2"
+			}
+
+			channel_mapping {
+				name       = "notifications"
+				team_id    = "e22bd265-dfcb-448d-a05b-e4d110d2266e"
+				channel_id = "19:deb9db569d964adf94ddf02e7c5ce4b9@thread.tacv2"
+			}
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_configuration_profile_msteams" "test" {
-					access_config_input = {
-						client_id        = "e90b9a7a-f726-44f4-af92-9e5827c465f8"
-						roundtrip_digest = "724ba7cc82663bc247b5a100b3ca2ece"
-						tenant_id        = "408b7351-82bd-44b5-aed5-59198cd1c1c6"
-					}
-
-					customer_config_input = {
-						prefix = "stacklet-test"
-						tags = {
-							env = "test"
-							team = "platform"
-						}
-					}
-
-					channel_mapping {
-						name       = "alerts"
-						team_id    = "e22bd265-dfcb-448d-a05b-e4d110d2266e"
-						channel_id = "19:hZZSubNbJL7A5cYRGKnK_AiL3ytC2gNl6yFh8_LVzbM1@thread.tacv2"
-					}
-
-					channel_mapping {
-						name       = "notifications"
-						team_id    = "e22bd265-dfcb-448d-a05b-e4d110d2266e"
-						channel_id = "19:deb9db569d964adf94ddf02e7c5ce4b9@thread.tacv2"
-					}
-				}
-
+			Config: baseline + `
 				data "stacklet_configuration_profile_msteams" "test" {
 					depends_on = [stacklet_configuration_profile_msteams.test]
 				}

@@ -9,27 +9,28 @@ import (
 )
 
 func TestAccConfigurationProfileEmailDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_configuration_profile_email" "test" {
+			from = "user@example.com"
+			ses_region = "us-east-1"
+
+			smtp = {
+				server = "smtp.example.com"
+				port = "1234"
+				ssl = true
+				username = "user"
+
+				password_wo = "secret"
+				password_wo_version = "1"
+			}
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_configuration_profile_email" "test" {
-					from = "user@example.com"
-	                ses_region = "us-east-1"
-
- 		            smtp = {
-                        server = "smtp.example.com"
-                        port = "1234"
-                        ssl = true
-                        username = "user"
-
-                        password_wo = "secret"
-                        password_wo_version = "1"
-                    }
-                }
-
+			Config: baseline + `
 				data "stacklet_configuration_profile_email" "test" {
-                    depends_on = [stacklet_configuration_profile_email.test]
-                }
+					depends_on = [stacklet_configuration_profile_email.test]
+				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("data.stacklet_configuration_profile_email.test", "id"),

@@ -13,7 +13,7 @@ func TestAccRoleAssignmentsDataSource(t *testing.T) {
 		{
 			Config: `
 				data "stacklet_role_assignments" "system" {
-				  target = "system:all"
+					target = "system:all"
 				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(

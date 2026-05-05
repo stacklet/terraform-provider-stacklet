@@ -11,23 +11,24 @@ import (
 )
 
 func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
+	baseline := `
+		resource "stacklet_user" "test" {
+			name     = "{{.Prefix}}-role-user"
+			username = "{{.Prefix}}_role_user"
+			email    = "test@stacklet.io"
+		}
+
+		resource "stacklet_account_group" "test" {
+			name           = "{{.Prefix}}-role-assignment-test"
+			description    = "Test account group for role assignment"
+			cloud_provider = "AWS"
+			regions        = ["us-east-1"]
+		}
+	`
 	steps := []resource.TestStep{
 		// Create and Read testing - role assignment on account group
 		{
-			Config: `
-				resource "stacklet_user" "test" {
-					name     = "{{.Prefix}}-role-user"
-					username = "{{.Prefix}}_role_user"
-					email    = "test@stacklet.io"
-				}
-
-				resource "stacklet_account_group" "test" {
-					name           = "{{.Prefix}}-role-assignment-test"
-					description    = "Test account group for role assignment"
-					cloud_provider = "AWS"
-					regions        = ["us-east-1"]
-				}
-
+			Config: baseline + `
 				resource "stacklet_role_assignment" "test" {
 					role_name = "viewer"
 					principal = stacklet_user.test.role_assignment_principal
@@ -56,20 +57,7 @@ func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
 		},
 		// Test replacement with different role
 		{
-			Config: `
-				resource "stacklet_user" "test" {
-					name     = "{{.Prefix}}-role-user"
-					username = "{{.Prefix}}_role_user"
-					email    = "test@stacklet.io"
-				}
-
-				resource "stacklet_account_group" "test" {
-					name           = "{{.Prefix}}-role-assignment-test"
-					description    = "Test account group for role assignment"
-					cloud_provider = "AWS"
-					regions        = ["us-east-1"]
-				}
-
+			Config: baseline + `
 				resource "stacklet_role_assignment" "test" {
 					role_name = "editor"
 					principal = stacklet_user.test.role_assignment_principal
@@ -88,13 +76,14 @@ func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
 }
 
 func TestAccRoleAssignmentResource_SSOGroup(t *testing.T) {
+	baseline := `
+		resource "stacklet_sso_group" "test" {
+			name = "{{.Prefix}}-sso-role-group"
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_sso_group" "test" {
-					name = "{{.Prefix}}-sso-role-group"
-				}
-
+			Config: baseline + `
 				resource "stacklet_role_assignment" "test" {
 					role_name = "viewer"
 					principal = stacklet_sso_group.test.role_assignment_principal

@@ -9,15 +9,16 @@ import (
 )
 
 func TestAccUserDataSource(t *testing.T) {
+	baseline := `
+		resource "stacklet_user" "test" {
+			name     = "{{.Prefix}}-user-ds"
+			username = "test_user_ds"
+			email    = "test@stacklet.io"
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-				resource "stacklet_user" "test" {
-					name     = "{{.Prefix}}-user-ds"
-					username = "test_user_ds"
-					email    = "test@stacklet.io"
-				}
-
+			Config: baseline + `
 				data "stacklet_user" "test" {
 					username = stacklet_user.test.username
 				}

@@ -16,17 +16,17 @@ func TestAccConfigurationProfileEmailResource(t *testing.T) {
 			Config: `
 				resource "stacklet_configuration_profile_email" "test" {
 					from = "user@example.com"
-	                ses_region = "us-east-1"
+					ses_region = "us-east-1"
 
- 		            smtp = {
-                        server = "smtp.example.com"
-                        port = "1234"
-                        ssl = true
-                        username = "user"
+					smtp = {
+						server = "smtp.example.com"
+						port = "1234"
+						ssl = true
+						username = "user"
 
-                        password_wo = "secret"
-                        password_wo_version = "1"
-                    }
+						password_wo = "secret"
+						password_wo_version = "1"
+					}
 				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -56,17 +56,17 @@ func TestAccConfigurationProfileEmailResource(t *testing.T) {
 			Config: `
 				resource "stacklet_configuration_profile_email" "test" {
 					from = "updated-user@example.com"
-	                ses_region = "us-east-2"
+					ses_region = "us-east-2"
 
- 		            smtp = {
-                        server = "new-smtp.example.com"
-                        port = "5678"
-                        ssl = false
-                        username = "new-user"
+					smtp = {
+						server = "new-smtp.example.com"
+						port = "5678"
+						ssl = false
+						username = "new-user"
 
-                        password_wo = "secret"
-                        password_wo_version = "1"
-                    }
+						password_wo = "secret"
+						password_wo_version = "1"
+					}
 				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -92,17 +92,17 @@ func TestAccConfigurationProfileEmailResource_PasswordChange(t *testing.T) {
 			Config: `
 				resource "stacklet_configuration_profile_email" "test" {
 					from = "user@example.com"
-	                ses_region = "us-east-1"
+					ses_region = "us-east-1"
 
- 		            smtp = {
-                        server = "smtp.example.com"
-                        port = "1234"
-                        ssl = true
-                        username = "user"
+					smtp = {
+						server = "smtp.example.com"
+						port = "1234"
+						ssl = true
+						username = "user"
 
-                        password_wo = "secret"
-                        password_wo_version = "1"
-                    }
+						password_wo = "secret"
+						password_wo_version = "1"
+					}
 				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -119,17 +119,17 @@ func TestAccConfigurationProfileEmailResource_PasswordChange(t *testing.T) {
 			Config: `
 				resource "stacklet_configuration_profile_email" "test" {
 					from = "user@example.com"
-	                ses_region = "us-east-1"
+					ses_region = "us-east-1"
 
- 		            smtp = {
-                        server = "smtp.example.com"
-                        port = "1234"
-                        ssl = true
-                        username = "user"
+					smtp = {
+						server = "smtp.example.com"
+						port = "1234"
+						ssl = true
+						username = "user"
 
-                        password_wo = "new-secret"
-                        password_wo_version = "1"
-                    }
+						password_wo = "new-secret"
+						password_wo_version = "1"
+					}
 				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -148,17 +148,17 @@ func TestAccConfigurationProfileEmailResource_PasswordChange(t *testing.T) {
 			Config: `
 				resource "stacklet_configuration_profile_email" "test" {
 					from = "user@example.com"
-	                ses_region = "us-east-1"
+					ses_region = "us-east-1"
 
- 		            smtp = {
-                        server = "smtp.example.com"
-                        port = "1234"
-                        ssl = true
-                        username = "user"
+					smtp = {
+						server = "smtp.example.com"
+						port = "1234"
+						ssl = true
+						username = "user"
 
-                        password_wo = "new-secret"
-                        password_wo_version = "2"
-                    }
+						password_wo = "new-secret"
+						password_wo_version = "2"
+					}
 				}
 			`,
 			Check: resource.ComposeAggregateTestCheckFunc(

@@ -13,33 +13,33 @@ func TestAccReportGroupResource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_account_group" "ag" {
-						name = "{{.Prefix}}-rg-ag"
-						description = "Test account group for report group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
-					}
+				resource "stacklet_account_group" "ag" {
+					name = "{{.Prefix}}-rg-ag"
+					description = "Test account group for report group"
+					cloud_provider = "AWS"
+					regions = ["us-east-1"]
+				}
 
-					resource "stacklet_policy_collection" "pc" {
-						name = "{{.Prefix}}-rg-pc"
-						description = "Test policy collection for report group"
-						cloud_provider = "AWS"
-					}
+				resource "stacklet_policy_collection" "pc" {
+					name = "{{.Prefix}}-rg-pc"
+					description = "Test policy collection for report group"
+					cloud_provider = "AWS"
+				}
 
-					resource "stacklet_binding" "b" {
-						name = "{{.Prefix}}-rg-binding"
-						description = "Test binding for report group"
-						account_group_uuid = stacklet_account_group.ag.uuid
-						policy_collection_uuid = stacklet_policy_collection.pc.uuid
-					}
+				resource "stacklet_binding" "b" {
+					name = "{{.Prefix}}-rg-binding"
+					description = "Test binding for report group"
+					account_group_uuid = stacklet_account_group.ag.uuid
+					policy_collection_uuid = stacklet_policy_collection.pc.uuid
+				}
 
-					resource "stacklet_report_group" "test" {
-						name = "{{.Prefix}}-report-group"
-						bindings = [stacklet_binding.b.uuid]
-						schedule = "0 12 * * *"
-						group_by = ["account", "region"]
-					}
-				`,
+				resource "stacklet_report_group" "test" {
+					name = "{{.Prefix}}-report-group"
+					bindings = [stacklet_binding.b.uuid]
+					schedule = "0 12 * * *"
+					group_by = ["account", "region"]
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_report_group.test", "id"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "name", prefixName("report-group")),
@@ -64,14 +64,14 @@ func TestAccReportGroupResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-					resource "stacklet_report_group" "test" {
-						name = "{{.Prefix}}-report-group"
-	                    enabled = false
-						bindings = []
-						schedule = "0 6 * * *"
-						group_by = ["account"]
-					}
-				`,
+				resource "stacklet_report_group" "test" {
+					name = "{{.Prefix}}-report-group"
+					enabled = false
+					bindings = []
+					schedule = "0 6 * * *"
+					group_by = ["account"]
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "enabled", "false"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "bindings.#", "0"),
@@ -84,14 +84,14 @@ func TestAccReportGroupResource(t *testing.T) {
 		// Test that updating name causes replacement
 		{
 			Config: `
-					resource "stacklet_report_group" "test" {
-						name = "{{.Prefix}}-report-group-renamed"
-	                    enabled = true
-						bindings = []
-						schedule = "0 12 * * *"
-						group_by = ["account"]
-					}
-				`,
+				resource "stacklet_report_group" "test" {
+					name = "{{.Prefix}}-report-group-renamed"
+					enabled = true
+					bindings = []
+					schedule = "0 12 * * *"
+					group_by = ["account"]
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "name", prefixName("report-group-renamed")),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "enabled", "true"),
@@ -112,96 +112,97 @@ func TestAccReportGroupResource(t *testing.T) {
 }
 
 func TestAccReportGroupResource_DeliverySettings(t *testing.T) {
+	baseline := `
+		resource "stacklet_account_group" "ag" {
+			name = "{{.Prefix}}-rg-ag"
+			description = "Test account group for report group"
+			cloud_provider = "AWS"
+			regions = ["us-east-1"]
+		}
+
+		resource "stacklet_policy_collection" "pc" {
+			name = "{{.Prefix}}-rg-pc"
+			description = "Test policy collection for report group"
+			cloud_provider = "AWS"
+		}
+
+		resource "stacklet_binding" "b" {
+			name = "{{.Prefix}}-rg-binding"
+			description = "Test binding for report group"
+			account_group_uuid = stacklet_account_group.ag.uuid
+			policy_collection_uuid = stacklet_policy_collection.pc.uuid
+		}
+	`
 	steps := []resource.TestStep{
 		{
-			Config: `
-					resource "stacklet_account_group" "ag" {
-						name = "{{.Prefix}}-rg-ag"
-						description = "Test account group for report group"
-						cloud_provider = "AWS"
-						regions = ["us-east-1"]
+			Config: baseline + `
+				resource "stacklet_report_group" "test" {
+					name = "{{.Prefix}}-report-group"
+					bindings = [stacklet_binding.b.uuid]
+					schedule = "0 12 * * *"
+
+					email_delivery_settings {
+						template = "email"
+						subject = "Matched resources"
+
+						recipients = [
+							{
+								resource_owner = true
+							},
+							{
+								value = "user@example.com"
+							},
+						]
 					}
 
-					resource "stacklet_policy_collection" "pc" {
-						name = "{{.Prefix}}-rg-pc"
-						description = "Test policy collection for report group"
-						cloud_provider = "AWS"
+					slack_delivery_settings {
+						template = "slack"
+
+						recipients = [
+							{
+								account_owner = true
+							}
+						]
 					}
 
-					resource "stacklet_binding" "b" {
-						name = "{{.Prefix}}-rg-binding"
-						description = "Test binding for report group"
-						account_group_uuid = stacklet_account_group.ag.uuid
-						policy_collection_uuid = stacklet_policy_collection.pc.uuid
+					msteams_delivery_settings {
+						template = "msteams"
+
+						recipients = [
+							{
+								tag = "foo"
+							}
+						]
 					}
 
-					resource "stacklet_report_group" "test" {
-						name = "{{.Prefix}}-report-group"
-						bindings = [stacklet_binding.b.uuid]
-						schedule = "0 12 * * *"
-
-	                    email_delivery_settings {
-                            template = "email"
-                            subject = "Matched resources"
-
-                            recipients = [
-                        	    {
-                                  resource_owner = true
-                                },
-                        	    {
-                                  value = "user@example.com"
-                                },
-                             ]
-                        }
-
-	                    slack_delivery_settings {
-                            template = "slack"
-                            
-                            recipients = [
-                        	    {
-                                  account_owner = true
-                                }
-	                        ]
-                        }
-
-	                    msteams_delivery_settings {
-                            template = "msteams"
-                            
-                            recipients = [
-                        	    {
-                                  tag = "foo"
-                                }
-	                        ]
-                        }
-
-	                    servicenow_delivery_settings {
-                            template = "servicenow"
-	                        short_description = "matched resources"
-                            impact = "2"
-                            urgency = "1"
-                        }
-
-	                    jira_delivery_settings {
-                            template = "jira"
-	                        description = "matched resources"
-                            project	 = "prj"
-                            summary = "short summary"
-                        }
-
-	                    symphony_delivery_settings {
-                            template = "symphony"
-
-                            recipients = [
-                        	    {
-                                  resource_owner = true
-                                },
-                        	    {
-                                  account_owner = true
-                                },
-	                        ]
-                        }
+					servicenow_delivery_settings {
+						template = "servicenow"
+						short_description = "matched resources"
+						impact = "2"
+						urgency = "1"
 					}
-				`,
+
+					jira_delivery_settings {
+						template = "jira"
+						description = "matched resources"
+						project = "prj"
+						summary = "short summary"
+					}
+
+					symphony_delivery_settings {
+						template = "symphony"
+
+						recipients = [
+							{
+								resource_owner = true
+							},
+							{
+								account_owner = true
+							},
+						]
+					}
+				}
+			`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.#", "1"),
 				resource.TestCheckResourceAttr("stacklet_report_group.test", "email_delivery_settings.0.template", "email"),
