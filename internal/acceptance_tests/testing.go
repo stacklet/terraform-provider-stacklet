@@ -71,11 +71,8 @@ func runRecordedAccTest(t *testing.T, testName string, testSteps []resource.Test
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"stacklet": func() (tfprotov6.ProviderServer, error) {
-				providerFunc, err := provider.New("test")
-				if err != nil {
-					return nil, err
-				}
-				return providerserver.NewProtocol6WithError(providerFunc())()
+				p := provider.New("test")()
+				return providerserver.NewProtocol6WithError(p)()
 			},
 		},
 		Steps: testSteps,

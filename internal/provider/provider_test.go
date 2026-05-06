@@ -188,3 +188,23 @@ func TestGetCredentials_MissingStackletAdminFiles(t *testing.T) {
 	assert.Equal(t, "", creds.Endpoint)
 	assert.Equal(t, "", creds.APIKey)
 }
+
+func TestGetEnvInt(t *testing.T) {
+	tests := []struct {
+		name     string
+		envValue string
+		fallback int
+		expected int
+	}{
+		{"valid", "10", 20, 10},
+		{"unset", "", 20, 20},
+		{"invalid", "not-an-int", 20, 20},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Setenv("FOO", tc.envValue)
+			assert.Equal(t, tc.expected, getEnvInt("FOO", tc.fallback))
+		})
+	}
+}

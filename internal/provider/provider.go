@@ -32,18 +32,14 @@ type stackletProviderModel struct {
 	APIKey   types.String `tfsdk:"api_key"`
 }
 
-func New(version string) (func() provider.Provider, error) {
-	pageSize, err := getEnvInt("STACKLET_PAGE_SIZE", 100)
-	if err != nil {
-		return nil, err
-	}
+func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &stackletProvider{
 			version:           version,
 			includeUnreleased: os.Getenv("STACKLET_UNRELEASED_FEATURES") != "",
-			apiPageSize:       pageSize,
+			apiPageSize:       getEnvInt("STACKLET_PAGE_SIZE", 100),
 		}
-	}, nil
+	}
 }
 
 type stackletProvider struct {
@@ -221,12 +217,12 @@ func getCredentials(config stackletProviderModel) *credentials {
 	return &creds
 }
 
-// getEnvInt returns an integer from an environment variable, fallback if
-// unset.
-func getEnvInt(name string, fallback int) (int, error) {
-	valueStr := os.Getenv(name)
-	if valueStr == "" {
-		return fallback, nil
+// getEnvInt returns an integer from an environment variable, fallback if unset
+// or invalid.
+func getEnvInt(name string, fallback int) int {
+	value, err := strconv.Atoi(os.Getenv(name))
+	if err == nil {
+		return value
 	}
-	return strconv.Atoi(valueStr)
+	return fallback
 }
