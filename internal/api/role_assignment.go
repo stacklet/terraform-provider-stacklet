@@ -111,7 +111,7 @@ func (p revokeRoleAssignmentPayload) Error() string {
 // Create assigns a role to a principal on a target.
 // roleName is the name of the role to assign.
 // principal and target are opaque string identifiers.
-func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
+func (a roleAssignmentAPI) Create(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
 	var mutation struct {
 		UpdateRoleAssignment struct {
 			Grant []grantRoleAssignmentPayload
@@ -128,7 +128,7 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 		},
 	}
 
-	if err := r.c.Mutate(ctx, &mutation, map[string]any{"input": input}); err != nil {
+	if err := a.c.Mutate(ctx, &mutation, map[string]any{"input": input}); err != nil {
 		return nil, err
 	}
 
@@ -145,12 +145,12 @@ func (r roleAssignmentAPI) Create(ctx context.Context, roleName string, principa
 		return nil, NotFound{"Role assignment not found after creation"}
 	}
 
-	return r.Read(ctx, roleName, principal, target)
+	return a.Read(ctx, roleName, principal, target)
 }
 
 // Read returns a single role assignment by the unique combination of roleName, principal, and target.
 // The roleAssignments API doesn't support filtering by ID, so we use the composite key to identify the assignment.
-func (r roleAssignmentAPI) Read(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
+func (a roleAssignmentAPI) Read(ctx context.Context, roleName string, principal string, target string) (*RoleAssignment, error) {
 	filter := newCompositeFilter(
 		[]filterElementInput{
 			newExactMatchFilter("role-name", roleName),
@@ -158,7 +158,7 @@ func (r roleAssignmentAPI) Read(ctx context.Context, roleName string, principal 
 		},
 		filterBooleanAND,
 	)
-	assignments, err := r.list(ctx, filter)
+	assignments, err := a.list(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +174,7 @@ func (r roleAssignmentAPI) Read(ctx context.Context, roleName string, principal 
 // Delete removes a role assignment.
 // roleName is the name of the role to unassign.
 // principal and target are opaque string identifiers.
-func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principal string, target string) error {
+func (a roleAssignmentAPI) Delete(ctx context.Context, roleName string, principal string, target string) error {
 	// Use updateRoleAssignment mutation with revoke list
 	var mutation struct {
 		UpdateRoleAssignment struct {
@@ -196,7 +196,7 @@ func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principa
 		"input": input,
 	}
 
-	if err := r.c.Mutate(ctx, &mutation, variables); err != nil {
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
 		return err
 	}
 
@@ -212,11 +212,11 @@ func (r roleAssignmentAPI) Delete(ctx context.Context, roleName string, principa
 }
 
 // List returns role assignments for a target.
-func (r roleAssignmentAPI) List(ctx context.Context, target string) ([]RoleAssignment, error) {
-	return r.list(ctx, newExactMatchFilter("target", target))
+func (a roleAssignmentAPI) List(ctx context.Context, target string) ([]RoleAssignment, error) {
+	return a.list(ctx, newExactMatchFilter("target", target))
 }
 
-func (r roleAssignmentAPI) list(ctx context.Context, filter filterElementInput) ([]RoleAssignment, error) {
+func (a roleAssignmentAPI) list(ctx context.Context, filter filterElementInput) ([]RoleAssignment, error) {
 	cursor := ""
 	assignments := make([]RoleAssignment, 0)
 	for {
@@ -229,14 +229,15 @@ func (r roleAssignmentAPI) list(ctx context.Context, filter filterElementInput) 
 					HasNextPage bool
 					EndCursor   string
 				}
-			} `graphql:"roleAssignments(first: 100, after: $cursor, filterElement: $filterElement)"`
+			} `graphql:"roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement)"`
 		}
 		variables := map[string]any{
+			"pageSize":      a.c.pageSize,
 			"cursor":        graphql.String(cursor),
 			"filterElement": filter,
 		}
 
-		if err := r.c.Query(ctx, &query, variables); err != nil {
+		if err := a.c.Query(ctx, &query, variables); err != nil {
 			return nil, err
 		}
 
