@@ -22,10 +22,6 @@ var _ resource.Resource = &repositoryResource{}
 var _ resource.ResourceWithConfigure = &repositoryResource{}
 var _ resource.ResourceWithImportState = &repositoryResource{}
 
-func newRepositoryResource() resource.Resource {
-	return &repositoryResource{}
-}
-
 // repositoryResource defines the resource implementation.
 type repositoryResource struct {
 	apiResource

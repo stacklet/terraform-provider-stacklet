@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &bindingDataSource{}
 )
 
-func newBindingDataSource() datasource.DataSource {
-	return &bindingDataSource{}
-}
-
 type bindingDataSource struct {
 	apiDataSource
 }

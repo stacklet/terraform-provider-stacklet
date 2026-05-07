@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &notificationTemplateDataSource{}
 )
 
-func newNotificationTemplateDataSource() datasource.DataSource {
-	return &notificationTemplateDataSource{}
-}
-
 type notificationTemplateDataSource struct {
 	apiDataSource
 }

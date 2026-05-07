@@ -17,10 +17,6 @@ var (
 	_ datasource.DataSource = &configurationProfileSlackDataSource{}
 )
 
-func newConfigurationProfileSlackDataSource() datasource.DataSource {
-	return &configurationProfileSlackDataSource{}
-}
-
 type configurationProfileSlackDataSource struct {
 	apiDataSource
 }

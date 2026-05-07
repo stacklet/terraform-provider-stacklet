@@ -17,10 +17,6 @@ var (
 	_ datasource.DataSource = &configurationProfileAccountOwnersDataSource{}
 )
 
-func newConfigurationProfileAccountOwnersDataSource() datasource.DataSource {
-	return &configurationProfileAccountOwnersDataSource{}
-}
-
 type configurationProfileAccountOwnersDataSource struct {
 	apiDataSource
 }

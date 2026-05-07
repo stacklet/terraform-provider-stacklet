@@ -24,10 +24,6 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileResourceOwnerResource{}
 )
 
-func newConfigurationProfileResourceOwnerResource() resource.Resource {
-	return &configurationProfileResourceOwnerResource{}
-}
-
 type configurationProfileResourceOwnerResource struct {
 	apiResource
 }

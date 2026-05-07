@@ -23,10 +23,6 @@ var (
 	_ resource.ResourceWithImportState = &gcpIntegrationResource{}
 )
 
-func newGCPIntegrationResource() resource.Resource {
-	return &gcpIntegrationResource{}
-}
-
 type gcpIntegrationResource struct {
 	apiResource
 }

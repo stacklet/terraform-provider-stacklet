@@ -23,10 +23,6 @@ var (
 	_ resource.ResourceWithImportState = &accountDiscoveryAWSResource{}
 )
 
-func newAccountDiscoveryAWSResource() resource.Resource {
-	return &accountDiscoveryAWSResource{}
-}
-
 type accountDiscoveryAWSResource struct {
 	apiResource
 }

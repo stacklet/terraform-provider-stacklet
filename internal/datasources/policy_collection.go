@@ -17,10 +17,6 @@ var (
 	_ datasource.DataSource = &policyCollectionDataSource{}
 )
 
-func newPolicyCollectionDataSource() datasource.DataSource {
-	return &policyCollectionDataSource{}
-}
-
 type policyCollectionDataSource struct {
 	apiDataSource
 }

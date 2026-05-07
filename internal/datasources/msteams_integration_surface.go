@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &msteamsIntegrationSurfaceDataSource{}
 )
 
-func newMSTeamsIntegrationSurfaceDataSource() datasource.DataSource {
-	return &msteamsIntegrationSurfaceDataSource{}
-}
-
 type msteamsIntegrationSurfaceDataSource struct {
 	apiDataSource
 }

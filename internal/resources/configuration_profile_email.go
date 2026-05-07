@@ -23,10 +23,6 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileEmailResource{}
 )
 
-func newConfigurationProfileEmailResource() resource.Resource {
-	return &configurationProfileEmailResource{}
-}
-
 type configurationProfileEmailResource struct {
 	apiResource
 }

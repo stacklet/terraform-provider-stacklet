@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &roleAssignmentsDataSource{}
 )
 
-func newRoleAssignmentsDataSource() datasource.DataSource {
-	return &roleAssignmentsDataSource{}
-}
-
 type roleAssignmentsDataSource struct {
 	apiDataSource
 }

@@ -17,10 +17,6 @@ var (
 	_ datasource.DataSource = &platformDataSource{}
 )
 
-func newPlatformDataSource() datasource.DataSource {
-	return &platformDataSource{}
-}
-
 type platformDataSource struct {
 	apiDataSource
 }

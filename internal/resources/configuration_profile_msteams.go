@@ -30,10 +30,6 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileMSTeamsResource{}
 )
 
-func newConfigurationProfileMSTeamsResource() resource.Resource {
-	return &configurationProfileMSTeamsResource{}
-}
-
 type configurationProfileMSTeamsResource struct {
 	apiResource
 }
