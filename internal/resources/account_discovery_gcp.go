@@ -24,10 +24,6 @@ var (
 	_ resource.ResourceWithImportState = &accountDiscoveryGCPResource{}
 )
 
-func newAccountDiscoveryGCPResource() resource.Resource {
-	return &accountDiscoveryGCPResource{}
-}
-
 type accountDiscoveryGCPResource struct {
 	apiResource
 }

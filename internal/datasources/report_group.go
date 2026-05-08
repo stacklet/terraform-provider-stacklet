@@ -17,10 +17,6 @@ var (
 	_ datasource.DataSource = &reportGroupDataSource{}
 )
 
-func newReportgroupDataSource() datasource.DataSource {
-	return &reportGroupDataSource{}
-}
-
 type reportGroupDataSource struct {
 	apiDataSource
 }

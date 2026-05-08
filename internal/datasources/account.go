@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &accountDataSource{}
 )
 
-func newAccountDataSource() datasource.DataSource {
-	return &accountDataSource{}
-}
-
 type accountDataSource struct {
 	apiDataSource
 }

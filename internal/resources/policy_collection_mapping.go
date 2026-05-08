@@ -21,10 +21,6 @@ var (
 	_ resource.ResourceWithImportState = &policyCollectionMappingResource{}
 )
 
-func newPolicyCollectionMappingResource() resource.Resource {
-	return &policyCollectionMappingResource{}
-}
-
 type policyCollectionMappingResource struct {
 	apiResource
 }

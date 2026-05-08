@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &configurationProfileSymphonyDataSource{}
 )
 
-func newConfigurationProfileSymphonyDataSource() datasource.DataSource {
-	return &configurationProfileSymphonyDataSource{}
-}
-
 type configurationProfileSymphonyDataSource struct {
 	apiDataSource
 }

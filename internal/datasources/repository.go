@@ -15,10 +15,6 @@ import (
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ datasource.DataSource = &repositoryDataSource{}
 
-func newRepositoryDataSource() datasource.DataSource {
-	return &repositoryDataSource{}
-}
-
 // repositoryDataSource defines the data source implementation.
 type repositoryDataSource struct {
 	apiDataSource

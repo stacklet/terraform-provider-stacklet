@@ -31,10 +31,6 @@ var (
 	_ resource.ResourceWithImportState = &reportGroupResource{}
 )
 
-func newReportGroupResource() resource.Resource {
-	return &reportGroupResource{}
-}
-
 type reportGroupResource struct {
 	apiResource
 }

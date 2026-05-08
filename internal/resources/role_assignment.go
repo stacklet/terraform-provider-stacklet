@@ -21,10 +21,6 @@ var (
 	_ resource.ResourceWithImportState = &roleAssignmentResource{}
 )
 
-func newRoleAssignmentResource() resource.Resource {
-	return &roleAssignmentResource{}
-}
-
 type roleAssignmentResource struct {
 	apiResource
 }

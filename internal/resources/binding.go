@@ -27,10 +27,6 @@ var (
 	_ resource.ResourceWithImportState = &bindingResource{}
 )
 
-func newBindingResource() resource.Resource {
-	return &bindingResource{}
-}
-
 type bindingResource struct {
 	apiResource
 }

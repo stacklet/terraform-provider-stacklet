@@ -17,10 +17,6 @@ var (
 	_ datasource.DataSource = &configurationProfileMSTeamsDataSource{}
 )
 
-func newConfigurationProfileMSTeamsDataSource() datasource.DataSource {
-	return &configurationProfileMSTeamsDataSource{}
-}
-
 type configurationProfileMSTeamsDataSource struct {
 	apiDataSource
 }

@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &configurationProfileEmailDataSource{}
 )
 
-func newConfigurationProfileEmailDataSource() datasource.DataSource {
-	return &configurationProfileEmailDataSource{}
-}
-
 type configurationProfileEmailDataSource struct {
 	apiDataSource
 }

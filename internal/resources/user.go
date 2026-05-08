@@ -23,10 +23,6 @@ var (
 	_ resource.ResourceWithImportState = &userResource{}
 )
 
-func newUserResource() resource.Resource {
-	return &userResource{}
-}
-
 type userResource struct {
 	apiResource
 }

@@ -22,10 +22,6 @@ var (
 	_ resource.ResourceWithImportState = &notificationTemplateResource{}
 )
 
-func newNotificationTemplateResource() resource.Resource {
-	return &notificationTemplateResource{}
-}
-
 type notificationTemplateResource struct {
 	apiResource
 }

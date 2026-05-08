@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &configurationProfileServiceNowDataSource{}
 )
 
-func newConfigurationProfileServiceNowDataSource() datasource.DataSource {
-	return &configurationProfileServiceNowDataSource{}
-}
-
 type configurationProfileServiceNowDataSource struct {
 	apiDataSource
 }

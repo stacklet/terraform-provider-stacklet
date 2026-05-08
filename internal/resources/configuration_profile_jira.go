@@ -26,10 +26,6 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileJiraResource{}
 )
 
-func newConfigurationProfileJiraResource() resource.Resource {
-	return &configurationProfileJiraResource{}
-}
-
 type configurationProfileJiraResource struct {
 	apiResource
 }

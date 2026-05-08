@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &configurationProfileJiraDataSource{}
 )
 
-func newConfigurationProfileJiraDataSource() datasource.DataSource {
-	return &configurationProfileJiraDataSource{}
-}
-
 type configurationProfileJiraDataSource struct {
 	apiDataSource
 }

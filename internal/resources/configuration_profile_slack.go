@@ -33,10 +33,6 @@ type slackWebhookSecret struct {
 	Version   string
 }
 
-func newConfigurationProfileSlackResource() resource.Resource {
-	return &configurationProfileSlackResource{}
-}
-
 type configurationProfileSlackResource struct {
 	apiResource
 }

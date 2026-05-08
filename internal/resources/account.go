@@ -23,10 +23,6 @@ var (
 	_ resource.ResourceWithImportState = &accountResource{}
 )
 
-func newAccountResource() resource.Resource {
-	return &accountResource{}
-}
-
 type accountResource struct {
 	apiResource
 }

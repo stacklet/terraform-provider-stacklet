@@ -14,10 +14,6 @@ import (
 
 var _ datasource.DataSource = &ssoGroupDataSource{}
 
-func newSSOGroupDataSource() datasource.DataSource {
-	return &ssoGroupDataSource{}
-}
-
 type ssoGroupDataSource struct {
 	apiDataSource
 }

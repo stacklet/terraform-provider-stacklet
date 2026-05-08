@@ -20,10 +20,6 @@ var (
 	_ resource.ResourceWithImportState = &accountGroupMappingResource{}
 )
 
-func newAccountGroupMappingResource() resource.Resource {
-	return &accountGroupMappingResource{}
-}
-
 type accountGroupMappingResource struct {
 	apiResource
 }

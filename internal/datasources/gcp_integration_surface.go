@@ -16,10 +16,6 @@ var (
 	_ datasource.DataSource = &gcpIntegrationSurfaceDataSource{}
 )
 
-func newGCPIntegrationSurfaceDataSource() datasource.DataSource {
-	return &gcpIntegrationSurfaceDataSource{}
-}
-
 type gcpIntegrationSurfaceDataSource struct {
 	apiDataSource
 }

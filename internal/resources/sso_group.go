@@ -21,10 +21,6 @@ var (
 	_ resource.ResourceWithImportState = &ssoGroupResource{}
 )
 
-func newSSOGroupResource() resource.Resource {
-	return &ssoGroupResource{}
-}
-
 type ssoGroupResource struct {
 	apiResource
 }

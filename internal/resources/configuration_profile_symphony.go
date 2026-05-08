@@ -22,10 +22,6 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileSymphonyResource{}
 )
 
-func newConfigurationProfileSymphonyResource() resource.Resource {
-	return &configurationProfileSymphonyResource{}
-}
-
 type configurationProfileSymphonyResource struct {
 	apiResource
 }

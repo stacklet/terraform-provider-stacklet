@@ -14,10 +14,6 @@ import (
 
 var _ datasource.DataSource = &userDataSource{}
 
-func newUserDataSource() datasource.DataSource {
-	return &userDataSource{}
-}
-
 type userDataSource struct {
 	apiDataSource
 }

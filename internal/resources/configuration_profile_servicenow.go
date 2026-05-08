@@ -22,10 +22,6 @@ var (
 	_ resource.ResourceWithImportState = &configurationProfileServiceNowResource{}
 )
 
-func newConfigurationProfileServiceNowResource() resource.Resource {
-	return &configurationProfileServiceNowResource{}
-}
-
 type configurationProfileServiceNowResource struct {
 	apiResource
 }

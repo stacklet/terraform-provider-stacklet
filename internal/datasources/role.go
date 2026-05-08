@@ -15,10 +15,6 @@ import (
 
 var _ datasource.DataSource = &roleDataSource{}
 
-func newRoleDataSource() datasource.DataSource {
-	return &roleDataSource{}
-}
-
 type roleDataSource struct {
 	apiDataSource
 }

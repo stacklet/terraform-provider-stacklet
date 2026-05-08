@@ -29,10 +29,6 @@ var (
 	_ resource.ResourceWithImportState = &policyCollectionResource{}
 )
 
-func newPolicyCollectionResource() resource.Resource {
-	return &policyCollectionResource{}
-}
-
 type policyCollectionResource struct {
 	apiResource
 }
