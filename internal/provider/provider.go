@@ -7,18 +7,19 @@ import (
 	"encoding/json"
 	"os"
 	"path"
-	"strconv"
 
+	"github.com/caarlos0/env/v11"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	tfpath "github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/datasources"
+	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 	"github.com/stacklet/terraform-provider-stacklet/internal/resources"
 )
@@ -27,19 +28,18 @@ var (
 	_ provider.Provider = &stackletProvider{}
 )
 
-type stackletProviderModel struct {
+// providerModel holds the terraform configuration for the provider.
+type providerModel struct {
 	Endpoint types.String `tfsdk:"endpoint"`
 	APIKey   types.String `tfsdk:"api_key"`
 }
 
-func New(version string) func() provider.Provider {
-	return func() provider.Provider {
-		return &stackletProvider{
-			version:           version,
-			includeUnreleased: os.Getenv("STACKLET_UNRELEASED_FEATURES") != "",
-			apiPageSize:       getEnvInt("STACKLET_PAGE_SIZE", 100),
-		}
-	}
+// providerEnv holds environment variables supported by the provider.
+type providerEnv struct {
+	Endpoint           string `env:"STACKLET_ENDPOINT"`
+	APIKey             string `env:"STACKLET_API_KEY"`
+	PageSize           int    `env:"STACKLET_PAGE_SIZE" envDefault:"100"`
+	UnreleasedFeatures bool   `env:"STACKLET_UNRELEASED_FEATURES"`
 }
 
 type stackletProvider struct {
@@ -47,12 +47,14 @@ type stackletProvider struct {
 	// provider is built and run locally, and "test" when running acceptance
 	// testing.
 	version string
+}
 
-	// whether to include unreleased resources/datasources
-	includeUnreleased bool
-
-	// page size for paginated
-	apiPageSize int
+func New(version string) func() provider.Provider {
+	return func() provider.Provider {
+		return &stackletProvider{
+			version: version,
+		}
+	}
 }
 
 // Metadata returns the provider type name.
@@ -70,14 +72,6 @@ This provider interacts with Stacklet's cloud governance platform.
 It allows managing resources like accounts, account groups, policy collections, bindings and so on.
 `,
 		Attributes: map[string]schema.Attribute{
-			"endpoint": schema.StringAttribute{
-				Description: `
-The endpoint URL of the Stacklet GraphQL API.
-
- May also be provided via STACKLET_ENDPOINT environment variable, or from the stacklet-admin CLI configuration.
-`,
-				Optional: true,
-			},
 			"api_key": schema.StringAttribute{
 				Description: `
 The API key for Stacklet authentication.
@@ -87,60 +81,35 @@ May also be provided via STACKLET_API_KEY environment variable, or from the stac
 				Optional:  true,
 				Sensitive: true,
 			},
+			"endpoint": schema.StringAttribute{
+				Description: `
+The endpoint URL of the Stacklet GraphQL API.
+
+ May also be provided via STACKLET_ENDPOINT environment variable, or from the stacklet-admin CLI configuration.
+`,
+				Optional: true,
+			},
 		},
 	}
 }
 
 // Configure prepares a Stacklet API client for data sources and resources.
 func (p *stackletProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
-	tflog.Info(ctx, "Configuring Stacklet client")
-
-	var config stackletProviderModel
+	var config providerModel
 	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// If practitioner provided a configuration value for any of the
-	// attributes, it must be a known value.
-	if config.Endpoint.IsUnknown() {
-		resp.Diagnostics.AddAttributeError(
-			tfpath.Root("endpoint"),
-			"Unknown Stacklet API Endpoint",
-			"The provider cannot create the Stacklet API client as there is an unknown configuration value for the Stacklet API endpoint. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_ENDPOINT environment variable.",
-		)
-	}
-	if config.APIKey.IsUnknown() {
-		resp.Diagnostics.AddAttributeError(
-			tfpath.Root("api_key"),
-			"Unknown Stacklet API Key",
-			"The provider cannot create the Stacklet API client as there is an unknown configuration value for the Stacklet API key. "+
-				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_API_KEY environment variable.",
-		)
-	}
-	if resp.Diagnostics.HasError() {
+	env, err := envConfig()
+	if err != nil {
+		errors.AddDiagError(&resp.Diagnostics, err)
 		return
 	}
 
-	creds := getCredentials(config)
-	if creds.Endpoint == "" {
-		resp.Diagnostics.AddAttributeError(
-			tfpath.Root("endpoint"),
-			"Missing Stacklet API Endpoint",
-			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet API endpoint. "+
-				"Set the endpoint value in the configuration, in the STACKLET_ENDPOINT environment variable, or login via the stacklet-admin CLI first.",
-		)
-	}
-	if creds.APIKey == "" {
-		resp.Diagnostics.AddAttributeError(
-			tfpath.Root("api_key"),
-			"Missing Stacklet API Key",
-			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet API key. "+
-				"Set the api_key value in the configuration, in the STACKLET_API_KEY environment variable, or login via the stacklet-admin CLI first.",
-		)
-	}
+	creds, diags := getCredentials(config, env)
+	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -152,23 +121,27 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 			Endpoint: creds.Endpoint,
 			APIKey:   creds.APIKey,
 			Version:  p.version,
-			PageSize: p.apiPageSize,
+			PageSize: env.PageSize,
 		},
 	)
 	resp.ResourceData = providerData
 	resp.DataSourceData = providerData
-
-	tflog.Info(ctx, "Configured Stacklet client")
 }
 
 // DataSources defines the data sources implemented in the provider.
 func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-	return datasources.DataSources(p.includeUnreleased)
+	conf, _ := envConfig()
+	return datasources.DataSources(conf.UnreleasedFeatures)
 }
 
 // Resources defines the resources implemented in the provider.
 func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resource {
-	return resources.Resources(p.includeUnreleased)
+	conf, _ := envConfig()
+	return resources.Resources(conf.UnreleasedFeatures)
+}
+
+func envConfig() (providerEnv, error) {
+	return env.ParseAs[providerEnv]()
 }
 
 type credentials struct {
@@ -176,8 +149,29 @@ type credentials struct {
 	APIKey   string
 }
 
-func getCredentials(config stackletProviderModel) *credentials {
-	creds := credentials{}
+func getCredentials(config providerModel, env providerEnv) (credentials, diag.Diagnostics) {
+	var creds credentials
+	var diags diag.Diagnostics
+
+	if config.Endpoint.IsUnknown() {
+		diags.AddAttributeError(
+			tfpath.Root("endpoint"),
+			"Unknown Stacklet API Endpoint",
+			"The provider cannot create the Stacklet API client as there is an unknown configuration value for the Stacklet API endpoint. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_ENDPOINT environment variable.",
+		)
+	}
+	if config.APIKey.IsUnknown() {
+		diags.AddAttributeError(
+			tfpath.Root("api_key"),
+			"Unknown Stacklet API key",
+			"The provider cannot create the Stacklet API client as there is an unknown configuration value for the Stacklet API key. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_API_KEY environment variable.",
+		)
+	}
+	if diags.HasError() {
+		return creds, diags
+	}
 
 	// lookup provider configuration (might return empty strings)
 	creds.Endpoint = config.Endpoint.ValueString()
@@ -185,15 +179,14 @@ func getCredentials(config stackletProviderModel) *credentials {
 
 	// lookup environment variables
 	if creds.Endpoint == "" {
-		creds.Endpoint = os.Getenv("STACKLET_ENDPOINT")
+		creds.Endpoint = env.Endpoint
 	}
 	if creds.APIKey == "" {
-		creds.APIKey = os.Getenv("STACKLET_API_KEY")
+		creds.APIKey = env.APIKey
 	}
 
 	// lookup stacklet-admin configuration
 	if homeDir, err := os.UserHomeDir(); err == nil {
-
 		if creds.Endpoint == "" {
 			configFile := path.Join(homeDir, ".stacklet", "config.json")
 			if content, err := os.ReadFile(configFile); err == nil {
@@ -214,15 +207,21 @@ func getCredentials(config stackletProviderModel) *credentials {
 		}
 	}
 
-	return &creds
-}
-
-// getEnvInt returns an integer from an environment variable, fallback if unset
-// or invalid.
-func getEnvInt(name string, fallback int) int {
-	value, err := strconv.Atoi(os.Getenv(name))
-	if err == nil {
-		return value
+	if creds.Endpoint == "" {
+		diags.AddAttributeError(
+			tfpath.Root("endpoint"),
+			"Missing Stacklet API Endpoint",
+			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet API endpoint. "+
+				"Set the endpoint value in the configuration, in the STACKLET_ENDPOINT environment variable, or login via the stacklet-admin CLI first.",
+		)
 	}
-	return fallback
+	if creds.APIKey == "" {
+		diags.AddAttributeError(
+			tfpath.Root("api_key"),
+			"Missing Stacklet API key",
+			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet API key. "+
+				"Set the api_key value in the configuration, in the STACKLET_API_KEY environment variable, or login via the stacklet-admin CLI first.",
+		)
+	}
+	return creds, diags
 }

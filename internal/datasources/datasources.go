@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 )
 
-// DataSources returns all available datasources..
+// DataSources returns all available datasources.
 func DataSources(includeUnreleased bool) []func() datasource.DataSource {
 	dataSources := []func() datasource.DataSource{
 		newAccountDataSource,

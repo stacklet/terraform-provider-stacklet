@@ -10,6 +10,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func setHomeDir(t *testing.T) string {
@@ -28,7 +29,7 @@ func makeStackletAdminDir(t *testing.T) string {
 	return stackletDir
 }
 
-func setupStackletAdminConfig(t *testing.T, endpoint, apiKey string) {
+func setupStackletAdminConfig(t *testing.T, endpoint string, apiKey string) {
 	stackletDir := makeStackletAdminDir(t)
 
 	if endpoint != "" {
@@ -48,163 +49,162 @@ func setupStackletAdminConfig(t *testing.T, endpoint, apiKey string) {
 	}
 }
 
-func TestGetCredentials_FromConfig(t *testing.T) {
-	config := stackletProviderModel{
+func TestGetCredentials(t *testing.T) {
+	envFull := providerEnv{
+		Endpoint: "https://env-endpoint.example.com",
+		APIKey:   "env-api-key",
+	}
+	configFull := providerModel{
 		Endpoint: types.StringValue("https://config-endpoint.example.com"),
 		APIKey:   types.StringValue("config-api-key"),
 	}
-
-	creds := getCredentials(config)
-	assert.Equal(t, "https://config-endpoint.example.com", creds.Endpoint)
-	assert.Equal(t, "config-api-key", creds.APIKey)
-}
-
-func TestGetCredentials_FromEnvVars(t *testing.T) {
-	t.Setenv("STACKLET_ENDPOINT", "https://env-endpoint.example.com")
-	t.Setenv("STACKLET_API_KEY", "env-api-key")
-
-	config := stackletProviderModel{
-		Endpoint: types.StringNull(),
-		APIKey:   types.StringNull(),
+	adminCLIFull := &credentials{
+		Endpoint: "https://cli-endpoint.example.com",
+		APIKey:   "cli-api-key",
 	}
 
-	creds := getCredentials(config)
-	assert.Equal(t, "https://env-endpoint.example.com", creds.Endpoint)
-	assert.Equal(t, "env-api-key", creds.APIKey)
-}
-
-func TestGetCredentials_ConfigOverridesEnvVars(t *testing.T) {
-	t.Setenv("STACKLET_ENDPOINT", "https://env-endpoint.example.com")
-	t.Setenv("STACKLET_API_KEY", "env-api-key")
-
-	config := stackletProviderModel{
-		Endpoint: types.StringValue("https://config-endpoint.example.com"),
-		APIKey:   types.StringValue("config-api-key"),
+	tests := []struct {
+		name       string
+		env        providerEnv
+		config     providerModel
+		adminCLI   *credentials
+		expected   credentials
+		diagErrors []string
+	}{
+		{
+			name:   "FromConfig",
+			config: configFull,
+			expected: credentials{
+				Endpoint: "https://config-endpoint.example.com",
+				APIKey:   "config-api-key",
+			},
+		},
+		{
+			name: "FromEnviron",
+			env:  envFull,
+			expected: credentials{
+				Endpoint: "https://env-endpoint.example.com",
+				APIKey:   "env-api-key",
+			},
+		},
+		{
+			name:     "FromAdminCLI",
+			adminCLI: adminCLIFull,
+			expected: credentials{
+				Endpoint: "https://cli-endpoint.example.com",
+				APIKey:   "cli-api-key",
+			},
+		},
+		{
+			name:   "ConfigOverridesEnviron",
+			env:    envFull,
+			config: configFull,
+			expected: credentials{
+				Endpoint: "https://config-endpoint.example.com",
+				APIKey:   "config-api-key",
+			},
+		},
+		{
+			name:     "EnvironOverridesAdminCLI",
+			env:      envFull,
+			adminCLI: adminCLIFull,
+			expected: credentials{
+				Endpoint: "https://env-endpoint.example.com",
+				APIKey:   "env-api-key",
+			},
+		},
+		{
+			name: "MixedSources",
+			env: providerEnv{
+				APIKey: "env-api-key",
+			},
+			adminCLI: &credentials{
+				Endpoint: "https://cli-endpoint.example.com",
+			},
+			expected: credentials{
+				Endpoint: "https://cli-endpoint.example.com",
+				APIKey:   "env-api-key",
+			},
+		},
+		{
+			name: "MissingEndpoint",
+			config: providerModel{
+				APIKey: types.StringValue("config-api-key"),
+			},
+			diagErrors: []string{"Missing Stacklet API Endpoint"},
+		},
+		{
+			name: "MissingAPIKey",
+			config: providerModel{
+				Endpoint: types.StringValue("https://config-endpoint.example.com"),
+			},
+			diagErrors: []string{"Missing Stacklet API key"},
+		},
+		{
+			name: "MissingBoth",
+			diagErrors: []string{
+				"Missing Stacklet API Endpoint",
+				"Missing Stacklet API key",
+			},
+		},
+		{
+			name: "UnknownEndpoint",
+			config: providerModel{
+				Endpoint: types.StringUnknown(),
+				APIKey:   types.StringValue("config-api-key"),
+			},
+			diagErrors: []string{"Unknown Stacklet API Endpoint"},
+		},
+		{
+			name: "UnknownAPIKey",
+			config: providerModel{
+				Endpoint: types.StringValue("https://config-endpoint.example.com"),
+				APIKey:   types.StringUnknown(),
+			},
+			diagErrors: []string{"Unknown Stacklet API key"},
+		},
+		{
+			name: "UnknownBoth",
+			config: providerModel{
+				Endpoint: types.StringUnknown(),
+				APIKey:   types.StringUnknown(),
+			},
+			diagErrors: []string{
+				"Unknown Stacklet API Endpoint",
+				"Unknown Stacklet API key",
+			},
+		},
 	}
 
-	creds := getCredentials(config)
-	assert.Equal(t, "https://config-endpoint.example.com", creds.Endpoint)
-	assert.Equal(t, "config-api-key", creds.APIKey)
-}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.adminCLI != nil {
+				setupStackletAdminConfig(t, tc.adminCLI.Endpoint, tc.adminCLI.APIKey)
+			} else {
+				setHomeDir(t)
+			}
 
-func TestGetCredentials_FromStackletAdminConfig(t *testing.T) {
-	setupStackletAdminConfig(t, "https://cli-endpoint.example.com", "cli-api-key")
-
-	config := stackletProviderModel{
-		Endpoint: types.StringNull(),
-		APIKey:   types.StringNull(),
+			creds, diags := getCredentials(tc.config, tc.env)
+			expectedErrors := len(tc.diagErrors)
+			if expectedErrors == 0 {
+				assert.Equal(t, tc.expected, creds)
+			}
+			require.Len(t, diags.Errors(), expectedErrors)
+			for i, msg := range tc.diagErrors {
+				assert.Contains(t, diags[i].Summary(), msg)
+			}
+		})
 	}
-
-	creds := getCredentials(config)
-	assert.Equal(t, "https://cli-endpoint.example.com", creds.Endpoint)
-	assert.Equal(t, "cli-api-key", creds.APIKey)
 }
 
-func TestGetCredentials_EnvVarsOverrideStackletAdminFiles(t *testing.T) {
-	t.Setenv("STACKLET_ENDPOINT", "https://env-endpoint.example.com")
-	t.Setenv("STACKLET_API_KEY", "env-api-key")
-
-	setupStackletAdminConfig(t, "https://cli-endpoint.example.com", "cli-api-key")
-
-	config := stackletProviderModel{
-		Endpoint: types.StringNull(),
-		APIKey:   types.StringNull(),
-	}
-
-	creds := getCredentials(config)
-	assert.Equal(t, "https://env-endpoint.example.com", creds.Endpoint)
-	assert.Equal(t, "env-api-key", creds.APIKey)
-}
-
-func TestGetCredentials_MixedSources(t *testing.T) {
-	t.Setenv("STACKLET_API_KEY", "env-api-key")
-
-	setupStackletAdminConfig(t, "https://cli-endpoint.example.com", "")
-
-	config := stackletProviderModel{
-		Endpoint: types.StringNull(),
-		APIKey:   types.StringNull(),
-	}
-
-	creds := getCredentials(config)
-	assert.Equal(t, "https://cli-endpoint.example.com", creds.Endpoint)
-	assert.Equal(t, "env-api-key", creds.APIKey)
-}
-
-func TestGetCredentials_Empty(t *testing.T) {
-	setupStackletAdminConfig(t, "", "")
-
-	config := stackletProviderModel{
-		Endpoint: types.StringNull(),
-		APIKey:   types.StringNull(),
-	}
-
-	creds := getCredentials(config)
-
-	assert.Equal(t, "", creds.Endpoint)
-	assert.Equal(t, "", creds.APIKey)
-}
-
-func TestGetCredentials_PartialConfig(t *testing.T) {
-	t.Setenv("STACKLET_API_KEY", "env-api-key")
-
-	config := stackletProviderModel{
-		Endpoint: types.StringValue("https://config-endpoint.example.com"),
-		APIKey:   types.StringNull(),
-	}
-
-	creds := getCredentials(config)
-
-	assert.Equal(t, "https://config-endpoint.example.com", creds.Endpoint)
-	assert.Equal(t, "env-api-key", creds.APIKey)
-}
-
-func TestGetCredentials_InvalidStackletAdminConfigJSON(t *testing.T) {
+func TestGetCredentials_InvalidAdminCLIConfigJSON(t *testing.T) {
 	stackletDir := makeStackletAdminDir(t)
 	configFile := path.Join(stackletDir, "config.json")
 	if err := os.WriteFile(configFile, []byte("invalid json"), 0644); err != nil {
 		t.Fatal(err)
 	}
 
-	config := stackletProviderModel{
-		Endpoint: types.StringNull(),
-		APIKey:   types.StringNull(),
-	}
-
-	creds := getCredentials(config)
-	assert.Equal(t, "", creds.Endpoint)
-	assert.Equal(t, "", creds.APIKey)
-}
-
-func TestGetCredentials_MissingStackletAdminFiles(t *testing.T) {
-	setupStackletAdminConfig(t, "", "")
-
-	config := stackletProviderModel{
-		Endpoint: types.StringNull(),
-		APIKey:   types.StringNull(),
-	}
-
-	creds := getCredentials(config)
-	assert.Equal(t, "", creds.Endpoint)
-	assert.Equal(t, "", creds.APIKey)
-}
-
-func TestGetEnvInt(t *testing.T) {
-	tests := []struct {
-		name     string
-		envValue string
-		fallback int
-		expected int
-	}{
-		{"valid", "10", 20, 10},
-		{"unset", "", 20, 20},
-		{"invalid", "not-an-int", 20, 20},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			t.Setenv("FOO", tc.envValue)
-			assert.Equal(t, tc.expected, getEnvInt("FOO", tc.fallback))
-		})
-	}
+	_, diags := getCredentials(providerModel{}, providerEnv{})
+	require.True(t, diags.HasError())
+	assert.Contains(t, diags[0].Summary(), "Missing Stacklet API Endpoint")
 }

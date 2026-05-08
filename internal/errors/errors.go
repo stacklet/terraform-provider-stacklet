@@ -34,7 +34,7 @@ func AsDiagError(err error) DiagError {
 	if ok {
 		return e
 	}
-	return diagError{err: e}
+	return diagError{err: err}
 }
 
 // AddDiagError adds an error to the diagnostics.

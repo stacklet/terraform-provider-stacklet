@@ -3,6 +3,7 @@ module github.com/stacklet/terraform-provider-stacklet
 go 1.25.8
 
 require (
+	github.com/caarlos0/env/v11 v11.4.1
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/hashicorp/terraform-plugin-framework v1.19.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.19.0
