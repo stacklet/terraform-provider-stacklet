@@ -38,10 +38,10 @@ type GCPIntegrationCustomerInfrastructure struct {
 // GCPIntegrationCustomerCreateProject holds configuration for integration
 // project creation.
 type GCPIntegrationCustomerCreateProject struct {
-	BillingAccountID string   `graphql:"billingAccountId"`
-	OrgID            *string  `graphql:"orgId"`
-	FolderID         *string  `graphql:"folderId"`
-	Labels           TagsList `graphql:"labels"`
+	BillingAccountID string  `graphql:"billingAccountId"`
+	OrgID            *string `graphql:"orgId"`
+	FolderID         *string `graphql:"folderId"`
+	Labels           TagsList
 }
 
 // GCPIntegrationCustomerOrganization identifies a GCP organization Stacklet will manage.

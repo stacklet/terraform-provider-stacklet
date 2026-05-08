@@ -75,10 +75,10 @@ type SlackWebhook struct {
 
 // MSTeamsConfiguration is the configuration for Microsoft Teams profiles.
 type MSTeamsConfiguration struct {
-	AccessConfig    *MSTeamsAccessConfig    `json:"accessConfig"`
-	CustomerConfig  MSTeamsCustomerConfig   `json:"customerConfig"`
-	ChannelMappings []MSTeamsChannelMapping `json:"channelMappings"`
-	EntityDetails   MSTeamsEntityDetails    `json:"entityDetails"`
+	AccessConfig    *MSTeamsAccessConfig
+	CustomerConfig  MSTeamsCustomerConfig
+	ChannelMappings []MSTeamsChannelMapping
+	EntityDetails   MSTeamsEntityDetails
 }
 
 // MSTeamsAccessConfigInput is the input for the access configuration for
@@ -99,51 +99,51 @@ type MSTeamsCustomerConfigInput struct {
 type MSTeamsAccessConfig struct {
 	MSTeamsAccessConfigInput
 
-	BotApplication       MSTeamsBotApplication              `json:"botApplication"`
-	PublishedApplication MSTeamsPublishedApplicationPayload `json:"publishedApplication"`
+	BotApplication       MSTeamsBotApplication
+	PublishedApplication MSTeamsPublishedApplicationPayload
 }
 
 // MSTeamsBotApplication contains details about the Microsoft Teams bot application.
 type MSTeamsBotApplication struct {
-	DownloadURL string `graphql:"downloadURL" json:"downloadURL"`
-	Version     string `json:"version"`
+	DownloadURL string
+	Version     string
 }
 
 // MSTeamsPublishedApplicationPayload contains details about the Microsoft Teams bot application publishing to the registry.
 type MSTeamsPublishedApplicationPayload struct {
-	Application *MSTeamsPublishedApplication `json:"application"`
+	Application *MSTeamsPublishedApplication
 }
 
 // MSTeamsPublishedApplication contains details about the Microsoft Teams bot application publishing to the registry.
 type MSTeamsPublishedApplication struct {
-	CatalogID *string `json:"catalogID"`
-	Version   *string `json:"version"`
+	CatalogID *string
+	Version   *string
 }
 
 // MSTeamsCustomerConfig is the customer configuration for Microsoft Teams profile setup.
 type MSTeamsCustomerConfig struct {
 	MSTeamsCustomerConfigInput
 
-	RoundtripDigest string          `json:"roundtripDigest"`
-	TerraformModule TerraformModule `json:"terraformModule"`
+	RoundtripDigest string
+	TerraformModule TerraformModule
 }
 
 // MSTeamsEntityDetails has details about Microsoft Teams entities from their ID.
 type MSTeamsEntityDetails struct {
-	Channels []MSTeamsChannelDetail `json:"channels"`
-	Teams    []MSTeamsTeamDetail    `json:"teams"`
+	Channels []MSTeamsChannelDetail
+	Teams    []MSTeamsTeamDetail
 }
 
 // MSTeamsChannelDetail has details about a Microsoft Teams channel.
 type MSTeamsChannelDetail struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   string
+	Name string
 }
 
 // MSTeamsTeamDetail has details about a Microsoft Teams team.
 type MSTeamsTeamDetail struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   string
+	Name string
 }
 
 // MSTeamsChannelMapping contains mappings between IDs and target names for Microsoft Teams.

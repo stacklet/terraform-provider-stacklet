@@ -15,7 +15,7 @@ type Repository struct {
 	URL                  string
 	Name                 string
 	Description          *string
-	WebhookURL           string `graphql:"webhookURL"`
+	WebhookURL           string
 	System               bool
 	RoleAssignmentTarget string
 

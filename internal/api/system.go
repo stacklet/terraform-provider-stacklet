@@ -11,7 +11,7 @@ import (
 // Platform is the data returned by reading platform data.
 type Platform struct {
 	ID                       graphql.ID
-	ExternalID               *string `graphql:"externalID"`
+	ExternalID               *string
 	ExecutionRegions         []string
 	AWSOrgReadCustomerConfig PlatformCustomerConfig `graphql:"awsOrgReadCustomerConfig"`
 	AWSAccountCustomerConfig PlatformCustomerConfig `graphql:"awsAccountCustomerConfig"`
@@ -25,30 +25,30 @@ type PlatformCustomerConfig struct {
 // MSTeamsIntegrationSurface is the data returned by reading Microsoft Teams
 // integration configuration details.
 type MSTeamsIntegrationSurface struct {
-	BotEndpoint  string `graphql:"botEndpoint"`
+	BotEndpoint  string
 	WIFIssuerURL string `graphql:"wifIssuerURL"`
-	TrustRoleARN string `graphql:"trustRoleARN"`
+	TrustRoleARN string
 }
 
 // GCPIntegrationSurface is the data returned by reading GCP integration configuration details.
 type GCPIntegrationSurface struct {
-	TrustAws GCPIntegrationSurfaceTrustAws `graphql:"trustAws"`
-	AwsRelay GCPIntegrationSurfaceAwsRelay `graphql:"awsRelay"`
+	TrustAws GCPIntegrationSurfaceTrustAws
+	AwsRelay GCPIntegrationSurfaceAwsRelay
 }
 
 // GCPIntegrationSurfaceTrustAws holds AWS trust configuration for GCP integration.
 type GCPIntegrationSurfaceTrustAws struct {
 	AccountID         string `graphql:"accountId"`
-	AssetdbRoleName   string `graphql:"assetdbRoleName"`
-	CostQueryRoleName string `graphql:"costQueryRoleName"`
-	ExecutionRoleName string `graphql:"executionRoleName"`
-	PlatformRoleName  string `graphql:"platformRoleName"`
+	AssetdbRoleName   string
+	CostQueryRoleName string
+	ExecutionRoleName string
+	PlatformRoleName  string
 }
 
 // GCPIntegrationSurfaceAwsRelay holds AWS relay configuration for GCP integration.
 type GCPIntegrationSurfaceAwsRelay struct {
-	BusArn  string `graphql:"busArn"`
-	RoleArn string `graphql:"roleArn"`
+	BusArn  string
+	RoleArn string
 }
 
 type systemAPI struct {

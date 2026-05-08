@@ -13,13 +13,13 @@ import (
 type RoleAssignment struct {
 	ID        graphql.ID
 	Role      Role
-	Principal rolePrincipal `graphql:"principal"`
-	Target    roleTarget    `graphql:"target"`
+	Principal rolePrincipal
+	Target    roleTarget
 }
 
 // rolePrincipalPrincipal contains the opaque roleAssignmentPrincipal string.
 type rolePrincipalPrincipal struct {
-	RoleAssignmentPrincipal string `graphql:"roleAssignmentPrincipal"`
+	RoleAssignmentPrincipal string
 }
 
 // rolePrincipal represents the GraphQL union type for RolePrincipal.
@@ -41,7 +41,7 @@ func (r *RoleAssignment) GetPrincipal() string {
 
 // roleTarget represents the GraphQL union type for target entities.
 type roleTarget struct {
-	RoleAssignmentTarget string          `graphql:"roleAssignmentTarget"`
+	RoleAssignmentTarget string
 	RoleScope            *roleTargetType `graphql:"... on RoleScope"`
 	AccountGroup         *roleTargetType `graphql:"... on AccountGroup"`
 	PolicyCollection     *roleTargetType `graphql:"... on PolicyCollection"`
@@ -51,7 +51,7 @@ type roleTarget struct {
 
 // roleTargetType is used for the union type matching.
 type roleTargetType struct {
-	RoleAssignmentTarget string `graphql:"roleAssignmentTarget"`
+	RoleAssignmentTarget string
 }
 
 // GetTarget extracts the opaque target identifier string.

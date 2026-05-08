@@ -26,25 +26,25 @@ type AccountDiscovery struct {
 }
 
 type accountDiscoveryAWSConfig struct {
-	OrgID         string `graphql:"orgID"`
-	OrgRole       string `graphql:"orgRole"`
-	MemberRole    string `graphql:"memberRole"`
-	CustodianRole string `graphql:"custodianRole"`
+	OrgID         string
+	OrgRole       string
+	MemberRole    string
+	CustodianRole string
 }
 
 type accountDiscoveryAzureConfig struct {
-	TenantID string `graphql:"tenantID"`
-	ClientID string `graphql:"clientID"`
+	TenantID string
+	ClientID string
 }
 
 type accountDiscoveryGCPConfig struct {
-	ClientEmail      string   `graphql:"clientEmail"`
-	ClientID         string   `graphql:"clientID"`
-	OrgID            string   `graphql:"orgID"`
-	RootFolderIDs    []string `graphql:"rootFolderIDs"`
-	ExcludeFolderIDs []string `graphql:"excludeFolderIDs"`
-	ProjectID        string   `graphql:"projectID"`
-	PrivateKeyID     string   `graphql:"privateKeyID"`
+	ClientEmail      string
+	ClientID         string
+	OrgID            string
+	RootFolderIDs    []string
+	ExcludeFolderIDs []string
+	ProjectID        string
+	PrivateKeyID     string
 }
 
 // AccountDiscoveryAWSInput is the input to create or update an AWS account discovery.

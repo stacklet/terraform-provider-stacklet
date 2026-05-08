@@ -12,10 +12,10 @@ import (
 
 // TerraformModule is the data returned for terraform module definitions.
 type TerraformModule struct {
-	RepositoryURL string `graphql:"repositoryURL"`
+	RepositoryURL string
 	Source        string
 	Version       *string
-	VariablesJSON string `graphql:"variablesJSON"`
+	VariablesJSON string
 }
 
 // Tag is the data for a tag.

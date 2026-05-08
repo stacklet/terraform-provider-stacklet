@@ -21,7 +21,7 @@ type Policy struct {
 	ResourceType    string
 	Path            string
 	Source          string
-	SourceYAML      string `graphql:"sourceYAML"`
+	SourceYAML      string
 	System          bool
 	UnqualifiedName string
 }
