@@ -11,15 +11,15 @@ import (
 
 // RoleAssignment is the data returned by reading role assignment data.
 type RoleAssignment struct {
-	ID        graphql.ID
-	Role      Role
-	Principal rolePrincipal
-	Target    roleTarget
+	ID        graphql.ID    `graphql:"id"`
+	Role      Role          `graphql:"role"`
+	Principal rolePrincipal `graphql:"principal"`
+	Target    roleTarget    `graphql:"target"`
 }
 
 // rolePrincipalPrincipal contains the opaque roleAssignmentPrincipal string.
 type rolePrincipalPrincipal struct {
-	RoleAssignmentPrincipal string
+	RoleAssignmentPrincipal string `graphql:"roleAssignmentPrincipal"`
 }
 
 // rolePrincipal represents the GraphQL union type for RolePrincipal.
@@ -41,7 +41,7 @@ func (r *RoleAssignment) GetPrincipal() string {
 
 // roleTarget represents the GraphQL union type for target entities.
 type roleTarget struct {
-	RoleAssignmentTarget string
+	RoleAssignmentTarget string          `graphql:"roleAssignmentTarget"`
 	RoleScope            *roleTargetType `graphql:"... on RoleScope"`
 	AccountGroup         *roleTargetType `graphql:"... on AccountGroup"`
 	PolicyCollection     *roleTargetType `graphql:"... on PolicyCollection"`
@@ -51,7 +51,7 @@ type roleTarget struct {
 
 // roleTargetType is used for the union type matching.
 type roleTargetType struct {
-	RoleAssignmentTarget string
+	RoleAssignmentTarget string `graphql:"roleAssignmentTarget"`
 }
 
 // GetTarget extracts the opaque target identifier string.
@@ -80,8 +80,8 @@ func (i roleAssignmentInput) GetGraphQLType() string {
 
 // grantRoleAssignmentPayload represents the result of granting a role assignment.
 type grantRoleAssignmentPayload struct {
-	ErrorMessage   *string
-	RoleAssignment *RoleAssignment
+	ErrorMessage   *string         `graphql:"errorMessage"`
+	RoleAssignment *RoleAssignment `graphql:"roleAssignment"`
 }
 
 func (p grantRoleAssignmentPayload) Error() string {
@@ -94,10 +94,10 @@ func (p grantRoleAssignmentPayload) Error() string {
 
 // revokeRoleAssignmentPayload represents the result of revoking a role assignment.
 type revokeRoleAssignmentPayload struct {
-	ErrorMessage *string
+	ErrorMessage *string `graphql:"errorMessage"`
 	Removed      struct {
-		ID graphql.ID
-	}
+		ID graphql.ID `graphql:"id"`
+	} `graphql:"removed"`
 }
 
 func (p revokeRoleAssignmentPayload) Error() string {

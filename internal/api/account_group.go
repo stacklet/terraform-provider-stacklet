@@ -10,14 +10,14 @@ import (
 
 // AccountGroup is the data returned by reading account group data.
 type AccountGroup struct {
-	ID                   graphql.ID
-	UUID                 string
-	Name                 string
-	Description          *string
-	DynamicFilter        *string
-	Provider             string
-	Regions              []string
-	RoleAssignmentTarget string
+	ID                   graphql.ID `graphql:"id"`
+	UUID                 string     `graphql:"uuid"`
+	Name                 string     `graphql:"name"`
+	Description          *string    `graphql:"description"`
+	DynamicFilter        *string    `graphql:"dynamicFilter"`
+	Provider             string     `graphql:"provider"`
+	Regions              []string   `graphql:"regions"`
+	RoleAssignmentTarget string     `graphql:"roleAssignmentTarget"`
 }
 
 // AccountGroupCreateInput is the input for creating an account group.

@@ -13,8 +13,8 @@ type UUID string
 
 // ConfigurationProfile is the data returned for configuration profiles.
 type ConfigurationProfile struct {
-	ID      graphql.ID
-	Profile string
+	ID      graphql.ID `graphql:"id"`
+	Profile string     `graphql:"profile"`
 	Record  struct {
 		TypeName                   string                     `graphql:"__typename"`
 		EmailConfiguration         EmailConfiguration         `graphql:"... on EmailConfiguration"`
@@ -30,55 +30,55 @@ type ConfigurationProfile struct {
 
 // EmailConfiguration is the configuration for email profiles.
 type EmailConfiguration struct {
-	FromEmail string             `json:"fromEmail"`
+	FromEmail string             `graphql:"fromEmail" json:"fromEmail"`
 	SESRegion *string            `graphql:"sesRegion" json:"sesRegion"`
 	SMTP      *SMTPConfiguration `graphql:"smtp" json:"smtp"`
 }
 
 // SMTPConfiguration is the SMTP server configuration.
 type SMTPConfiguration struct {
-	Server   string  `json:"server"`
-	Port     string  `json:"port"`
+	Server   string  `graphql:"server" json:"server"`
+	Port     string  `graphql:"port" json:"port"`
 	SSL      *bool   `graphql:"ssl" json:"ssl"`
-	Username *string `json:"username"`
-	Password *string `json:"password"`
+	Username *string `graphql:"username" json:"username"`
+	Password *string `graphql:"password" json:"password"`
 }
 
 // ServiceNowConfiguration is the configuration for ServiceNow profiles.
 type ServiceNowConfiguration struct {
-	Endpoint    string `json:"endpoint"`
-	User        string `json:"user"`
-	Password    string `json:"password"`
-	IssueType   string `json:"issueType"`
-	ClosedState string `json:"closedState"`
+	Endpoint    string `graphql:"endpoint" json:"endpoint"`
+	User        string `graphql:"user" json:"user"`
+	Password    string `graphql:"password" json:"password"`
+	IssueType   string `graphql:"issueType" json:"issueType"`
+	ClosedState string `graphql:"closedState" json:"closedState"`
 }
 
 // SymphonyConfiguration is the configuration for Symphony profiles.
 type SymphonyConfiguration struct {
-	AgentDomain    string `json:"agentDomain"`
-	ServiceAccount string `json:"serviceAccount"`
-	PrivateKey     string `json:"privateKey"`
+	AgentDomain    string `graphql:"agentDomain" json:"agentDomain"`
+	ServiceAccount string `graphql:"serviceAccount" json:"serviceAccount"`
+	PrivateKey     string `graphql:"privateKey" json:"privateKey"`
 }
 
 // SlackConfiguration is the configuration for Slack profiles.
 type SlackConfiguration struct {
-	Token      *string        `json:"token"`
-	UserFields []string       `json:"userFields"`
-	Webhooks   []SlackWebhook `json:"webhooks"`
+	Token      *string        `graphql:"token" json:"token"`
+	UserFields []string       `graphql:"userFields" json:"userFields"`
+	Webhooks   []SlackWebhook `graphql:"webhooks" json:"webhooks"`
 }
 
 // SlackWebhook is a webhook configuration for Slack.
 type SlackWebhook struct {
-	Name string `json:"name"`
+	Name string `graphql:"name" json:"name"`
 	URL  string `graphql:"url" json:"url"`
 }
 
 // MSTeamsConfiguration is the configuration for Microsoft Teams profiles.
 type MSTeamsConfiguration struct {
-	AccessConfig    *MSTeamsAccessConfig
-	CustomerConfig  MSTeamsCustomerConfig
-	ChannelMappings []MSTeamsChannelMapping
-	EntityDetails   MSTeamsEntityDetails
+	AccessConfig    *MSTeamsAccessConfig    `graphql:"accessConfig"`
+	CustomerConfig  MSTeamsCustomerConfig   `graphql:"customerConfig"`
+	ChannelMappings []MSTeamsChannelMapping `graphql:"channelMappings"`
+	EntityDetails   MSTeamsEntityDetails    `graphql:"entityDetails"`
 }
 
 // MSTeamsAccessConfigInput is the input for the access configuration for
@@ -99,58 +99,58 @@ type MSTeamsCustomerConfigInput struct {
 type MSTeamsAccessConfig struct {
 	MSTeamsAccessConfigInput
 
-	BotApplication       MSTeamsBotApplication
-	PublishedApplication MSTeamsPublishedApplicationPayload
+	BotApplication       MSTeamsBotApplication              `graphql:"botApplication"`
+	PublishedApplication MSTeamsPublishedApplicationPayload `graphql:"publishedApplication"`
 }
 
 // MSTeamsBotApplication contains details about the Microsoft Teams bot application.
 type MSTeamsBotApplication struct {
-	DownloadURL string
-	Version     string
+	DownloadURL string `graphql:"downloadURL"`
+	Version     string `graphql:"version"`
 }
 
 // MSTeamsPublishedApplicationPayload contains details about the Microsoft Teams bot application publishing to the registry.
 type MSTeamsPublishedApplicationPayload struct {
-	Application *MSTeamsPublishedApplication
+	Application *MSTeamsPublishedApplication `graphql:"application"`
 }
 
 // MSTeamsPublishedApplication contains details about the Microsoft Teams bot application publishing to the registry.
 type MSTeamsPublishedApplication struct {
-	CatalogID *string
-	Version   *string
+	CatalogID *string `graphql:"catalogId"`
+	Version   *string `graphql:"version"`
 }
 
 // MSTeamsCustomerConfig is the customer configuration for Microsoft Teams profile setup.
 type MSTeamsCustomerConfig struct {
 	MSTeamsCustomerConfigInput
 
-	RoundtripDigest string
-	TerraformModule TerraformModule
+	RoundtripDigest string          `graphql:"roundtripDigest"`
+	TerraformModule TerraformModule `graphql:"terraformModule"`
 }
 
 // MSTeamsEntityDetails has details about Microsoft Teams entities from their ID.
 type MSTeamsEntityDetails struct {
-	Channels []MSTeamsChannelDetail
-	Teams    []MSTeamsTeamDetail
+	Channels []MSTeamsChannelDetail `graphql:"channels"`
+	Teams    []MSTeamsTeamDetail    `graphql:"teams"`
 }
 
 // MSTeamsChannelDetail has details about a Microsoft Teams channel.
 type MSTeamsChannelDetail struct {
-	ID   string
-	Name string
+	ID   string `graphql:"id"`
+	Name string `graphql:"name"`
 }
 
 // MSTeamsTeamDetail has details about a Microsoft Teams team.
 type MSTeamsTeamDetail struct {
-	ID   string
-	Name string
+	ID   string `graphql:"id"`
+	Name string `graphql:"name"`
 }
 
 // MSTeamsChannelMapping contains mappings between IDs and target names for Microsoft Teams.
 type MSTeamsChannelMapping struct {
-	Name      string `json:"name"`
-	TeamID    UUID   `json:"teamId"`
-	ChannelID string `json:"channelId"`
+	Name      string `graphql:"name" json:"name"`
+	TeamID    UUID   `graphql:"teamId" json:"teamId"`
+	ChannelID string `graphql:"channelId" json:"channelId"`
 }
 
 // MSTeamsConfigurationInput is the configuration input for the Microsoft Teams profile.
@@ -174,17 +174,17 @@ func (i msteamsConfigurationInput) GetGraphQLType() string {
 // JiraConfiguration is the configuration for Jira profiles.
 type JiraConfiguration struct {
 	URL      *string       `graphql:"url" json:"url"`
-	Projects []JiraProject `json:"projects"`
-	User     string        `json:"user"`
-	APIKey   string        `json:"apiKey"`
+	Projects []JiraProject `graphql:"projects" json:"projects"`
+	User     string        `graphql:"user" json:"user"`
+	APIKey   string        `graphql:"apiKey" json:"apiKey"`
 }
 
 // JiraProject is the configuration for a Jira project.
 type JiraProject struct {
-	ClosedStatus string `json:"closedStatus"`
-	IssueType    string `json:"issueType"`
-	Name         string `json:"name"`
-	Project      string `json:"project"`
+	ClosedStatus string `graphql:"closedStatus" json:"closedStatus"`
+	IssueType    string `graphql:"issueType" json:"issueType"`
+	Name         string `graphql:"name" json:"name"`
+	Project      string `graphql:"project" json:"project"`
 }
 
 type jiraConfigurationInput struct {
@@ -202,9 +202,9 @@ func (i jiraConfigurationInput) GetGraphQLType() string {
 type ResourceOwnerConfiguration struct {
 	// "default" is present with different type in both resource and account, so it must be aliased
 	Default      []string `graphql:"resourceOwnerDefault: default" json:"default"`
-	OrgDomain    *string  `json:"orgDomain"`
-	OrgDomainTag *string  `json:"orgDomainTag"`
-	Tags         []string `json:"tags"`
+	OrgDomain    *string  `graphql:"orgDomain" json:"orgDomain"`
+	OrgDomainTag *string  `graphql:"orgDomainTag" json:"orgDomainTag"`
+	Tags         []string `graphql:"tags" json:"tags"`
 }
 
 type resourceOwnerConfigurationInput struct {
@@ -222,15 +222,15 @@ func (i resourceOwnerConfigurationInput) GetGraphQLType() string {
 type AccountOwnersConfiguration struct {
 	// "default" is present with different type in both resource and account, so it must be aliased
 	Default      []AccountOwners `graphql:"accountOwnersDefault: default" json:"default"`
-	OrgDomain    *string         `json:"orgDomain"`
-	OrgDomainTag *string         `json:"orgDomainTag"`
-	Tags         []string        `json:"tags"`
+	OrgDomain    *string         `graphql:"orgDomain" json:"orgDomain"`
+	OrgDomainTag *string         `graphql:"orgDomainTag" json:"orgDomainTag"`
+	Tags         []string        `graphql:"tags" json:"tags"`
 }
 
 // AccountOwners tracks the owners for an account.
 type AccountOwners struct {
-	Account string   `json:"account"`
-	Owners  []string `json:"owners"`
+	Account string   `graphql:"account" json:"account"`
+	Owners  []string `graphql:"owners" json:"owners"`
 }
 
 type accountOwnersConfigurationInput struct {

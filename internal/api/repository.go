@@ -10,30 +10,30 @@ import (
 )
 
 type Repository struct {
-	ID                   graphql.ID
-	UUID                 string
-	URL                  string
-	Name                 string
-	Description          *string
-	WebhookURL           string
-	System               bool
-	RoleAssignmentTarget string
+	ID                   graphql.ID `graphql:"id"`
+	UUID                 string     `graphql:"uuid"`
+	URL                  string     `graphql:"url"`
+	Name                 string     `graphql:"name"`
+	Description          *string    `graphql:"description"`
+	WebhookURL           string     `graphql:"webhookURL"`
+	System               bool       `graphql:"system"`
+	RoleAssignmentTarget string     `graphql:"roleAssignmentTarget"`
 
 	Auth struct {
-		AuthUser         *string
-		HasAuthToken     bool
-		SSHPublicKey     *string
-		HasSshPrivateKey bool
-		HasSshPassphrase bool
-	}
+		AuthUser         *string `graphql:"authUser"`
+		HasAuthToken     bool    `graphql:"hasAuthToken"`
+		SSHPublicKey     *string `graphql:"sshPublicKey"`
+		HasSshPrivateKey bool    `graphql:"hasSshPrivateKey"`
+		HasSshPassphrase bool    `graphql:"hasSshPassphrase"`
+	} `graphql:"auth"`
 }
 
 // RepositoryView is the data returned by reading repository view data.
 type RepositoryView struct {
-	Namespace         string
-	BranchName        string
-	PolicyDirectories []string
-	PolicyFileSuffix  []string
+	Namespace         string   `graphql:"namespace"`
+	BranchName        string   `graphql:"branchName"`
+	PolicyDirectories []string `graphql:"policyDirectories"`
+	PolicyFileSuffix  []string `graphql:"policyFileSuffix"`
 }
 
 // RepositoryConfigAuthInput exists to allow us to set only the fields we want to

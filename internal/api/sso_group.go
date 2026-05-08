@@ -11,10 +11,10 @@ import (
 
 // SSOGroup is the data returned by reading SSO group data.
 type SSOGroup struct {
-	ID                      graphql.ID
-	DisplayName             *string
-	Name                    string
-	RoleAssignmentPrincipal string
+	ID                      graphql.ID `graphql:"id"`
+	DisplayName             *string    `graphql:"displayName"`
+	Name                    string     `graphql:"name"`
+	RoleAssignmentPrincipal string     `graphql:"roleAssignmentPrincipal"`
 }
 
 // SSOGroupInput is the input to create or update an SSO group.
@@ -36,8 +36,8 @@ func (i upsertSSOGroupInput) GetGraphQLType() string {
 }
 
 type upsertSSOGroupPayload struct {
-	ErrorMessage *string
-	SSOGroup     *SSOGroup
+	ErrorMessage *string   `graphql:"errorMessage"`
+	SSOGroup     *SSOGroup `graphql:"ssoGroup"`
 }
 
 func (p upsertSSOGroupPayload) Error() string {
@@ -49,7 +49,7 @@ func (p upsertSSOGroupPayload) Error() string {
 }
 
 type removeSSOGroupPayload struct {
-	ErrorMessage *string
+	ErrorMessage *string `graphql:"errorMessage"`
 }
 
 func (p removeSSOGroupPayload) Error() string {

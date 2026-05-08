@@ -10,15 +10,15 @@ import (
 
 // User is the data returned by reading user data.
 type User struct {
-	ID                      graphql.ID
-	Active                  bool
-	DisplayName             *string
-	Email                   *string
-	Name                    *string
-	Key                     int64
-	RoleAssignmentPrincipal string
-	SSOUser                 bool
-	Username                *string
+	ID                      graphql.ID `graphql:"id"`
+	Active                  bool       `graphql:"active"`
+	DisplayName             *string    `graphql:"displayName"`
+	Email                   *string    `graphql:"email"`
+	Name                    *string    `graphql:"name"`
+	Key                     int64      `graphql:"key"`
+	RoleAssignmentPrincipal string     `graphql:"roleAssignmentPrincipal"`
+	SSOUser                 bool       `graphql:"ssoUser"`
+	Username                *string    `graphql:"username"`
 }
 
 // UserCreateInput is the input for creating a user.

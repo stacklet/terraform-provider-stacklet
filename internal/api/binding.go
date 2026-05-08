@@ -10,20 +10,20 @@ import (
 
 // Binding is the data returned by reading binding details.
 type Binding struct {
-	ID           graphql.ID
-	UUID         string
-	Name         string
-	Description  *string
-	AutoDeploy   bool
-	Schedule     *string
+	ID           graphql.ID `graphql:"id"`
+	UUID         string     `graphql:"uuid"`
+	Name         string     `graphql:"name"`
+	Description  *string    `graphql:"description"`
+	AutoDeploy   bool       `graphql:"autoDeploy"`
+	Schedule     *string    `graphql:"schedule"`
 	AccountGroup struct {
-		UUID string
-	}
+		UUID string `graphql:"uuid"`
+	} `graphql:"accountGroup"`
 	PolicyCollection struct {
-		UUID string
-	}
-	ExecutionConfig BindingExecutionConfig
-	System          bool
+		UUID string `graphql:"uuid"`
+	} `graphql:"policyCollection"`
+	ExecutionConfig BindingExecutionConfig `graphql:"executionConfig"`
+	System          bool                   `graphql:"system"`
 }
 
 // DryRun returns the dryRun value for a binding execution config.
@@ -63,40 +63,40 @@ func (b Binding) PolicyResourceLimits() []BindingExecutionConfigResourceLimitsPo
 
 // ExecutionConfig holds the execution configuration for a binding.
 type BindingExecutionConfig struct {
-	DryRun          *BindingExecutionConfigDryRun          `json:"dryRun"`
-	ResourceLimits  *BindingExecutionConfigResourceLimits  `json:"resourceLimits"`
-	SecurityContext *BindingExecutionConfigSecurityContext `json:"securityContext"`
-	Variables       *string                                `json:"variables"`
+	DryRun          *BindingExecutionConfigDryRun          `graphql:"dryRun" json:"dryRun"`
+	ResourceLimits  *BindingExecutionConfigResourceLimits  `graphql:"resourceLimits" json:"resourceLimits"`
+	SecurityContext *BindingExecutionConfigSecurityContext `graphql:"securityContext" json:"securityContext"`
+	Variables       *string                                `graphql:"variables" json:"variables"`
 }
 
 // BindingExecutionConfigDryRun holds the dry run configuration for a binding execution config.
 type BindingExecutionConfigDryRun struct {
-	Default bool `json:"default"`
+	Default bool `graphql:"default" json:"default"`
 }
 
 // BindingExecutionConfigSecurityCotnext holds the security context configuration for a binding execution config.
 type BindingExecutionConfigSecurityContext struct {
-	Default string `json:"default"`
+	Default string `graphql:"default" json:"default"`
 }
 
 // BindingExecutionConfigResourceLimits holds the resource limits configuration for a binding execution config.
 type BindingExecutionConfigResourceLimits struct {
-	Default         *BindingExecutionConfigResourceLimit                  `json:"default"`
-	PolicyOverrides []BindingExecutionConfigResourceLimitsPolicyOverrides `json:"policyOverrides"`
+	Default         *BindingExecutionConfigResourceLimit                  `graphql:"default" json:"default"`
+	PolicyOverrides []BindingExecutionConfigResourceLimitsPolicyOverrides `graphql:"policyOverrides" json:"policyOverrides"`
 }
 
 // BindingExecutionConfigResourceLimit holds resource limits for a binding execution config.
 type BindingExecutionConfigResourceLimit struct {
-	MaxCount      *int32   `json:"maxCount,omitempty"`
-	MaxPercentage *float32 `json:"maxPercentage,omitempty"`
-	RequiresBoth  bool     `json:"requiresBoth"`
+	MaxCount      *int32   `graphql:"maxCount" json:"maxCount,omitempty"`
+	MaxPercentage *float32 `graphql:"maxPercentage" json:"maxPercentage,omitempty"`
+	RequiresBoth  bool     `graphql:"requiresBoth" json:"requiresBoth"`
 }
 
 // BindingExecutionConfigResourceLimitsPolicyOverrides holds resource limits
 // policy overrides for a binding execution config.
 type BindingExecutionConfigResourceLimitsPolicyOverrides struct {
-	Limit      BindingExecutionConfigResourceLimit `json:"limit"`
-	PolicyName string                              `json:"policyName"`
+	Limit      BindingExecutionConfigResourceLimit `graphql:"limit" json:"limit"`
+	PolicyName string                              `graphql:"policyName" json:"policyName"`
 }
 
 // BindingCreateInput is the input for creating a binding.

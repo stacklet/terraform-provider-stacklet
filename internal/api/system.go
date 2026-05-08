@@ -10,45 +10,45 @@ import (
 
 // Platform is the data returned by reading platform data.
 type Platform struct {
-	ID                       graphql.ID
-	ExternalID               *string
-	ExecutionRegions         []string
+	ID                       graphql.ID             `graphql:"id"`
+	ExternalID               *string                `graphql:"externalID"`
+	ExecutionRegions         []string               `graphql:"executionRegions"`
 	AWSOrgReadCustomerConfig PlatformCustomerConfig `graphql:"awsOrgReadCustomerConfig"`
 	AWSAccountCustomerConfig PlatformCustomerConfig `graphql:"awsAccountCustomerConfig"`
 }
 
 // PlatformCustomerConfig is the data returned for a customer configuration.
 type PlatformCustomerConfig struct {
-	TerraformModule TerraformModule
+	TerraformModule TerraformModule `graphql:"terraformModule"`
 }
 
 // MSTeamsIntegrationSurface is the data returned by reading Microsoft Teams
 // integration configuration details.
 type MSTeamsIntegrationSurface struct {
-	BotEndpoint  string
+	BotEndpoint  string `graphql:"botEndpoint"`
 	WIFIssuerURL string `graphql:"wifIssuerURL"`
-	TrustRoleARN string
+	TrustRoleARN string `graphql:"trustRoleARN"`
 }
 
 // GCPIntegrationSurface is the data returned by reading GCP integration configuration details.
 type GCPIntegrationSurface struct {
-	TrustAws GCPIntegrationSurfaceTrustAws
-	AwsRelay GCPIntegrationSurfaceAwsRelay
+	TrustAws GCPIntegrationSurfaceTrustAws `graphql:"trustAws"`
+	AwsRelay GCPIntegrationSurfaceAwsRelay `graphql:"awsRelay"`
 }
 
 // GCPIntegrationSurfaceTrustAws holds AWS trust configuration for GCP integration.
 type GCPIntegrationSurfaceTrustAws struct {
 	AccountID         string `graphql:"accountId"`
-	AssetdbRoleName   string
-	CostQueryRoleName string
-	ExecutionRoleName string
-	PlatformRoleName  string
+	AssetdbRoleName   string `graphql:"assetdbRoleName"`
+	CostQueryRoleName string `graphql:"costQueryRoleName"`
+	ExecutionRoleName string `graphql:"executionRoleName"`
+	PlatformRoleName  string `graphql:"platformRoleName"`
 }
 
 // GCPIntegrationSurfaceAwsRelay holds AWS relay configuration for GCP integration.
 type GCPIntegrationSurfaceAwsRelay struct {
-	BusArn  string
-	RoleArn string
+	BusArn  string `graphql:"busArn"`
+	RoleArn string `graphql:"roleArn"`
 }
 
 type systemAPI struct {

@@ -10,14 +10,14 @@ import (
 
 // PolicyCollectionMapping is the data returned by reading a policy collection mapping.
 type PolicyCollectionMapping struct {
-	ID     graphql.ID
+	ID     graphql.ID `graphql:"id"`
 	Policy struct {
-		UUID    string
-		Version int
-	}
+		UUID    string `graphql:"uuid"`
+		Version int    `graphql:"version"`
+	} `graphql:"policy"`
 	Collection struct {
-		UUID string
-	}
+		UUID string `graphql:"uuid"`
+	} `graphql:"collection"`
 }
 
 // PolicyCollectionMappingInput is the input for creating or updating a policy collection mapping.
