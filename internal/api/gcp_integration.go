@@ -10,29 +10,29 @@ import (
 
 // GCPIntegration is the data for a GCP integration.
 type GCPIntegration struct {
-	ID             graphql.ID
-	Key            string
-	CustomerConfig GCPIntegrationCustomerConfig
-	AccessConfig   *GCPIntegrationAccessConfig
+	ID             graphql.ID                   `graphql:"id"`
+	Key            string                       `graphql:"key"`
+	CustomerConfig GCPIntegrationCustomerConfig `graphql:"customerConfig"`
+	AccessConfig   *GCPIntegrationAccessConfig  `graphql:"accessConfig"`
 }
 
 // GCPIntegrationCustomerConfig defines the customer-provided configuration for
 // the GCP integration.
 type GCPIntegrationCustomerConfig struct {
-	Infrastructure   *GCPIntegrationCustomerInfrastructure
-	Organizations    []GCPIntegrationCustomerOrganization
-	CostSources      []GCPIntegrationCustomerCostSource
-	SecurityContexts []GCPIntegrationCustomerSecurityContext
-	TerraformModule  *TerraformModule
+	Infrastructure   *GCPIntegrationCustomerInfrastructure   `graphql:"infrastructure"`
+	Organizations    []GCPIntegrationCustomerOrganization    `graphql:"organizations"`
+	CostSources      []GCPIntegrationCustomerCostSource      `graphql:"costSources"`
+	SecurityContexts []GCPIntegrationCustomerSecurityContext `graphql:"securityContexts"`
+	TerraformModule  *TerraformModule                        `graphql:"terraformModule"`
 }
 
 // GCPIntegrationCustomerInfrastructure defines the project configuration for
 // the GCP integration deployment.
 type GCPIntegrationCustomerInfrastructure struct {
-	ProjectID        string `graphql:"projectId"`
-	ResourceLocation string
-	ResourcePrefix   string
-	CreateProject    *GCPIntegrationCustomerCreateProject
+	ProjectID        string                               `graphql:"projectId"`
+	ResourceLocation string                               `graphql:"resourceLocation"`
+	ResourcePrefix   string                               `graphql:"resourcePrefix"`
+	CreateProject    *GCPIntegrationCustomerCreateProject `graphql:"createProject"`
 }
 
 // GCPIntegrationCustomerCreateProject holds configuration for integration
@@ -53,32 +53,32 @@ type GCPIntegrationCustomerOrganization struct {
 
 // GCPIntegrationCustomerCostSource identifies a billing export table for cost data.
 type GCPIntegrationCustomerCostSource struct {
-	BillingTable string
+	BillingTable string `graphql:"billingTable"`
 }
 
 // GCPIntegrationCustomerSecurityContext defines additional security context to
 // define in the integration.
 type GCPIntegrationCustomerSecurityContext struct {
-	Name       string
-	ExtraRoles []string
+	Name       string   `graphql:"name"`
+	ExtraRoles []string `graphql:"extraRoles"`
 }
 
 // GCPIntegrationAccessConfig holds the access details from the GCP
 // integration.
 type GCPIntegrationAccessConfig struct {
-	Infrastructure   GCPIntegrationAccessInfrastructure
-	Organizations    []GCPIntegrationAccessOrganization
-	CostSources      []GCPIntegrationAccessCostSource
-	SecurityContexts []GCPIntegrationAccessSecurityContext
-	RoundtripDigest  string
+	Infrastructure   GCPIntegrationAccessInfrastructure    `graphql:"infrastructure"`
+	Organizations    []GCPIntegrationAccessOrganization    `graphql:"organizations"`
+	CostSources      []GCPIntegrationAccessCostSource      `graphql:"costSources"`
+	SecurityContexts []GCPIntegrationAccessSecurityContext `graphql:"securityContexts"`
+	RoundtripDigest  string                                `graphql:"roundtripDigest"`
 }
 
 // GCPIntegrationAccessInfrastructure identifies the GCP infrastructure project.
 type GCPIntegrationAccessInfrastructure struct {
-	ProjectID     string `graphql:"projectId"`
-	Relay         GCPIntegrationAccessRelay
-	WIF           GCPIntegrationAccessWIF `graphql:"wif"`
-	BaselineRoles []string
+	ProjectID     string                    `graphql:"projectId"`
+	Relay         GCPIntegrationAccessRelay `graphql:"relay"`
+	WIF           GCPIntegrationAccessWIF   `graphql:"wif"`
+	BaselineRoles []string                  `graphql:"baselineRoles"`
 }
 
 // GCPIntegrationAccessRelay holds the relay identity credential.
@@ -88,47 +88,47 @@ type GCPIntegrationAccessRelay struct {
 
 // GCPIntegrationAccessWIF holds the Workload Identity Federation configuration.
 type GCPIntegrationAccessWIF struct {
-	Audience   string
-	Principals GCPIntegrationAccessWIFPrincipals
+	Audience   string                            `graphql:"audience"`
+	Principals GCPIntegrationAccessWIFPrincipals `graphql:"principals"`
 }
 
 // GCPIntegrationAccessWIFPrincipals identifies WIF principals by their intended role.
 type GCPIntegrationAccessWIFPrincipals struct {
-	ReadOnly  string
-	CostQuery string
+	ReadOnly  string `graphql:"readOnly"`
+	CostQuery string `graphql:"costQuery"`
 }
 
 // GCPIntegrationAccessOrganization identifies an accessible GCP organization.
 type GCPIntegrationAccessOrganization struct {
-	ID       string
-	Name     string
-	Folders  []GCPIntegrationAccessOrganizationFolder
-	Projects []GCPIntegrationAccessOrganizationProject
+	ID       string                                    `graphql:"id"`
+	Name     string                                    `graphql:"name"`
+	Folders  []GCPIntegrationAccessOrganizationFolder  `graphql:"folders"`
+	Projects []GCPIntegrationAccessOrganizationProject `graphql:"projects"`
 }
 
 // GCPIntegrationAccessOrganizationFolder provides details about a connected organization folder.
 type GCPIntegrationAccessOrganizationFolder struct {
-	ID   string
-	Name string
+	ID   string `graphql:"id"`
+	Name string `graphql:"name"`
 }
 
 // GCPIntegrationAccessOrganizationProject provides details about a connected organization project.
 type GCPIntegrationAccessOrganizationProject struct {
-	ID     string
-	Number string
+	ID     string `graphql:"id"`
+	Number string `graphql:"number"`
 }
 
 // GCPIntegrationAccessCostSource identifies a billing export table and its location.
 type GCPIntegrationAccessCostSource struct {
-	BillingTable string
-	Location     string
+	BillingTable string `graphql:"billingTable"`
+	Location     string `graphql:"location"`
 }
 
 // GCPIntegrationAccessSecurityContext defines a named set of roles granted to a principal.
 type GCPIntegrationAccessSecurityContext struct {
-	Name       string
-	ExtraRoles []string
-	Principal  string
+	Name       string   `graphql:"name"`
+	ExtraRoles []string `graphql:"extraRoles"`
+	Principal  string   `graphql:"principal"`
 }
 
 // GCPIntegrationInput is the input for creating or updating a GCP integration.

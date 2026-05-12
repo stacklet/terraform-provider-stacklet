@@ -10,20 +10,20 @@ import (
 
 // Policy is the data returned by reading policy data.
 type Policy struct {
-	ID              graphql.ID
-	UUID            string
-	Name            string
-	Description     *string
-	Provider        string
-	Version         int
-	Category        []string
-	Mode            string
-	ResourceType    string
-	Path            string
-	Source          string
-	SourceYAML      string `graphql:"sourceYAML"`
-	System          bool
-	UnqualifiedName string
+	ID              graphql.ID `graphql:"id"`
+	UUID            string     `graphql:"uuid"`
+	Name            string     `graphql:"name"`
+	Description     *string    `graphql:"description"`
+	Provider        string     `graphql:"provider"`
+	Version         int        `graphql:"version"`
+	Category        []string   `graphql:"category"`
+	Mode            string     `graphql:"mode"`
+	ResourceType    string     `graphql:"resourceType"`
+	Path            string     `graphql:"path"`
+	Source          string     `graphql:"source"`
+	SourceYAML      string     `graphql:"sourceYAML"`
+	System          bool       `graphql:"system"`
+	UnqualifiedName string     `graphql:"unqualifiedName"`
 }
 
 type policyAPI struct {

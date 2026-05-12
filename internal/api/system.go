@@ -10,16 +10,16 @@ import (
 
 // Platform is the data returned by reading platform data.
 type Platform struct {
-	ID                       graphql.ID
-	ExternalID               *string `graphql:"externalID"`
-	ExecutionRegions         []string
+	ID                       graphql.ID             `graphql:"id"`
+	ExternalID               *string                `graphql:"externalID"`
+	ExecutionRegions         []string               `graphql:"executionRegions"`
 	AWSOrgReadCustomerConfig PlatformCustomerConfig `graphql:"awsOrgReadCustomerConfig"`
 	AWSAccountCustomerConfig PlatformCustomerConfig `graphql:"awsAccountCustomerConfig"`
 }
 
 // PlatformCustomerConfig is the data returned for a customer configuration.
 type PlatformCustomerConfig struct {
-	TerraformModule TerraformModule
+	TerraformModule TerraformModule `graphql:"terraformModule"`
 }
 
 // MSTeamsIntegrationSurface is the data returned by reading Microsoft Teams

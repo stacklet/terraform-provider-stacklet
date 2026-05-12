@@ -10,11 +10,11 @@ import (
 
 // Template is the data returned for a notification template.
 type Template struct {
-	ID          graphql.ID
-	Name        string
-	Description *string
-	Transport   *string
-	Content     string
+	ID          graphql.ID `graphql:"id"`
+	Name        string     `graphql:"name"`
+	Description *string    `graphql:"description"`
+	Transport   *string    `graphql:"transport"`
+	Content     string     `graphql:"content"`
 }
 
 // TemplateCreateInput is the input for creating a template.

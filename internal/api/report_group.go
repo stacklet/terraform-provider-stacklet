@@ -10,14 +10,14 @@ import (
 
 // ReportGroup is the data for a notification report group.
 type ReportGroup struct {
-	ID                 graphql.ID
-	Name               string
-	Enabled            bool
-	Bindings           []string
-	Source             ReportSource
-	Schedule           string
-	GroupBy            []string
-	UseMessageSettings bool
+	ID                 graphql.ID   `graphql:"id"`
+	Name               string       `graphql:"name"`
+	Enabled            bool         `graphql:"enabled"`
+	Bindings           []string     `graphql:"bindings"`
+	Source             ReportSource `graphql:"source"`
+	Schedule           string       `graphql:"schedule"`
+	GroupBy            []string     `graphql:"groupBy"`
+	UseMessageSettings bool         `graphql:"useMessageSettings"`
 	DeliverySettings   []struct {
 		TypeName                   string                     `graphql:"__typename"`
 		EmailDeliverySettings      EmailDeliverySettings      `graphql:"... on EmailSettings"`
@@ -26,7 +26,7 @@ type ReportGroup struct {
 		ServiceNowDeliverySettings ServiceNowDeliverySettings `graphql:"... on ServiceNowSettings"`
 		JiraDeliverySettings       JiraDeliverySettings       `graphql:"... on JiraSettings"`
 		SymphonyDeliverySettings   SymphonyDeliverySettings   `graphql:"... on SymphonySettings"`
-	}
+	} `graphql:"deliverySettings"`
 }
 
 // EmailDeliverySettings returns the list of email delivery settings for the
@@ -102,50 +102,50 @@ func (r ReportGroup) SymphonyDeliverySettings() []SymphonyDeliverySettings {
 }
 
 type EmailDeliverySettings struct {
-	CC             []string    `json:"cc"`
-	FirstMatchOnly *bool       `json:"firstMatchOnly"`
-	Format         *string     `json:"format"`
-	FromEmail      *string     `json:"fromEmail"`
-	Priority       *string     `json:"priority"`
-	Recipients     []Recipient `json:"recipients"`
-	Subject        string      `json:"subject"`
-	Template       string      `json:"template"`
+	CC             []string    `graphql:"cc" json:"cc"`
+	FirstMatchOnly *bool       `graphql:"firstMatchOnly" json:"firstMatchOnly"`
+	Format         *string     `graphql:"format" json:"format"`
+	FromEmail      *string     `graphql:"fromEmail" json:"fromEmail"`
+	Priority       *string     `graphql:"priority" json:"priority"`
+	Recipients     []Recipient `graphql:"recipients" json:"recipients"`
+	Subject        string      `graphql:"subject" json:"subject"`
+	Template       string      `graphql:"template" json:"template"`
 }
 
 type SlackDeliverySettings struct {
-	FirstMatchOnly *bool       `json:"firstMatchOnly"`
-	Recipients     []Recipient `json:"recipients"`
-	Template       string      `json:"template"`
+	FirstMatchOnly *bool       `graphql:"firstMatchOnly" json:"firstMatchOnly"`
+	Recipients     []Recipient `graphql:"recipients" json:"recipients"`
+	Template       string      `graphql:"template" json:"template"`
 }
 
 type MSTeamsDeliverySettings struct {
-	FirstMatchOnly *bool       `json:"firstMatchOnly"`
-	Recipients     []Recipient `json:"recipients"`
-	Template       string      `json:"template"`
+	FirstMatchOnly *bool       `graphql:"firstMatchOnly" json:"firstMatchOnly"`
+	Recipients     []Recipient `graphql:"recipients" json:"recipients"`
+	Template       string      `graphql:"template" json:"template"`
 }
 
 type ServiceNowDeliverySettings struct {
-	FirstMatchOnly   *bool       `json:"firstMatchOnly"`
-	Impact           string      `json:"impact"`
-	Recipients       []Recipient `json:"recipients"`
-	ShortDescription string      `json:"shortDescription"`
-	Template         string      `json:"template"`
-	Urgency          string      `json:"urgency"`
+	FirstMatchOnly   *bool       `graphql:"firstMatchOnly" json:"firstMatchOnly"`
+	Impact           string      `graphql:"impact" json:"impact"`
+	Recipients       []Recipient `graphql:"recipients" json:"recipients"`
+	ShortDescription string      `graphql:"shortDescription" json:"shortDescription"`
+	Template         string      `graphql:"template" json:"template"`
+	Urgency          string      `graphql:"urgency" json:"urgency"`
 }
 
 type JiraDeliverySettings struct {
-	FirstMatchOnly *bool       `json:"firstMatchOnly"`
-	Recipients     []Recipient `json:"recipients"`
-	Template       string      `json:"template"`
-	Description    string      `json:"description"`
-	Project        string      `json:"project"`
-	Summary        string      `json:"summary"`
+	FirstMatchOnly *bool       `graphql:"firstMatchOnly" json:"firstMatchOnly"`
+	Recipients     []Recipient `graphql:"recipients" json:"recipients"`
+	Template       string      `graphql:"template" json:"template"`
+	Description    string      `graphql:"description" json:"description"`
+	Project        string      `graphql:"project" json:"project"`
+	Summary        string      `graphql:"summary" json:"summary"`
 }
 
 type SymphonyDeliverySettings struct {
-	FirstMatchOnly *bool       `json:"firstMatchOnly"`
-	Recipients     []Recipient `json:"recipients"`
-	Template       string      `json:"template"`
+	FirstMatchOnly *bool       `graphql:"firstMatchOnly" json:"firstMatchOnly"`
+	Recipients     []Recipient `graphql:"recipients" json:"recipients"`
+	Template       string      `graphql:"template" json:"template"`
 }
 
 // ReportGroupsInput is the input to create or update a report group.
@@ -169,8 +169,8 @@ type Recipient struct {
 	AccountOwner  *bool   `graphql:"account_owner" json:"account_owner"`
 	EventOwner    *bool   `graphql:"event_owner" json:"event_owner"`
 	ResourceOwner *bool   `graphql:"resource_owner" json:"resource_owner"`
-	Tag           *string `json:"tag"`
-	Value         *string `json:"value"`
+	Tag           *string `graphql:"tag" json:"tag"`
+	Value         *string `graphql:"value" json:"value"`
 }
 
 type upsertReportGroupsInput struct {

@@ -11,8 +11,8 @@ import (
 
 // RoleAssignment is the data returned by reading role assignment data.
 type RoleAssignment struct {
-	ID        graphql.ID
-	Role      Role
+	ID        graphql.ID    `graphql:"id"`
+	Role      Role          `graphql:"role"`
 	Principal rolePrincipal `graphql:"principal"`
 	Target    roleTarget    `graphql:"target"`
 }
@@ -80,8 +80,8 @@ func (i roleAssignmentInput) GetGraphQLType() string {
 
 // grantRoleAssignmentPayload represents the result of granting a role assignment.
 type grantRoleAssignmentPayload struct {
-	ErrorMessage   *string
-	RoleAssignment *RoleAssignment
+	ErrorMessage   *string         `graphql:"errorMessage"`
+	RoleAssignment *RoleAssignment `graphql:"roleAssignment"`
 }
 
 func (p grantRoleAssignmentPayload) Error() string {
@@ -94,10 +94,10 @@ func (p grantRoleAssignmentPayload) Error() string {
 
 // revokeRoleAssignmentPayload represents the result of revoking a role assignment.
 type revokeRoleAssignmentPayload struct {
-	ErrorMessage *string
+	ErrorMessage *string `graphql:"errorMessage"`
 	Removed      struct {
-		ID graphql.ID
-	}
+		ID graphql.ID `graphql:"id"`
+	} `graphql:"removed"`
 }
 
 func (p revokeRoleAssignmentPayload) Error() string {

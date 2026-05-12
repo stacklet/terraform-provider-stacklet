@@ -10,19 +10,19 @@ import (
 
 // Account is the data returned by reading policy collection data.
 type PolicyCollection struct {
-	ID               graphql.ID
-	UUID             string
-	Name             string
-	Description      *string
-	Provider         CloudProvider
-	AutoUpdate       bool
-	System           bool
-	IsDynamic        bool
+	ID               graphql.ID    `graphql:"id"`
+	UUID             string        `graphql:"uuid"`
+	Name             string        `graphql:"name"`
+	Description      *string       `graphql:"description"`
+	Provider         CloudProvider `graphql:"provider"`
+	AutoUpdate       bool          `graphql:"autoUpdate"`
+	System           bool          `graphql:"system"`
+	IsDynamic        bool          `graphql:"isDynamic"`
 	RepositoryConfig struct {
-		UUID *string
-	}
-	RepositoryView       *RepositoryView
-	RoleAssignmentTarget string
+		UUID *string `graphql:"uuid"`
+	} `graphql:"repositoryConfig"`
+	RepositoryView       *RepositoryView `graphql:"repositoryView"`
+	RoleAssignmentTarget string          `graphql:"roleAssignmentTarget"`
 }
 
 type RepositoryViewConfig struct {

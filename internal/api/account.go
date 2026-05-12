@@ -10,17 +10,17 @@ import (
 
 // Account is the data returned by reading account data.
 type Account struct {
-	ID              graphql.ID
-	Key             string
-	Name            string
-	ShortName       *string
-	Description     *string
-	Provider        CloudProvider
-	Path            *string
-	Email           *string
-	Active          bool
-	SecurityContext *string
-	Variables       *string
+	ID              graphql.ID    `graphql:"id"`
+	Key             string        `graphql:"key"`
+	Name            string        `graphql:"name"`
+	ShortName       *string       `graphql:"shortName"`
+	Description     *string       `graphql:"description"`
+	Provider        CloudProvider `graphql:"provider"`
+	Path            *string       `graphql:"path"`
+	Email           *string       `graphql:"email"`
+	Active          bool          `graphql:"active"`
+	SecurityContext *string       `graphql:"securityContext"`
+	Variables       *string       `graphql:"variables"`
 }
 
 // AccountCreateInput is the input for creating an account.
@@ -114,8 +114,8 @@ func (a accountAPI) Delete(ctx context.Context, cloudProvider string, key string
 	var mutation struct {
 		Payload struct {
 			Account struct {
-				Key string
-			}
+				Key string `graphql:"key"`
+			} `graphql:"account"`
 		} `graphql:"removeAccount(provider: $provider, key: $key)"`
 	}
 	variables := map[string]any{
