@@ -15,9 +15,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
 )
 
-var (
-	_ datasource.DataSource = &policyDataSource{}
-)
+var _ datasource.DataSource = &policyDataSource{}
 
 type policyDataSource struct {
 	apiDataSource

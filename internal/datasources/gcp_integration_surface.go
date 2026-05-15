@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &gcpIntegrationSurfaceDataSource{}
-)
+var _ datasource.DataSource = &gcpIntegrationSurfaceDataSource{}
 
 type gcpIntegrationSurfaceDataSource struct {
 	apiDataSource

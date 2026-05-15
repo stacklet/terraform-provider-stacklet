@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &configurationProfileServiceNowDataSource{}
-)
+var _ datasource.DataSource = &configurationProfileServiceNowDataSource{}
 
 type configurationProfileServiceNowDataSource struct {
 	apiDataSource

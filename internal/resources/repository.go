@@ -18,9 +18,11 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &repositoryResource{}
-var _ resource.ResourceWithConfigure = &repositoryResource{}
-var _ resource.ResourceWithImportState = &repositoryResource{}
+var (
+	_ resource.Resource                = &repositoryResource{}
+	_ resource.ResourceWithConfigure   = &repositoryResource{}
+	_ resource.ResourceWithImportState = &repositoryResource{}
+)
 
 // repositoryResource defines the resource implementation.
 type repositoryResource struct {

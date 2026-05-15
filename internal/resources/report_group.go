@@ -474,7 +474,6 @@ func (r *reportGroupResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
-
 }
 
 func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {

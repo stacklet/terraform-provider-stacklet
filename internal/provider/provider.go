@@ -24,9 +24,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/resources"
 )
 
-var (
-	_ provider.Provider = &stackletProvider{}
-)
+var _ provider.Provider = &stackletProvider{}
 
 // providerModel holds the terraform configuration for the provider.
 type providerModel struct {

@@ -13,9 +13,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &policyCollectionDataSource{}
-)
+var _ datasource.DataSource = &policyCollectionDataSource{}
 
 type policyCollectionDataSource struct {
 	apiDataSource

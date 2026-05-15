@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &configurationProfileEmailDataSource{}
-)
+var _ datasource.DataSource = &configurationProfileEmailDataSource{}
 
 type configurationProfileEmailDataSource struct {
 	apiDataSource

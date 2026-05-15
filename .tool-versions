@@ -4,3 +4,4 @@ goreleaser    2.15.4
 just          1.50.0
 terraform     1.13.5
 uv            0.8.14
+gofumpt       0.10.0

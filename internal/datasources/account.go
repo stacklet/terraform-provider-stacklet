@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &accountDataSource{}
-)
+var _ datasource.DataSource = &accountDataSource{}
 
 type accountDataSource struct {
 	apiDataSource

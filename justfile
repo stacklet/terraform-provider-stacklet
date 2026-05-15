@@ -4,41 +4,9 @@ package := "./internal/..."
 build *args:
     go build -o terraform-provider-stacklet {{ args }}
 
-# Format code
-format: format-go format-tf
-
-# Format terraform code
-format-tf:
-    terraform fmt -recursive
-
-# Format golang code
-format-go:
-    go fmt ./...
-
-# Run linters
-lint: lint-go lint-tf lint-docs lint-copyright lint-pre-commit
-
-# Run pre-commit linters
-lint-pre-commit:
-    uvx prek run --all-files
-
-# Run linters for terraform
-lint-tf:
-    terraform fmt -recursive -check
-    just validate-tf validate-examples
-
-# Run linters for golang
-lint-go:
-    go vet {{ package }}
-    golangci-lint run --fix
-
-# Run linter for generated docs
-lint-docs:
-    env -C tools go generate -run=validate-docs
-
-# Run linter for copyright headers
-lint-copyright:
-    env -C tools go generate -run=validate-copyright
+# Run linting
+lint *args:
+    uvx prek run --all-files {{ args }}
 
 # Run tests using recorded API requests/responses.
 test *args:
@@ -60,10 +28,6 @@ test-unit *args:
 docs:
     env -C tools go generate -run=generate-docs
 
-# Add copyright headers
-copyright:
-    env -C tools go generate -run=generate-copyright
-
 # Update golang dependencies
 update-deps-go:
     go get -u ./...
@@ -72,7 +36,7 @@ update-deps-go:
     env -C tools go mod tidy
 
 # validate terraform example files
-validate-tf: build
+tf-examples-validate: build
     #!/usr/bin/env bash
     set -e
 
@@ -96,7 +60,7 @@ validate-tf: build
     done
 
 # check that all resources and datasources have the required example files
-validate-examples: build
+tf-examples-check: build
     #!/usr/bin/env bash
     set -e
 

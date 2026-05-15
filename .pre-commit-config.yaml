@@ -1,4 +1,60 @@
 repos:
+  - repo: https://github.com/tekwizely/pre-commit-golang
+    rev: f298c082154b2cb239fac06a4f452368e66e66dd  # frozen: v1.0.0-rc.4
+    hooks:
+      - id: go-fumpt-repo
+        args: [-w]
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: d0e12caebb2ab0ee8bf98181c8bfe9702bca103d  # frozen: v1.105.0
+    hooks:
+      - id: terraform_fmt
+
+  - repo: local
+    hooks:
+      - id: golangci-lint
+        name: golangci-lint
+        language: system
+        entry: golangci-lint run --fix
+        types: [go]
+        pass_filenames: false
+
+      - id: tf-examples-validate
+        name: Validate Terraform example files
+        entry: just tf-examples-validate
+        language: system
+        types: [terraform]
+        files: ^examples/
+        pass_filenames: false
+
+      - id: tf-examples-check
+        name: Check Terraform example files
+        entry: just tf-examples-check
+        language: system
+        types: [terraform]
+        files: ^examples/
+        pass_filenames: false
+
+      - id: tfplugindocs-validate
+        name: Validate provider documentation
+        entry: env -C tools go generate -run=validate-docs
+        language: system
+        files: ^(internal/|templates/|examples/|docs/)
+        pass_filenames: false
+
+  - repo: https://github.com/hashicorp/copywrite
+    rev: b3e6599f43beff698f471c6f46888045453fa030  # frozen: v0.25.3
+    hooks:
+      - id: add-headers
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
+    hooks:
+      - id: check-json
+      - id: check-yaml
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+
   - repo: https://github.com/rhysd/actionlint
     rev: 914e7df21a07ef503a81201c76d2b11c789d3fca  # frozen: v1.7.12
     hooks:
@@ -18,4 +74,3 @@ repos:
     rev: cf5f1c29a8ac336af8568821ec41919923b05a83  # frozen: v1.45.1
     hooks:
       - id: typos
-

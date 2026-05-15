@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &notificationTemplateDataSource{}
-)
+var _ datasource.DataSource = &notificationTemplateDataSource{}
 
 type notificationTemplateDataSource struct {
 	apiDataSource

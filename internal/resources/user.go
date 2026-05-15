@@ -117,7 +117,6 @@ func (r *userResource) Create(ctx context.Context, req resource.CreateRequest, r
 
 	resp.Diagnostics.Append(plan.Update(user)...)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
-
 }
 
 func (r *userResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {

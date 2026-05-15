@@ -22,7 +22,7 @@ func setHomeDir(t *testing.T) string {
 func makeStackletAdminDir(t *testing.T) string {
 	homeDir := setHomeDir(t)
 	stackletDir := path.Join(homeDir, ".stacklet")
-	if err := os.MkdirAll(stackletDir, 0755); err != nil {
+	if err := os.MkdirAll(stackletDir, 0o755); err != nil {
 		t.Fatal(err)
 	}
 
@@ -36,14 +36,14 @@ func setupStackletAdminConfig(t *testing.T, endpoint string, apiKey string) {
 		configFile := path.Join(stackletDir, "config.json")
 		configData := map[string]string{"api": endpoint}
 		configJSON, _ := json.Marshal(configData)
-		if err := os.WriteFile(configFile, configJSON, 0644); err != nil {
+		if err := os.WriteFile(configFile, configJSON, 0o644); err != nil {
 			t.Fatal(err)
 		}
 	}
 
 	if apiKey != "" {
 		credsFile := path.Join(stackletDir, "credentials")
-		if err := os.WriteFile(credsFile, []byte(apiKey), 0644); err != nil {
+		if err := os.WriteFile(credsFile, []byte(apiKey), 0o644); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -200,7 +200,7 @@ func TestGetCredentials(t *testing.T) {
 func TestGetCredentials_InvalidAdminCLIConfigJSON(t *testing.T) {
 	stackletDir := makeStackletAdminDir(t)
 	configFile := path.Join(stackletDir, "config.json")
-	if err := os.WriteFile(configFile, []byte("invalid json"), 0644); err != nil {
+	if err := os.WriteFile(configFile, []byte("invalid json"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 
