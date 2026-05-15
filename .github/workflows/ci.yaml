@@ -14,34 +14,12 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0  # need all history for copyright headers
-          persist-credentials: false
-
-      - name: Install mise
-        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
-
-      - name: Lint
-        run: |
-          just lint
+    uses: ./.github/workflows/_run-just.yaml
+    with:
+      just-command: lint
+      full-git-history: true  # copyright headers need it
 
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
-      - name: Install mise
-        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
-        with:
-          cache: false
-
-      - name: Test
-        run: |
-          just test
+    uses: ./.github/workflows/_run-just.yaml
+    with:
+      just-command: test
