@@ -33,7 +33,8 @@ func DataSources(includeUnreleased bool) []func() datasource.DataSource {
 		newFactory(&userDataSource{}),
 	}
 	if includeUnreleased {
-		dataSources = append(dataSources,
+		dataSources = append(
+			dataSources,
 			newFactory(&gcpIntegrationDataSource{}),
 			newFactory(&gcpIntegrationSurfaceDataSource{}),
 		)

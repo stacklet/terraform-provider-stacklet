@@ -13,9 +13,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &reportGroupDataSource{}
-)
+var _ datasource.DataSource = &reportGroupDataSource{}
 
 type reportGroupDataSource struct {
 	apiDataSource

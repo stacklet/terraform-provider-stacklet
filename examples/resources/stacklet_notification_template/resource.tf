@@ -12,7 +12,7 @@ resource "stacklet_notification_template" "example" {
       {% set account = m["account"] %}
       {% set region = m["region"] %}
       {% set action = m["action"] %}
-      
+
       <ul>
         <li><strong>Account:</strong> {{ account }}</li>
         <li><strong>Region:</strong> {{ region }}</li>

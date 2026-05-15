@@ -13,9 +13,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &configurationProfileSlackDataSource{}
-)
+var _ datasource.DataSource = &configurationProfileSlackDataSource{}
 
 type configurationProfileSlackDataSource struct {
 	apiDataSource

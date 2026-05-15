@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &bindingDataSource{}
-)
+var _ datasource.DataSource = &bindingDataSource{}
 
 type bindingDataSource struct {
 	apiDataSource

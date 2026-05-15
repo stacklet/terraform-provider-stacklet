@@ -98,7 +98,7 @@ func (rt *recordedTransport) saveRecording() error {
 
 	if _, err := os.Stat(dirname); os.IsNotExist(err) {
 		rt.t.Logf("Creating recordings directory: %s", dirname)
-		if err := os.MkdirAll(dirname, 0755); err != nil {
+		if err := os.MkdirAll(dirname, 0o755); err != nil {
 			return fmt.Errorf("failed to create recordings directory: %v", err)
 		}
 	}
@@ -108,12 +108,15 @@ func (rt *recordedTransport) saveRecording() error {
 		return err
 	}
 	rt.t.Logf("Saving recordings to: %s", absPath)
-	data, err := json.MarshalIndent(rt.recordings, "", "  ")
+	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
 	if err != nil {
-		return fmt.Errorf("failed to marshal recordings: %v", err)
+		return fmt.Errorf("failed to open recordings file: %v", err)
 	}
-	if err := os.WriteFile(filename, data, 0644); err != nil {
-		return fmt.Errorf("failed to write recordings file: %v", err)
+	defer f.Close()
+	enc := json.NewEncoder(f)
+	enc.SetIndent("", "  ")
+	if err := enc.Encode(rt.recordings); err != nil {
+		return fmt.Errorf("failed to marshal recordings: %v", err)
 	}
 	return nil
 }

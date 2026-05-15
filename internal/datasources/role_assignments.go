@@ -12,9 +12,7 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
 
-var (
-	_ datasource.DataSource = &roleAssignmentsDataSource{}
-)
+var _ datasource.DataSource = &roleAssignmentsDataSource{}
 
 type roleAssignmentsDataSource struct {
 	apiDataSource
