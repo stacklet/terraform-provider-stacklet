@@ -14,12 +14,14 @@ permissions:
 
 jobs:
   lint:
+    name: lint
     uses: ./.github/workflows/_run-just.yaml
     with:
       just-command: lint
       full-git-history: true  # copyright headers need it
 
   test:
+    name: test
     uses: ./.github/workflows/_run-just.yaml
     with:
       just-command: test
