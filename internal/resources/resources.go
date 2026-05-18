@@ -3,12 +3,28 @@
 package resources
 
 import (
+	"slices"
+
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 )
 
-// Resources returns all available resources.
-func Resources(includeUnreleased bool) []func() resource.Resource {
-	resources := []func() resource.Resource{
+type resources struct {
+	Released   []func() resource.Resource
+	Unreleased []func() resource.Resource
+}
+
+// List returns available resource factories, optionally including unreleased ones.
+func (r resources) List(includeUnreleased bool) []func() resource.Resource {
+	result := slices.Clone(r.Released)
+	if includeUnreleased {
+		result = append(result, r.Unreleased...)
+	}
+	return result
+}
+
+// Resources registered with the provider.
+var Resources = resources{
+	Released: []func() resource.Resource{
 		newFactory(&accountDiscoveryAWSResource{}),
 		newFactory(&accountDiscoveryAzureResource{}),
 		newFactory(&accountDiscoveryGCPResource{}),
@@ -24,6 +40,7 @@ func Resources(includeUnreleased bool) []func() resource.Resource {
 		newFactory(&configurationProfileServiceNowResource{}),
 		newFactory(&configurationProfileSlackResource{}),
 		newFactory(&configurationProfileSymphonyResource{}),
+		newFactory(&gcpIntegrationResource{}),
 		newFactory(&notificationTemplateResource{}),
 		newFactory(&policyCollectionMappingResource{}),
 		newFactory(&policyCollectionResource{}),
@@ -32,11 +49,7 @@ func Resources(includeUnreleased bool) []func() resource.Resource {
 		newFactory(&roleAssignmentResource{}),
 		newFactory(&ssoGroupResource{}),
 		newFactory(&userResource{}),
-	}
-	if includeUnreleased {
-		resources = append(resources, newFactory(&gcpIntegrationResource{}))
-	}
-	return resources
+	},
 }
 
 func newFactory[T any, R interface {

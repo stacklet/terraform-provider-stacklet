@@ -3,12 +3,28 @@
 package datasources
 
 import (
+	"slices"
+
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 )
 
-// DataSources returns all available datasources.
-func DataSources(includeUnreleased bool) []func() datasource.DataSource {
-	dataSources := []func() datasource.DataSource{
+type datasources struct {
+	Released   []func() datasource.DataSource
+	Unreleased []func() datasource.DataSource
+}
+
+// List returns available data source factories, optionally including unreleased ones.
+func (d datasources) List(includeUnreleased bool) []func() datasource.DataSource {
+	result := slices.Clone(d.Released)
+	if includeUnreleased {
+		result = append(result, d.Unreleased...)
+	}
+	return result
+}
+
+// Data sources registered with the provider.
+var DataSources = datasources{
+	Released: []func() datasource.DataSource{
 		newFactory(&accountDataSource{}),
 		newFactory(&accountGroupDataSource{}),
 		newFactory(&bindingDataSource{}),
@@ -20,6 +36,8 @@ func DataSources(includeUnreleased bool) []func() datasource.DataSource {
 		newFactory(&configurationProfileServiceNowDataSource{}),
 		newFactory(&configurationProfileSlackDataSource{}),
 		newFactory(&configurationProfileSymphonyDataSource{}),
+		newFactory(&gcpIntegrationDataSource{}),
+		newFactory(&gcpIntegrationSurfaceDataSource{}),
 		newFactory(&msteamsIntegrationSurfaceDataSource{}),
 		newFactory(&notificationTemplateDataSource{}),
 		newFactory(&platformDataSource{}),
@@ -31,15 +49,7 @@ func DataSources(includeUnreleased bool) []func() datasource.DataSource {
 		newFactory(&roleDataSource{}),
 		newFactory(&ssoGroupDataSource{}),
 		newFactory(&userDataSource{}),
-	}
-	if includeUnreleased {
-		dataSources = append(
-			dataSources,
-			newFactory(&gcpIntegrationDataSource{}),
-			newFactory(&gcpIntegrationSurfaceDataSource{}),
-		)
-	}
-	return dataSources
+	},
 }
 
 func newFactory[T any, R interface {
