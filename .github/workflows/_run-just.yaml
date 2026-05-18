@@ -1,0 +1,38 @@
+name: Run just command
+
+on:
+  workflow_call:
+    inputs:
+      just-command:
+        type: string
+        description: Just command to run (possibly with arguments)
+        required: true
+      full-git-history:
+        type: boolean
+        description: Whether to fetch full git history rather than just current HEAD
+        default: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          fetch-depth: ${{ inputs.full-git-history && '0' || '1' }}
+
+      - name: Install mise and tools
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        with:
+          cache: false
+
+      - name: Ensure just is available
+        run: command -v just || mise install just@latest
+
+      - name: Run just
+        env:
+          JUST_COMMAND: ${{ inputs.just-command }}
+        run: |
+          read -ra cmd <<< "$JUST_COMMAND"
+          just "${cmd[@]}"
