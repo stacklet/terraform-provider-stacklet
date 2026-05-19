@@ -129,13 +129,13 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 // DataSources defines the data sources implemented in the provider.
 func (p *stackletProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	conf, _ := envConfig()
-	return datasources.DataSources(conf.UnreleasedFeatures)
+	return datasources.DataSources.List(conf.UnreleasedFeatures)
 }
 
 // Resources defines the resources implemented in the provider.
 func (p *stackletProvider) Resources(_ context.Context) []func() resource.Resource {
 	conf, _ := envConfig()
-	return resources.Resources(conf.UnreleasedFeatures)
+	return resources.Resources.List(conf.UnreleasedFeatures)
 }
 
 func envConfig() (providerEnv, error) {
