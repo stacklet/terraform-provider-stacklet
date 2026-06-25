@@ -1,3 +1,13 @@
+## 0.8.0 - 2026-06-25
+
+- Add: support for the following resource types
+  - `stacklet_gcp_integration`
+- Add: support for the following datasource types
+  - `stacklet_gcp_integration`
+  - `stacklet_gcp_integration_surface`
+- Add: `STACKLET_PAGE_SIZE` environment variable to override default pagination size
+
+
 ## 0.7.1 - 2026-05-05
 
 - Fix: properly handle paginated queries, previously reusing the same query
@@ -5,6 +15,7 @@
   failures)
 - Feat: support removal of account discoveries
 - Chore: improve linting
+
 
 ## 0.7.0 - 2026-04-27
 
