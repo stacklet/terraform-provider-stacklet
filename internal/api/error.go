@@ -4,6 +4,8 @@ package api
 
 import (
 	"context"
+	"errors"
+	"net/url"
 
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
@@ -26,6 +28,10 @@ func (e apiError) Error() string {
 
 // newAPIError returns an apiError from an error.
 func newAPIError(err error) apiError {
+	var urlErr *url.Error
+	if errors.As(err, &urlErr) {
+		return newAPIError(urlErr.Err)
+	}
 	return apiError{Kind: "API Error", Detail: err.Error()}
 }
 

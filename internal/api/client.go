@@ -5,10 +5,12 @@ package api
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -53,13 +55,15 @@ func newClient(ctx context.Context, config ClientConfig) *client {
 	logBody := tfLog == hclog.Debug || tfLog == hclog.Trace
 
 	httpClient := &http.Client{
-		Transport: &authTransport{
-			APIKey:  config.APIKey,
-			Version: config.Version,
-			Base: &logTransport{
-				Ctx:     ctx,
-				Base:    http.DefaultTransport,
-				LogBody: logBody,
+		Transport: &errorTransport{
+			Base: &authTransport{
+				APIKey:  config.APIKey,
+				Version: config.Version,
+				Base: &logTransport{
+					Ctx:     ctx,
+					Base:    http.DefaultTransport,
+					LogBody: logBody,
+				},
 			},
 		},
 	}
@@ -141,6 +145,40 @@ func (t *logTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	return resp, reqErr
 }
 
+// errorTransport is an http.Transport that converts 400 responses with a
+// GraphQL-style error payload into Go errors, so callers see the actual
+// error messages rather than a generic "400 Bad Request".
+type errorTransport struct {
+	Base http.RoundTripper
+}
+
+func (t *errorTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	resp, err := t.Base.RoundTrip(req)
+	if err != nil || resp == nil || resp.StatusCode != http.StatusBadRequest {
+		return resp, err
+	}
+
+	content, err := decodeResponseBody(resp)
+	if err != nil {
+		return nil, err
+	}
+
+	var payload struct {
+		Errors []struct {
+			Message string `json:"message"`
+		} `json:"errors"`
+	}
+	if json.Unmarshal([]byte(content), &payload) == nil && len(payload.Errors) > 0 {
+		msgs := make([]string, len(payload.Errors))
+		for i, e := range payload.Errors {
+			msgs[i] = e.Message
+		}
+		return nil, apiError{Kind: "API Error", Detail: strings.Join(msgs, "\n")}
+	}
+
+	return resp, nil
+}
+
 func decodeRequestBody(req *http.Request) (string, error) {
 	if req.Body == nil || req.Body == http.NoBody {
 		return "", nil
@@ -159,6 +197,7 @@ func decodeResponseBody(resp *http.Response) (string, error) {
 	if resp.Body == nil || resp.Body == http.NoBody {
 		return "", nil
 	}
+	defer resp.Body.Close()
 
 	content, err := io.ReadAll(resp.Body)
 	if err != nil {

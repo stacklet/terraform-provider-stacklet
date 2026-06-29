@@ -3,6 +3,7 @@
 package api
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -58,4 +59,54 @@ func TestAuthorizationHeader(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, expectedAuth, capturedAuth)
+}
+
+func TestErrorTransport_400WithGraphQLErrors(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte(`{"errors":[{"message":"field not found"},{"message":"invalid type"}]}`))
+	}))
+	defer server.Close()
+
+	transport := &errorTransport{Base: http.DefaultTransport}
+	client := &http.Client{Transport: transport}
+	req, _ := http.NewRequest("GET", server.URL, nil)
+	resp, err := client.Do(req)
+
+	assert.Nil(t, resp)
+	assert.EqualError(t, err, "Get \""+server.URL+"\": field not found\ninvalid type")
+}
+
+func TestErrorTransport_400WithoutGraphQLErrors(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusBadRequest)
+		_, _ = w.Write([]byte(`not json`))
+	}))
+	defer server.Close()
+
+	transport := &errorTransport{Base: http.DefaultTransport}
+	client := &http.Client{Transport: transport}
+	req, _ := http.NewRequest("GET", server.URL, nil)
+	resp, err := client.Do(req)
+
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	body, _ := io.ReadAll(resp.Body)
+	assert.Equal(t, "not json", string(body))
+}
+
+func TestErrorTransport_NonBadRequest(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"data":{}}`))
+	}))
+	defer server.Close()
+
+	transport := &errorTransport{Base: http.DefaultTransport}
+	client := &http.Client{Transport: transport}
+	req, _ := http.NewRequest("GET", server.URL, nil)
+	resp, err := client.Do(req)
+
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
