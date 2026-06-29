@@ -34,7 +34,8 @@ func (r *accountDiscoveryGCPResource) Metadata(_ context.Context, req resource.M
 
 func (r *accountDiscoveryGCPResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manage an account discovery configuration for GCP.",
+		DeprecationMessage: "GCP account discovery is now configured via stacklet_gcp_integration.",
+		Description:        "Manage an account discovery configuration for GCP.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the account discovery configuration.",

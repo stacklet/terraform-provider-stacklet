@@ -1,3 +1,9 @@
+## 0.8.2 - 2026-06-29
+
+- Feat: include message returned by the GraphQL API for 400-errors.
+- Chore: deprecate `stacklet_account_discovery_gcp` in favor of `stacklet_gcp_integration`.
+
+
 ## 0.8.1 - 2026-06-29
 
 - Fix: regression on account discovery graphql field names (fixes #240, #241)
