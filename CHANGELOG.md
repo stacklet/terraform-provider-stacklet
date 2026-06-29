@@ -1,3 +1,8 @@
+## 0.8.1 - 2026-06-29
+
+- Fix: regression on account discovery graphql field names (fixes #240, #241)
+
+
 ## 0.8.0 - 2026-06-25
 
 - Add: support for the following resource types
