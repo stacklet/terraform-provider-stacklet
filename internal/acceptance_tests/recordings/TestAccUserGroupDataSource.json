@@ -1,0 +1,170 @@
+{
+  "mutation ($input:AddUserGroupInput!){addUserGroup(input: $input){userGroup{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}:{\"input\":{\"displayName\":\"Test User Group DS\",\"name\":\"test-user-group-ds\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddUserGroupInput!){addUserGroup(input: $input){userGroup{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}",
+        "variables": {
+          "input": {
+            "displayName": "Test User Group DS",
+            "name": "test-user-group-ds"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addUserGroup": {
+            "userGroup": {
+              "displayName": "Test User Group DS",
+              "id": "user-group-id-test-user-group-ds",
+              "name": "test-user-group-ds",
+              "roleAssignmentPrincipal": "user-group:ug-test-user-group-ds:principal",
+              "roleAssignmentTarget": "user-group:ug-test-user-group-ds:target",
+              "uuid": "ug-test-user-group-ds"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemoveUserGroupInput!){removeUserGroup(input: $input){removed{id}}}:{\"input\":{\"id\":\"user-group-id-test-user-group-ds\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemoveUserGroupInput!){removeUserGroup(input: $input){removed{id}}}",
+        "variables": {
+          "input": {
+            "id": "user-group-id-test-user-group-ds"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removeUserGroup": {
+            "removed": {
+              "id": "user-group-id-test-user-group-ds"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($filterElement:FilterElementInput!){userGroups(filterElement: $filterElement){edges{node{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}}:{\"filterElement\":{\"single\":{\"name\":\"name\",\"operator\":\"equals\",\"value\":\"test-user-group-ds\"}}}": [
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){userGroups(filterElement: $filterElement){edges{node{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "test-user-group-ds"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "userGroups": {
+            "edges": [
+              {
+                "node": {
+                  "displayName": "Test User Group DS",
+                  "id": "user-group-id-test-user-group-ds",
+                  "name": "test-user-group-ds",
+                  "roleAssignmentPrincipal": "user-group:ug-test-user-group-ds:principal",
+                  "roleAssignmentTarget": "user-group:ug-test-user-group-ds:target",
+                  "uuid": "ug-test-user-group-ds"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){userGroups(filterElement: $filterElement){edges{node{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "test-user-group-ds"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "userGroups": {
+            "edges": [
+              {
+                "node": {
+                  "displayName": "Test User Group DS",
+                  "id": "user-group-id-test-user-group-ds",
+                  "name": "test-user-group-ds",
+                  "roleAssignmentPrincipal": "user-group:ug-test-user-group-ds:principal",
+                  "roleAssignmentTarget": "user-group:ug-test-user-group-ds:target",
+                  "uuid": "ug-test-user-group-ds"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($filterElement:FilterElementInput!){userGroups(filterElement: $filterElement){edges{node{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}}",
+        "variables": {
+          "filterElement": {
+            "single": {
+              "name": "name",
+              "operator": "equals",
+              "value": "test-user-group-ds"
+            }
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "userGroups": {
+            "edges": [
+              {
+                "node": {
+                  "displayName": "Test User Group DS",
+                  "id": "user-group-id-test-user-group-ds",
+                  "name": "test-user-group-ds",
+                  "roleAssignmentPrincipal": "user-group:ug-test-user-group-ds:principal",
+                  "roleAssignmentTarget": "user-group:ug-test-user-group-ds:target",
+                  "uuid": "ug-test-user-group-ds"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:UUID!){userGroup(uuid: $uuid){id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}:{\"uuid\":\"ug-test-user-group-ds\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:UUID!){userGroup(uuid: $uuid){id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}",
+        "variables": {
+          "uuid": "ug-test-user-group-ds"
+        }
+      },
+      "response": {
+        "data": {
+          "userGroup": {
+            "displayName": "Test User Group DS",
+            "id": "user-group-id-test-user-group-ds",
+            "name": "test-user-group-ds",
+            "roleAssignmentPrincipal": "user-group:ug-test-user-group-ds:principal",
+            "roleAssignmentTarget": "user-group:ug-test-user-group-ds:target",
+            "uuid": "ug-test-user-group-ds"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -48,6 +48,7 @@ var DataSources = datasources{
 		newFactory(&roleAssignmentsDataSource{}),
 		newFactory(&roleDataSource{}),
 		newFactory(&ssoGroupDataSource{}),
+		newFactory(&userGroupDataSource{}),
 		newFactory(&userDataSource{}),
 	},
 }
