@@ -17,26 +17,17 @@ type RoleAssignment struct {
 	Target    roleTarget    `graphql:"target"`
 }
 
-// rolePrincipalPrincipal contains the opaque roleAssignmentPrincipal string.
-type rolePrincipalPrincipal struct {
-	RoleAssignmentPrincipal string `graphql:"roleAssignmentPrincipal"`
-}
-
-// rolePrincipal represents the GraphQL union type for RolePrincipal.
+// rolePrincipal represents the RolePrincipal GraphQL interface. The opaque
+// roleAssignmentPrincipal is declared on the interface itself, so selecting it
+// directly resolves for any concrete principal type (users and user groups)
+// without per-type inline fragments.
 type rolePrincipal struct {
-	User     *rolePrincipalPrincipal `graphql:"... on User"`
-	SSOGroup *rolePrincipalPrincipal `graphql:"... on SSOGroup"`
+	RoleAssignmentPrincipal string `graphql:"roleAssignmentPrincipal"`
 }
 
 // GetPrincipal extracts the opaque principal identifier string.
 func (r *RoleAssignment) GetPrincipal() string {
-	if r.Principal.User != nil {
-		return r.Principal.User.RoleAssignmentPrincipal
-	}
-	if r.Principal.SSOGroup != nil {
-		return r.Principal.SSOGroup.RoleAssignmentPrincipal
-	}
-	return ""
+	return r.Principal.RoleAssignmentPrincipal
 }
 
 // roleTarget represents the GraphQL union type for target entities.

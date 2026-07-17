@@ -3,12 +3,12 @@
 page_title: "stacklet_role_assignment Resource - terraform-provider-stacklet"
 subcategory: ""
 description: |-
-  Manages role assignments for principals (users or SSO groups) on targets (system, account groups, policy collections, or repositories). Role assignments grant specific permissions to principals on target resources.
+  Manages role assignments for principals (users or user groups) on targets (system, account groups, policy collections, or repositories). Role assignments grant specific permissions to principals on target resources.
 ---
 
 # stacklet_role_assignment (Resource)
 
-Manages role assignments for principals (users or SSO groups) on targets (system, account groups, policy collections, or repositories). Role assignments grant specific permissions to principals on target resources.
+Manages role assignments for principals (users or user groups) on targets (system, account groups, policy collections, or repositories). Role assignments grant specific permissions to principals on target resources.
 
 ## Example Usage
 
@@ -16,11 +16,6 @@ Manages role assignments for principals (users or SSO groups) on targets (system
 # Fetch user information
 data "stacklet_user" "example_user" {
   username = "example-user"
-}
-
-# Fetch SSO group information
-data "stacklet_sso_group" "example_group" {
-  name = "Engineering"
 }
 
 # Fetch account group
@@ -35,10 +30,10 @@ resource "stacklet_role_assignment" "system_admin" {
   target    = "system:all"
 }
 
-# Assign a role to an SSO group on a specific target resource
-resource "stacklet_role_assignment" "group_viewer" {
+# Assign a role to a user on a specific target resource
+resource "stacklet_role_assignment" "account_group_viewer" {
   role_name = "viewer"
-  principal = data.stacklet_sso_group.example_group.role_assignment_principal
+  principal = data.stacklet_user.example_user.role_assignment_principal
   target    = data.stacklet_account_group.example.role_assignment_target
 }
 ```
@@ -48,7 +43,7 @@ resource "stacklet_role_assignment" "group_viewer" {
 
 ### Required
 
-- `principal` (String) An opaque principal identifier. Use the 'role_assignment_principal' computed attribute from user or SSO group resources.
+- `principal` (String) An opaque principal identifier. Use the 'role_assignment_principal' computed attribute from user or user group resources.
 - `role_name` (String) The name of the role to assign. Use the stacklet_role data source to find available roles.
 - `target` (String) An opaque target identifier. Use the 'role_assignment_target' computed attribute from account group, policy collection, or repository resources.
 

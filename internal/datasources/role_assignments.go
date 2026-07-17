@@ -24,7 +24,7 @@ func (d *roleAssignmentsDataSource) Metadata(_ context.Context, req datasource.M
 
 func (d *roleAssignmentsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieve role assignments for a specific target. This data source allows you to query which principals (users or SSO groups) have been granted roles on a particular target (system, account group, policy collection, or repository).",
+		Description: "Retrieve role assignments for a specific target. This data source allows you to query which principals (users or user groups) have been granted roles on a particular target (system, account group, policy collection, or repository).",
 		Attributes: map[string]schema.Attribute{
 			"target": schema.StringAttribute{
 				Description: "An opaque target identifier to query role assignments for. Use the 'role_assignment_target' attribute from resource outputs.",

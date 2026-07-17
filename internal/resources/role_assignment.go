@@ -31,7 +31,7 @@ func (r *roleAssignmentResource) Metadata(_ context.Context, req resource.Metada
 
 func (r *roleAssignmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages role assignments for principals (users or SSO groups) on targets (system, account groups, policy collections, or repositories). Role assignments grant specific permissions to principals on target resources.",
+		Description: "Manages role assignments for principals (users or user groups) on targets (system, account groups, policy collections, or repositories). Role assignments grant specific permissions to principals on target resources.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The unique identifier of the role assignment.",
@@ -48,7 +48,7 @@ func (r *roleAssignmentResource) Schema(_ context.Context, _ resource.SchemaRequ
 				},
 			},
 			"principal": schema.StringAttribute{
-				Description: "An opaque principal identifier. Use the 'role_assignment_principal' computed attribute from user or SSO group resources.",
+				Description: "An opaque principal identifier. Use the 'role_assignment_principal' computed attribute from user or user group resources.",
 				Required:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
