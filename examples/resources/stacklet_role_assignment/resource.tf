@@ -3,11 +3,6 @@ data "stacklet_user" "example_user" {
   username = "example-user"
 }
 
-# Fetch SSO group information
-data "stacklet_sso_group" "example_group" {
-  name = "Engineering"
-}
-
 # Fetch account group
 data "stacklet_account_group" "example" {
   uuid = "00000000-0000-0000-0000-000000000000"
@@ -20,9 +15,9 @@ resource "stacklet_role_assignment" "system_admin" {
   target    = "system:all"
 }
 
-# Assign a role to an SSO group on a specific target resource
-resource "stacklet_role_assignment" "group_viewer" {
+# Assign a role to a user on a specific target resource
+resource "stacklet_role_assignment" "account_group_viewer" {
   role_name = "viewer"
-  principal = data.stacklet_sso_group.example_group.role_assignment_principal
+  principal = data.stacklet_user.example_user.role_assignment_principal
   target    = data.stacklet_account_group.example.role_assignment_target
 }

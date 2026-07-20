@@ -24,10 +24,10 @@
       }
     }
   ],
-  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"sso-group:21\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
+  "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{roleAssignmentPrincipal},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}:{\"input\":{\"grant\":[{\"principal\":\"sso-group:21\",\"roleName\":\"viewer\",\"target\":\"system:all\"}]}}": [
     {
       "request": {
-        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}",
+        "query": "mutation ($input:UpdateRoleAssignmentInput!){updateRoleAssignment(input: $input){grant{errorMessage,roleAssignment{id,role{id,name,permissions,system},principal{roleAssignmentPrincipal},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}}}}",
         "variables": {
           "input": {
             "grant": [
@@ -136,10 +136,10 @@
       }
     }
   ],
-  "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\",\"filterElement\":{\"multiple\":{\"operands\":[{\"single\":{\"name\":\"role-name\",\"operator\":\"equals\",\"value\":\"viewer\"}},{\"single\":{\"name\":\"target\",\"operator\":\"equals\",\"value\":\"system:all\"}}],\"operator\":\"AND\"}},\"pageSize\":1}": [
+  "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{roleAssignmentPrincipal},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}:{\"cursor\":\"\",\"filterElement\":{\"multiple\":{\"operands\":[{\"single\":{\"name\":\"role-name\",\"operator\":\"equals\",\"value\":\"viewer\"}},{\"single\":{\"name\":\"target\",\"operator\":\"equals\",\"value\":\"system:all\"}}],\"operator\":\"AND\"}},\"pageSize\":1}": [
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{roleAssignmentPrincipal},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {
@@ -200,7 +200,7 @@
     },
     {
       "request": {
-        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{... on User{roleAssignmentPrincipal},... on SSOGroup{roleAssignmentPrincipal}},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
+        "query": "query ($cursor:String!$filterElement:FilterElementInput!$pageSize:Int!){roleAssignments(first: $pageSize, after: $cursor, filterElement: $filterElement){edges{node{id,role{id,name,permissions,system},principal{roleAssignmentPrincipal},target{roleAssignmentTarget,... on RoleScope{roleAssignmentTarget},... on AccountGroup{roleAssignmentTarget},... on PolicyCollection{roleAssignmentTarget},... on Repository{roleAssignmentTarget},... on RepositoryConfig{roleAssignmentTarget}}}},pageInfo{hasNextPage,endCursor}}}",
         "variables": {
           "cursor": "",
           "filterElement": {

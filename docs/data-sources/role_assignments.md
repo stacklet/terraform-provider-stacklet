@@ -3,12 +3,12 @@
 page_title: "stacklet_role_assignments Data Source - terraform-provider-stacklet"
 subcategory: ""
 description: |-
-  Retrieve role assignments for a specific target. This data source allows you to query which principals (users or SSO groups) have been granted roles on a particular target (system, account group, policy collection, or repository).
+  Retrieve role assignments for a specific target. This data source allows you to query which principals (users or user groups) have been granted roles on a particular target (system, account group, policy collection, or repository).
 ---
 
 # stacklet_role_assignments (Data Source)
 
-Retrieve role assignments for a specific target. This data source allows you to query which principals (users or SSO groups) have been granted roles on a particular target (system, account group, policy collection, or repository).
+Retrieve role assignments for a specific target. This data source allows you to query which principals (users or user groups) have been granted roles on a particular target (system, account group, policy collection, or repository).
 
 ## Example Usage
 
