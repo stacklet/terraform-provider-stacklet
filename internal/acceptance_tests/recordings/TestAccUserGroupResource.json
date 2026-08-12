@@ -1,0 +1,160 @@
+{
+  "mutation ($input:AddUserGroupInput!){addUserGroup(input: $input){userGroup{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}:{\"input\":{\"displayName\":\"Test User Group\",\"name\":\"test-user-group\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddUserGroupInput!){addUserGroup(input: $input){userGroup{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}",
+        "variables": {
+          "input": {
+            "displayName": "Test User Group",
+            "name": "test-user-group"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addUserGroup": {
+            "userGroup": {
+              "displayName": "Test User Group",
+              "id": "user-group-id-test-user-group",
+              "name": "test-user-group",
+              "roleAssignmentPrincipal": "user-group:ug-test-user-group:principal",
+              "roleAssignmentTarget": "user-group:ug-test-user-group:target",
+              "uuid": "ug-test-user-group"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemoveUserGroupInput!){removeUserGroup(input: $input){removed{id}}}:{\"input\":{\"id\":\"user-group-id-test-user-group\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemoveUserGroupInput!){removeUserGroup(input: $input){removed{id}}}",
+        "variables": {
+          "input": {
+            "id": "user-group-id-test-user-group"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removeUserGroup": {
+            "removed": {
+              "id": "user-group-id-test-user-group"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateUserGroupInput!){updateUserGroup(input: $input){userGroup{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}:{\"input\":{\"displayName\":\"Updated User Group\",\"id\":\"user-group-id-test-user-group\",\"name\":\"test-user-group-updated\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateUserGroupInput!){updateUserGroup(input: $input){userGroup{id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}}",
+        "variables": {
+          "input": {
+            "displayName": "Updated User Group",
+            "id": "user-group-id-test-user-group",
+            "name": "test-user-group-updated"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateUserGroup": {
+            "userGroup": {
+              "displayName": "Updated User Group",
+              "id": "user-group-id-test-user-group",
+              "name": "test-user-group-updated",
+              "roleAssignmentPrincipal": "user-group:ug-test-user-group:principal",
+              "roleAssignmentTarget": "user-group:ug-test-user-group:target",
+              "uuid": "ug-test-user-group"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($uuid:UUID!){userGroup(uuid: $uuid){id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}:{\"uuid\":\"ug-test-user-group\"}": [
+    {
+      "request": {
+        "query": "query ($uuid:UUID!){userGroup(uuid: $uuid){id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}",
+        "variables": {
+          "uuid": "ug-test-user-group"
+        }
+      },
+      "response": {
+        "data": {
+          "userGroup": {
+            "displayName": "Test User Group",
+            "id": "user-group-id-test-user-group",
+            "name": "test-user-group",
+            "roleAssignmentPrincipal": "user-group:ug-test-user-group:principal",
+            "roleAssignmentTarget": "user-group:ug-test-user-group:target",
+            "uuid": "ug-test-user-group"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:UUID!){userGroup(uuid: $uuid){id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}",
+        "variables": {
+          "uuid": "ug-test-user-group"
+        }
+      },
+      "response": {
+        "data": {
+          "userGroup": {
+            "displayName": "Test User Group",
+            "id": "user-group-id-test-user-group",
+            "name": "test-user-group",
+            "roleAssignmentPrincipal": "user-group:ug-test-user-group:principal",
+            "roleAssignmentTarget": "user-group:ug-test-user-group:target",
+            "uuid": "ug-test-user-group"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:UUID!){userGroup(uuid: $uuid){id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}",
+        "variables": {
+          "uuid": "ug-test-user-group"
+        }
+      },
+      "response": {
+        "data": {
+          "userGroup": {
+            "displayName": "Test User Group",
+            "id": "user-group-id-test-user-group",
+            "name": "test-user-group",
+            "roleAssignmentPrincipal": "user-group:ug-test-user-group:principal",
+            "roleAssignmentTarget": "user-group:ug-test-user-group:target",
+            "uuid": "ug-test-user-group"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($uuid:UUID!){userGroup(uuid: $uuid){id,uuid,name,displayName,roleAssignmentPrincipal,roleAssignmentTarget}}",
+        "variables": {
+          "uuid": "ug-test-user-group"
+        }
+      },
+      "response": {
+        "data": {
+          "userGroup": {
+            "displayName": "Updated User Group",
+            "id": "user-group-id-test-user-group",
+            "name": "test-user-group-updated",
+            "roleAssignmentPrincipal": "user-group:ug-test-user-group:principal",
+            "roleAssignmentTarget": "user-group:ug-test-user-group:target",
+            "uuid": "ug-test-user-group"
+          }
+        }
+      }
+    }
+  ]
+}

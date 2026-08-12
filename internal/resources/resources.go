@@ -48,6 +48,7 @@ var Resources = resources{
 		newFactory(&repositoryResource{}),
 		newFactory(&roleAssignmentResource{}),
 		newFactory(&ssoGroupResource{}),
+		newFactory(&userGroupResource{}),
 		newFactory(&userResource{}),
 	},
 }

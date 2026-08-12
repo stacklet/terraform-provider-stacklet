@@ -27,6 +27,7 @@ type API struct {
 	System                  systemAPI
 	Template                templateAPI
 	User                    userAPI
+	UserGroup               userGroupAPI
 }
 
 // New creates an API wrapper.
@@ -51,5 +52,6 @@ func New(ctx context.Context, config ClientConfig) *API {
 		System:                  systemAPI{c},
 		Template:                templateAPI{c},
 		User:                    userAPI{c},
+		UserGroup:               userGroupAPI{c},
 	}
 }
