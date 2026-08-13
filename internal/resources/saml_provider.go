@@ -35,7 +35,7 @@ func (r *samlProviderResource) Metadata(_ context.Context, req resource.Metadata
 
 func (r *samlProviderResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages a SAML identity provider, used to federate user login with an external identity provider.",
+		Description: "Manages a SAML identity provider, used to federate users and their group membership from an external identity provider.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The GraphQL Node ID of the SAML provider.",
@@ -45,7 +45,7 @@ func (r *samlProviderResource) Schema(_ context.Context, _ resource.SchemaReques
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "The unique name identifying the provider. It can't be changed after creation.",
+				Description: "The unique name identifying the provider. It can't be changed after creation, and must satisfy [AWS Cognito's provider naming rules](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateIdentityProvider.html#CognitoUserPools-CreateIdentityProvider-request-ProviderName); an invalid name is rejected when the resource is applied, rather than at plan time.",
 				Required:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -56,14 +56,14 @@ func (r *samlProviderResource) Schema(_ context.Context, _ resource.SchemaReques
 				Optional:    true,
 			},
 			"metadata_url": schema.StringAttribute{
-				Description: "URL of the SAML metadata endpoint. Exactly one of `metadata_url` or `metadata_xml` must be set.",
+				Description: "URL of the SAML metadata endpoint. Preferred: Stacklet follows the URL, so certificate rotations published there are picked up without any change here. Exactly one of `metadata_url` or `metadata_xml` must be set.",
 				Optional:    true,
 				Validators: []validator.String{
 					stringvalidator.ExactlyOneOf(path.MatchRoot("metadata_xml")),
 				},
 			},
 			"metadata_xml": schema.StringAttribute{
-				Description: "Inline SAML metadata XML document. Exactly one of `metadata_url` or `metadata_xml` must be set.",
+				Description: "Inline SAML metadata XML document, for an identity provider with no public metadata endpoint. This is a point-in-time copy, so it must be updated whenever the identity provider's signing certificate changes; prefer `metadata_url` where available. Exactly one of `metadata_url` or `metadata_xml` must be set.",
 				Optional:    true,
 			},
 			"enable_signout": schema.BoolAttribute{

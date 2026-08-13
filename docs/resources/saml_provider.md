@@ -3,12 +3,12 @@
 page_title: "stacklet_saml_provider Resource - terraform-provider-stacklet"
 subcategory: ""
 description: |-
-  Manages a SAML identity provider, used to federate user login with an external identity provider.
+  Manages a SAML identity provider, used to federate users and their group membership from an external identity provider.
 ---
 
 # stacklet_saml_provider (Resource)
 
-Manages a SAML identity provider, used to federate user login with an external identity provider.
+Manages a SAML identity provider, used to federate users and their group membership from an external identity provider.
 
 ## Example Usage
 
@@ -22,8 +22,11 @@ resource "stacklet_saml_provider" "example" {
   idp_alias      = "corp"
 }
 
-# A provider configured from an inline metadata document. Exactly one of
-# metadata_url or metadata_xml must be set.
+# A provider configured from an inline metadata document, for an identity
+# provider with no public metadata endpoint. Prefer metadata_url where
+# available: it is followed, so certificate rotations need no change here,
+# whereas this document must be updated by hand when the signing certificate
+# changes. Exactly one of metadata_url or metadata_xml must be set.
 variable "entra_metadata_xml" {
   description = "SAML metadata XML document for the Entra ID application."
   type        = string
@@ -41,15 +44,15 @@ resource "stacklet_saml_provider" "inline" {
 
 ### Required
 
-- `name` (String) The unique name identifying the provider. It can't be changed after creation.
+- `name` (String) The unique name identifying the provider. It can't be changed after creation, and must satisfy [AWS Cognito's provider naming rules](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateIdentityProvider.html#CognitoUserPools-CreateIdentityProvider-request-ProviderName); an invalid name is rejected when the resource is applied, rather than at plan time.
 
 ### Optional
 
 - `display_name` (String) The display name of the SAML provider.
 - `enable_signout` (Boolean) Whether the identity provider signout flow is enabled for this provider.
 - `idp_alias` (String) A unique human-facing alias for the provider.
-- `metadata_url` (String) URL of the SAML metadata endpoint. Exactly one of `metadata_url` or `metadata_xml` must be set.
-- `metadata_xml` (String) Inline SAML metadata XML document. Exactly one of `metadata_url` or `metadata_xml` must be set.
+- `metadata_url` (String) URL of the SAML metadata endpoint. Preferred: Stacklet follows the URL, so certificate rotations published there are picked up without any change here. Exactly one of `metadata_url` or `metadata_xml` must be set.
+- `metadata_xml` (String) Inline SAML metadata XML document, for an identity provider with no public metadata endpoint. This is a point-in-time copy, so it must be updated whenever the identity provider's signing certificate changes; prefer `metadata_url` where available. Exactly one of `metadata_url` or `metadata_xml` must be set.
 
 ### Read-Only
 

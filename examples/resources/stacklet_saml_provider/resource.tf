@@ -7,8 +7,11 @@ resource "stacklet_saml_provider" "example" {
   idp_alias      = "corp"
 }
 
-# A provider configured from an inline metadata document. Exactly one of
-# metadata_url or metadata_xml must be set.
+# A provider configured from an inline metadata document, for an identity
+# provider with no public metadata endpoint. Prefer metadata_url where
+# available: it is followed, so certificate rotations need no change here,
+# whereas this document must be updated by hand when the signing certificate
+# changes. Exactly one of metadata_url or metadata_xml must be set.
 variable "entra_metadata_xml" {
   description = "SAML metadata XML document for the Entra ID application."
   type        = string

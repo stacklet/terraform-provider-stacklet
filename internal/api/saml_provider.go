@@ -81,7 +81,7 @@ func (a samlProviderAPI) Read(ctx context.Context, name string) (*SAMLProvider, 
 	return query.SAMLProvider, nil
 }
 
-// Create adds a SAML provider.
+// Create adds a SAML provider, which the platform reconciles into the identity pool.
 func (a samlProviderAPI) Create(ctx context.Context, i SAMLProviderCreateInput) (*SAMLProvider, error) {
 	var mutation struct {
 		Payload struct {
@@ -101,7 +101,7 @@ func (a samlProviderAPI) Create(ctx context.Context, i SAMLProviderCreateInput) 
 	return mutation.Payload.Provider, nil
 }
 
-// Update updates a SAML provider.
+// Update applies changes to the SAML provider identified by name; names are immutable.
 func (a samlProviderAPI) Update(ctx context.Context, i SAMLProviderUpdateInput) (*SAMLProvider, error) {
 	var mutation struct {
 		Payload struct {
