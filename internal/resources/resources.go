@@ -47,6 +47,7 @@ var Resources = resources{
 		newFactory(&reportGroupResource{}),
 		newFactory(&repositoryResource{}),
 		newFactory(&roleAssignmentResource{}),
+		newFactory(&samlProviderResource{}),
 		newFactory(&ssoGroupResource{}),
 		newFactory(&userGroupResource{}),
 		newFactory(&userResource{}),

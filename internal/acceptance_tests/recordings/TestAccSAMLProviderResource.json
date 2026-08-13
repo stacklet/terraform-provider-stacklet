@@ -1,0 +1,171 @@
+{
+  "mutation ($input:AddSAMLProviderInput!){addSAMLProvider(input: $input){provider{id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias},problems{__typename,message}}}:{\"input\":{\"displayName\":\"Test SAML Provider\",\"enableSignout\":false,\"metadataURL\":\"https://example.com/saml/metadata\",\"name\":\"test-saml-provider\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:AddSAMLProviderInput!){addSAMLProvider(input: $input){provider{id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "displayName": "Test SAML Provider",
+            "enableSignout": false,
+            "metadataURL": "https://example.com/saml/metadata",
+            "name": "test-saml-provider"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "addSAMLProvider": {
+            "problems": [],
+            "provider": {
+              "displayName": "Test SAML Provider",
+              "enableSignout": false,
+              "id": "saml-provider-id-test-saml-provider",
+              "idpAlias": null,
+              "metadataURL": "https://example.com/saml/metadata",
+              "metadataXML": null,
+              "name": "test-saml-provider"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:RemoveSAMLProviderInput!){removeSAMLProvider(input: $input){problems{__typename,message}}}:{\"input\":{\"name\":\"test-saml-provider\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemoveSAMLProviderInput!){removeSAMLProvider(input: $input){problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "name": "test-saml-provider"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removeSAMLProvider": {
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateSAMLProviderInput!){updateSAMLProvider(input: $input){provider{id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias},problems{__typename,message}}}:{\"input\":{\"displayName\":\"Updated SAML Provider\",\"enableSignout\":true,\"idpAlias\":\"test-alias\",\"metadataURL\":\"https://example.com/saml/metadata-updated\",\"metadataXML\":null,\"name\":\"test-saml-provider\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateSAMLProviderInput!){updateSAMLProvider(input: $input){provider{id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "displayName": "Updated SAML Provider",
+            "enableSignout": true,
+            "idpAlias": "test-alias",
+            "metadataURL": "https://example.com/saml/metadata-updated",
+            "metadataXML": null,
+            "name": "test-saml-provider"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateSAMLProvider": {
+            "problems": [],
+            "provider": {
+              "displayName": "Updated SAML Provider",
+              "enableSignout": true,
+              "id": "saml-provider-id-test-saml-provider",
+              "idpAlias": "test-alias",
+              "metadataURL": "https://example.com/saml/metadata-updated",
+              "metadataXML": null,
+              "name": "test-saml-provider"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "query ($name:String!){samlProvider(name: $name){id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias}}:{\"name\":\"test-saml-provider\"}": [
+    {
+      "request": {
+        "query": "query ($name:String!){samlProvider(name: $name){id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias}}",
+        "variables": {
+          "name": "test-saml-provider"
+        }
+      },
+      "response": {
+        "data": {
+          "samlProvider": {
+            "displayName": "Test SAML Provider",
+            "enableSignout": false,
+            "id": "saml-provider-id-test-saml-provider",
+            "idpAlias": null,
+            "metadataURL": "https://example.com/saml/metadata",
+            "metadataXML": null,
+            "name": "test-saml-provider"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){samlProvider(name: $name){id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias}}",
+        "variables": {
+          "name": "test-saml-provider"
+        }
+      },
+      "response": {
+        "data": {
+          "samlProvider": {
+            "displayName": "Test SAML Provider",
+            "enableSignout": false,
+            "id": "saml-provider-id-test-saml-provider",
+            "idpAlias": null,
+            "metadataURL": "https://example.com/saml/metadata",
+            "metadataXML": null,
+            "name": "test-saml-provider"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){samlProvider(name: $name){id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias}}",
+        "variables": {
+          "name": "test-saml-provider"
+        }
+      },
+      "response": {
+        "data": {
+          "samlProvider": {
+            "displayName": "Test SAML Provider",
+            "enableSignout": false,
+            "id": "saml-provider-id-test-saml-provider",
+            "idpAlias": null,
+            "metadataURL": "https://example.com/saml/metadata",
+            "metadataXML": null,
+            "name": "test-saml-provider"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($name:String!){samlProvider(name: $name){id,name,displayName,metadataURL,metadataXML,enableSignout,idpAlias}}",
+        "variables": {
+          "name": "test-saml-provider"
+        }
+      },
+      "response": {
+        "data": {
+          "samlProvider": {
+            "displayName": "Updated SAML Provider",
+            "enableSignout": true,
+            "id": "saml-provider-id-test-saml-provider",
+            "idpAlias": "test-alias",
+            "metadataURL": "https://example.com/saml/metadata-updated",
+            "metadataXML": null,
+            "name": "test-saml-provider"
+          }
+        }
+      }
+    }
+  ]
+}
