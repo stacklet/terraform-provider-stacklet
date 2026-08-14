@@ -23,6 +23,7 @@ type API struct {
 	Repository              repositoryAPI
 	Role                    roleAPI
 	RoleAssignment          roleAssignmentAPI
+	SAMLProvider            samlProviderAPI
 	SSOGroup                ssoGroupAPI
 	System                  systemAPI
 	Template                templateAPI
@@ -48,6 +49,7 @@ func New(ctx context.Context, config ClientConfig) *API {
 		Repository:              repositoryAPI{c},
 		Role:                    roleAPI{c},
 		RoleAssignment:          roleAssignmentAPI{c},
+		SAMLProvider:            samlProviderAPI{c},
 		SSOGroup:                ssoGroupAPI{c},
 		System:                  systemAPI{c},
 		Template:                templateAPI{c},

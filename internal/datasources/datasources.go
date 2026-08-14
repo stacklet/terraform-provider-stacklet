@@ -47,6 +47,7 @@ var DataSources = datasources{
 		newFactory(&repositoryDataSource{}),
 		newFactory(&roleAssignmentsDataSource{}),
 		newFactory(&roleDataSource{}),
+		newFactory(&samlProviderDataSource{}),
 		newFactory(&ssoGroupDataSource{}),
 		newFactory(&userGroupDataSource{}),
 		newFactory(&userDataSource{}),
