@@ -18,6 +18,27 @@ type TerraformModule struct {
 	VariablesJSON string  `graphql:"variablesJSON"`
 }
 
+// StatusInfo is the data returned for the status of an entity's background
+// operations, as a summary over the individual outcomes.
+type StatusInfo struct {
+	Status  string         `graphql:"status"`
+	Details []StatusDetail `graphql:"details"`
+}
+
+// StatusDetail is the outcome of one named operation's most recent completed
+// attempt, plus whether a new attempt is underway.
+//
+// Status is nullable: an operation that has never completed one has no outcome
+// to report, which is not a failure. Timestamps are kept as the strings the API
+// returns, since they are only ever surfaced for a human to read.
+type StatusDetail struct {
+	Component    string  `graphql:"component"`
+	Status       *string `graphql:"status"`
+	At           *string `graphql:"at"`
+	Message      *string `graphql:"message"`
+	RunningSince *string `graphql:"runningSince"`
+}
+
 // Tag is the data for a tag.
 type Tag struct {
 	Key   string `json:"key"`

@@ -1,0 +1,296 @@
+{
+  "mutation ($input:UpdateDatadogIntegrationInput!){updateDatadogIntegration(input: $input){datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}},problems{__typename,message}}}:{\"input\":{\"apiKey\":\"api-key-one\",\"appKey\":\"app-key-one\",\"enabled\":true,\"site\":\"datadoghq.com\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateDatadogIntegrationInput!){updateDatadogIntegration(input: $input){datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "apiKey": "api-key-one",
+            "appKey": "app-key-one",
+            "enabled": true,
+            "site": "datadoghq.com"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateDatadogIntegration": {
+            "datadogIntegration": {
+              "configured": true,
+              "enabled": true,
+              "site": "datadoghq.com",
+              "statusInfo": {
+                "details": [
+                  {
+                    "at": null,
+                    "component": "us-east-1-secret",
+                    "message": "waiting for the credentials to replicate into the region",
+                    "runningSince": null,
+                    "status": null
+                  },
+                  {
+                    "at": null,
+                    "component": "us-east-1-execution",
+                    "message": "the change is saved and the fan-out queued",
+                    "runningSince": null,
+                    "status": null
+                  },
+                  {
+                    "at": null,
+                    "component": "us-west-2-secret",
+                    "message": "waiting for the credentials to replicate into the region",
+                    "runningSince": null,
+                    "status": null
+                  },
+                  {
+                    "at": null,
+                    "component": "us-west-2-execution",
+                    "message": "the change is saved and the fan-out queued",
+                    "runningSince": null,
+                    "status": null
+                  }
+                ],
+                "status": "SKIPPED"
+              }
+            },
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpdateDatadogIntegrationInput!){updateDatadogIntegration(input: $input){datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}},problems{__typename,message}}}:{\"input\":{\"enabled\":false,\"site\":\"datadoghq.com\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpdateDatadogIntegrationInput!){updateDatadogIntegration(input: $input){datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "enabled": false,
+            "site": "datadoghq.com"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "updateDatadogIntegration": {
+            "datadogIntegration": {
+              "configured": true,
+              "enabled": false,
+              "site": "datadoghq.com",
+              "statusInfo": {
+                "details": [
+                  {
+                    "at": null,
+                    "component": "us-east-1-execution",
+                    "message": "waiting for the region to let go of the credentials",
+                    "runningSince": null,
+                    "status": null
+                  },
+                  {
+                    "at": null,
+                    "component": "us-west-2-execution",
+                    "message": "waiting for the region to let go of the credentials",
+                    "runningSince": null,
+                    "status": null
+                  }
+                ],
+                "status": "SKIPPED"
+              }
+            },
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation{removeDatadogIntegration{problems{__typename,message}}}": [
+    {
+      "request": {
+        "query": "mutation{removeDatadogIntegration{problems{__typename,message}}}"
+      },
+      "response": {
+        "data": {
+          "removeDatadogIntegration": {
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "{datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}}}": [
+    {
+      "request": {
+        "query": "{datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}}}"
+      },
+      "response": {
+        "data": {
+          "datadogIntegration": {
+            "configured": true,
+            "enabled": true,
+            "site": "datadoghq.com",
+            "statusInfo": {
+              "details": [
+                {
+                  "at": null,
+                  "component": "us-east-1-secret",
+                  "message": "waiting for the credentials to replicate into the region",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-east-1-execution",
+                  "message": "the change is saved and the fan-out queued",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-west-2-secret",
+                  "message": "waiting for the credentials to replicate into the region",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-west-2-execution",
+                  "message": "the change is saved and the fan-out queued",
+                  "runningSince": null,
+                  "status": null
+                }
+              ],
+              "status": "SKIPPED"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}}}"
+      },
+      "response": {
+        "data": {
+          "datadogIntegration": {
+            "configured": true,
+            "enabled": true,
+            "site": "datadoghq.com",
+            "statusInfo": {
+              "details": [
+                {
+                  "at": null,
+                  "component": "us-east-1-secret",
+                  "message": "waiting for the credentials to replicate into the region",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-east-1-execution",
+                  "message": "the change is saved and the fan-out queued",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-west-2-secret",
+                  "message": "waiting for the credentials to replicate into the region",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-west-2-execution",
+                  "message": "the change is saved and the fan-out queued",
+                  "runningSince": null,
+                  "status": null
+                }
+              ],
+              "status": "SKIPPED"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}}}"
+      },
+      "response": {
+        "data": {
+          "datadogIntegration": {
+            "configured": true,
+            "enabled": true,
+            "site": "datadoghq.com",
+            "statusInfo": {
+              "details": [
+                {
+                  "at": null,
+                  "component": "us-east-1-secret",
+                  "message": "waiting for the credentials to replicate into the region",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-east-1-execution",
+                  "message": "the change is saved and the fan-out queued",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-west-2-secret",
+                  "message": "waiting for the credentials to replicate into the region",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-west-2-execution",
+                  "message": "the change is saved and the fan-out queued",
+                  "runningSince": null,
+                  "status": null
+                }
+              ],
+              "status": "SKIPPED"
+            }
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "{datadogIntegration{enabled,site,configured,statusInfo{status,details{component,status,at,message,runningSince}}}}"
+      },
+      "response": {
+        "data": {
+          "datadogIntegration": {
+            "configured": true,
+            "enabled": false,
+            "site": "datadoghq.com",
+            "statusInfo": {
+              "details": [
+                {
+                  "at": null,
+                  "component": "us-east-1-execution",
+                  "message": "waiting for the region to let go of the credentials",
+                  "runningSince": null,
+                  "status": null
+                },
+                {
+                  "at": null,
+                  "component": "us-west-2-execution",
+                  "message": "waiting for the region to let go of the credentials",
+                  "runningSince": null,
+                  "status": null
+                }
+              ],
+              "status": "SKIPPED"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
