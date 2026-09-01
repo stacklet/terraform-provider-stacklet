@@ -5,7 +5,7 @@ subcategory: ""
 description: |-
   Manage the Datadog integration.
   Supplying credentials makes the datadog-metrics policy filter available, so policies can select resources by metrics held in Datadog rather than by the cloud's own monitoring.
-  The integration applies to the whole deployment; adding multiple resources of this kind will cause them to override each other.
+  The integration applies to the whole deployment, adding multiple resources of this kind will cause them to override each other.
   The credentials are write-only: they are sent to the API and never returned by it, so they aren't kept in Terraform state. configured reports whether the API holds them.
   An import brings in the settings but not the key versions, for the same reason. The first apply after an import therefore sends whatever api_key_wo and app_key_wo hold, replacing the stored credentials.
 ---
@@ -16,7 +16,7 @@ Manage the Datadog integration.
 
 Supplying credentials makes the `datadog-metrics` policy filter available, so policies can select resources by metrics held in Datadog rather than by the cloud's own monitoring.
 
-The integration applies to the whole deployment; adding multiple resources of this kind will cause them to override each other.
+The integration applies to the whole deployment, adding multiple resources of this kind will cause them to override each other.
 
 The credentials are write-only: they are sent to the API and never returned by it, so they aren't kept in Terraform state. `configured` reports whether the API holds them.
 

@@ -27,10 +27,9 @@ func (d *datadogIntegrationDataSource) Metadata(_ context.Context, req datasourc
 
 func (d *datadogIntegrationDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Retrieve the Datadog integration.
-
-The integration applies to the whole deployment, so this takes no arguments. The credentials are never returned by the API; ` + "`configured`" + ` reports whether it holds them.
-`,
+		Description: "Retrieve the Datadog integration.\n\n" +
+			"The integration applies to the whole deployment, so this takes no arguments. " +
+			"The credentials are never returned by the API, and `configured` reports whether it holds them.\n",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "A fixed identifier for the integration, which is global and has no ID of its own.",

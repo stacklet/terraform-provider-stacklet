@@ -4,14 +4,14 @@ page_title: "stacklet_datadog_integration Data Source - terraform-provider-stack
 subcategory: ""
 description: |-
   Retrieve the Datadog integration.
-  The integration applies to the whole deployment, so this takes no arguments. The credentials are never returned by the API; configured reports whether it holds them.
+  The integration applies to the whole deployment, so this takes no arguments. The credentials are never returned by the API, and configured reports whether it holds them.
 ---
 
 # stacklet_datadog_integration (Data Source)
 
 Retrieve the Datadog integration.
 
-The integration applies to the whole deployment, so this takes no arguments. The credentials are never returned by the API; `configured` reports whether it holds them.
+The integration applies to the whole deployment, so this takes no arguments. The credentials are never returned by the API, and `configured` reports whether it holds them.
 
 ## Example Usage
 

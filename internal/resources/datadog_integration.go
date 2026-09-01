@@ -37,16 +37,16 @@ func (r *datadogIntegrationResource) Metadata(_ context.Context, req resource.Me
 
 func (r *datadogIntegrationResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage the Datadog integration.
-
-Supplying credentials makes the ` + "`datadog-metrics`" + ` policy filter available, so policies can select resources by metrics held in Datadog rather than by the cloud's own monitoring.
-
-The integration applies to the whole deployment; adding multiple resources of this kind will cause them to override each other.
-
-The credentials are write-only: they are sent to the API and never returned by it, so they aren't kept in Terraform state. ` + "`configured`" + ` reports whether the API holds them.
-
-An import brings in the settings but not the key versions, for the same reason. The first apply after an import therefore sends whatever ` + "`api_key_wo`" + ` and ` + "`app_key_wo`" + ` hold, replacing the stored credentials.
-`,
+		Description: "Manage the Datadog integration.\n\n" +
+			"Supplying credentials makes the `datadog-metrics` policy filter available, so policies can select " +
+			"resources by metrics held in Datadog rather than by the cloud's own monitoring.\n\n" +
+			"The integration applies to the whole deployment, adding multiple resources of this kind will cause " +
+			"them to override each other.\n\n" +
+			"The credentials are write-only: they are sent to the API and never returned by it, so they aren't " +
+			"kept in Terraform state. `configured` reports whether the API holds them.\n\n" +
+			"An import brings in the settings but not the key versions, for the same reason. The first apply " +
+			"after an import therefore sends whatever `api_key_wo` and `app_key_wo` hold, replacing the stored " +
+			"credentials.\n",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "A fixed identifier for the integration, which is global and has no ID of its own.",
