@@ -3,6 +3,7 @@
 package acceptance_tests
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -137,4 +138,36 @@ func TestAccDatadogIntegrationResource_KeyRotation(t *testing.T) {
 		},
 	}
 	runRecordedAccTest(t, "TestAccDatadogIntegrationResource_KeyRotation", steps)
+}
+
+// TestAccDatadogIntegrationResource_VersionWithoutKey checks that asking for a
+// rotation without supplying the key is refused. Sending nothing while state
+// recorded the new version would lose the rotation for good: every later plan
+// would find the versions in agreement and send nothing either.
+func TestAccDatadogIntegrationResource_VersionWithoutKey(t *testing.T) {
+	steps := []resource.TestStep{
+		{
+			Config: `
+				resource "stacklet_datadog_integration" "test" {
+					api_key_wo         = "api-key-one"
+					api_key_wo_version = "1"
+					app_key_wo         = "app-key-one"
+					app_key_wo_version = "1"
+				}
+			`,
+			Check: resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "configured", "true"),
+		},
+		// The version asks for a new API key, but the key itself is gone.
+		{
+			Config: `
+				resource "stacklet_datadog_integration" "test" {
+					api_key_wo_version = "2"
+					app_key_wo         = "app-key-one"
+					app_key_wo_version = "1"
+				}
+			`,
+			ExpectError: regexp.MustCompile(`Missing api_key_wo`),
+		},
+	}
+	runRecordedAccTest(t, "TestAccDatadogIntegrationResource_VersionWithoutKey", steps)
 }

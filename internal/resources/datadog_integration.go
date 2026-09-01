@@ -4,7 +4,9 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -12,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -104,11 +107,17 @@ func (r *datadogIntegrationResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
+	// A version set without its key is refused here too: it would otherwise be
+	// recorded as the version the stored credential corresponds to, when no
+	// credential was sent at all.
 	input := api.DatadogIntegrationInput{
 		Enabled: plan.Enabled.ValueBoolPointer(),
 		Site:    plan.Site.ValueStringPointer(),
-		APIKey:  config.APIKeyWO.ValueStringPointer(),
-		AppKey:  config.AppKeyWO.ValueStringPointer(),
+		APIKey:  credentialToSend(&resp.Diagnostics, !plan.APIKeyWOVersion.IsNull() || !config.APIKeyWO.IsNull(), "api_key_wo", config.APIKeyWO),
+		AppKey:  credentialToSend(&resp.Diagnostics, !plan.AppKeyWOVersion.IsNull() || !config.AppKeyWO.IsNull(), "app_key_wo", config.AppKeyWO),
+	}
+	if resp.Diagnostics.HasError() {
+		return
 	}
 
 	integration, err := r.api.DatadogIntegration.Update(ctx, input)
@@ -153,12 +162,11 @@ func (r *datadogIntegrationResource) Update(ctx context.Context, req resource.Up
 	input := api.DatadogIntegrationInput{
 		Enabled: plan.Enabled.ValueBoolPointer(),
 		Site:    plan.Site.ValueStringPointer(),
+		APIKey:  credentialToSend(&resp.Diagnostics, !state.APIKeyWOVersion.Equal(plan.APIKeyWOVersion), "api_key_wo", config.APIKeyWO),
+		AppKey:  credentialToSend(&resp.Diagnostics, !state.AppKeyWOVersion.Equal(plan.AppKeyWOVersion), "app_key_wo", config.AppKeyWO),
 	}
-	if !state.APIKeyWOVersion.Equal(plan.APIKeyWOVersion) {
-		input.APIKey = config.APIKeyWO.ValueStringPointer()
-	}
-	if !state.AppKeyWOVersion.Equal(plan.AppKeyWOVersion) {
-		input.AppKey = config.AppKeyWO.ValueStringPointer()
+	if resp.Diagnostics.HasError() {
+		return
 	}
 
 	integration, err := r.api.DatadogIntegration.Update(ctx, input)
@@ -186,4 +194,30 @@ func (r *datadogIntegrationResource) Delete(ctx context.Context, req resource.De
 
 func (r *datadogIntegrationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), models.DatadogIntegrationID)...)
+}
+
+// credentialToSend returns the write-only key to send, when its version says
+// there is a new one, and refuses the change when the key itself is absent.
+//
+// Sending nothing would leave the stored credential in place while the state
+// recorded the new version. Every later plan would then find the versions in
+// agreement and send nothing either, so the rotation would be lost with nothing
+// left to retry it.
+func credentialToSend(diags *diag.Diagnostics, wanted bool, name string, key types.String) *string {
+	if !wanted {
+		return nil
+	}
+	if key.IsNull() {
+		diags.AddAttributeError(
+			path.Root(name),
+			fmt.Sprintf("Missing %s", name),
+			fmt.Sprintf(
+				"%s_version asks for a new value, but %s is not set, so there is nothing to send. "+
+					"Set %s alongside the version, or restore the previous version to keep the stored credential.",
+				name, name, name,
+			),
+		)
+		return nil
+	}
+	return key.ValueStringPointer()
 }
