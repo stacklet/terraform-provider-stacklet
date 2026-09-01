@@ -36,6 +36,7 @@ var DataSources = datasources{
 		newFactory(&configurationProfileServiceNowDataSource{}),
 		newFactory(&configurationProfileSlackDataSource{}),
 		newFactory(&configurationProfileSymphonyDataSource{}),
+		newFactory(&datadogIntegrationDataSource{}),
 		newFactory(&gcpIntegrationDataSource{}),
 		newFactory(&gcpIntegrationSurfaceDataSource{}),
 		newFactory(&msteamsIntegrationSurfaceDataSource{}),
