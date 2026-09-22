@@ -40,6 +40,7 @@ var Resources = resources{
 		newFactory(&configurationProfileServiceNowResource{}),
 		newFactory(&configurationProfileSlackResource{}),
 		newFactory(&configurationProfileSymphonyResource{}),
+		newFactory(&datadogIntegrationResource{}),
 		newFactory(&gcpIntegrationResource{}),
 		newFactory(&notificationTemplateResource{}),
 		newFactory(&policyCollectionMappingResource{}),

@@ -15,6 +15,7 @@ type API struct {
 	AccountGroupMapping     accountGroupMappingAPI
 	Binding                 bindingAPI
 	ConfigurationProfile    configurationProfileAPI
+	DatadogIntegration      datadogIntegrationAPI
 	GCPIntegration          gcpIntegrationAPI
 	Policy                  policyAPI
 	PolicyCollection        policyCollectionAPI
@@ -41,6 +42,7 @@ func New(ctx context.Context, config ClientConfig) *API {
 		AccountGroupMapping:     accountGroupMappingAPI{c},
 		Binding:                 bindingAPI{c},
 		ConfigurationProfile:    configurationProfileAPI{c},
+		DatadogIntegration:      datadogIntegrationAPI{c},
 		GCPIntegration:          gcpIntegrationAPI{c},
 		Policy:                  policyAPI{c},
 		PolicyCollection:        policyCollectionAPI{c},
