@@ -1,13 +1,13 @@
 ## 0.9.0 - 2026-09-22
 
 - Add: support for the following resource types
- - `stacklet_saml_provider`
- - `stacklet_user_group`
- - `stacklet_datadog_integration`
+  - `stacklet_saml_provider`
+  - `stacklet_user_group`
+  - `stacklet_datadog_integration`
 - Add: support for the following datasource types
- - `stacklet_saml_provider`
- - `stacklet_user_group`
- - `stacklet_datadog_integration`
+  - `stacklet_saml_provider`
+  - `stacklet_user_group`
+  - `stacklet_datadog_integration`
 - Fix: resolve role assignment user group principals
 
 
