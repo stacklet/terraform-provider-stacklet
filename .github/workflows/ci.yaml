@@ -13,15 +13,25 @@ permissions:
   pull-requests: read
 
 jobs:
-  lint:
-    name: lint
-    uses: ./.github/workflows/_run-just.yaml
+  Lint:
+    permissions:
+      contents: read
+    uses: stacklet/github-tooling/.github/workflows/run-script.yml@1bb29247681da66913f0b04ab3845f6f9367ef0a # main
+    secrets:
+      STEP_SECURITY_API_KEY: ${{ secrets.STEP_SECURITY_API_KEY }}
     with:
-      just-command: lint
+      pre-commit-cache: true
+      github-token: true
       full-git-history: true  # copyright headers need it
+      run: |
+        just lint
 
-  test:
-    name: test
-    uses: ./.github/workflows/_run-just.yaml
+  Tests:
+    permissions:
+      contents: read
+    uses: stacklet/github-tooling/.github/workflows/run-script.yml@1bb29247681da66913f0b04ab3845f6f9367ef0a # main
+    secrets:
+      STEP_SECURITY_API_KEY: ${{ secrets.STEP_SECURITY_API_KEY }}
     with:
-      just-command: test
+      run: |
+        just test

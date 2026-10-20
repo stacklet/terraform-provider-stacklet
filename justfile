@@ -6,7 +6,7 @@ build *args:
 
 # Run linting
 lint *args:
-    uvx prek run --all-files {{ args }}
+    prek run --all-files {{ args }}
 
 # Run tests using recorded API requests/responses.
 test *args:
