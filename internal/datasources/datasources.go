@@ -27,6 +27,7 @@ var DataSources = datasources{
 	Released: []func() datasource.DataSource{
 		newFactory(&accountDataSource{}),
 		newFactory(&accountGroupDataSource{}),
+		newFactory(&anthropicIntegrationDataSource{}),
 		newFactory(&bindingDataSource{}),
 		newFactory(&configurationProfileAccountOwnersDataSource{}),
 		newFactory(&configurationProfileEmailDataSource{}),
@@ -52,9 +53,6 @@ var DataSources = datasources{
 		newFactory(&ssoGroupDataSource{}),
 		newFactory(&userGroupDataSource{}),
 		newFactory(&userDataSource{}),
-	},
-	Unreleased: []func() datasource.DataSource{
-		newFactory(&anthropicIntegrationDataSource{}),
 	},
 }
 

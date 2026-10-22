@@ -31,6 +31,7 @@ var Resources = resources{
 		newFactory(&accountGroupMappingResource{}),
 		newFactory(&accountGroupResource{}),
 		newFactory(&accountResource{}),
+		newFactory(&anthropicIntegrationResource{}),
 		newFactory(&bindingResource{}),
 		newFactory(&configurationProfileAccountOwnersResource{}),
 		newFactory(&configurationProfileEmailResource{}),
@@ -52,9 +53,6 @@ var Resources = resources{
 		newFactory(&ssoGroupResource{}),
 		newFactory(&userGroupResource{}),
 		newFactory(&userResource{}),
-	},
-	Unreleased: []func() resource.Resource{
-		newFactory(&anthropicIntegrationResource{}),
 	},
 }
 
