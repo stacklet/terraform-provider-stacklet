@@ -3,10 +3,6 @@
 // package api provides access to the GraphQL API.
 package api
 
-import (
-	"context"
-)
-
 // API provides access to the GraphQL API.
 type API struct {
 	Account                 accountAPI
@@ -33,8 +29,8 @@ type API struct {
 }
 
 // New creates an API wrapper.
-func New(ctx context.Context, config ClientConfig) *API {
-	c := newClient(ctx, config)
+func New(config ClientConfig) *API {
+	c := newClient(config)
 	return &API{
 		Account:                 accountAPI{c},
 		AccountDiscovery:        accountDiscoveryAPI{c},

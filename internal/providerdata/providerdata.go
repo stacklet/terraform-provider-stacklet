@@ -3,7 +3,6 @@
 package providerdata
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -18,9 +17,9 @@ type providerData struct {
 }
 
 // New returns configured provider data.
-func New(ctx context.Context, config api.ClientConfig) *providerData {
+func New(config api.ClientConfig) *providerData {
 	return &providerData{
-		API: api.New(ctx, config),
+		API: api.New(config),
 	}
 }
 

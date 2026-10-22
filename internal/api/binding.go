@@ -69,6 +69,13 @@ type BindingExecutionConfig struct {
 	Variables       *string                                `graphql:"variables" json:"variables"`
 }
 
+func (c BindingExecutionConfig) securityContext() *string {
+	if c.SecurityContext == nil {
+		return nil
+	}
+	return &c.SecurityContext.Default
+}
+
 // BindingExecutionConfigDryRun holds the dry run configuration for a binding execution config.
 type BindingExecutionConfigDryRun struct {
 	Default bool `graphql:"default" json:"default"`
@@ -158,6 +165,7 @@ func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (*Binding,
 			Binding Binding
 		} `graphql:"addBinding(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, i.ExecutionConfig.securityContext())
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
 		return nil, err
@@ -173,6 +181,7 @@ func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (*Binding,
 			Binding Binding
 		} `graphql:"updateBinding(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, i.ExecutionConfig.securityContext())
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
 		return nil, err

@@ -49,8 +49,29 @@ func (c *client) Mutate(ctx context.Context, m any, variables map[string]any) er
 	return nil
 }
 
+// maskSecrets returns a context whose logs show the given secrets only as a
+// mask. Request bodies carry them JSON-encoded, so that form is masked too.
+func maskSecrets(ctx context.Context, secrets ...*string) context.Context {
+	var masked []string
+	for _, s := range secrets {
+		if s == nil || *s == "" {
+			continue
+		}
+		masked = append(masked, *s)
+		if encoded, err := json.Marshal(*s); err == nil {
+			if e := string(encoded[1 : len(encoded)-1]); e != *s {
+				masked = append(masked, e)
+			}
+		}
+	}
+	if len(masked) == 0 {
+		return ctx
+	}
+	return tflog.MaskLogStrings(ctx, masked...)
+}
+
 // newClient returns a configured graphql Client.
-func newClient(ctx context.Context, config ClientConfig) *client {
+func newClient(config ClientConfig) *client {
 	tfLog := hclog.LevelFromString(os.Getenv("TF_LOG"))
 	logBody := tfLog == hclog.Debug || tfLog == hclog.Trace
 
@@ -60,7 +81,6 @@ func newClient(ctx context.Context, config ClientConfig) *client {
 				APIKey:  config.APIKey,
 				Version: config.Version,
 				Base: &logTransport{
-					Ctx:     ctx,
 					Base:    http.DefaultTransport,
 					LogBody: logBody,
 				},
@@ -89,9 +109,9 @@ func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	return t.Base.RoundTrip(req)
 }
 
-// logTransport is an http.Transport that logs requests/responses.
+// logTransport is an http.Transport that logs requests/responses through the
+// request's context, so the logs apply whatever masking the caller set up.
 type logTransport struct {
-	Ctx     context.Context
 	Base    http.RoundTripper
 	LogBody bool
 }
@@ -109,7 +129,7 @@ func (t *logTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	tflog.Debug(
-		t.Ctx,
+		req.Context(),
 		"Performing GraphQL request",
 		map[string]any{
 			"req_method": req.Method,
@@ -129,7 +149,7 @@ func (t *logTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		}
 
 		tflog.Debug(
-			t.Ctx,
+			req.Context(),
 			"Got GraphQL response",
 			map[string]any{
 				"req_method":       req.Method,
