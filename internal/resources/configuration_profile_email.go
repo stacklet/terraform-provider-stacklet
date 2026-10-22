@@ -84,6 +84,7 @@ The profile is global, adding multiple resources of this kind will cause them to
 						Description: "Authentication password (encrypted), returned by the API.",
 						Computed:    true,
 					},
+					// XXX wgrant 2026-10-22: password_wo should require password_wo_version (ENG-9371).
 					"password_wo": schema.StringAttribute{
 						Description: "Input value for authentication password.",
 						Optional:    true,

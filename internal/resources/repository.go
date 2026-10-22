@@ -105,6 +105,7 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 			},
 			// After this, write-only secrets and associated trigger attrs.
+			// XXX wgrant 2026-10-22: auth_token_wo should require auth_token_wo_version (ENG-9371).
 			"auth_token_wo": schema.StringAttribute{
 				Description: "User password/token, or IAM role, to access the remote repository.",
 				Optional:    true,
@@ -115,6 +116,7 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: "Change value to update auth_token_wo.",
 				Optional:    true,
 			},
+			// XXX wgrant 2026-10-22: ssh_private_key_wo should require ssh_private_key_wo_version (ENG-9371).
 			"ssh_private_key_wo": schema.StringAttribute{
 				Description: "SSH private key for remote repository authentication.",
 				Optional:    true,
@@ -125,6 +127,7 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: "Change value to update ssh_private_key_wo.",
 				Optional:    true,
 			},
+			// XXX wgrant 2026-10-22: ssh_passphrase_wo should require ssh_passphrase_wo_version (ENG-9371).
 			"ssh_passphrase_wo": schema.StringAttribute{
 				Description: "Passphrase for the SSH private key.",
 				Optional:    true,

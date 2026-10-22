@@ -50,6 +50,22 @@ func (e NotFound) Error() string {
 	return e.Message
 }
 
+// Conflict represents an error raised when a change isn't possible, or wasn't
+// completed, because of the state of some other part of the system.
+type Conflict struct {
+	Message string
+}
+
+// Summary returns the error summary.
+func (e Conflict) Summary() string {
+	return "Conflict"
+}
+
+// Error returns the error message.
+func (e Conflict) Error() string {
+	return e.Message
+}
+
 // fromProblems returns an error from a list of API problems.
 func fromProblems(ctx context.Context, problems []problem) error {
 	if len(problems) == 0 {
@@ -59,8 +75,11 @@ func fromProblems(ctx context.Context, problems []problem) error {
 		info := map[string]any{"kind": problem.Kind, "message": problem.Message}
 		tflog.Error(ctx, "discarding additional error", info)
 	}
-	if problems[0].Kind == "NotFound" {
+	switch problems[0].Kind {
+	case "NotFound":
 		return NotFound{problems[0].Message}
+	case "Conflict":
+		return Conflict{problems[0].Message}
 	}
 	return apiError{Kind: problems[0].Kind, Detail: problems[0].Message}
 }
