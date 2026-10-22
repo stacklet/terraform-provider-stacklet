@@ -58,6 +58,7 @@ func (a datadogIntegrationAPI) Update(ctx context.Context, input DatadogIntegrat
 			Problems           []problem
 		} `graphql:"updateDatadogIntegration(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, input.APIKey, input.AppKey)
 	if err := a.c.Mutate(ctx, &mutation, map[string]any{"input": input}); err != nil {
 		return nil, err
 	}

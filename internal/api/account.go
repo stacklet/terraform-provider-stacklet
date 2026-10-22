@@ -86,6 +86,7 @@ func (a accountAPI) Create(ctx context.Context, i AccountCreateInput) (*Account,
 			Account Account
 		} `graphql:"addAccount(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, i.SecurityContext)
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
 		return nil, err
@@ -101,6 +102,7 @@ func (a accountAPI) Update(ctx context.Context, i AccountUpdateInput) (*Account,
 			Account Account
 		} `graphql:"updateAccount(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, i.SecurityContext)
 	input := map[string]any{"input": i}
 	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
 		return nil, err

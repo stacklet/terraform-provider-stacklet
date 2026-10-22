@@ -361,6 +361,7 @@ func (a configurationProfileAPI) UpsertJira(ctx context.Context, input JiraConfi
 			Configuration ConfigurationProfile
 		} `graphql:"addJiraProfile(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, &input.APIKey)
 	variables := map[string]any{
 		"input": jiraConfigurationInput{
 			JiraConfiguration: input,
@@ -437,6 +438,11 @@ func (a configurationProfileAPI) UpsertSlack(ctx context.Context, config SlackCo
 			Configuration ConfigurationProfile
 		} `graphql:"addSlackProfile(input: $input)"`
 	}
+	secrets := []*string{config.Token}
+	for _, w := range config.Webhooks {
+		secrets = append(secrets, &w.URL)
+	}
+	ctx = maskSecrets(ctx, secrets...)
 	variables := map[string]any{
 		"input": slackConfigurationInput{
 			SlackConfiguration: config,
@@ -463,6 +469,7 @@ func (a configurationProfileAPI) UpsertServiceNow(ctx context.Context, config Se
 			Configuration ConfigurationProfile
 		} `graphql:"addServiceNowProfile(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, &config.Password)
 	variables := map[string]any{
 		"input": serviceNowConfigurationInput{
 			ServiceNowConfiguration: config,
@@ -489,6 +496,7 @@ func (a configurationProfileAPI) UpsertSymphony(ctx context.Context, config Symp
 			Configuration ConfigurationProfile
 		} `graphql:"addSymphonyProfile(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, &config.PrivateKey)
 	variables := map[string]any{
 		"input": symphonyConfigurationInput{
 			SymphonyConfiguration: config,
@@ -514,6 +522,9 @@ func (a configurationProfileAPI) UpsertEmail(ctx context.Context, input EmailCon
 		Payload struct {
 			Configuration ConfigurationProfile
 		} `graphql:"addEmailProfile(input: $input)"`
+	}
+	if input.SMTP != nil {
+		ctx = maskSecrets(ctx, input.SMTP.Password)
 	}
 	variables := map[string]any{
 		"input": emailConfigurationInput{

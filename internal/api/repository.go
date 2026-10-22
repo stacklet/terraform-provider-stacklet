@@ -71,6 +71,19 @@ func (i *RepositoryConfigAuthInput) GetGraphQLType() string {
 	return "RepositoryConfigAuthInput"
 }
 
+func (i *RepositoryConfigAuthInput) secrets() []*string {
+	if i == nil {
+		return nil
+	}
+	var secrets []*string
+	for _, key := range []string{"authToken", "sshPrivateKey", "sshPassphrase"} {
+		if v, ok := i.m[key].(*string); ok {
+			secrets = append(secrets, v)
+		}
+	}
+	return secrets
+}
+
 type RepositoryCreateInput struct {
 	URL         string                     `json:"url"`
 	Name        string                     `json:"name"`
@@ -169,6 +182,7 @@ func (a repositoryAPI) Create(ctx context.Context, i RepositoryCreateInput) (*Re
 			Problems         []problem
 		} `graphql:"addRepositoryConfig(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, i.Auth.secrets()...)
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
 		return nil, err
 	}
@@ -185,6 +199,7 @@ func (a repositoryAPI) Update(ctx context.Context, i RepositoryUpdateInput) (*Re
 			Problems         []problem
 		} `graphql:"updateRepositoryConfig(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, i.Auth.secrets()...)
 	if err := a.c.Mutate(ctx, &m, map[string]any{"input": i}); err != nil {
 		return nil, err
 	}

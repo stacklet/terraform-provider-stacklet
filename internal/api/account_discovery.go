@@ -150,6 +150,7 @@ func (a accountDiscoveryAPI) UpsertAzure(ctx context.Context, input AccountDisco
 			AccountDiscovery AccountDiscovery
 		} `graphql:"upsertAzureAccountDiscovery(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, input.ClientSecret)
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
 		return nil, err
@@ -164,6 +165,7 @@ func (a accountDiscoveryAPI) UpsertGCP(ctx context.Context, input AccountDiscove
 			AccountDiscovery AccountDiscovery
 		} `graphql:"upsertGCPAccountDiscovery(input: $input)"`
 	}
+	ctx = maskSecrets(ctx, input.CredentialJSON)
 	variables := map[string]any{"input": input}
 	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
 		return nil, err
