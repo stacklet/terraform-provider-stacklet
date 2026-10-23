@@ -8,6 +8,7 @@
 ├── internal/
 │   ├── provider/                # Provider configuration and registration
 │   ├── api/                     # Shared HTTP transports and errors for API clients
+│   │   ├── iac/                 # IaC (Sinistral) REST API client
 │   │   └── platform/            # Platform GraphQL API client and wrappers
 │   ├── resources/               # Terraform resource implementations
 │   ├── datasources/             # Terraform data source implementations
@@ -37,6 +38,10 @@
 - **Filtering**: Filter API in `internal/api/platform/filter.go` for constructing GraphQL filter queries
   - `filterElementInput` and `filterValueInput` types for building filter expressions
   - `newExactMatchFilter()` helper for creating exact-match filters with "equals" operator
+- **REST Client**: The IaC client (`internal/api/iac/`) talks to the IaC (Sinistral) REST API, using the same API key as the platform one
+  - `Get()`, `Post()`, `Put()`, `Patch()`, `Delete()` methods for JSON requests
+  - `resourcePath()` builds request paths, escaping each component
+  - Error responses are converted to `api.NotFound` (404) or `api.APIError`, reporting FastAPI `detail` messages (including validation errors)
 
 ## Resource Architecture
 
