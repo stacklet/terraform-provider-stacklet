@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -18,7 +18,7 @@ type SSOGroupDataSource struct {
 	RoleAssignmentPrincipal types.String `tfsdk:"role_assignment_principal"`
 }
 
-func (m *SSOGroupDataSource) Update(ssoGroup *api.SSOGroup) diag.Diagnostics {
+func (m *SSOGroupDataSource) Update(ssoGroup *platform.SSOGroup) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(ssoGroup.ID)

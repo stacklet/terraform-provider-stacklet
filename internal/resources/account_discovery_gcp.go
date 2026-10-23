@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -118,12 +118,12 @@ func (r *accountDiscoveryGCPResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	input := api.AccountDiscoveryGCPInput{
+	input := platform.AccountDiscoveryGCPInput{
 		Name:             plan.Name.ValueString(),
 		Description:      plan.Description.ValueStringPointer(),
 		OrgID:            plan.OrgID.ValueString(),
-		RootFolderIDs:    api.StringsList(plan.RootFolderIDs),
-		ExcludeFolderIDs: api.StringsList(plan.ExcludeFolderIDs),
+		RootFolderIDs:    platform.StringsList(plan.RootFolderIDs),
+		ExcludeFolderIDs: platform.StringsList(plan.ExcludeFolderIDs),
 		CredentialJSON:   config.CredentialJSON.ValueStringPointer(),
 	}
 	accountDiscovery, err := r.api.AccountDiscovery.UpsertGCP(ctx, input)
@@ -172,12 +172,12 @@ func (r *accountDiscoveryGCPResource) Update(ctx context.Context, req resource.U
 	if state.CredentialJSONVersion != plan.CredentialJSONVersion {
 		credentialJSON = config.CredentialJSON.ValueStringPointer()
 	}
-	input := api.AccountDiscoveryGCPInput{
+	input := platform.AccountDiscoveryGCPInput{
 		Name:             plan.Name.ValueString(),
 		Description:      plan.Description.ValueStringPointer(),
 		OrgID:            plan.OrgID.ValueString(),
-		RootFolderIDs:    api.StringsList(plan.RootFolderIDs),
-		ExcludeFolderIDs: api.StringsList(plan.ExcludeFolderIDs),
+		RootFolderIDs:    platform.StringsList(plan.RootFolderIDs),
+		ExcludeFolderIDs: platform.StringsList(plan.ExcludeFolderIDs),
 		CredentialJSON:   credentialJSON, // this might be nil, in which case it's not updated
 	}
 	accountDiscovery, err := r.api.AccountDiscovery.UpsertGCP(ctx, input)

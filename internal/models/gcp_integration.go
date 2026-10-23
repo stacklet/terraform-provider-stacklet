@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -20,7 +20,7 @@ type GCPIntegrationDataSource struct {
 	AccessConfig   types.Object `tfsdk:"access_config"`
 }
 
-func (m *GCPIntegrationDataSource) Update(integration *api.GCPIntegration) diag.Diagnostics {
+func (m *GCPIntegrationDataSource) Update(integration *platform.GCPIntegration) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(integration.ID)
@@ -37,7 +37,7 @@ func (m *GCPIntegrationDataSource) Update(integration *api.GCPIntegration) diag.
 	return diags
 }
 
-func (m GCPIntegrationDataSource) buildCustomerConfig(config api.GCPIntegrationCustomerConfig) (types.Object, diag.Diagnostics) {
+func (m GCPIntegrationDataSource) buildCustomerConfig(config platform.GCPIntegrationCustomerConfig) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullObj := types.ObjectNull(GCPIntegrationCustomerConfigModel{}.AttributeTypes())
 
@@ -49,7 +49,7 @@ func (m GCPIntegrationDataSource) buildCustomerConfig(config api.GCPIntegrationC
 
 	organizations, d := typehelpers.ObjectList[GCPIntegrationCustomerOrgModel](
 		config.Organizations,
-		func(org api.GCPIntegrationCustomerOrganization) (map[string]attr.Value, diag.Diagnostics) {
+		func(org platform.GCPIntegrationCustomerOrganization) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"org_id":      types.StringValue(org.OrgID),
 				"folder_ids":  typehelpers.StringsList(org.FolderIDs),
@@ -64,7 +64,7 @@ func (m GCPIntegrationDataSource) buildCustomerConfig(config api.GCPIntegrationC
 
 	costSources, d := typehelpers.ObjectList[GCPIntegrationCustomerCostSourceModel](
 		config.CostSources,
-		func(cs api.GCPIntegrationCustomerCostSource) (map[string]attr.Value, diag.Diagnostics) {
+		func(cs platform.GCPIntegrationCustomerCostSource) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"billing_table": types.StringValue(cs.BillingTable),
 			}, nil
@@ -77,7 +77,7 @@ func (m GCPIntegrationDataSource) buildCustomerConfig(config api.GCPIntegrationC
 
 	securityContexts, d := typehelpers.ObjectList[GCPIntegrationCustomerSecurityContextModel](
 		config.SecurityContexts,
-		func(sc api.GCPIntegrationCustomerSecurityContext) (map[string]attr.Value, diag.Diagnostics) {
+		func(sc platform.GCPIntegrationCustomerSecurityContext) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"name":        types.StringValue(sc.Name),
 				"extra_roles": typehelpers.StringsList(sc.ExtraRoles),
@@ -107,7 +107,7 @@ func (m GCPIntegrationDataSource) buildCustomerConfig(config api.GCPIntegrationC
 	)
 }
 
-func (m GCPIntegrationDataSource) buildCustomerInfra(infra *api.GCPIntegrationCustomerInfrastructure) (types.Object, diag.Diagnostics) {
+func (m GCPIntegrationDataSource) buildCustomerInfra(infra *platform.GCPIntegrationCustomerInfrastructure) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullObj := types.ObjectNull(GCPIntegrationCustomerInfraModel{}.AttributeTypes())
 
@@ -132,7 +132,7 @@ func (m GCPIntegrationDataSource) buildCustomerInfra(infra *api.GCPIntegrationCu
 	)
 }
 
-func (m GCPIntegrationDataSource) buildCustomerCreateProject(cp *api.GCPIntegrationCustomerCreateProject) (types.Object, diag.Diagnostics) {
+func (m GCPIntegrationDataSource) buildCustomerCreateProject(cp *platform.GCPIntegrationCustomerCreateProject) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullObj := types.ObjectNull(GCPIntegrationCustomerCreateProjectModel{}.AttributeTypes())
 
@@ -157,7 +157,7 @@ func (m GCPIntegrationDataSource) buildCustomerCreateProject(cp *api.GCPIntegrat
 	)
 }
 
-func (m GCPIntegrationDataSource) buildTerraformModule(tm *api.TerraformModule) (types.Object, diag.Diagnostics) {
+func (m GCPIntegrationDataSource) buildTerraformModule(tm *platform.TerraformModule) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullObj := types.ObjectNull(TerraformModule{}.AttributeTypes())
 
@@ -176,7 +176,7 @@ func (m GCPIntegrationDataSource) buildTerraformModule(tm *api.TerraformModule) 
 	)
 }
 
-func (m GCPIntegrationDataSource) buildAccessConfig(config *api.GCPIntegrationAccessConfig) (types.Object, diag.Diagnostics) {
+func (m GCPIntegrationDataSource) buildAccessConfig(config *platform.GCPIntegrationAccessConfig) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullObj := types.ObjectNull(GCPIntegrationAccessConfigModel{}.AttributeTypes())
 
@@ -192,10 +192,10 @@ func (m GCPIntegrationDataSource) buildAccessConfig(config *api.GCPIntegrationAc
 
 	organizations, d := typehelpers.ObjectList[GCPIntegrationAccessOrgModel](
 		config.Organizations,
-		func(org api.GCPIntegrationAccessOrganization) (map[string]attr.Value, diag.Diagnostics) {
+		func(org platform.GCPIntegrationAccessOrganization) (map[string]attr.Value, diag.Diagnostics) {
 			folders, d := typehelpers.ObjectList[GCPIntegrationAccessOrgFolderModel](
 				org.Folders,
-				func(f api.GCPIntegrationAccessOrganizationFolder) (map[string]attr.Value, diag.Diagnostics) {
+				func(f platform.GCPIntegrationAccessOrganizationFolder) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
 						"id":   types.StringValue(f.ID),
 						"name": types.StringValue(f.Name),
@@ -208,7 +208,7 @@ func (m GCPIntegrationDataSource) buildAccessConfig(config *api.GCPIntegrationAc
 
 			projects, d := typehelpers.ObjectList[GCPIntegrationAccessOrgProjectModel](
 				org.Projects,
-				func(p api.GCPIntegrationAccessOrganizationProject) (map[string]attr.Value, diag.Diagnostics) {
+				func(p platform.GCPIntegrationAccessOrganizationProject) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
 						"id":     types.StringValue(p.ID),
 						"number": types.StringValue(p.Number),
@@ -234,7 +234,7 @@ func (m GCPIntegrationDataSource) buildAccessConfig(config *api.GCPIntegrationAc
 
 	costSources, d := typehelpers.ObjectList[GCPIntegrationAccessCostSourceModel](
 		config.CostSources,
-		func(cs api.GCPIntegrationAccessCostSource) (map[string]attr.Value, diag.Diagnostics) {
+		func(cs platform.GCPIntegrationAccessCostSource) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"billing_table": types.StringValue(cs.BillingTable),
 				"location":      types.StringValue(cs.Location),
@@ -248,7 +248,7 @@ func (m GCPIntegrationDataSource) buildAccessConfig(config *api.GCPIntegrationAc
 
 	securityContexts, d := typehelpers.ObjectList[GCPIntegrationAccessSecurityContextModel](
 		config.SecurityContexts,
-		func(sc api.GCPIntegrationAccessSecurityContext) (map[string]attr.Value, diag.Diagnostics) {
+		func(sc platform.GCPIntegrationAccessSecurityContext) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"name":        types.StringValue(sc.Name),
 				"extra_roles": typehelpers.StringsList(sc.ExtraRoles),
@@ -273,7 +273,7 @@ func (m GCPIntegrationDataSource) buildAccessConfig(config *api.GCPIntegrationAc
 	)
 }
 
-func (m GCPIntegrationDataSource) buildAccessInfra(infra api.GCPIntegrationAccessInfrastructure) (types.Object, diag.Diagnostics) {
+func (m GCPIntegrationDataSource) buildAccessInfra(infra platform.GCPIntegrationAccessInfrastructure) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullObj := types.ObjectNull(GCPIntegrationAccessInfraModel{}.AttributeTypes())
 

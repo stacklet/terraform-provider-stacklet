@@ -16,7 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -112,7 +112,7 @@ func (r *datadogIntegrationResource) Create(ctx context.Context, req resource.Cr
 	// A version set without its key is refused here too: it would otherwise be
 	// recorded as the version the stored credential corresponds to, when no
 	// credential was sent at all.
-	input := api.DatadogIntegrationInput{
+	input := platform.DatadogIntegrationInput{
 		Enabled: plan.Enabled.ValueBoolPointer(),
 		Site:    plan.Site.ValueStringPointer(),
 		APIKey:  credentialToSend(&resp.Diagnostics, !plan.APIKeyWOVersion.IsNull() || !config.APIKeyWO.IsNull(), "api_key_wo", config.APIKeyWO),
@@ -161,7 +161,7 @@ func (r *datadogIntegrationResource) Update(ctx context.Context, req resource.Up
 	// Only send a key whose version says it has changed: omitted fields keep
 	// their stored value, which is the only way to change the site or the
 	// enabled flag without resupplying credentials.
-	input := api.DatadogIntegrationInput{
+	input := platform.DatadogIntegrationInput{
 		Enabled: plan.Enabled.ValueBoolPointer(),
 		Site:    plan.Site.ValueStringPointer(),
 		APIKey:  credentialToSend(&resp.Diagnostics, !state.APIKeyWOVersion.Equal(plan.APIKeyWOVersion), "api_key_wo", config.APIKeyWO),

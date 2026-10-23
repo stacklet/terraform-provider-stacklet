@@ -16,7 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
@@ -161,9 +161,9 @@ func (r *policyCollectionResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	input := api.PolicyCollectionCreateInput{
+	input := platform.PolicyCollectionCreateInput{
 		Name:        plan.Name.ValueString(),
-		Provider:    api.CloudProvider(plan.CloudProvider.ValueString()),
+		Provider:    platform.CloudProvider(plan.CloudProvider.ValueString()),
 		Description: plan.Description.ValueStringPointer(),
 		AutoUpdate:  plan.AutoUpdate.ValueBoolPointer(),
 		// the following are null if the policy collection is not dynamic
@@ -211,10 +211,10 @@ func (r *policyCollectionResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	input := api.PolicyCollectionUpdateInput{
+	input := platform.PolicyCollectionUpdateInput{
 		UUID:           plan.UUID.ValueString(),
 		Name:           plan.Name.ValueString(),
-		Provider:       api.CloudProvider(plan.CloudProvider.ValueString()),
+		Provider:       platform.CloudProvider(plan.CloudProvider.ValueString()),
 		Description:    plan.Description.ValueStringPointer(),
 		AutoUpdate:     plan.AutoUpdate.ValueBoolPointer(),
 		RepositoryView: repositoryView, // null if the policy collection is not dynamic
@@ -247,19 +247,19 @@ func (r *policyCollectionResource) ImportState(ctx context.Context, req resource
 	importState(ctx, req, resp, []string{"uuid"})
 }
 
-func (r policyCollectionResource) getDynamicDetails(ctx context.Context, planDynamicConfig types.Object) (*string, *api.RepositoryViewInput, diag.Diagnostics) {
+func (r policyCollectionResource) getDynamicDetails(ctx context.Context, planDynamicConfig types.Object) (*string, *platform.RepositoryViewInput, diag.Diagnostics) {
 	var uuid *string
-	var view *api.RepositoryViewInput
+	var view *platform.RepositoryViewInput
 	var diags diag.Diagnostics
 
 	if !planDynamicConfig.IsNull() {
 		var dynamicConfig models.PolicyCollectionDynamicConfig
 		diags = planDynamicConfig.As(ctx, &dynamicConfig, objectAsOptions)
 		uuid = dynamicConfig.RepositoryUUID.ValueStringPointer()
-		view = &api.RepositoryViewInput{
+		view = &platform.RepositoryViewInput{
 			BranchName:        dynamicConfig.BranchName.ValueStringPointer(),
-			PolicyDirectories: api.StringsList(dynamicConfig.PolicyDirectories),
-			PolicyFileSuffix:  api.StringsList(dynamicConfig.PolicyFileSuffixes),
+			PolicyDirectories: platform.StringsList(dynamicConfig.PolicyDirectories),
+			PolicyFileSuffix:  platform.StringsList(dynamicConfig.PolicyFileSuffixes),
 		}
 	}
 

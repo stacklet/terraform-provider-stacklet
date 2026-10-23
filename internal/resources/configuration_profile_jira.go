@@ -15,7 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -144,7 +144,7 @@ func (r *configurationProfileJiraResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	input := api.JiraConfiguration{
+	input := platform.JiraConfiguration{
 		URL:      plan.URL.ValueStringPointer(),
 		Projects: projects,
 		User:     plan.User.ValueString(),
@@ -182,7 +182,7 @@ func (r *configurationProfileJiraResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	input := api.JiraConfiguration{
+	input := platform.JiraConfiguration{
 		URL:      plan.URL.ValueStringPointer(),
 		Projects: projects,
 		User:     plan.User.ValueString(),
@@ -212,17 +212,17 @@ func (r *configurationProfileJiraResource) Delete(ctx context.Context, req resou
 }
 
 func (r *configurationProfileJiraResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileJira))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(platform.ConfigurationProfileJira))...)
 }
 
-func (r configurationProfileJiraResource) getProjects(ctx context.Context, m models.ConfigurationProfileJiraResource) ([]api.JiraProject, diag.Diagnostics) {
+func (r configurationProfileJiraResource) getProjects(ctx context.Context, m models.ConfigurationProfileJiraResource) ([]platform.JiraProject, diag.Diagnostics) {
 	if m.Projects.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	projects := make([]api.JiraProject, 0)
+	projects := make([]platform.JiraProject, 0)
 	for i, elem := range m.Projects.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -240,7 +240,7 @@ func (r configurationProfileJiraResource) getProjects(ctx context.Context, m mod
 
 		projects = append(
 			projects,
-			api.JiraProject{
+			platform.JiraProject{
 				ClosedStatus: p.ClosedStatus.ValueString(),
 				IssueType:    p.IssueType.ValueString(),
 				Name:         p.Name.ValueString(),

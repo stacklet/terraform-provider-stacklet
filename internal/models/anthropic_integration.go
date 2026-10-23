@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -17,7 +17,7 @@ type AnthropicIntegrationDataSource struct {
 	Configured types.Bool   `tfsdk:"configured"`
 }
 
-func (m *AnthropicIntegrationDataSource) Update(integration *api.AnthropicIntegration) diag.Diagnostics {
+func (m *AnthropicIntegrationDataSource) Update(integration *platform.AnthropicIntegration) diag.Diagnostics {
 	m.ID = typehelpers.GraphQLIDValue(integration.ID)
 	m.OrgID = types.StringValue(integration.OrgID)
 	m.Configured = types.BoolValue(integration.Configured)

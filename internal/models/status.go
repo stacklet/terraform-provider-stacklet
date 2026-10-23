@@ -9,7 +9,7 @@ import (
 	resSchema "github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -62,12 +62,12 @@ func (s StatusDetail) AttributeTypes() map[string]attr.Type {
 }
 
 // NewStatusInfo returns the object value for a status returned by the API.
-func NewStatusInfo(info api.StatusInfo) (types.Object, diag.Diagnostics) {
+func NewStatusInfo(info platform.StatusInfo) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	details, d := typehelpers.ObjectList[StatusDetail](
 		info.Details,
-		func(detail api.StatusDetail) (map[string]attr.Value, diag.Diagnostics) {
+		func(detail platform.StatusDetail) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"component":     types.StringValue(detail.Component),
 				"status":        types.StringPointerValue(detail.Status),

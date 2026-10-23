@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -87,7 +87,7 @@ func (r *samlProviderResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	input := api.SAMLProviderCreateInput{
+	input := platform.SAMLProviderCreateInput{
 		Name:          plan.Name.ValueString(),
 		DisplayName:   plan.DisplayName.ValueStringPointer(),
 		MetadataURL:   plan.MetadataURL.ValueStringPointer(),
@@ -130,7 +130,7 @@ func (r *samlProviderResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	input := api.SAMLProviderUpdateInput{
+	input := platform.SAMLProviderUpdateInput{
 		Name:          plan.Name.ValueString(),
 		DisplayName:   plan.DisplayName.ValueStringPointer(),
 		MetadataURL:   plan.MetadataURL.ValueStringPointer(),

@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -31,7 +31,7 @@ type PolicyDataSource struct {
 	UnqualifiedName types.String `tfsdk:"unqualified_name"`
 }
 
-func (m *PolicyDataSource) Update(ctx context.Context, policy *api.Policy) diag.Diagnostics {
+func (m *PolicyDataSource) Update(ctx context.Context, policy *platform.Policy) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(policy.ID)

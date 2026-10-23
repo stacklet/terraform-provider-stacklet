@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -39,7 +39,7 @@ type ConfigurationProfileJiraDataSource struct {
 	APIKey   types.String `tfsdk:"api_key"`
 }
 
-func (m *ConfigurationProfileJiraDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileJiraDataSource) Update(cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	jiraConfig := cp.Record.JiraConfiguration
@@ -52,7 +52,7 @@ func (m *ConfigurationProfileJiraDataSource) Update(cp api.ConfigurationProfile)
 
 	projects, d := typehelpers.ObjectList[JiraProject](
 		jiraConfig.Projects,
-		func(entry api.JiraProject) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.JiraProject) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"closed_status": types.StringValue(entry.ClosedStatus),
 				"issue_type":    types.StringValue(entry.IssueType),
@@ -75,7 +75,7 @@ type ConfigurationProfileJiraResource struct {
 	APIKeyWOVersion types.String `tfsdk:"api_key_wo_version"`
 }
 
-func (m *ConfigurationProfileJiraResource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileJiraResource) Update(cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	// fetch current project names to preserve declared order

@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -21,7 +21,7 @@ type RoleDataSource struct {
 	System      types.Bool   `tfsdk:"system"`
 }
 
-func (m *RoleDataSource) Update(ctx context.Context, role *api.Role) diag.Diagnostics {
+func (m *RoleDataSource) Update(ctx context.Context, role *platform.Role) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(role.ID)

@@ -7,13 +7,13 @@
 ├── main.go                      # Provider entry point
 ├── internal/
 │   ├── provider/                # Provider configuration and registration
-│   ├── api/                     # GraphQL API client and wrappers
+│   ├── api/                     # Shared HTTP transports and errors for API clients
+│   │   └── platform/            # Platform GraphQL API client and wrappers
 │   ├── resources/               # Terraform resource implementations
 │   ├── datasources/             # Terraform data source implementations
 │   ├── models/                  # Data model definitions
 │   ├── acceptance_tests/        # Acceptance tests with HTTP recording
 │   ├── errors/                  # Error handling utilities (legacy)
-│   ├── modelupdate/             # Helper functions for model updates
 │   ├── planmodifiers/           # Custom Terraform plan modifiers
 │   ├── providerdata/            # Provider data management
 │   ├── schemavalidate/          # Custom schema validators
@@ -21,22 +21,21 @@
 │   └── typehelpers/             # Type conversion and manipulation helpers
 ├── examples/                    # Example Terraform configurations
 ├── docs/                        # Auto-generated documentation
-├── templates/                   # Documentation templates
 └── tools/                       # Build and documentation tools
 ```
 
 ## API Integration
 
-- **GraphQL Client**: Uses `github.com/hasura/go-graphql-client` for GraphQL communication
-- **API Wrapper**: `internal/api/api.go` provides a typed `API` struct with methods for each resource type
+- **Shared API code** (`internal/api/`): Functionality common to all API clients
+  - HTTP transport layers for authentication (`AuthTransport`) and logging (`LogTransport`), combined by `NewTransport()`
+  - Error types: `APIError`, `NotFound` and `Conflict` (resources remove objects from state on `api.NotFound`)
+  - `MaskSecrets()` returns a context which masks the given secrets in request/response logs. Call it before API requests that send secrets
+- **GraphQL Client**: The platform client (`internal/api/platform/`) uses `github.com/hasura/go-graphql-client` for GraphQL communication
+- **API Wrapper**: `internal/api/platform/api.go` provides a typed `API` struct with methods for each resource type
 - **Modular API Files**: Each resource type has its own API file
-- **HTTP Transport**: Custom transport layers for authentication (`authTransport`) and logging (`logTransport`)
-- **Enums**: Strongly typed enums in `internal/api/enums.go`.
-- **Pagination**: Generic helpers in `internal/api/pagination.go` for GraphQL connection pattern pagination
-  - `FindInPaginatedQuery[T, R]()` - Searches through paginated results for a specific item
-  - `CollectAllPages[T]()` - Collects all items from all pages
-- **Filtering**: Filter API in `internal/api/filter.go` for constructing GraphQL filter queries
-  - `FilterElementInput` and `FilterValueInput` types for building filter expressions
+- **Enums**: Strongly typed enums in `internal/api/platform/enums.go`.
+- **Filtering**: Filter API in `internal/api/platform/filter.go` for constructing GraphQL filter queries
+  - `filterElementInput` and `filterValueInput` types for building filter expressions
   - `newExactMatchFilter()` helper for creating exact-match filters with "equals" operator
 
 ## Resource Architecture
@@ -55,7 +54,7 @@ Resources follow the Terraform Plugin Framework patterns:
    - `Delete()` - Delete resource
    - `ImportState()` - Import existing resource
 
-3. **Resource Registration**: All resources are registered in `internal/resources/resources.go` in the `RESOURCES` slice
+3. **Resource Registration**: All resources are registered in the `Resources` variable in `internal/resources/resources.go`, via `newFactory()`. Resources in the `Unreleased` list are only enabled when `STACKLET_UNRELEASED_FEATURES` is set
 
 4. **Model Separation**: Models are defined in `internal/models/` separate from resource logic
 
@@ -67,6 +66,7 @@ Resources follow the Terraform Plugin Framework patterns:
    - `RequiresReplaceIfFieldsChanged()` - Forces recreation when specific nested object fields change
    - `RequiresReplaceIfUnset()` - Forces recreation when object transitions from non-null to null
    - `RequiresReplaceIfNullStringChange()` - Forces recreation when string toggles between null and non-null
+   - `TrimWhiteSpace()` - Strips leading/trailing whitespace from planned strings, for APIs that normalize it
    - `DefaultObject()` - Sets default object values to match API defaults
 
 ## Data Source Architecture
@@ -77,7 +77,7 @@ Data sources follow similar patterns to resources:
    - `datasource.DataSource` - Basic data source interface
    - `datasource.DataSourceWithConfigure` - For provider configuration
 
-2. **Data Source Registration**: All registered in `internal/datasources/datasources.go` in the `DATASOURCES` slice
+2. **Data Source Registration**: All registered in the `DataSources` variable in `internal/datasources/datasources.go`, with the same `Released`/`Unreleased` split as resources
 
 3. **Shared Models**: Often share model definitions with their corresponding resources
 
@@ -91,18 +91,21 @@ Models in `internal/models/` define Terraform schema structure with `tfsdk` stru
 
 ## Type Helpers and Validators
 
-**Type Helpers** (`internal/typehelpers/`): All return `(result, diag.Diagnostics)` for proper error propagation:
+**Type Helpers** (`internal/typehelpers/`): Helpers that can fail return `(result, diag.Diagnostics)` for proper error propagation:
 - `JSONString()` - Normalizes JSON strings for consistent comparison
 - `ObjectValue()` / `ObjectList()` - Converts values/slices to Terraform objects/lists
 - `FilteredObject()` / `UpdatedObject()` - Extracts/updates object attributes
 - `ObjectStringIdentifier()` / `ListItemsIdentifiers()` - Extracts identifiers
 - `ListSortedEntries()` - Sorts list entries by identifier order
+- `StringsList()` / `GraphQLIDValue()` - Simple conversions (no diagnostics)
+- `PreserveIfNull()` / `PreserveIfEmptyJSON()` - Keep the original value when the API returns null or `{}` for it, avoiding perpetual diffs
 
 **Usage Pattern**: Call helper, append diagnostics with `diags.Append(d...)`, check `diags.HasError()` for early returns when needed.
 
 **Schema Validators** (`internal/schemavalidate/`):
 - `OneOfCloudProviders()` - Validates cloud provider values
-- `unique_string_attribute.go` - Ensures string uniqueness in lists
+- `UniqueStringAttribute()` - Ensures string uniqueness in lists
+- `UUID()` - Validates UUID strings
 
 **Schema Defaults** (`internal/schemadefault/`):
 - `EmptyListDefault()` / `EmptyMapDefault()` - Provide empty defaults for optional attributes
@@ -113,14 +116,10 @@ Models in `internal/models/` define Terraform schema structure with `tfsdk` stru
 - **Legacy package** - Being phased out in favor of direct `diag.Diagnostics` usage
 - New code should use `diag.Diagnostics` directly and the `typehelpers` package functions which all return diagnostics
 
-**Model Update** (`internal/modelupdate/`):
-- Helper functions for updating Terraform models from API results
-- Centralizes common update patterns
-
 **Provider Data** (`internal/providerdata/`):
-- `ProviderData` struct holds API client for resources/data sources
-- `GetResourceProviderData()` - Retrieves provider data in resources
-- `GetDataSourceProviderData()` - Retrieves provider data in data sources
+- `providerData` struct holds API clients for resources/data sources, built by `New()`
+- `GetForResource()` - Retrieves provider data in resources
+- `GetForDataSource()` - Retrieves provider data in data sources
 
 ## Architectural Patterns
 
@@ -130,7 +129,7 @@ All functions that can fail return `diag.Diagnostics` (plural). Pattern: initial
 
 ### Type Conversion Pattern
 
-Use `internal/typehelpers` for all type conversions: `JSONString()`, `ObjectValue()`, `ObjectList()`, `ObjectStringIdentifier()`, `ListItemsIdentifiers()`, `ListSortedEntries()`. All return `(result, diag.Diagnostics)`.
+Use `internal/typehelpers` for type conversions: `JSONString()`, `ObjectValue()`, `ObjectList()`, `ObjectStringIdentifier()`, `ListItemsIdentifiers()`, `ListSortedEntries()`. These return `(result, diag.Diagnostics)`.
 
 ### Model Update Pattern
 
@@ -142,11 +141,11 @@ Models implement `Update(ctx, obj) diag.Diagnostics`. Resource models extend dat
 - One resource/data source per file
 - File names match resource type (e.g., `account.go` for `stacklet_account`)
 - Models in separate `models/` package
-- API methods in separate `api/` package
+- API methods in the `api/platform/` package
 
 ### Naming Conventions
-- Resource constructors: `NewXxxResource()`
-- Data source constructors: `NewXxxDataSource()`
+- Resource types: `xxxResource`, registered with `newFactory(&xxxResource{})`
+- Data source types: `xxxDataSource`, registered with `newFactory(&xxxDataSource{})`
 - API types: Input types use `XxxInput` suffix
 - Models: Separate types for resources vs data sources when needed
 
@@ -163,6 +162,7 @@ Models implement `Update(ctx, obj) diag.Diagnostics`. Resource models extend dat
   - `RequiresReplaceIfNullStringChange()` - For string fields that toggle between null and non-null
   - `RequiresReplaceIfFieldsChanged()` - For objects where specific nested fields require replacement
   - `RequiresReplaceIfUnset()` - For objects that cannot transition from configured to null
+  - `TrimWhiteSpace()` - For strings where surrounding whitespace is not significant
   - `DefaultObject()` - Sets default objects matching API defaults
 
 ### Write-Only Fields

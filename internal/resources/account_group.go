@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
@@ -99,12 +99,12 @@ func (r *accountGroupResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	input := api.AccountGroupCreateInput{
+	input := platform.AccountGroupCreateInput{
 		Name:          plan.Name.ValueString(),
 		Provider:      plan.CloudProvider.ValueString(),
 		Description:   plan.Description.ValueStringPointer(),
 		DynamicFilter: plan.DynamicFilter.ValueStringPointer(),
-		Regions:       api.StringsList(plan.Regions),
+		Regions:       platform.StringsList(plan.Regions),
 	}
 
 	account_group, err := r.api.AccountGroup.Create(ctx, input)
@@ -141,12 +141,12 @@ func (r *accountGroupResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	input := api.AccountGroupUpdateInput{
+	input := platform.AccountGroupUpdateInput{
 		UUID:          plan.UUID.ValueString(),
 		Name:          plan.Name.ValueStringPointer(),
 		Description:   plan.Description.ValueStringPointer(),
 		DynamicFilter: plan.DynamicFilter.ValueStringPointer(),
-		Regions:       api.StringsList(plan.Regions),
+		Regions:       platform.StringsList(plan.Regions),
 	}
 
 	account_group, err := r.api.AccountGroup.Update(ctx, input)

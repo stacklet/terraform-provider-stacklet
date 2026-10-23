@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -26,7 +26,7 @@ type RepositoryDataSource struct {
 	RoleAssignmentTarget types.String `tfsdk:"role_assignment_target"`
 }
 
-func (m *RepositoryDataSource) Update(repo *api.Repository) diag.Diagnostics {
+func (m *RepositoryDataSource) Update(repo *platform.Repository) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(repo.ID)

@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -30,7 +30,7 @@ type ReportGroupDataSource struct {
 	Source                     types.String `tfsdk:"source"`
 }
 
-func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
+func (m *ReportGroupDataSource) Update(rg platform.ReportGroup) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(rg.ID)
@@ -44,10 +44,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 
 	emailDeliverySettings, d := typehelpers.ObjectList[EmailDeliverySettings](
 		rg.EmailDeliverySettings(),
-		func(entry api.EmailDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.EmailDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
 			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
+				func(entry platform.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
 						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
 						"event_owner":    types.BoolPointerValue(entry.EventOwner),
@@ -78,10 +78,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 
 	slackDeliverySettings, d := typehelpers.ObjectList[SlackDeliverySettings](
 		rg.SlackDeliverySettings(),
-		func(entry api.SlackDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.SlackDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
 			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
+				func(entry platform.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
 						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
 						"event_owner":    types.BoolPointerValue(entry.EventOwner),
@@ -107,10 +107,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 
 	msteamsDeliverySettings, d := typehelpers.ObjectList[MSTeamsDeliverySettings](
 		rg.MSTeamsDeliverySettings(),
-		func(entry api.MSTeamsDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.MSTeamsDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
 			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
+				func(entry platform.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
 						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
 						"event_owner":    types.BoolPointerValue(entry.EventOwner),
@@ -136,10 +136,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 
 	servicenowDeliverySettings, d := typehelpers.ObjectList[ServiceNowDeliverySettings](
 		rg.ServiceNowDeliverySettings(),
-		func(entry api.ServiceNowDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.ServiceNowDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
 			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
+				func(entry platform.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
 						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
 						"event_owner":    types.BoolPointerValue(entry.EventOwner),
@@ -168,10 +168,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 
 	jiraDeliverySettings, d := typehelpers.ObjectList[JiraDeliverySettings](
 		rg.JiraDeliverySettings(),
-		func(entry api.JiraDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.JiraDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
 			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
+				func(entry platform.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
 						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
 						"event_owner":    types.BoolPointerValue(entry.EventOwner),
@@ -200,10 +200,10 @@ func (m *ReportGroupDataSource) Update(rg api.ReportGroup) diag.Diagnostics {
 
 	symphonyDeliverySettings, d := typehelpers.ObjectList[SymphonyDeliverySettings](
 		rg.SymphonyDeliverySettings(),
-		func(entry api.SymphonyDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.SymphonyDeliverySettings) (map[string]attr.Value, diag.Diagnostics) {
 			recipients, diags := typehelpers.ObjectList[Recipient](
 				entry.Recipients,
-				func(entry api.Recipient) (map[string]attr.Value, diag.Diagnostics) {
+				func(entry platform.Recipient) (map[string]attr.Value, diag.Diagnostics) {
 					return map[string]attr.Value{
 						"account_owner":  types.BoolPointerValue(entry.AccountOwner),
 						"event_owner":    types.BoolPointerValue(entry.EventOwner),

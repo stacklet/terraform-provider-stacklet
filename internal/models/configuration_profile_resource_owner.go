@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -20,7 +20,7 @@ type ConfigurationProfileResourceOwnerDataSource struct {
 	Tags         types.List   `tfsdk:"tags"`
 }
 
-func (m *ConfigurationProfileResourceOwnerDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileResourceOwnerDataSource) Update(cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	config := cp.Record.ResourceOwnerConfiguration

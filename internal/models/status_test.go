@@ -10,13 +10,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 )
 
 func TestNewStatusInfo(t *testing.T) {
-	info, diags := NewStatusInfo(api.StatusInfo{
+	info, diags := NewStatusInfo(platform.StatusInfo{
 		Status: "PARTIAL_SUCCESS",
-		Details: []api.StatusDetail{
+		Details: []platform.StatusDetail{
 			{
 				Component: "us-east-1-secret",
 				Status:    strPtr("SUCCESS"),
@@ -79,7 +79,7 @@ func TestNewStatusInfo(t *testing.T) {
 func TestNewStatusInfo_NoDetails(t *testing.T) {
 	// Nothing has reported yet, which is a known-empty list rather than an
 	// unknown one, so the attribute is readable straight after an apply.
-	info, diags := NewStatusInfo(api.StatusInfo{Status: "SKIPPED", Details: []api.StatusDetail{}})
+	info, diags := NewStatusInfo(platform.StatusInfo{Status: "SKIPPED", Details: []platform.StatusDetail{}})
 	require.False(t, diags.HasError(), "unexpected diagnostics: %v", diags)
 
 	details, ok := info.Attributes()["details"].(types.List)

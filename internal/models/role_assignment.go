@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -23,7 +23,7 @@ type RoleAssignmentResource struct {
 }
 
 // Update updates the model from an API role assignment.
-func (m *RoleAssignmentResource) Update(ctx context.Context, assignment *api.RoleAssignment) diag.Diagnostics {
+func (m *RoleAssignmentResource) Update(ctx context.Context, assignment *platform.RoleAssignment) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(assignment.ID)
@@ -70,7 +70,7 @@ func (i RoleAssignmentItem) AttributeTypes() map[string]attr.Type {
 }
 
 // Update updates the data source model from API role assignments.
-func (m *RoleAssignmentsDataSource) Update(ctx context.Context, assignments []api.RoleAssignment) diag.Diagnostics {
+func (m *RoleAssignmentsDataSource) Update(ctx context.Context, assignments []platform.RoleAssignment) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	// Convert each assignment to a list item

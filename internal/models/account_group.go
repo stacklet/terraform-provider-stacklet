@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -22,7 +22,7 @@ type AccountGroupResource struct {
 	RoleAssignmentTarget types.String `tfsdk:"role_assignment_target"`
 }
 
-func (m *AccountGroupResource) Update(accountGroup *api.AccountGroup) diag.Diagnostics {
+func (m *AccountGroupResource) Update(accountGroup *platform.AccountGroup) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(accountGroup.ID)

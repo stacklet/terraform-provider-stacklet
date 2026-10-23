@@ -7,14 +7,14 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 // apiResource is a resource based on the API.
 type apiResource struct {
-	api *api.API
+	api *platform.API
 }
 
 // Configure sets up API access for the resource.

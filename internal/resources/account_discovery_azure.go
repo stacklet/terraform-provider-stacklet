@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -91,7 +91,7 @@ func (r *accountDiscoveryAzureResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	input := api.AccountDiscoveryAzureInput{
+	input := platform.AccountDiscoveryAzureInput{
 		Name:         plan.Name.ValueString(),
 		Description:  plan.Description.ValueStringPointer(),
 		ClientID:     plan.ClientID.ValueStringPointer(),
@@ -146,7 +146,7 @@ func (r *accountDiscoveryAzureResource) Update(ctx context.Context, req resource
 		clientID = plan.ClientID.ValueStringPointer()
 		clientSecret = config.ClientSecret.ValueStringPointer()
 	}
-	input := api.AccountDiscoveryAzureInput{
+	input := platform.AccountDiscoveryAzureInput{
 		Name:         plan.Name.ValueString(),
 		Description:  plan.Description.ValueStringPointer(),
 		ClientID:     clientID,

@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 )
 
@@ -25,7 +25,7 @@ type DatadogIntegrationDataSource struct {
 	Status     types.Object `tfsdk:"status"`
 }
 
-func (m *DatadogIntegrationDataSource) Update(integration *api.DatadogIntegration) diag.Diagnostics {
+func (m *DatadogIntegrationDataSource) Update(integration *platform.DatadogIntegration) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = types.StringValue(DatadogIntegrationID)

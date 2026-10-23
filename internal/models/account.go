@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -25,7 +25,7 @@ type AccountDataSource struct {
 	Variables       types.String `tfsdk:"variables"`
 }
 
-func (m *AccountDataSource) Update(account *api.Account) diag.Diagnostics {
+func (m *AccountDataSource) Update(account *platform.Account) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(account.ID)
@@ -53,7 +53,7 @@ type AccountResource struct {
 	SecurityContextWOVersion types.String `tfsdk:"security_context_wo_version"`
 }
 
-func (m *AccountResource) Update(account *api.Account) diag.Diagnostics {
+func (m *AccountResource) Update(account *platform.Account) diag.Diagnostics {
 	// Save original value for resource-specific logic
 	originalVariables := m.Variables
 

@@ -15,7 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
@@ -157,8 +157,8 @@ func (r *configurationProfileSlackResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	input := api.SlackConfiguration{
-		UserFields: api.StringsList(plan.UserFields),
+	input := platform.SlackConfiguration{
+		UserFields: platform.StringsList(plan.UserFields),
 		Token:      config.TokenWO.ValueStringPointer(),
 		Webhooks:   webhooks,
 	}
@@ -200,8 +200,8 @@ func (r *configurationProfileSlackResource) Update(ctx context.Context, req reso
 		token = config.Token.ValueStringPointer() // send the new value from the config
 	}
 
-	input := api.SlackConfiguration{
-		UserFields: api.StringsList(plan.UserFields),
+	input := platform.SlackConfiguration{
+		UserFields: platform.StringsList(plan.UserFields),
 		Token:      token,
 		Webhooks:   webhooks,
 	}
@@ -229,10 +229,10 @@ func (r *configurationProfileSlackResource) Delete(ctx context.Context, req reso
 }
 
 func (r *configurationProfileSlackResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileSlack))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(platform.ConfigurationProfileSlack))...)
 }
 
-func (r configurationProfileSlackResource) updateSlackModel(ctx context.Context, m *models.ConfigurationProfileSlackResource, webhookSecrets map[string]slackWebhookSecret, cp *api.ConfigurationProfile) diag.Diagnostics {
+func (r configurationProfileSlackResource) updateSlackModel(ctx context.Context, m *models.ConfigurationProfileSlackResource, webhookSecrets map[string]slackWebhookSecret, cp *platform.ConfigurationProfile) diag.Diagnostics {
 	webhookVersions := map[string]string{}
 	for name, secret := range webhookSecrets {
 		webhookVersions[name] = secret.Version
@@ -269,14 +269,14 @@ func (r configurationProfileSlackResource) getWebhooksSecrets(ctx context.Contex
 	return secrets, diags
 }
 
-func (r configurationProfileSlackResource) getWebhooksForCreate(ctx context.Context, m models.ConfigurationProfileSlackResource, webhookSecrets map[string]slackWebhookSecret) ([]api.SlackWebhook, diag.Diagnostics) {
+func (r configurationProfileSlackResource) getWebhooksForCreate(ctx context.Context, m models.ConfigurationProfileSlackResource, webhookSecrets map[string]slackWebhookSecret) ([]platform.SlackWebhook, diag.Diagnostics) {
 	if m.Webhooks.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	webhooks := make([]api.SlackWebhook, 0)
+	webhooks := make([]platform.SlackWebhook, 0)
 	for i, elem := range m.Webhooks.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -294,7 +294,7 @@ func (r configurationProfileSlackResource) getWebhooksForCreate(ctx context.Cont
 
 		webhooks = append(
 			webhooks,
-			api.SlackWebhook{
+			platform.SlackWebhook{
 				Name: w.Name.ValueString(),
 				URL:  webhookSecrets[w.Name.ValueString()].Plaintext,
 			},
@@ -303,14 +303,14 @@ func (r configurationProfileSlackResource) getWebhooksForCreate(ctx context.Cont
 	return webhooks, diags
 }
 
-func (r configurationProfileSlackResource) getWebhooksForUpdate(ctx context.Context, m models.ConfigurationProfileSlackResource, webhookSecretsFromConfig, webhookSecretsFromState map[string]slackWebhookSecret) ([]api.SlackWebhook, diag.Diagnostics) {
+func (r configurationProfileSlackResource) getWebhooksForUpdate(ctx context.Context, m models.ConfigurationProfileSlackResource, webhookSecretsFromConfig, webhookSecretsFromState map[string]slackWebhookSecret) ([]platform.SlackWebhook, diag.Diagnostics) {
 	if m.Webhooks.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	webhooks := make([]api.SlackWebhook, 0)
+	webhooks := make([]platform.SlackWebhook, 0)
 	for i, elem := range m.Webhooks.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -337,7 +337,7 @@ func (r configurationProfileSlackResource) getWebhooksForUpdate(ctx context.Cont
 
 		webhooks = append(
 			webhooks,
-			api.SlackWebhook{
+			platform.SlackWebhook{
 				Name: w.Name.ValueString(),
 				URL:  url,
 			},

@@ -20,8 +20,9 @@ Built with Terraform Plugin Framework the provider uses GraphQL to communicate w
 
 All commands use the `just` task runner:
 - `just build` - Build the provider binary
-- `just format` / `just lint` - Format and lint code
+- `just lint` - Format and lint code
 - `just test` - Run acceptance tests (replay mode, no API needed)
+- `just test-unit` - Run unit tests only
 - `just test-live` - Run tests against live API
 - `just test-record <testname>` - Record new API responses
 - `just docs` - Generate provider documentation
@@ -37,7 +38,7 @@ All commands use the `just` task runner:
 ### Adding Resources
 
 1. Create model (`internal/models/`)
-2. Create API methods (`internal/api/`)
+2. Create API methods (`internal/api/platform/`)
 3. Create resource (`internal/resources/`), register in `resources.go`
 4. Add examples and tests
 5. Run `just docs`

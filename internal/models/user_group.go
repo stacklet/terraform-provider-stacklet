@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -20,7 +20,7 @@ type UserGroupDataSource struct {
 	RoleAssignmentTarget    types.String `tfsdk:"role_assignment_target"`
 }
 
-func (m *UserGroupDataSource) Update(userGroup *api.UserGroup) diag.Diagnostics {
+func (m *UserGroupDataSource) Update(userGroup *platform.UserGroup) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(userGroup.ID)

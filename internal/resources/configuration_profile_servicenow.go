@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -110,7 +110,7 @@ func (r *configurationProfileServiceNowResource) Create(ctx context.Context, req
 		return
 	}
 
-	input := api.ServiceNowConfiguration{
+	input := platform.ServiceNowConfiguration{
 		Endpoint:    plan.Endpoint.ValueString(),
 		User:        plan.Username.ValueString(),
 		Password:    config.PasswordWO.ValueString(),
@@ -143,7 +143,7 @@ func (r *configurationProfileServiceNowResource) Update(ctx context.Context, req
 		password = config.PasswordWO.ValueString() // send the new value from the config
 	}
 
-	input := api.ServiceNowConfiguration{
+	input := platform.ServiceNowConfiguration{
 		Endpoint:    plan.Endpoint.ValueString(),
 		User:        plan.Username.ValueString(),
 		Password:    password,
@@ -174,5 +174,5 @@ func (r *configurationProfileServiceNowResource) Delete(ctx context.Context, req
 }
 
 func (r *configurationProfileServiceNowResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileServiceNow))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(platform.ConfigurationProfileServiceNow))...)
 }

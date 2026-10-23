@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -69,7 +69,7 @@ func (r *policyCollectionMappingResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	input := api.PolicyCollectionMappingInput{
+	input := platform.PolicyCollectionMappingInput{
 		CollectionUUID: plan.CollectionUUID.ValueString(),
 		PolicyUUID:     plan.PolicyUUID.ValueString(),
 		PolicyVersion:  int(plan.PolicyVersion.ValueInt32()),
@@ -109,7 +109,7 @@ func (r *policyCollectionMappingResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	input := api.PolicyCollectionMappingInput{
+	input := platform.PolicyCollectionMappingInput{
 		CollectionUUID: plan.CollectionUUID.ValueString(),
 		PolicyUUID:     plan.PolicyUUID.ValueString(),
 		PolicyVersion:  int(plan.PolicyVersion.ValueInt32()),

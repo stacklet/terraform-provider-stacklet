@@ -1,0 +1,211 @@
+// Copyright Stacklet, Inc. 2025, 2026
+
+package platform
+
+import (
+	"context"
+
+	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+)
+
+// Binding is the data returned by reading binding details.
+type Binding struct {
+	ID           graphql.ID `graphql:"id"`
+	UUID         string     `graphql:"uuid"`
+	Name         string     `graphql:"name"`
+	Description  *string    `graphql:"description"`
+	AutoDeploy   bool       `graphql:"autoDeploy"`
+	Schedule     *string    `graphql:"schedule"`
+	AccountGroup struct {
+		UUID string `graphql:"uuid"`
+	} `graphql:"accountGroup"`
+	PolicyCollection struct {
+		UUID string `graphql:"uuid"`
+	} `graphql:"policyCollection"`
+	ExecutionConfig BindingExecutionConfig `graphql:"executionConfig"`
+	System          bool                   `graphql:"system"`
+}
+
+// DryRun returns the dryRun value for a binding execution config.
+func (b Binding) DryRun() *bool {
+	if b.ExecutionConfig.DryRun == nil {
+		return nil
+	}
+	return &b.ExecutionConfig.DryRun.Default
+}
+
+// SecurityContext returns the securityContext value for a binding execution config.
+func (b Binding) SecurityContext() *string {
+	if b.ExecutionConfig.SecurityContext == nil {
+		return nil
+	}
+	return &b.ExecutionConfig.SecurityContext.Default
+}
+
+// DefaultResourceLimits returns the default resource limits value for a binding execution config.
+func (b Binding) DefaultResourceLimits() *BindingExecutionConfigResourceLimit {
+	if b.ExecutionConfig.ResourceLimits == nil {
+		return nil
+	}
+	if b.ExecutionConfig.ResourceLimits.Default == nil {
+		return nil
+	}
+	return b.ExecutionConfig.ResourceLimits.Default
+}
+
+// PolicyResourceLimits returns the per-policy resource limits value for a binding execution config.
+func (b Binding) PolicyResourceLimits() []BindingExecutionConfigResourceLimitsPolicyOverrides {
+	if b.ExecutionConfig.ResourceLimits == nil {
+		return []BindingExecutionConfigResourceLimitsPolicyOverrides{}
+	}
+	return b.ExecutionConfig.ResourceLimits.PolicyOverrides
+}
+
+// ExecutionConfig holds the execution configuration for a binding.
+type BindingExecutionConfig struct {
+	DryRun          *BindingExecutionConfigDryRun          `graphql:"dryRun" json:"dryRun"`
+	ResourceLimits  *BindingExecutionConfigResourceLimits  `graphql:"resourceLimits" json:"resourceLimits"`
+	SecurityContext *BindingExecutionConfigSecurityContext `graphql:"securityContext" json:"securityContext"`
+	Variables       *string                                `graphql:"variables" json:"variables"`
+}
+
+func (c BindingExecutionConfig) securityContext() *string {
+	if c.SecurityContext == nil {
+		return nil
+	}
+	return &c.SecurityContext.Default
+}
+
+// BindingExecutionConfigDryRun holds the dry run configuration for a binding execution config.
+type BindingExecutionConfigDryRun struct {
+	Default bool `graphql:"default" json:"default"`
+}
+
+// BindingExecutionConfigSecurityCotnext holds the security context configuration for a binding execution config.
+type BindingExecutionConfigSecurityContext struct {
+	Default string `graphql:"default" json:"default"`
+}
+
+// BindingExecutionConfigResourceLimits holds the resource limits configuration for a binding execution config.
+type BindingExecutionConfigResourceLimits struct {
+	Default         *BindingExecutionConfigResourceLimit                  `graphql:"default" json:"default"`
+	PolicyOverrides []BindingExecutionConfigResourceLimitsPolicyOverrides `graphql:"policyOverrides" json:"policyOverrides"`
+}
+
+// BindingExecutionConfigResourceLimit holds resource limits for a binding execution config.
+type BindingExecutionConfigResourceLimit struct {
+	MaxCount      *int32   `graphql:"maxCount" json:"maxCount,omitempty"`
+	MaxPercentage *float32 `graphql:"maxPercentage" json:"maxPercentage,omitempty"`
+	RequiresBoth  bool     `graphql:"requiresBoth" json:"requiresBoth"`
+}
+
+// BindingExecutionConfigResourceLimitsPolicyOverrides holds resource limits
+// policy overrides for a binding execution config.
+type BindingExecutionConfigResourceLimitsPolicyOverrides struct {
+	Limit      BindingExecutionConfigResourceLimit `graphql:"limit" json:"limit"`
+	PolicyName string                              `graphql:"policyName" json:"policyName"`
+}
+
+// BindingCreateInput is the input for creating a binding.
+type BindingCreateInput struct {
+	Name                 string                 `json:"name"`
+	Description          *string                `json:"description,omitempty"`
+	AutoDeploy           bool                   `json:"autoDeploy"`
+	Schedule             *string                `json:"schedule,omitempty"`
+	ExecutionConfig      BindingExecutionConfig `json:"executionConfig"`
+	AccountGroupUUID     string                 `json:"accountGroupUUID"`
+	PolicyCollectionUUID string                 `json:"policyCollectionUUID"`
+	Deploy               bool                   `json:"deploy"`
+}
+
+func (i BindingCreateInput) GetGraphQLType() string {
+	return "AddBindingInput"
+}
+
+type BindingUpdateInput struct {
+	UUID            string                 `json:"uuid"`
+	Name            string                 `json:"name"`
+	Description     *string                `json:"description"`
+	AutoDeploy      bool                   `json:"autoDeploy"`
+	Schedule        *string                `json:"schedule"`
+	ExecutionConfig BindingExecutionConfig `json:"executionConfig"`
+}
+
+func (i BindingUpdateInput) GetGraphQLType() string {
+	return "UpdateBindingInput"
+}
+
+type bindingAPI struct {
+	c *client
+}
+
+// Read returns data for a binding.
+func (a bindingAPI) Read(ctx context.Context, uuid string, name string) (*Binding, error) {
+	var query struct {
+		Binding Binding `graphql:"binding(uuid: $uuid, name: $name)"`
+	}
+	variables := map[string]any{
+		"uuid": graphql.String(uuid),
+		"name": graphql.String(name),
+	}
+	if err := a.c.Query(ctx, &query, variables); err != nil {
+		return nil, err
+	}
+	if query.Binding.ID == "" {
+		return nil, api.NotFound{Message: "Binding not found"}
+	}
+
+	return &query.Binding, nil
+}
+
+// Create creates a binding.
+func (a bindingAPI) Create(ctx context.Context, i BindingCreateInput) (*Binding, error) {
+	var mutation struct {
+		Payload struct {
+			Binding Binding
+		} `graphql:"addBinding(input: $input)"`
+	}
+	ctx = api.MaskSecrets(ctx, i.ExecutionConfig.securityContext())
+	input := map[string]any{"input": i}
+	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
+		return nil, err
+	}
+
+	return &mutation.Payload.Binding, nil
+}
+
+// Update updates a binding.
+func (a bindingAPI) Update(ctx context.Context, i BindingUpdateInput) (*Binding, error) {
+	var mutation struct {
+		Payload struct {
+			Binding Binding
+		} `graphql:"updateBinding(input: $input)"`
+	}
+	ctx = api.MaskSecrets(ctx, i.ExecutionConfig.securityContext())
+	input := map[string]any{"input": i}
+	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
+		return nil, err
+	}
+
+	return &mutation.Payload.Binding, nil
+}
+
+// Delete removes a binding.
+func (a bindingAPI) Delete(ctx context.Context, uuid string) error {
+	var mutation struct {
+		Payload struct {
+			Binding struct {
+				UUID string
+			}
+		} `graphql:"removeBinding(uuid: $uuid)"`
+	}
+	variables := map[string]any{
+		"uuid": graphql.String(uuid),
+	}
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return err
+	}
+	return nil
+}

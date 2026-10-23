@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 )
 
 // GCPIntegrationSurfaceTrustAWS holds details for the AWS trust configuration for GCP integration.
@@ -32,7 +32,7 @@ type GCPIntegrationSurfaceDataSource struct {
 	AWSRelay *GCPIntegrationSurfaceAWSRelay `tfsdk:"aws_relay"`
 }
 
-func (m *GCPIntegrationSurfaceDataSource) Update(_ context.Context, surface *api.GCPIntegrationSurface) diag.Diagnostics {
+func (m *GCPIntegrationSurfaceDataSource) Update(_ context.Context, surface *platform.GCPIntegrationSurface) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.TrustAWS = &GCPIntegrationSurfaceTrustAWS{

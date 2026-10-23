@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -102,7 +102,7 @@ func (r *configurationProfileSymphonyResource) Create(ctx context.Context, req r
 		return
 	}
 
-	input := api.SymphonyConfiguration{
+	input := platform.SymphonyConfiguration{
 		AgentDomain:    plan.AgentDomain.ValueString(),
 		ServiceAccount: plan.ServiceAccount.ValueString(),
 		PrivateKey:     config.PrivateKeyWO.ValueString(),
@@ -133,7 +133,7 @@ func (r *configurationProfileSymphonyResource) Update(ctx context.Context, req r
 		privateKey = config.PrivateKeyWO.ValueString() // send the new value from the config
 	}
 
-	input := api.SymphonyConfiguration{
+	input := platform.SymphonyConfiguration{
 		AgentDomain:    plan.AgentDomain.ValueString(),
 		ServiceAccount: plan.ServiceAccount.ValueString(),
 		PrivateKey:     privateKey,
@@ -162,5 +162,5 @@ func (r *configurationProfileSymphonyResource) Delete(ctx context.Context, req r
 }
 
 func (r *configurationProfileSymphonyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileSymphony))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(platform.ConfigurationProfileSymphony))...)
 }

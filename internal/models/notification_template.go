@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -19,7 +19,7 @@ type NotificationTemplateResource struct {
 	Content     types.String `tfsdk:"content"`
 }
 
-func (m *NotificationTemplateResource) Update(template *api.Template) diag.Diagnostics {
+func (m *NotificationTemplateResource) Update(template *platform.Template) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(template.ID)
