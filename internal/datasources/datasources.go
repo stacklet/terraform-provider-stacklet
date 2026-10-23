@@ -27,6 +27,7 @@ var DataSources = datasources{
 	Released: []func() datasource.DataSource{
 		newFactory(&accountDataSource{}),
 		newFactory(&accountGroupDataSource{}),
+		newFactory(&anthropicIntegrationDataSource{}),
 		newFactory(&bindingDataSource{}),
 		newFactory(&configurationProfileAccountOwnersDataSource{}),
 		newFactory(&configurationProfileEmailDataSource{}),

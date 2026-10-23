@@ -31,6 +31,7 @@ var Resources = resources{
 		newFactory(&accountGroupMappingResource{}),
 		newFactory(&accountGroupResource{}),
 		newFactory(&accountResource{}),
+		newFactory(&anthropicIntegrationResource{}),
 		newFactory(&bindingResource{}),
 		newFactory(&configurationProfileAccountOwnersResource{}),
 		newFactory(&configurationProfileEmailResource{}),

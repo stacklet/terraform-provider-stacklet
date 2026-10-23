@@ -1,0 +1,1 @@
+terraform import stacklet_anthropic_integration.example $org_id
