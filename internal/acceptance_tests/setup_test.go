@@ -22,7 +22,7 @@ func ensureVars() {
 		return
 	}
 
-	mustSetenv("STACKLET_ENDPOINT", "https://fake")
+	mustSetenv("STACKLET_ENDPOINT", "https://api.fake")
 	mustSetenv("STACKLET_API_KEY", "fake")
 }
 

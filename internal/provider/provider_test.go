@@ -51,15 +51,25 @@ func setupStackletAdminConfig(t *testing.T, endpoint string, apiKey string) {
 
 func TestGetCredentials(t *testing.T) {
 	envFull := providerEnv{
-		Endpoint: "https://env-endpoint.example.com",
+		Endpoint:    "https://api.env.example.com",
+		IaCEndpoint: "https://sinistral.env.example.com",
+		APIKey:      "env-api-key",
+	}
+	envNoIaCEndpoint := providerEnv{
+		Endpoint: "https://api.env.example.com",
 		APIKey:   "env-api-key",
 	}
 	configFull := providerModel{
-		Endpoint: types.StringValue("https://config-endpoint.example.com"),
+		Endpoint:    types.StringValue("https://api.config.example.com"),
+		IaCEndpoint: types.StringValue("https://sinistral.config.example.com"),
+		APIKey:      types.StringValue("config-api-key"),
+	}
+	configNoIaCEndpoint := providerModel{
+		Endpoint: types.StringValue("https://api.config.example.com"),
 		APIKey:   types.StringValue("config-api-key"),
 	}
 	adminCLIFull := &credentials{
-		Endpoint: "https://cli-endpoint.example.com",
+		Endpoint: "https://api.cli.example.com",
 		APIKey:   "cli-api-key",
 	}
 
@@ -75,24 +85,27 @@ func TestGetCredentials(t *testing.T) {
 			name:   "FromConfig",
 			config: configFull,
 			expected: credentials{
-				Endpoint: "https://config-endpoint.example.com",
-				APIKey:   "config-api-key",
+				Endpoint:    "https://api.config.example.com",
+				IaCEndpoint: "https://sinistral.config.example.com",
+				APIKey:      "config-api-key",
 			},
 		},
 		{
 			name: "FromEnviron",
 			env:  envFull,
 			expected: credentials{
-				Endpoint: "https://env-endpoint.example.com",
-				APIKey:   "env-api-key",
+				Endpoint:    "https://api.env.example.com",
+				IaCEndpoint: "https://sinistral.env.example.com",
+				APIKey:      "env-api-key",
 			},
 		},
 		{
 			name:     "FromAdminCLI",
 			adminCLI: adminCLIFull,
 			expected: credentials{
-				Endpoint: "https://cli-endpoint.example.com",
-				APIKey:   "cli-api-key",
+				Endpoint:    "https://api.cli.example.com",
+				IaCEndpoint: "https://api.sinistral.cli.example.com/",
+				APIKey:      "cli-api-key",
 			},
 		},
 		{
@@ -100,8 +113,9 @@ func TestGetCredentials(t *testing.T) {
 			env:    envFull,
 			config: configFull,
 			expected: credentials{
-				Endpoint: "https://config-endpoint.example.com",
-				APIKey:   "config-api-key",
+				Endpoint:    "https://api.config.example.com",
+				IaCEndpoint: "https://sinistral.config.example.com",
+				APIKey:      "config-api-key",
 			},
 		},
 		{
@@ -109,8 +123,9 @@ func TestGetCredentials(t *testing.T) {
 			env:      envFull,
 			adminCLI: adminCLIFull,
 			expected: credentials{
-				Endpoint: "https://env-endpoint.example.com",
-				APIKey:   "env-api-key",
+				Endpoint:    "https://api.env.example.com",
+				IaCEndpoint: "https://sinistral.env.example.com",
+				APIKey:      "env-api-key",
 			},
 		},
 		{
@@ -119,12 +134,58 @@ func TestGetCredentials(t *testing.T) {
 				APIKey: "env-api-key",
 			},
 			adminCLI: &credentials{
-				Endpoint: "https://cli-endpoint.example.com",
+				Endpoint: "https://api.cli.example.com",
 			},
 			expected: credentials{
-				Endpoint: "https://cli-endpoint.example.com",
-				APIKey:   "env-api-key",
+				Endpoint:    "https://api.cli.example.com",
+				IaCEndpoint: "https://api.sinistral.cli.example.com/",
+				APIKey:      "env-api-key",
 			},
+		},
+		{
+			name:   "IaCEndpointFromEnvironWithConfigEndpoint",
+			env:    envFull,
+			config: configNoIaCEndpoint,
+			expected: credentials{
+				Endpoint:    "https://api.config.example.com",
+				IaCEndpoint: "https://sinistral.env.example.com",
+				APIKey:      "config-api-key",
+			},
+		},
+		{
+			name:   "IaCEndpointDerivedFromConfig",
+			config: configNoIaCEndpoint,
+			expected: credentials{
+				Endpoint:    "https://api.config.example.com",
+				IaCEndpoint: "https://api.sinistral.config.example.com/",
+				APIKey:      "config-api-key",
+			},
+		},
+		{
+			name: "IaCEndpointDerivedFromEnviron",
+			env:  envNoIaCEndpoint,
+			expected: credentials{
+				Endpoint:    "https://api.env.example.com",
+				IaCEndpoint: "https://api.sinistral.env.example.com/",
+				APIKey:      "env-api-key",
+			},
+		},
+		{
+			name: "UnknownIaCEndpoint",
+			config: providerModel{
+				Endpoint:    types.StringValue("https://api.config.example.com"),
+				IaCEndpoint: types.StringUnknown(),
+				APIKey:      types.StringValue("config-api-key"),
+			},
+			diagErrors: []string{"Unknown Stacklet IaC API Endpoint"},
+		},
+		{
+			name: "IaCEndpointNotDerivable",
+			config: providerModel{
+				Endpoint: types.StringValue("https://stacklet.example.com"),
+				APIKey:   types.StringValue("config-api-key"),
+			},
+			diagErrors: []string{"Missing Stacklet IaC API Endpoint"},
 		},
 		{
 			name: "MissingEndpoint",
@@ -136,7 +197,7 @@ func TestGetCredentials(t *testing.T) {
 		{
 			name: "MissingAPIKey",
 			config: providerModel{
-				Endpoint: types.StringValue("https://config-endpoint.example.com"),
+				Endpoint: types.StringValue("https://api.config.example.com"),
 			},
 			diagErrors: []string{"Missing Stacklet API key"},
 		},
@@ -158,7 +219,7 @@ func TestGetCredentials(t *testing.T) {
 		{
 			name: "UnknownAPIKey",
 			config: providerModel{
-				Endpoint: types.StringValue("https://config-endpoint.example.com"),
+				Endpoint: types.StringValue("https://api.config.example.com"),
 				APIKey:   types.StringUnknown(),
 			},
 			diagErrors: []string{"Unknown Stacklet API key"},
@@ -207,4 +268,25 @@ func TestGetCredentials_InvalidAdminCLIConfigJSON(t *testing.T) {
 	_, diags := getCredentials(providerModel{}, providerEnv{})
 	require.True(t, diags.HasError())
 	assert.Contains(t, diags[0].Summary(), "Missing Stacklet API Endpoint")
+}
+
+func TestIaCEndpointFromAPIEndpoint(t *testing.T) {
+	tests := []struct {
+		endpoint string
+		expected string
+	}{
+		{"https://api.example.com", "https://api.sinistral.example.com/"},
+		{"https://api.example.com/", "https://api.sinistral.example.com/"},
+		{"https://api.example.com/graphql", "https://api.sinistral.example.com/"},
+		{"https://api.example.com:8443/", "https://api.sinistral.example.com:8443/"},
+		{"https://example.com/", ""},
+		{"https://myapi.example.com/", ""},
+		{"", ""},
+		{"://invalid", ""},
+	}
+	for _, tc := range tests {
+		t.Run(tc.endpoint, func(t *testing.T) {
+			assert.Equal(t, tc.expected, iacEndpointFromAPIEndpoint(tc.endpoint))
+		})
+	}
 }

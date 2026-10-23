@@ -34,9 +34,6 @@ provider "stacklet" {
 
 ### Optional
 
-- `api_key` (String, Sensitive) The API key for Stacklet authentication.
-
-May also be provided via STACKLET_API_KEY environment variable, or from the stacklet-admin CLI configuration.
-- `endpoint` (String) The endpoint URL of the Stacklet GraphQL API.
-
- May also be provided via STACKLET_ENDPOINT environment variable, or from the stacklet-admin CLI configuration.
+- `api_key` (String, Sensitive) The API key for Stacklet authentication. May also be provided via STACKLET_API_KEY environment variable, or from the stacklet-admin CLI configuration.
+- `endpoint` (String) The endpoint URL of the Stacklet GraphQL API. May also be provided via STACKLET_ENDPOINT environment variable, or from the stacklet-admin CLI configuration.
+- `iac_endpoint` (String) The endpoint URL of the Stacklet IaC API. May also be provided via STACKLET_IAC_ENDPOINT environment variable. If not set, it's derived from the Stacklet API endpoint.

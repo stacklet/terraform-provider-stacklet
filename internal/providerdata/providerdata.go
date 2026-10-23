@@ -8,18 +8,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/iac"
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 )
 
 // providerData holds shared data for available in requests.
 type providerData struct {
-	API *platform.API
+	API    *platform.API
+	IaCAPI *iac.API
 }
 
 // New returns configured provider data.
-func New(config platform.ClientConfig) *providerData {
+func New(config platform.ClientConfig, iacConfig iac.ClientConfig) *providerData {
 	return &providerData{
-		API: platform.New(config),
+		API:    platform.New(config),
+		IaCAPI: iac.New(iacConfig),
 	}
 }
 
