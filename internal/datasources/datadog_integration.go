@@ -18,7 +18,7 @@ var (
 )
 
 type datadogIntegrationDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *datadogIntegrationDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

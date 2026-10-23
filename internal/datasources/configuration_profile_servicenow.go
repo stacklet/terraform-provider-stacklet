@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &configurationProfileServiceNowDataSource{}
 
 type configurationProfileServiceNowDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *configurationProfileServiceNowDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

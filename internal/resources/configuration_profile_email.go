@@ -24,7 +24,7 @@ var (
 )
 
 type configurationProfileEmailResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *configurationProfileEmailResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

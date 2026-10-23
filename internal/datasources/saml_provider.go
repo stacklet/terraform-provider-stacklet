@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &samlProviderDataSource{}
 
 type samlProviderDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *samlProviderDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

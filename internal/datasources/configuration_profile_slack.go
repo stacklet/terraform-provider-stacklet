@@ -16,7 +16,7 @@ import (
 var _ datasource.DataSource = &configurationProfileSlackDataSource{}
 
 type configurationProfileSlackDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *configurationProfileSlackDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

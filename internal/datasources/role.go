@@ -16,7 +16,7 @@ import (
 var _ datasource.DataSource = &roleDataSource{}
 
 type roleDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *roleDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

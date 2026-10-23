@@ -22,7 +22,7 @@ var (
 )
 
 type ssoGroupResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *ssoGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

@@ -18,7 +18,7 @@ import (
 var _ datasource.DataSource = &policyDataSource{}
 
 type policyDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *policyDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

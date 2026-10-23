@@ -122,10 +122,9 @@ Models in `internal/models/` define Terraform schema structure with `tfsdk` stru
 - New code should use `diag.Diagnostics` directly and the `typehelpers` package functions which all return diagnostics
 
 **Provider Data** (`internal/providerdata/`):
-- `providerData` struct holds API clients for resources/data sources, built by `New()`: `API` for the platform API and `IaCAPI` for the IaC API
-- Exposed as `api` and `iacAPI` fields in the `apiResource` and `apiDataSource` base types
-- `GetForResource()` - Retrieves provider data in resources
-- `GetForDataSource()` - Retrieves provider data in data sources
+- `providerData` struct holds API clients for resources/data sources, built by `New()`: `PlatformAPI` for the platform API and `IaCAPI` for the IaC API
+- `GetAPI[T]()` - Retrieves the API client of type `T` (`*platform.API` or `*iac.API`) from the provider data in a configure request
+- Exposed as the `api` field by the generic `apiResource[T]`/`apiDataSource[T]` base types, through the `platformAPIResource`/`platformAPIDataSource` (platform API) and `iacAPIResource`/`iacAPIDataSource` (IaC API) aliases; resources and data sources embed the alias matching the API they use
 
 ## Architectural Patterns
 

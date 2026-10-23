@@ -5,25 +5,27 @@ package providerdata
 import (
 	"fmt"
 
-	"github.com/hashicorp/terraform-plugin-framework/datasource"
-	"github.com/hashicorp/terraform-plugin-framework/resource"
-
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/iac"
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 )
 
 // providerData holds shared data for available in requests.
 type providerData struct {
-	API    *platform.API
-	IaCAPI *iac.API
+	PlatformAPI *platform.API
+	IaCAPI      *iac.API
 }
 
 // New returns configured provider data.
 func New(config platform.ClientConfig, iacConfig iac.ClientConfig) *providerData {
 	return &providerData{
-		API:    platform.New(config),
-		IaCAPI: iac.New(iacConfig),
+		PlatformAPI: platform.New(config),
+		IaCAPI:      iac.New(iacConfig),
 	}
+}
+
+// APIClient is the set of API clients available from provider data.
+type APIClient interface {
+	*platform.API | *iac.API
 }
 
 type providerDataError struct {
@@ -39,30 +41,27 @@ func (e providerDataError) Error() string {
 	return fmt.Sprintf("Expected *ProviderData, got: %T. Please report this issue to the provider developers.", e.ProviderData)
 }
 
-// GetForResource returns provider data for a resource request, or nil if not set.
-func GetForResource(req resource.ConfigureRequest) (*providerData, error) {
-	if req.ProviderData == nil {
-		return nil, nil
+// GetAPI returns the API client of the requested type from the provider data
+// of a configure request, or nil if provider data is not set.
+//
+// kind describes the type of object being configured, for error reporting.
+func GetAPI[T APIClient](kind string, data any) (T, error) {
+	var api T
+	if data == nil {
+		return api, nil
 	}
-	if providerData, ok := req.ProviderData.(*providerData); ok {
-		return providerData, nil
+	pd, ok := data.(*providerData)
+	if !ok {
+		return api, providerDataError{
+			Kind:         kind,
+			ProviderData: data,
+		}
 	}
-	return nil, providerDataError{
-		Kind:         "resource",
-		ProviderData: req.ProviderData,
+	switch p := any(&api).(type) {
+	case **platform.API:
+		*p = pd.PlatformAPI
+	case **iac.API:
+		*p = pd.IaCAPI
 	}
-}
-
-// GetForDataSource returns provider data for a data source request, or nil if not set.
-func GetForDataSource(req datasource.ConfigureRequest) (*providerData, error) {
-	if req.ProviderData == nil {
-		return nil, nil
-	}
-	if providerData, ok := req.ProviderData.(*providerData); ok {
-		return providerData, nil
-	}
-	return nil, providerDataError{
-		Kind:         "datasource",
-		ProviderData: req.ProviderData,
-	}
+	return api, nil
 }

@@ -17,7 +17,7 @@ var _ datasource.DataSource = &repositoryDataSource{}
 
 // repositoryDataSource defines the data source implementation.
 type repositoryDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *repositoryDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

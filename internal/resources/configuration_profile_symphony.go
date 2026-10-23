@@ -23,7 +23,7 @@ var (
 )
 
 type configurationProfileSymphonyResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *configurationProfileSymphonyResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

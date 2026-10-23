@@ -31,7 +31,7 @@ var (
 )
 
 type configurationProfileMSTeamsResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *configurationProfileMSTeamsResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

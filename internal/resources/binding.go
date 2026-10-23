@@ -28,7 +28,7 @@ var (
 )
 
 type bindingResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *bindingResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

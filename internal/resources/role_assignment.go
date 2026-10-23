@@ -22,7 +22,7 @@ var (
 )
 
 type roleAssignmentResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *roleAssignmentResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

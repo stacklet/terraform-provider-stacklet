@@ -24,7 +24,7 @@ var (
 )
 
 type userResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *userResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

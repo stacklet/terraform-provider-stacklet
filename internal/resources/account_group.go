@@ -27,7 +27,7 @@ var (
 )
 
 type accountGroupResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *accountGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

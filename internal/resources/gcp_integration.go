@@ -24,7 +24,7 @@ var (
 )
 
 type gcpIntegrationResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *gcpIntegrationResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

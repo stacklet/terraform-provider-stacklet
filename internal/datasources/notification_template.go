@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &notificationTemplateDataSource{}
 
 type notificationTemplateDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *notificationTemplateDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

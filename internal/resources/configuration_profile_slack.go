@@ -34,7 +34,7 @@ type slackWebhookSecret struct {
 }
 
 type configurationProfileSlackResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *configurationProfileSlackResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

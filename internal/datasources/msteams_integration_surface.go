@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &msteamsIntegrationSurfaceDataSource{}
 
 type msteamsIntegrationSurfaceDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *msteamsIntegrationSurfaceDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

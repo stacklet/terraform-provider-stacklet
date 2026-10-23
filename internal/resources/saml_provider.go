@@ -26,7 +26,7 @@ var (
 )
 
 type samlProviderResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *samlProviderResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
