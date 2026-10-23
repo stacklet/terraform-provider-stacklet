@@ -121,6 +121,7 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "The binding execution security context.",
 				Computed:    true,
 			},
+			// XXX wgrant 2026-10-22: security_context_wo should require security_context_wo_version (ENG-9371).
 			"security_context_wo": schema.StringAttribute{
 				Description: "The input value for the security context for the execution configuration.",
 				Optional:    true,

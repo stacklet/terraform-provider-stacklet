@@ -53,6 +53,9 @@ var DataSources = datasources{
 		newFactory(&userGroupDataSource{}),
 		newFactory(&userDataSource{}),
 	},
+	Unreleased: []func() datasource.DataSource{
+		newFactory(&anthropicIntegrationDataSource{}),
+	},
 }
 
 func newFactory[T any, R interface {

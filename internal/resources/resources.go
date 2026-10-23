@@ -53,6 +53,9 @@ var Resources = resources{
 		newFactory(&userGroupResource{}),
 		newFactory(&userResource{}),
 	},
+	Unreleased: []func() resource.Resource{
+		newFactory(&anthropicIntegrationResource{}),
+	},
 }
 
 func newFactory[T any, R interface {

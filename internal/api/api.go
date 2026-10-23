@@ -9,6 +9,7 @@ type API struct {
 	AccountDiscovery        accountDiscoveryAPI
 	AccountGroup            accountGroupAPI
 	AccountGroupMapping     accountGroupMappingAPI
+	AnthropicIntegration    anthropicIntegrationAPI
 	Binding                 bindingAPI
 	ConfigurationProfile    configurationProfileAPI
 	DatadogIntegration      datadogIntegrationAPI
@@ -36,6 +37,7 @@ func New(config ClientConfig) *API {
 		AccountDiscovery:        accountDiscoveryAPI{c},
 		AccountGroup:            accountGroupAPI{c},
 		AccountGroupMapping:     accountGroupMappingAPI{c},
+		AnthropicIntegration:    anthropicIntegrationAPI{c},
 		Binding:                 bindingAPI{c},
 		ConfigurationProfile:    configurationProfileAPI{c},
 		DatadogIntegration:      datadogIntegrationAPI{c},

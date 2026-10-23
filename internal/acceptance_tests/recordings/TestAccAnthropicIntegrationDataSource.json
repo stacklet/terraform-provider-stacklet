@@ -1,0 +1,128 @@
+{
+  "mutation ($input:RemoveAnthropicIntegrationInput!){removeAnthropicIntegration(input: $input){problems{__typename,message}}}:{\"input\":{\"orgId\":\"org-functest\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:RemoveAnthropicIntegrationInput!){removeAnthropicIntegration(input: $input){problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "orgId": "org-functest"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "removeAnthropicIntegration": {
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "mutation ($input:UpsertAnthropicIntegrationInput!){upsertAnthropicIntegration(input: $input){anthropicIntegration{id,orgId,configured},problems{__typename,message}}}:{\"input\":{\"adminKey\":\"sk-ant-admin01-fake-test\",\"orgId\":\"org-functest\"}}": [
+    {
+      "request": {
+        "query": "mutation ($input:UpsertAnthropicIntegrationInput!){upsertAnthropicIntegration(input: $input){anthropicIntegration{id,orgId,configured},problems{__typename,message}}}",
+        "variables": {
+          "input": {
+            "adminKey": "sk-ant-admin01-fake-test",
+            "orgId": "org-functest"
+          }
+        }
+      },
+      "response": {
+        "data": {
+          "upsertAnthropicIntegration": {
+            "anthropicIntegration": {
+              "configured": true,
+              "id": "WyJhbnRocm9waWMtaW50ZWdyYXRpb24iLCAib3JnLWZ1bmN0ZXN0Il0=",
+              "orgId": "org-functest"
+            },
+            "problems": []
+          }
+        }
+      }
+    }
+  ],
+  "query ($orgId:String!){anthropicIntegration(orgId: $orgId){anthropicIntegration{id,orgId,configured},problems{__typename,message}}}:{\"orgId\":\"org-functest\"}": [
+    {
+      "request": {
+        "query": "query ($orgId:String!){anthropicIntegration(orgId: $orgId){anthropicIntegration{id,orgId,configured},problems{__typename,message}}}",
+        "variables": {
+          "orgId": "org-functest"
+        }
+      },
+      "response": {
+        "data": {
+          "anthropicIntegration": {
+            "anthropicIntegration": {
+              "configured": true,
+              "id": "WyJhbnRocm9waWMtaW50ZWdyYXRpb24iLCAib3JnLWZ1bmN0ZXN0Il0=",
+              "orgId": "org-functest"
+            },
+            "problems": []
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($orgId:String!){anthropicIntegration(orgId: $orgId){anthropicIntegration{id,orgId,configured},problems{__typename,message}}}",
+        "variables": {
+          "orgId": "org-functest"
+        }
+      },
+      "response": {
+        "data": {
+          "anthropicIntegration": {
+            "anthropicIntegration": {
+              "configured": true,
+              "id": "WyJhbnRocm9waWMtaW50ZWdyYXRpb24iLCAib3JnLWZ1bmN0ZXN0Il0=",
+              "orgId": "org-functest"
+            },
+            "problems": []
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($orgId:String!){anthropicIntegration(orgId: $orgId){anthropicIntegration{id,orgId,configured},problems{__typename,message}}}",
+        "variables": {
+          "orgId": "org-functest"
+        }
+      },
+      "response": {
+        "data": {
+          "anthropicIntegration": {
+            "anthropicIntegration": {
+              "configured": true,
+              "id": "WyJhbnRocm9waWMtaW50ZWdyYXRpb24iLCAib3JnLWZ1bmN0ZXN0Il0=",
+              "orgId": "org-functest"
+            },
+            "problems": []
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "query": "query ($orgId:String!){anthropicIntegration(orgId: $orgId){anthropicIntegration{id,orgId,configured},problems{__typename,message}}}",
+        "variables": {
+          "orgId": "org-functest"
+        }
+      },
+      "response": {
+        "data": {
+          "anthropicIntegration": {
+            "anthropicIntegration": {
+              "configured": true,
+              "id": "WyJhbnRocm9waWMtaW50ZWdyYXRpb24iLCAib3JnLWZ1bmN0ZXN0Il0=",
+              "orgId": "org-functest"
+            },
+            "problems": []
+          }
+        }
+      }
+    }
+  ]
+}

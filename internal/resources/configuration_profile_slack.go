@@ -73,6 +73,7 @@ The profile is global, adding multiple resources of this kind will cause them to
 				Description: "The encrypted value for the token, returned by the API.",
 				Computed:    true,
 			},
+			// XXX wgrant 2026-10-22: token_wo should require token_wo_version (ENG-9371).
 			"token_wo": schema.StringAttribute{
 				Description: "The input value for the token.",
 				Optional:    true,
