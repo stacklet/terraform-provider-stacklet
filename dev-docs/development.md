@@ -24,8 +24,9 @@ Run `./terraform-provider-stacklet -debug` and use `TF_REATTACH_PROVIDERS` envir
 All development commands use the `just` task runner:
 
 - `just build` - Build the provider binary
-- `just format` / `just lint` - Format and lint code (Go, Terraform, docs, copyright)
+- `just lint` - Format and lint code (Go, Terraform, docs, copyright)
 - `just test` - Run acceptance tests (replay mode, no API needed)
+- `just test-unit` - Run unit tests only
 - `just test-live` - Run tests against live API
 - `just test-record <testname>` - Record new API responses for a test
 - `just docs` - Generate provider documentation
@@ -35,7 +36,7 @@ Testing individual tests: `just test -run TestAccAccountResource`
 
 ## Testing Strategy
 
-**HTTP Recording**: Tests use recorded HTTP interactions (`acceptance_tests/recordings/`) for fast, deterministic runs without live API. Three modes via `TF_ACC_MODE`: `replay` (default), `record`, `live`. See `acceptance_tests/recorded_transport.go`.
+**HTTP Recording**: Tests use recorded HTTP interactions (`internal/acceptance_tests/recordings/`) for fast, deterministic runs without live API. Three modes via `TF_ACC_MODE`: `replay` (default), `record`, `live`. See `internal/acceptance_tests/recorded_transport.go`.
 
 **Test Helpers**:
 - `importStateIDFuncFromAttrs()` - Creates import IDs from resource attributes
@@ -43,7 +44,7 @@ Testing individual tests: `just test -run TestAccAccountResource`
 - `ConfigPlanChecks` with `plancheck.ExpectResourceAction()` - Validates plan actions
 - Template rendering for test configurations
 
-**Unit Tests**: Use testify test suites for shared setup (e.g., `internal/provider/provider_test.go`). Run with: `go test ./internal/provider/`
+**Unit Tests**: Table-driven tests with testify assertions (e.g., `internal/provider/provider_test.go`). Run with: `just test-unit`
 
 ## Authentication
 
@@ -62,16 +63,16 @@ Additional tools are defined in `tools/go.mod`.
 ## Documentation
 
 - **Auto-generated**: Documentation in `docs/` is generated from code
-- **Templates**: Use `templates/` for customizing documentation
 - **Examples**: All examples in `examples/` must be valid Terraform
 - **Import examples**: Each resource has `import.sh` example
 
 ## CI/CD
 
 ### Continuous Integration (`.github/workflows/ci.yaml`)
-- Runs on push to `main` and all PRs
-- All GitHub Actions use SHA pinning for security
-- Separate jobs for: Go linting, Terraform linting, documentation validation, copyright headers, and acceptance tests (replay mode)
+- Runs on push to `main` and PRs targeting `main`
+- All GitHub Actions and reusable workflows use SHA pinning for security
+- `Lint` job runs `just lint` (all pre-commit hooks: Go linting, Terraform formatting and examples validation, documentation validation, copyright headers, spelling)
+- `Tests` job runs `just test` (acceptance tests in replay mode)
 
 ### Release Workflow (`.github/workflows/release.yaml`)
 - **Public Registry**: Triggered by version tags (`v*.*.*`), builds with GoReleaser, signs with GPG, publishes to Terraform Registry

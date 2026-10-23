@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -159,12 +159,12 @@ func (r *repositoryResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	// Create remote from plan and config.
-	auth := api.NewRepositoryConfigAuthInput()
+	auth := platform.NewRepositoryConfigAuthInput()
 	auth.SetAuthUser(plan.AuthUser.ValueStringPointer())
 	auth.SetAuthToken(config.AuthTokenWO.ValueStringPointer())
 	auth.SetSSHPrivateKey(config.SSHPrivateKeyWO.ValueStringPointer())
 	auth.SetSSHPassphrase(config.SSHPassphraseWO.ValueStringPointer())
-	input := api.RepositoryCreateInput{
+	input := platform.RepositoryCreateInput{
 		Name:        plan.Name.ValueString(),
 		URL:         plan.URL.ValueString(),
 		Description: plan.Description.ValueStringPointer(),
@@ -210,7 +210,7 @@ func (r *repositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 
 	// Determine which auth fields need to be updated.
-	auth := api.NewRepositoryConfigAuthInput()
+	auth := platform.NewRepositoryConfigAuthInput()
 	auth.SetAuthUser(plan.AuthUser.ValueStringPointer())
 	if state.AuthTokenWOVersion != plan.AuthTokenWOVersion {
 		state.AuthTokenWOVersion = plan.AuthTokenWOVersion
@@ -226,7 +226,7 @@ func (r *repositoryResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 
 	// Update remote according to the combined grand plan.
-	input := api.RepositoryUpdateInput{
+	input := platform.RepositoryUpdateInput{
 		UUID:        plan.UUID.ValueString(),
 		Name:        plan.Name.ValueString(),
 		Description: plan.Description.ValueStringPointer(),
@@ -251,7 +251,7 @@ func (r *repositoryResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 
 	// Delete remote
-	input := api.RepositoryDeleteInput{
+	input := platform.RepositoryDeleteInput{
 		UUID: data.UUID.ValueString(),
 		// Note NOT cascading; we could add a force_delete attr if necessary, but the default
 		// behaviour should *NOT* be to implicitly tear down resources not under management.

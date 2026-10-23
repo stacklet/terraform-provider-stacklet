@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -99,7 +99,7 @@ func (r *userResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
-	input := api.UserCreateInput{
+	input := platform.UserCreateInput{
 		Name:        plan.Name.ValueString(),
 		DisplayName: plan.DisplayName.ValueStringPointer(),
 		Username:    plan.Username.ValueString(),
@@ -143,7 +143,7 @@ func (r *userResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
-	input := api.UserUpdateInput{
+	input := platform.UserUpdateInput{
 		Name:        plan.Name.ValueStringPointer(),
 		DisplayName: plan.DisplayName.ValueStringPointer(),
 		Key:         plan.Key.ValueInt64(),

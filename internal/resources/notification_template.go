@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
@@ -91,7 +91,7 @@ func (r *notificationTemplateResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	input := api.TemplateInput{
+	input := platform.TemplateInput{
 		Name:        plan.Name.ValueString(),
 		Description: plan.Description.ValueStringPointer(),
 		Transport:   plan.Transport.ValueStringPointer(),
@@ -114,7 +114,7 @@ func (r *notificationTemplateResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	input := api.TemplateInput{
+	input := platform.TemplateInput{
 		Name:        plan.Name.ValueString(),
 		Description: plan.Description.ValueStringPointer(),
 		Transport:   plan.Transport.ValueStringPointer(),

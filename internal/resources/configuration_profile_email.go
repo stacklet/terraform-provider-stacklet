@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -134,9 +134,9 @@ func (r *configurationProfileEmailResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	var smtp *api.SMTPConfiguration
+	var smtp *platform.SMTPConfiguration
 	if !smtpPlan.Server.IsNull() {
-		smtp = &api.SMTPConfiguration{
+		smtp = &platform.SMTPConfiguration{
 			Server:   smtpPlan.Server.ValueString(),
 			Port:     smtpPlan.Port.ValueString(),
 			SSL:      smtpPlan.SSL.ValueBoolPointer(),
@@ -145,7 +145,7 @@ func (r *configurationProfileEmailResource) Create(ctx context.Context, req reso
 		}
 	}
 
-	input := api.EmailConfiguration{
+	input := platform.EmailConfiguration{
 		FromEmail: plan.From.ValueString(),
 		SESRegion: plan.SESRegion.ValueStringPointer(),
 		SMTP:      smtp,
@@ -180,7 +180,7 @@ func (r *configurationProfileEmailResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	var smtp *api.SMTPConfiguration
+	var smtp *platform.SMTPConfiguration
 	if !smtpPlan.Server.IsNull() {
 
 		var password *string
@@ -190,7 +190,7 @@ func (r *configurationProfileEmailResource) Update(ctx context.Context, req reso
 			password = smtpConfig.PasswordWO.ValueStringPointer() // send the new value from the config
 		}
 
-		smtp = &api.SMTPConfiguration{
+		smtp = &platform.SMTPConfiguration{
 			Server:   smtpPlan.Server.ValueString(),
 			Port:     smtpPlan.Port.ValueString(),
 			SSL:      smtpPlan.SSL.ValueBoolPointer(),
@@ -199,7 +199,7 @@ func (r *configurationProfileEmailResource) Update(ctx context.Context, req reso
 		}
 	}
 
-	input := api.EmailConfiguration{
+	input := platform.EmailConfiguration{
 		FromEmail: plan.From.ValueString(),
 		SESRegion: plan.SESRegion.ValueStringPointer(),
 		SMTP:      smtp,
@@ -222,7 +222,7 @@ func (r *configurationProfileEmailResource) Delete(ctx context.Context, req reso
 }
 
 func (r *configurationProfileEmailResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileEmail))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(platform.ConfigurationProfileEmail))...)
 }
 
 func (r configurationProfileEmailResource) getSMTPResource(ctx context.Context, m models.ConfigurationProfileEmailResource) (models.SMTPResource, diag.Diagnostics) {

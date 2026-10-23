@@ -17,7 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/datasources"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
@@ -114,7 +114,7 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 
 	// Make provider data accessible to the Configure method of resources and data sources
 	providerData := providerdata.New(
-		api.ClientConfig{
+		platform.ClientConfig{
 			Endpoint: creds.Endpoint,
 			APIKey:   creds.APIKey,
 			Version:  p.version,

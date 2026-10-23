@@ -19,7 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
@@ -519,13 +519,13 @@ func (r *reportGroupResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	input := api.ReportGroupInput{
+	input := platform.ReportGroupInput{
 		Name:               plan.Name.ValueString(),
 		Enabled:            plan.Enabled.ValueBool(),
-		Bindings:           api.StringsList(plan.Bindings),
-		Source:             api.ReportSourceBinding, // only binding-based report groups are managed for now
+		Bindings:           platform.StringsList(plan.Bindings),
+		Source:             platform.ReportSourceBinding, // only binding-based report groups are managed for now
 		Schedule:           plan.Schedule.ValueString(),
-		GroupBy:            api.StringsList(plan.GroupBy),
+		GroupBy:            platform.StringsList(plan.GroupBy),
 		UseMessageSettings: plan.UseMessageSettings.ValueBool(),
 		EmailSettings:      emailSettings,
 		SlackSettings:      slackSettings,
@@ -587,13 +587,13 @@ func (r *reportGroupResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	input := api.ReportGroupInput{
+	input := platform.ReportGroupInput{
 		Name:               plan.Name.ValueString(),
 		Enabled:            plan.Enabled.ValueBool(),
-		Bindings:           api.StringsList(plan.Bindings),
-		Source:             api.ReportSourceBinding, // only binding-based report groups are managed for now
+		Bindings:           platform.StringsList(plan.Bindings),
+		Source:             platform.ReportSourceBinding, // only binding-based report groups are managed for now
 		Schedule:           plan.Schedule.ValueString(),
-		GroupBy:            api.StringsList(plan.GroupBy),
+		GroupBy:            platform.StringsList(plan.GroupBy),
 		UseMessageSettings: plan.UseMessageSettings.ValueBool(),
 		EmailSettings:      emailSettings,
 		SlackSettings:      slackSettings,
@@ -629,14 +629,14 @@ func (r *reportGroupResource) ImportState(ctx context.Context, req resource.Impo
 	importState(ctx, req, resp, []string{"name"})
 }
 
-func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.EmailDeliverySettings, diag.Diagnostics) {
+func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]platform.EmailDeliverySettings, diag.Diagnostics) {
 	if m.EmailDeliverySettings.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	settings := make([]api.EmailDeliverySettings, 0)
+	settings := make([]platform.EmailDeliverySettings, 0)
 	for i, elem := range m.EmailDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -659,8 +659,8 @@ func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m mod
 
 		settings = append(
 			settings,
-			api.EmailDeliverySettings{
-				CC:             api.StringsList(s.CC),
+			platform.EmailDeliverySettings{
+				CC:             platform.StringsList(s.CC),
 				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
 				Format:         s.Format.ValueStringPointer(),
 				FromEmail:      s.From.ValueStringPointer(),
@@ -674,14 +674,14 @@ func (r reportGroupResource) getEmailDeliverySettings(ctx context.Context, m mod
 	return settings, diags
 }
 
-func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.SlackDeliverySettings, diag.Diagnostics) {
+func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]platform.SlackDeliverySettings, diag.Diagnostics) {
 	if m.SlackDeliverySettings.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	settings := make([]api.SlackDeliverySettings, 0)
+	settings := make([]platform.SlackDeliverySettings, 0)
 	for i, elem := range m.SlackDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -704,7 +704,7 @@ func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m mod
 
 		settings = append(
 			settings,
-			api.SlackDeliverySettings{
+			platform.SlackDeliverySettings{
 				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
 				Recipients:     recipients,
 				Template:       s.Template.ValueString(),
@@ -714,14 +714,14 @@ func (r reportGroupResource) getSlackDeliverySettings(ctx context.Context, m mod
 	return settings, diags
 }
 
-func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.MSTeamsDeliverySettings, diag.Diagnostics) {
+func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]platform.MSTeamsDeliverySettings, diag.Diagnostics) {
 	if m.MSTeamsDeliverySettings.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	settings := make([]api.MSTeamsDeliverySettings, 0)
+	settings := make([]platform.MSTeamsDeliverySettings, 0)
 	for i, elem := range m.MSTeamsDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -744,7 +744,7 @@ func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m m
 
 		settings = append(
 			settings,
-			api.MSTeamsDeliverySettings{
+			platform.MSTeamsDeliverySettings{
 				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
 				Recipients:     recipients,
 				Template:       s.Template.ValueString(),
@@ -754,14 +754,14 @@ func (r reportGroupResource) getMSTeamsDeliverySettings(ctx context.Context, m m
 	return settings, diags
 }
 
-func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.ServiceNowDeliverySettings, diag.Diagnostics) {
+func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]platform.ServiceNowDeliverySettings, diag.Diagnostics) {
 	if m.ServiceNowDeliverySettings.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	settings := make([]api.ServiceNowDeliverySettings, 0)
+	settings := make([]platform.ServiceNowDeliverySettings, 0)
 	for i, elem := range m.ServiceNowDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -784,7 +784,7 @@ func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, 
 
 		settings = append(
 			settings,
-			api.ServiceNowDeliverySettings{
+			platform.ServiceNowDeliverySettings{
 				FirstMatchOnly:   s.FirstMatchOnly.ValueBoolPointer(),
 				Impact:           s.Impact.ValueString(),
 				Recipients:       recipients,
@@ -797,14 +797,14 @@ func (r reportGroupResource) getServiceNowDeliverySettings(ctx context.Context, 
 	return settings, diags
 }
 
-func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.JiraDeliverySettings, diag.Diagnostics) {
+func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]platform.JiraDeliverySettings, diag.Diagnostics) {
 	if m.JiraDeliverySettings.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	settings := make([]api.JiraDeliverySettings, 0)
+	settings := make([]platform.JiraDeliverySettings, 0)
 	for i, elem := range m.JiraDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -827,7 +827,7 @@ func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m mode
 
 		settings = append(
 			settings,
-			api.JiraDeliverySettings{
+			platform.JiraDeliverySettings{
 				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
 				Recipients:     recipients,
 				Template:       s.Template.ValueString(),
@@ -840,14 +840,14 @@ func (r reportGroupResource) getJiraDeliverySettings(ctx context.Context, m mode
 	return settings, diags
 }
 
-func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]api.SymphonyDeliverySettings, diag.Diagnostics) {
+func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m models.ReportGroupResource) ([]platform.SymphonyDeliverySettings, diag.Diagnostics) {
 	if m.SymphonyDeliverySettings.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	settings := make([]api.SymphonyDeliverySettings, 0)
+	settings := make([]platform.SymphonyDeliverySettings, 0)
 	for i, elem := range m.SymphonyDeliverySettings.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -870,7 +870,7 @@ func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m 
 
 		settings = append(
 			settings,
-			api.SymphonyDeliverySettings{
+			platform.SymphonyDeliverySettings{
 				FirstMatchOnly: s.FirstMatchOnly.ValueBoolPointer(),
 				Recipients:     recipients,
 				Template:       s.Template.ValueString(),
@@ -880,14 +880,14 @@ func (r reportGroupResource) getSymphonyDeliverySettings(ctx context.Context, m 
 	return settings, diags
 }
 
-func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([]api.Recipient, diag.Diagnostics) {
+func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([]platform.Recipient, diag.Diagnostics) {
 	if l.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	recipients := make([]api.Recipient, 0)
+	recipients := make([]platform.Recipient, 0)
 	for i, elem := range l.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -905,7 +905,7 @@ func (r reportGroupResource) getRecipients(ctx context.Context, l types.List) ([
 
 		recipients = append(
 			recipients,
-			api.Recipient{
+			platform.Recipient{
 				AccountOwner:  r.AccountOwner.ValueBoolPointer(),
 				EventOwner:    r.EventOwner.ValueBoolPointer(),
 				ResourceOwner: r.ResourceOwner.ValueBoolPointer(),

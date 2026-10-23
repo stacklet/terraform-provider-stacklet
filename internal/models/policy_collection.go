@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -28,7 +28,7 @@ type PolicyCollectionResource struct {
 	RoleAssignmentTarget types.String `tfsdk:"role_assignment_target"`
 }
 
-func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection *api.PolicyCollection) diag.Diagnostics {
+func (m *PolicyCollectionResource) Update(ctx context.Context, policyCollection *platform.PolicyCollection) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(policyCollection.ID)

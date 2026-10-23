@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -21,7 +21,7 @@ type ConfigurationProfileServiceNowDataSource struct {
 	ClosedState types.String `tfsdk:"closed_state"`
 }
 
-func (m *ConfigurationProfileServiceNowDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileServiceNowDataSource) Update(cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	config := cp.Record.ServiceNowConfiguration

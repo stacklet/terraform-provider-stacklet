@@ -1,0 +1,46 @@
+// Copyright Stacklet, Inc. 2025, 2026
+
+package platform
+
+import (
+	"context"
+
+	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+)
+
+// Role is the data returned by reading role data.
+type Role struct {
+	ID          graphql.ID `graphql:"id"`
+	Name        string     `graphql:"name"`
+	Permissions []string   `graphql:"permissions"`
+	System      bool       `graphql:"system"`
+}
+
+type roleAPI struct {
+	c *client
+}
+
+// Read returns data for a role by name.
+func (r roleAPI) Read(ctx context.Context, name string) (*Role, error) {
+	var query struct {
+		Roles struct {
+			Edges []struct {
+				Node Role
+			}
+		} `graphql:"roles(filterElement: $filterElement)"`
+	}
+	variables := map[string]any{
+		"filterElement": newExactMatchFilter("name", name),
+	}
+	if err := r.c.Query(ctx, &query, variables); err != nil {
+		return nil, err
+	}
+
+	if len(query.Roles.Edges) == 0 {
+		return nil, api.NotFound{Message: "Role not found"}
+	}
+
+	return &query.Roles.Edges[0].Node, nil
+}

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 )
 
 func strPtr(s string) *string { return &s }
@@ -18,11 +18,11 @@ func TestAccountResourceUpdate_VariablesNullWhenAPIReturnsEmptyObject(t *testing
 	m := &AccountResource{}
 	m.Variables = types.StringNull()
 
-	account := &api.Account{
+	account := &platform.Account{
 		ID:        "id-1",
 		Key:       "123456789012",
 		Name:      "test",
-		Provider:  api.CloudProvider("AWS"),
+		Provider:  platform.CloudProvider("AWS"),
 		Variables: strPtr("{}"),
 	}
 
@@ -41,11 +41,11 @@ func TestAccountResourceUpdate_VariablesPreservedWhenSet(t *testing.T) {
 	m := &AccountResource{}
 	m.Variables = types.StringValue(`{"env":"prod"}`)
 
-	account := &api.Account{
+	account := &platform.Account{
 		ID:        "id-1",
 		Key:       "123456789012",
 		Name:      "test",
-		Provider:  api.CloudProvider("AWS"),
+		Provider:  platform.CloudProvider("AWS"),
 		Variables: strPtr(`{"env":"prod"}`),
 	}
 
@@ -63,11 +63,11 @@ func TestAccountResourceUpdate_VariablesNullWhenAPIReturnsNil(t *testing.T) {
 	m := &AccountResource{}
 	m.Variables = types.StringNull()
 
-	account := &api.Account{
+	account := &platform.Account{
 		ID:       "id-1",
 		Key:      "123456789012",
 		Name:     "test",
-		Provider: api.CloudProvider("AWS"),
+		Provider: platform.CloudProvider("AWS"),
 		// Variables is nil
 	}
 

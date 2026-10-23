@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
@@ -112,10 +112,10 @@ func (r *accountResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	input := api.AccountCreateInput{
+	input := platform.AccountCreateInput{
 		Name:            plan.Name.ValueString(),
 		Key:             plan.Key.ValueString(),
-		Provider:        api.CloudProvider(plan.CloudProvider.ValueString()),
+		Provider:        platform.CloudProvider(plan.CloudProvider.ValueString()),
 		ShortName:       plan.ShortName.ValueStringPointer(),
 		Description:     plan.Description.ValueStringPointer(),
 		Email:           plan.Email.ValueStringPointer(),
@@ -163,9 +163,9 @@ func (r *accountResource) Update(ctx context.Context, req resource.UpdateRequest
 		securityContext = config.SecurityContextWO.ValueStringPointer()
 	}
 
-	input := api.AccountUpdateInput{
+	input := platform.AccountUpdateInput{
 		Key:             plan.Key.ValueString(),
-		Provider:        api.CloudProvider(plan.CloudProvider.ValueString()),
+		Provider:        platform.CloudProvider(plan.CloudProvider.ValueString()),
 		Name:            plan.Name.ValueStringPointer(),
 		ShortName:       plan.ShortName.ValueStringPointer(),
 		Description:     plan.Description.ValueStringPointer(),

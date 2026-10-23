@@ -16,7 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/planmodifiers"
@@ -327,12 +327,12 @@ func (r *configurationProfileMSTeamsResource) Delete(ctx context.Context, req re
 }
 
 func (r *configurationProfileMSTeamsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileMSTeams))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(platform.ConfigurationProfileMSTeams))...)
 }
 
-func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, data models.ConfigurationProfileMSTeamsResource) (api.MSTeamsConfigurationInput, diag.Diagnostics) {
+func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, data models.ConfigurationProfileMSTeamsResource) (platform.MSTeamsConfigurationInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
-	input := api.MSTeamsConfigurationInput{}
+	input := platform.MSTeamsConfigurationInput{}
 
 	if !data.AccessConfigInput.IsNull() && !data.AccessConfigInput.IsUnknown() {
 		var accessConfigInput models.MSTeamsAccessConfigInput
@@ -341,7 +341,7 @@ func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, da
 			return input, diags
 		}
 
-		input.AccessConfig = &api.MSTeamsAccessConfigInput{
+		input.AccessConfig = &platform.MSTeamsAccessConfigInput{
 			ClientID:        accessConfigInput.ClientID.ValueString(),
 			RoundtripDigest: accessConfigInput.RoundtripDigest.ValueString(),
 			TenantID:        accessConfigInput.TenantID.ValueString(),
@@ -355,9 +355,9 @@ func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, da
 			return input, diags
 		}
 
-		input.CustomerConfig = &api.MSTeamsCustomerConfigInput{
+		input.CustomerConfig = &platform.MSTeamsCustomerConfigInput{
 			Prefix: customerConfigInput.Prefix.ValueString(),
-			Tags:   api.NewTagsList(customerConfigInput.Tags),
+			Tags:   platform.NewTagsList(customerConfigInput.Tags),
 		}
 	}
 
@@ -368,11 +368,11 @@ func (r *configurationProfileMSTeamsResource) buildInput(ctx context.Context, da
 			return input, diags
 		}
 
-		apiMappings := make([]api.MSTeamsChannelMapping, len(channelMappings))
+		apiMappings := make([]platform.MSTeamsChannelMapping, len(channelMappings))
 		for i, mapping := range channelMappings {
-			apiMappings[i] = api.MSTeamsChannelMapping{
+			apiMappings[i] = platform.MSTeamsChannelMapping{
 				Name:      mapping.Name.ValueString(),
-				TeamID:    api.UUID(mapping.TeamID.ValueString()),
+				TeamID:    platform.UUID(mapping.TeamID.ValueString()),
 				ChannelID: mapping.ChannelID.ValueString(),
 			}
 		}

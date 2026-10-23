@@ -15,7 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemavalidate"
@@ -187,7 +187,7 @@ func (r *bindingResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	input := api.BindingCreateInput{
+	input := platform.BindingCreateInput{
 		Name:                 plan.Name.ValueString(),
 		Description:          plan.Description.ValueStringPointer(),
 		AutoDeploy:           plan.AutoDeploy.ValueBool(),
@@ -249,7 +249,7 @@ func (r *bindingResource) Update(ctx context.Context, req resource.UpdateRequest
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	input := api.BindingUpdateInput{
+	input := platform.BindingUpdateInput{
 		UUID:            plan.UUID.ValueString(),
 		Name:            plan.Name.ValueString(),
 		Description:     plan.Description.ValueStringPointer(),
@@ -285,31 +285,31 @@ func (r *bindingResource) ImportState(ctx context.Context, req resource.ImportSt
 	importState(ctx, req, resp, []string{"uuid"})
 }
 
-func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.BindingResource, securityContextString *string) (api.BindingExecutionConfig, diag.Diagnostics) {
-	var dryRun *api.BindingExecutionConfigDryRun
+func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.BindingResource, securityContextString *string) (platform.BindingExecutionConfig, diag.Diagnostics) {
+	var dryRun *platform.BindingExecutionConfigDryRun
 	if !plan.DryRun.IsNull() {
-		dryRun = &api.BindingExecutionConfigDryRun{Default: plan.DryRun.ValueBool()}
+		dryRun = &platform.BindingExecutionConfigDryRun{Default: plan.DryRun.ValueBool()}
 	}
 
-	var securityContext *api.BindingExecutionConfigSecurityContext
+	var securityContext *platform.BindingExecutionConfigSecurityContext
 	if securityContextString != nil {
-		securityContext = &api.BindingExecutionConfigSecurityContext{Default: *securityContextString}
+		securityContext = &platform.BindingExecutionConfigSecurityContext{Default: *securityContextString}
 	}
 
-	var defaultResourceLimits *api.BindingExecutionConfigResourceLimit
+	var defaultResourceLimits *platform.BindingExecutionConfigResourceLimit
 	if !plan.ResourceLimits.IsNull() {
 		var defLimitsObj models.BindingExecutionConfigResourceLimit
 		if diags := plan.ResourceLimits.As(ctx, &defLimitsObj, objectAsOptions); diags.HasError() {
-			return api.BindingExecutionConfig{}, diags
+			return platform.BindingExecutionConfig{}, diags
 		}
-		defaultResourceLimits = &api.BindingExecutionConfigResourceLimit{
+		defaultResourceLimits = &platform.BindingExecutionConfigResourceLimit{
 			MaxCount:      defLimitsObj.MaxCount.ValueInt32Pointer(),
 			MaxPercentage: defLimitsObj.MaxPercentage.ValueFloat32Pointer(),
 			RequiresBoth:  defLimitsObj.RequiresBoth.ValueBool(),
 		}
 	}
 
-	policyResourceLimits := make([]api.BindingExecutionConfigResourceLimitsPolicyOverrides, 0)
+	policyResourceLimits := make([]platform.BindingExecutionConfigResourceLimitsPolicyOverrides, 0)
 	if !plan.PolicyResourceLimits.IsNull() {
 		for i, elem := range plan.PolicyResourceLimits.Elements() {
 			resourceLimit, ok := elem.(types.Object)
@@ -320,18 +320,18 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 					"Invalid limits",
 					"Limits block is invalid,",
 				)
-				return api.BindingExecutionConfig{}, diags
+				return platform.BindingExecutionConfig{}, diags
 			}
 			var limitsObj models.BindingExecutionConfigPolicyResourceLimit
 			if diags := resourceLimit.As(ctx, &limitsObj, objectAsOptions); diags.HasError() {
-				return api.BindingExecutionConfig{}, diags
+				return platform.BindingExecutionConfig{}, diags
 			}
 
 			policyResourceLimits = append(
 				policyResourceLimits,
-				api.BindingExecutionConfigResourceLimitsPolicyOverrides{
+				platform.BindingExecutionConfigResourceLimitsPolicyOverrides{
 					PolicyName: limitsObj.PolicyName.ValueString(),
-					Limit: api.BindingExecutionConfigResourceLimit{
+					Limit: platform.BindingExecutionConfigResourceLimit{
 						MaxCount:      limitsObj.MaxCount.ValueInt32Pointer(),
 						MaxPercentage: limitsObj.MaxPercentage.ValueFloat32Pointer(),
 						RequiresBoth:  limitsObj.RequiresBoth.ValueBool(),
@@ -341,9 +341,9 @@ func (r bindingResource) getExecutionConfig(ctx context.Context, plan models.Bin
 		}
 	}
 
-	return api.BindingExecutionConfig{
+	return platform.BindingExecutionConfig{
 		DryRun: dryRun,
-		ResourceLimits: &api.BindingExecutionConfigResourceLimits{
+		ResourceLimits: &platform.BindingExecutionConfigResourceLimits{
 			Default:         defaultResourceLimits,
 			PolicyOverrides: policyResourceLimits,
 		},

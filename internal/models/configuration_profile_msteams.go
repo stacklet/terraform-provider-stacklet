@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -41,7 +41,7 @@ func (c ConfigurationProfileMSTeamsDataSource) AttributeTypes() map[string]attr.
 	}
 }
 
-func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileMSTeamsDataSource) Update(cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(cp.ID)
@@ -49,7 +49,7 @@ func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfi
 
 	channelMappings, d := typehelpers.ObjectList[MSTeamsChannelMapping](
 		cp.Record.MSTeamsConfiguration.ChannelMappings,
-		func(entry api.MSTeamsChannelMapping) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.MSTeamsChannelMapping) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"name":       types.StringValue(entry.Name),
 				"team_id":    types.StringValue(string(entry.TeamID)),
@@ -75,7 +75,7 @@ func (m *ConfigurationProfileMSTeamsDataSource) Update(cp api.ConfigurationProfi
 	return diags
 }
 
-func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.ConfigurationProfile) (types.Object, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp platform.ConfigurationProfile) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullObj := types.ObjectNull(MSTeamsAccessConfig{}.AttributeTypes())
 
@@ -127,7 +127,7 @@ func (m ConfigurationProfileMSTeamsDataSource) buildAccessConfig(cp api.Configur
 	)
 }
 
-func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.ConfigurationProfile) (types.Object, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp platform.ConfigurationProfile) (types.Object, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullObj := types.ObjectNull(MSTeamsCustomerConfig{}.AttributeTypes())
 
@@ -171,12 +171,12 @@ func (m ConfigurationProfileMSTeamsDataSource) buildCustomerConfig(cp api.Config
 	)
 }
 
-func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.ConfigurationProfile) (types.Object, diag.Diagnostics) {
+func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp platform.ConfigurationProfile) (types.Object, diag.Diagnostics) {
 	nullObj := types.ObjectNull(MSTeamsEntityDetails{}.AttributeTypes())
 
 	channels, diags := typehelpers.ObjectList[MSTeamsChannelDetails](
 		cp.Record.MSTeamsConfiguration.EntityDetails.Channels,
-		func(entry api.MSTeamsChannelDetail) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.MSTeamsChannelDetail) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"id":   types.StringValue(entry.ID),
 				"name": types.StringValue(entry.Name),
@@ -189,7 +189,7 @@ func (m ConfigurationProfileMSTeamsDataSource) buildEntityDetails(cp api.Configu
 
 	teams, teamsDiags := typehelpers.ObjectList[MSTeamsTeamDetails](
 		cp.Record.MSTeamsConfiguration.EntityDetails.Teams,
-		func(entry api.MSTeamsTeamDetail) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.MSTeamsTeamDetail) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"id":   types.StringValue(entry.ID),
 				"name": types.StringValue(entry.Name),
@@ -229,7 +229,7 @@ func (r ConfigurationProfileMSTeamsResource) AttributeTypes() map[string]attr.Ty
 	return attrTypes
 }
 
-func (m *ConfigurationProfileMSTeamsResource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileMSTeamsResource) Update(cp platform.ConfigurationProfile) diag.Diagnostics {
 	diags := m.ConfigurationProfileMSTeamsDataSource.Update(cp)
 
 	// update state for input fields to match what's returned by the API.

@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
@@ -103,11 +103,11 @@ func (r *configurationProfileResourceOwnerResource) Create(ctx context.Context, 
 		return
 	}
 
-	input := api.ResourceOwnerConfiguration{
-		Default:      api.StringsList(plan.Default),
+	input := platform.ResourceOwnerConfiguration{
+		Default:      platform.StringsList(plan.Default),
 		OrgDomain:    plan.OrgDomain.ValueStringPointer(),
 		OrgDomainTag: plan.OrgDomainTag.ValueStringPointer(),
-		Tags:         api.StringsList(plan.Tags),
+		Tags:         platform.StringsList(plan.Tags),
 	}
 	config, err := r.api.ConfigurationProfile.UpsertResourceOwner(ctx, input)
 	if err != nil {
@@ -126,11 +126,11 @@ func (r *configurationProfileResourceOwnerResource) Update(ctx context.Context, 
 		return
 	}
 
-	input := api.ResourceOwnerConfiguration{
-		Default:      api.StringsList(plan.Default),
+	input := platform.ResourceOwnerConfiguration{
+		Default:      platform.StringsList(plan.Default),
 		OrgDomain:    plan.OrgDomain.ValueStringPointer(),
 		OrgDomainTag: plan.OrgDomainTag.ValueStringPointer(),
-		Tags:         api.StringsList(plan.Tags),
+		Tags:         platform.StringsList(plan.Tags),
 	}
 	config, err := r.api.ConfigurationProfile.UpsertResourceOwner(ctx, input)
 	if err != nil {
@@ -156,5 +156,5 @@ func (r *configurationProfileResourceOwnerResource) Delete(ctx context.Context, 
 }
 
 func (r *configurationProfileResourceOwnerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileResourceOwner))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(platform.ConfigurationProfileResourceOwner))...)
 }

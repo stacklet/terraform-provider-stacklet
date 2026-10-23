@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 )
 
 // MSTeamsIntegrationSurfaceDataSource is the model for the MS Teams integration surface data source.
@@ -18,7 +18,7 @@ type MSTeamsIntegrationSurfaceDataSource struct {
 	TrustRoleARN types.String `tfsdk:"trust_role_arn"`
 }
 
-func (m *MSTeamsIntegrationSurfaceDataSource) Update(ctx context.Context, surface *api.MSTeamsIntegrationSurface) diag.Diagnostics {
+func (m *MSTeamsIntegrationSurfaceDataSource) Update(ctx context.Context, surface *platform.MSTeamsIntegrationSurface) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.BotEndpoint = types.StringValue(surface.BotEndpoint)

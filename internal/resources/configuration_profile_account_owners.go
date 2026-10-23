@@ -16,7 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 	"github.com/stacklet/terraform-provider-stacklet/internal/schemadefault"
@@ -135,11 +135,11 @@ func (r *configurationProfileAccountOwnersResource) Create(ctx context.Context, 
 		return
 	}
 
-	input := api.AccountOwnersConfiguration{
+	input := platform.AccountOwnersConfiguration{
 		Default:      defaultOwners,
 		OrgDomain:    plan.OrgDomain.ValueStringPointer(),
 		OrgDomainTag: plan.OrgDomainTag.ValueStringPointer(),
-		Tags:         api.StringsList(plan.Tags),
+		Tags:         platform.StringsList(plan.Tags),
 	}
 	profileConfig, err := r.api.ConfigurationProfile.UpsertAccountOwners(ctx, input)
 	if err != nil {
@@ -164,11 +164,11 @@ func (r *configurationProfileAccountOwnersResource) Update(ctx context.Context, 
 		return
 	}
 
-	input := api.AccountOwnersConfiguration{
+	input := platform.AccountOwnersConfiguration{
 		Default:      defaultOwners,
 		OrgDomain:    plan.OrgDomain.ValueStringPointer(),
 		OrgDomainTag: plan.OrgDomainTag.ValueStringPointer(),
-		Tags:         api.StringsList(plan.Tags),
+		Tags:         platform.StringsList(plan.Tags),
 	}
 	profileConfig, err := r.api.ConfigurationProfile.UpsertAccountOwners(ctx, input)
 	if err != nil {
@@ -194,17 +194,17 @@ func (r *configurationProfileAccountOwnersResource) Delete(ctx context.Context, 
 }
 
 func (r *configurationProfileAccountOwnersResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(api.ConfigurationProfileAccountOwners))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("profile"), string(platform.ConfigurationProfileAccountOwners))...)
 }
 
-func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.Context, m models.ConfigurationProfileAccountOwnersResource) ([]api.AccountOwners, diag.Diagnostics) {
+func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.Context, m models.ConfigurationProfileAccountOwnersResource) ([]platform.AccountOwners, diag.Diagnostics) {
 	if m.Default.IsNull() {
 		return nil, nil
 	}
 
 	var diags diag.Diagnostics
 
-	owners := make([]api.AccountOwners, 0)
+	owners := make([]platform.AccountOwners, 0)
 	for i, elem := range m.Default.Elements() {
 		block, ok := elem.(types.Object)
 		if !ok {
@@ -222,9 +222,9 @@ func (r configurationProfileAccountOwnersResource) getDefaultOwners(ctx context.
 
 		owners = append(
 			owners,
-			api.AccountOwners{
+			platform.AccountOwners{
 				Account: o.Account.ValueString(),
-				Owners:  api.StringsList(o.Owners),
+				Owners:  platform.StringsList(o.Owners),
 			},
 		)
 	}

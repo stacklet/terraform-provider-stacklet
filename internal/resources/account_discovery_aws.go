@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -96,7 +96,7 @@ func (r *accountDiscoveryAWSResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	input := api.AccountDiscoveryAWSInput{
+	input := platform.AccountDiscoveryAWSInput{
 		Name:          plan.Name.ValueString(),
 		Description:   plan.Description.ValueStringPointer(),
 		CustodianRole: plan.CustodianRole.ValueString(),
@@ -143,7 +143,7 @@ func (r *accountDiscoveryAWSResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	input := api.AccountDiscoveryAWSInput{
+	input := platform.AccountDiscoveryAWSInput{
 		Name:          plan.Name.ValueString(),
 		Description:   plan.Description.ValueStringPointer(),
 		CustodianRole: plan.CustodianRole.ValueString(),

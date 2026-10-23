@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -23,7 +23,7 @@ type UserDataSource struct {
 	Username                types.String `tfsdk:"username"`
 }
 
-func (m *UserDataSource) Update(user *api.User) diag.Diagnostics {
+func (m *UserDataSource) Update(user *platform.User) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(user.ID)

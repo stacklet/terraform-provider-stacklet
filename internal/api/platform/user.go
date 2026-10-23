@@ -1,0 +1,126 @@
+// Copyright Stacklet, Inc. 2025, 2026
+
+package platform
+
+import (
+	"context"
+
+	"github.com/hasura/go-graphql-client"
+
+	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+)
+
+// User is the data returned by reading user data.
+type User struct {
+	ID                      graphql.ID `graphql:"id"`
+	Active                  bool       `graphql:"active"`
+	DisplayName             *string    `graphql:"displayName"`
+	Email                   *string    `graphql:"email"`
+	Name                    *string    `graphql:"name"`
+	Key                     int64      `graphql:"key"`
+	RoleAssignmentPrincipal string     `graphql:"roleAssignmentPrincipal"`
+	SSOUser                 bool       `graphql:"ssoUser"`
+	Username                *string    `graphql:"username"`
+}
+
+// UserCreateInput is the input for creating a user.
+type UserCreateInput struct {
+	Name        string   `json:"name"`
+	DisplayName *string  `json:"displayName,omitempty"`
+	Username    string   `json:"username"`
+	Email       string   `json:"email"`
+	Roles       []string `json:"roles"`
+	SSOUser     bool     `json:"ssoUser"`
+}
+
+func (i UserCreateInput) GetGraphQLType() string {
+	return "AddUserInput"
+}
+
+// UserUpdateInput is the input for updating a user.
+type UserUpdateInput struct {
+	Name        *string `json:"name"`
+	DisplayName *string `json:"displayName"`
+	Key         int64   `json:"key"`
+	Email       string  `json:"email"`
+}
+
+func (i UserUpdateInput) GetGraphQLType() string {
+	return "UpdateUserInput"
+}
+
+type userAPI struct {
+	c *client
+}
+
+// Read returns data for a user by username.
+// Note: The Stacklet API user filter requires the field name "username" with no operator.
+func (u userAPI) Read(ctx context.Context, username string) (*User, error) {
+	var query struct {
+		Users struct {
+			Edges []struct {
+				Node User
+			}
+		} `graphql:"users(filterElement: $filterElement)"`
+	}
+	// Use "username" as field name and omit operator
+	variables := map[string]any{
+		"filterElement": newSimpleFilter("username", username),
+	}
+	if err := u.c.Query(ctx, &query, variables); err != nil {
+		return nil, err
+	}
+
+	if len(query.Users.Edges) == 0 {
+		return nil, api.NotFound{Message: "User not found"}
+	}
+
+	return &query.Users.Edges[0].Node, nil
+}
+
+// Create creates a user.
+func (a userAPI) Create(ctx context.Context, i UserCreateInput) (*User, error) {
+	var mutation struct {
+		Payload struct {
+			User User
+		} `graphql:"addUser(input: $input)"`
+	}
+
+	input := map[string]any{"input": i}
+	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
+		return nil, err
+	}
+
+	return &mutation.Payload.User, nil
+}
+
+// Update updates a user.
+func (a userAPI) Update(ctx context.Context, i UserUpdateInput) (*User, error) {
+	var mutation struct {
+		Payload struct {
+			User User
+		} `graphql:"updateUser(input: $input)"`
+	}
+	input := map[string]any{"input": i}
+	if err := a.c.Mutate(ctx, &mutation, input); err != nil {
+		return nil, err
+	}
+
+	return &mutation.Payload.User, nil
+}
+
+// Delete removes a user.
+func (a userAPI) Delete(ctx context.Context, key int64) error {
+	var mutation struct {
+		Payload struct {
+			Removed []struct {
+				ID graphql.ID
+			}
+		} `graphql:"removeUser(key: $key)"`
+	}
+	variables := map[string]any{"key": graphql.Int(key)}
+	if err := a.c.Mutate(ctx, &mutation, variables); err != nil {
+		return err
+	}
+	return nil
+}

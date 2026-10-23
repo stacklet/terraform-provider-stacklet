@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -22,7 +22,7 @@ type ConfigurationProfileAccountOwnersDataSource struct {
 	Tags         types.List   `tfsdk:"tags"`
 }
 
-func (m *ConfigurationProfileAccountOwnersDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileAccountOwnersDataSource) Update(cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	config := cp.Record.AccountOwnersConfiguration
@@ -35,7 +35,7 @@ func (m *ConfigurationProfileAccountOwnersDataSource) Update(cp api.Configuratio
 
 	defaultOwners, d := typehelpers.ObjectList[AccountOwners](
 		config.Default,
-		func(entry api.AccountOwners) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.AccountOwners) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"account": types.StringValue(entry.Account),
 				"owners":  typehelpers.StringsList(entry.Owners),

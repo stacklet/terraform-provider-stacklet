@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -80,7 +80,7 @@ func (r *userGroupResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
-	input := api.UserGroupCreateInput{
+	input := platform.UserGroupCreateInput{
 		Name:        plan.Name.ValueString(),
 		DisplayName: plan.DisplayName.ValueStringPointer(),
 	}
@@ -119,7 +119,7 @@ func (r *userGroupResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
-	input := api.UserGroupUpdateInput{
+	input := platform.UserGroupUpdateInput{
 		ID:          plan.ID.ValueString(),
 		Name:        plan.Name.ValueStringPointer(),
 		DisplayName: plan.DisplayName.ValueStringPointer(),

@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -83,7 +84,7 @@ func (r *anthropicIntegrationResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	input := api.AnthropicIntegrationInput{
+	input := platform.AnthropicIntegrationInput{
 		OrgID:    plan.OrgID.ValueString(),
 		AdminKey: config.AdminKeyWO.ValueStringPointer(),
 	}
@@ -125,7 +126,7 @@ func (r *anthropicIntegrationResource) Update(ctx context.Context, req resource.
 
 	// The organization can't change in place, so the only update is a new key,
 	// sent when its version says there is one.
-	input := api.AnthropicIntegrationInput{
+	input := platform.AnthropicIntegrationInput{
 		OrgID:    plan.OrgID.ValueString(),
 		AdminKey: credentialToSend(&resp.Diagnostics, !state.AdminKeyWOVersion.Equal(plan.AdminKeyWOVersion), "admin_key_wo", config.AdminKeyWO),
 	}

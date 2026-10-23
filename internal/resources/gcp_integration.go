@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -496,12 +496,12 @@ func (r *gcpIntegrationResource) ImportState(ctx context.Context, req resource.I
 	importState(ctx, req, resp, []string{"key"})
 }
 
-func buildGCPIntegrationInput(ctx context.Context, plan models.GCPIntegrationResource) (api.GCPIntegrationInput, diag.Diagnostics) {
+func buildGCPIntegrationInput(ctx context.Context, plan models.GCPIntegrationResource) (platform.GCPIntegrationInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	customerConfig, d := buildCustomerConfigInput(ctx, plan.CustomerConfigInput)
 	diags.Append(d...)
 
-	input := api.GCPIntegrationInput{
+	input := platform.GCPIntegrationInput{
 		Key:              plan.Key.ValueString(),
 		AccessConfigBlob: plan.AccessConfigBlobInput.ValueStringPointer(),
 		CustomerConfig:   customerConfig,
@@ -509,7 +509,7 @@ func buildGCPIntegrationInput(ctx context.Context, plan models.GCPIntegrationRes
 	return input, diags
 }
 
-func buildCustomerConfigInput(ctx context.Context, obj types.Object) (*api.GCPIntegrationCustomerConfigInput, diag.Diagnostics) {
+func buildCustomerConfigInput(ctx context.Context, obj types.Object) (*platform.GCPIntegrationCustomerConfigInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	if obj.IsNull() || obj.IsUnknown() {
@@ -535,7 +535,7 @@ func buildCustomerConfigInput(ctx context.Context, obj types.Object) (*api.GCPIn
 		return nil, diags
 	}
 
-	return &api.GCPIntegrationCustomerConfigInput{
+	return &platform.GCPIntegrationCustomerConfigInput{
 		Infrastructure:   infrastructure,
 		Organizations:    organizations,
 		CostSources:      costSources,
@@ -543,7 +543,7 @@ func buildCustomerConfigInput(ctx context.Context, obj types.Object) (*api.GCPIn
 	}, diags
 }
 
-func buildInfrastructureInput(ctx context.Context, obj types.Object) (*api.GCPIntegrationCustomerInfrastructureInput, diag.Diagnostics) {
+func buildInfrastructureInput(ctx context.Context, obj types.Object) (*platform.GCPIntegrationCustomerInfrastructureInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	if obj.IsNull() || obj.IsUnknown() {
@@ -562,7 +562,7 @@ func buildInfrastructureInput(ctx context.Context, obj types.Object) (*api.GCPIn
 		return nil, diags
 	}
 
-	return &api.GCPIntegrationCustomerInfrastructureInput{
+	return &platform.GCPIntegrationCustomerInfrastructureInput{
 		ProjectID:        m.ProjectID.ValueStringPointer(),
 		ResourceLocation: m.ResourceLocation.ValueStringPointer(),
 		ResourcePrefix:   m.ResourcePrefix.ValueStringPointer(),
@@ -570,7 +570,7 @@ func buildInfrastructureInput(ctx context.Context, obj types.Object) (*api.GCPIn
 	}, diags
 }
 
-func buildCreateProjectInput(ctx context.Context, obj types.Object) (*api.GCPIntegrationCustomerCreateProjectInput, diag.Diagnostics) {
+func buildCreateProjectInput(ctx context.Context, obj types.Object) (*platform.GCPIntegrationCustomerCreateProjectInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	if obj.IsNull() || obj.IsUnknown() {
@@ -583,15 +583,15 @@ func buildCreateProjectInput(ctx context.Context, obj types.Object) (*api.GCPInt
 		return nil, diags
 	}
 
-	return &api.GCPIntegrationCustomerCreateProjectInput{
+	return &platform.GCPIntegrationCustomerCreateProjectInput{
 		BillingAccountID: m.BillingAccountID.ValueStringPointer(),
 		OrgID:            m.OrgID.ValueStringPointer(),
 		FolderID:         m.FolderID.ValueStringPointer(),
-		Labels:           api.NewTagsList(m.Labels),
+		Labels:           platform.NewTagsList(m.Labels),
 	}, diags
 }
 
-func buildOrganizationsInput(ctx context.Context, l types.List) (*[]api.GCPIntegrationCustomerOrganizationInput, diag.Diagnostics) {
+func buildOrganizationsInput(ctx context.Context, l types.List) (*[]platform.GCPIntegrationCustomerOrganizationInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	if l.IsNull() || l.IsUnknown() {
@@ -604,18 +604,18 @@ func buildOrganizationsInput(ctx context.Context, l types.List) (*[]api.GCPInteg
 		return nil, diags
 	}
 
-	result := make([]api.GCPIntegrationCustomerOrganizationInput, len(ms))
+	result := make([]platform.GCPIntegrationCustomerOrganizationInput, len(ms))
 	for i, m := range ms {
-		result[i] = api.GCPIntegrationCustomerOrganizationInput{
+		result[i] = platform.GCPIntegrationCustomerOrganizationInput{
 			OrgID:      m.OrgID.ValueString(),
-			FolderIDs:  api.StringsList(m.FolderIDs),
-			ProjectIDs: api.StringsList(m.ProjectIDs),
+			FolderIDs:  platform.StringsList(m.FolderIDs),
+			ProjectIDs: platform.StringsList(m.ProjectIDs),
 		}
 	}
 	return &result, diags
 }
 
-func buildCostSourcesInput(ctx context.Context, l types.List) (*[]api.GCPIntegrationCustomerCostSourceInput, diag.Diagnostics) {
+func buildCostSourcesInput(ctx context.Context, l types.List) (*[]platform.GCPIntegrationCustomerCostSourceInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	if l.IsNull() || l.IsUnknown() {
@@ -628,16 +628,16 @@ func buildCostSourcesInput(ctx context.Context, l types.List) (*[]api.GCPIntegra
 		return nil, diags
 	}
 
-	result := make([]api.GCPIntegrationCustomerCostSourceInput, len(ms))
+	result := make([]platform.GCPIntegrationCustomerCostSourceInput, len(ms))
 	for i, m := range ms {
-		result[i] = api.GCPIntegrationCustomerCostSourceInput{
+		result[i] = platform.GCPIntegrationCustomerCostSourceInput{
 			BillingTable: m.BillingTable.ValueString(),
 		}
 	}
 	return &result, diags
 }
 
-func buildSecurityContextsInput(ctx context.Context, l types.List) (*[]api.GCPIntegrationCustomerSecurityContextInput, diag.Diagnostics) {
+func buildSecurityContextsInput(ctx context.Context, l types.List) (*[]platform.GCPIntegrationCustomerSecurityContextInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	if l.IsNull() || l.IsUnknown() {
@@ -650,11 +650,11 @@ func buildSecurityContextsInput(ctx context.Context, l types.List) (*[]api.GCPIn
 		return nil, diags
 	}
 
-	result := make([]api.GCPIntegrationCustomerSecurityContextInput, len(ms))
+	result := make([]platform.GCPIntegrationCustomerSecurityContextInput, len(ms))
 	for i, m := range ms {
-		result[i] = api.GCPIntegrationCustomerSecurityContextInput{
+		result[i] = platform.GCPIntegrationCustomerSecurityContextInput{
 			Name:       m.Name.ValueString(),
-			ExtraRoles: api.StringsList(m.ExtraRoles),
+			ExtraRoles: platform.StringsList(m.ExtraRoles),
 		}
 	}
 	return &result, diags

@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/models"
 )
@@ -69,7 +69,7 @@ func (r *ssoGroupResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	input := api.SSOGroupInput{
+	input := platform.SSOGroupInput{
 		Name:        plan.Name.ValueString(),
 		DisplayName: plan.DisplayName.ValueStringPointer(),
 	}
@@ -108,7 +108,7 @@ func (r *ssoGroupResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	input := api.SSOGroupInput{
+	input := platform.SSOGroupInput{
 		Name:        plan.Name.ValueString(),
 		DisplayName: plan.DisplayName.ValueStringPointer(),
 	}

@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -18,7 +18,7 @@ type PolicyCollectionMappingResource struct {
 	PolicyVersion  types.Int32  `tfsdk:"policy_version"`
 }
 
-func (m *PolicyCollectionMappingResource) Update(policyCollectionMapping *api.PolicyCollectionMapping) diag.Diagnostics {
+func (m *PolicyCollectionMappingResource) Update(policyCollectionMapping *platform.PolicyCollectionMapping) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(policyCollectionMapping.ID)

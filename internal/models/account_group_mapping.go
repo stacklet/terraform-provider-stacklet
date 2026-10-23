@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -17,7 +17,7 @@ type AccountGroupMappingResource struct {
 	AccountKey types.String `tfsdk:"account_key"`
 }
 
-func (m *AccountGroupMappingResource) Update(accountGroupMapping *api.AccountGroupMapping) diag.Diagnostics {
+func (m *AccountGroupMappingResource) Update(accountGroupMapping *platform.AccountGroupMapping) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(accountGroupMapping.ID)

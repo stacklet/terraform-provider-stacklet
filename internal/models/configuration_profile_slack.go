@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -23,7 +23,7 @@ type ConfigurationProfileSlackDataSource struct {
 	Webhooks   types.List   `tfsdk:"webhook"`
 }
 
-func (m *ConfigurationProfileSlackDataSource) Update(cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileSlackDataSource) Update(cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	slackConfig := cp.Record.SlackConfiguration
@@ -35,7 +35,7 @@ func (m *ConfigurationProfileSlackDataSource) Update(cp api.ConfigurationProfile
 
 	webhooks, d := typehelpers.ObjectList[SlackWebhook](
 		cp.Record.SlackConfiguration.Webhooks,
-		func(entry api.SlackWebhook) (map[string]attr.Value, diag.Diagnostics) {
+		func(entry platform.SlackWebhook) (map[string]attr.Value, diag.Diagnostics) {
 			return map[string]attr.Value{
 				"name": types.StringValue(entry.Name),
 				"url":  types.StringValue(entry.URL),
@@ -56,7 +56,7 @@ type ConfigurationProfileSlackResource struct {
 	TokenWOVersion types.String `tfsdk:"token_wo_version"`
 }
 
-func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp api.ConfigurationProfile, webhookVersions map[string]string) diag.Diagnostics {
+func (m *ConfigurationProfileSlackResource) Update(ctx context.Context, cp platform.ConfigurationProfile, webhookVersions map[string]string) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	// fetch current webhook names to preserve declared order

@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -22,7 +22,7 @@ type AccountDiscoveryAWSResource struct {
 	CustodianRole types.String `tfsdk:"custodian_role"`
 }
 
-func (m *AccountDiscoveryAWSResource) Update(accountDiscovery *api.AccountDiscovery) diag.Diagnostics {
+func (m *AccountDiscoveryAWSResource) Update(accountDiscovery *platform.AccountDiscovery) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(accountDiscovery.ID)

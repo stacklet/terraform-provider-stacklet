@@ -3,21 +3,21 @@
 ## Adding a New Resource
 
 1. Create model in `internal/models/`
-2. Create API methods in `internal/api/`
+2. Create API methods in `internal/api/platform/`
 3. Create resource in `internal/resources/`
-4. Register in `internal/resources/resources.go` in the `RESOURCES` slice
+4. Register in the `Resources` variable in `internal/resources/resources.go`
 5. Add examples in `examples/resources/`
-6. Add acceptance test in `acceptance_tests/`
+6. Add acceptance test in `internal/acceptance_tests/`
 7. Generate docs: `just docs`
 
 ## Adding a New Data Source
 
 1. Create or reuse model in `internal/models/`
-2. Create or reuse API methods in `internal/api/`
+2. Create or reuse API methods in `internal/api/platform/`
 3. Create data source in `internal/datasources/`
-4. Register in `internal/datasources/datasources.go` in the `DATASOURCES` slice
+4. Register in the `DataSources` variable in `internal/datasources/datasources.go`
 5. Add examples in `examples/data-sources/`
-6. Add acceptance test in `acceptance_tests/`
+6. Add acceptance test in `internal/acceptance_tests/`
 7. Generate docs: `just docs`
 
 **Note**: Data sources often reuse models and API methods from corresponding resources.

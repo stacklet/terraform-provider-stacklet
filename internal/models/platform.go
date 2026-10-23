@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -23,7 +23,7 @@ type PlatformDataSource struct {
 	AWSOrgReadCustomerConfig types.Object `tfsdk:"aws_org_read_customer_config"`
 }
 
-func (m *PlatformDataSource) Update(ctx context.Context, platform *api.Platform) diag.Diagnostics {
+func (m *PlatformDataSource) Update(ctx context.Context, platform *platform.Platform) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(platform.ID)
@@ -41,7 +41,7 @@ func (m *PlatformDataSource) Update(ctx context.Context, platform *api.Platform)
 	return diags
 }
 
-func (m PlatformDataSource) getCustomerConfig(ctx context.Context, config api.PlatformCustomerConfig) (types.Object, diag.Diagnostics) {
+func (m PlatformDataSource) getCustomerConfig(ctx context.Context, config platform.PlatformCustomerConfig) (types.Object, diag.Diagnostics) {
 	terraformModule, diags := typehelpers.ObjectValue(
 		ctx,
 		&config.TerraformModule,

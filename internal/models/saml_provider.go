@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
 
@@ -21,7 +21,7 @@ type SAMLProviderDataSource struct {
 	IDPAlias      types.String `tfsdk:"idp_alias"`
 }
 
-func (m *SAMLProviderDataSource) Update(samlProvider *api.SAMLProvider) diag.Diagnostics {
+func (m *SAMLProviderDataSource) Update(samlProvider *platform.SAMLProvider) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(samlProvider.ID)

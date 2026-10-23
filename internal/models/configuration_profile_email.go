@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/typehelpers"
 )
@@ -23,7 +23,7 @@ type ConfigurationProfileEmailDataSource struct {
 	SMTP      types.Object `tfsdk:"smtp"`
 }
 
-func (m *ConfigurationProfileEmailDataSource) Update(ctx context.Context, cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileEmailDataSource) Update(ctx context.Context, cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	m.ID = typehelpers.GraphQLIDValue(cp.ID)
@@ -56,7 +56,7 @@ type ConfigurationProfileEmailResource struct {
 	ConfigurationProfileEmailDataSource
 }
 
-func (m *ConfigurationProfileEmailResource) Update(ctx context.Context, cp api.ConfigurationProfile) diag.Diagnostics {
+func (m *ConfigurationProfileEmailResource) Update(ctx context.Context, cp platform.ConfigurationProfile) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	var origSMTPAttrs map[string]attr.Value

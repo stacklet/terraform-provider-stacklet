@@ -3,36 +3,33 @@
 package api
 
 import (
-	"context"
 	"errors"
 	"net/url"
-
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-// apiError represent an error interacting with the API.
-type apiError struct {
+// APIError represent an error interacting with the API.
+type APIError struct {
 	Kind   string
 	Detail string
 }
 
-// Error returns the error summary message.
-func (e apiError) Summary() string {
+// Summary returns the error summary message.
+func (e APIError) Summary() string {
 	return e.Kind
 }
 
 // Error returns the error message.
-func (e apiError) Error() string {
+func (e APIError) Error() string {
 	return e.Detail
 }
 
-// newAPIError returns an apiError from an error.
-func newAPIError(err error) apiError {
+// NewAPIError returns an APIError from an error.
+func NewAPIError(err error) APIError {
 	var urlErr *url.Error
 	if errors.As(err, &urlErr) {
-		return newAPIError(urlErr.Err)
+		return NewAPIError(urlErr.Err)
 	}
-	return apiError{Kind: "API Error", Detail: err.Error()}
+	return APIError{Kind: "API Error", Detail: err.Error()}
 }
 
 // NotFound represents an error raised when an API resource is not found.
@@ -64,28 +61,4 @@ func (e Conflict) Summary() string {
 // Error returns the error message.
 func (e Conflict) Error() string {
 	return e.Message
-}
-
-// fromProblems returns an error from a list of API problems.
-func fromProblems(ctx context.Context, problems []problem) error {
-	if len(problems) == 0 {
-		return nil
-	}
-	for _, problem := range problems[1:] {
-		info := map[string]any{"kind": problem.Kind, "message": problem.Message}
-		tflog.Error(ctx, "discarding additional error", info)
-	}
-	switch problems[0].Kind {
-	case "NotFound":
-		return NotFound{problems[0].Message}
-	case "Conflict":
-		return Conflict{problems[0].Message}
-	}
-	return apiError{Kind: problems[0].Kind, Detail: problems[0].Message}
-}
-
-// problem contains the details for an API query error.
-type problem struct {
-	Kind    string `graphql:"__typename"`
-	Message string
 }

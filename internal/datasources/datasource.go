@@ -7,14 +7,14 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 
-	"github.com/stacklet/terraform-provider-stacklet/internal/api"
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
 // apiDataSource is a datasource based on the API.
 type apiDataSource struct {
-	api *api.API
+	api *platform.API
 }
 
 // Configure sets up API access for the datasource.
