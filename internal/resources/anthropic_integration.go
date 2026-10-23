@@ -23,7 +23,7 @@ var (
 )
 
 type anthropicIntegrationResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *anthropicIntegrationResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

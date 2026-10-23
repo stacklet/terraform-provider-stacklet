@@ -32,7 +32,7 @@ var (
 )
 
 type reportGroupResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *reportGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

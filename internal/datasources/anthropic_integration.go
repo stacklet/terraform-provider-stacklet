@@ -18,7 +18,7 @@ var (
 )
 
 type anthropicIntegrationDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *anthropicIntegrationDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

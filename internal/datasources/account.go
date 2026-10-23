@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &accountDataSource{}
 
 type accountDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *accountDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

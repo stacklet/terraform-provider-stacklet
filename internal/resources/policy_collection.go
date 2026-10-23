@@ -30,7 +30,7 @@ var (
 )
 
 type policyCollectionResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *policyCollectionResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

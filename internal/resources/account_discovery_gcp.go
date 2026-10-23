@@ -25,7 +25,7 @@ var (
 )
 
 type accountDiscoveryGCPResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *accountDiscoveryGCPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

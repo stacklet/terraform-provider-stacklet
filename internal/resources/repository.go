@@ -26,7 +26,7 @@ var (
 
 // repositoryResource defines the resource implementation.
 type repositoryResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *repositoryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

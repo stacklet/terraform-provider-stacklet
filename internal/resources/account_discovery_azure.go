@@ -24,7 +24,7 @@ var (
 )
 
 type accountDiscoveryAzureResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *accountDiscoveryAzureResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
