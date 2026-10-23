@@ -53,7 +53,9 @@ Provider supports multiple authentication methods (in priority order):
 2. Environment variables (`STACKLET_ENDPOINT`, `STACKLET_API_KEY`)
 3. stacklet-admin CLI (`~/.stacklet/config.json`, `~/.stacklet/credentials`)
 
-Each credential is resolved independently using the first non-empty value found. Unit tests in `internal/provider/provider_test.go` verify precedence and mixed sources.
+Each credential is resolved independently using the first non-empty value found.
+
+The IaC API endpoint (`iac_endpoint`) is resolved from the provider block, then the `STACKLET_IAC_ENDPOINT` environment variable. If neither is set, it's derived from the API endpoint by replacing the `api.` hostname prefix with `api.sinistral.` (e.g. `https://api.example.stacklet.io/` becomes `https://api.sinistral.example.stacklet.io/`). If it can't be derived, IaC resources and data sources fail when used. The API key is shared by both APIs. Unit tests in `internal/provider/provider_test.go` verify precedence and mixed sources.
 
 ## Development Tools
 
