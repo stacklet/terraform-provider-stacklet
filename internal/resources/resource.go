@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/iac"
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
@@ -14,7 +15,8 @@ import (
 
 // apiResource is a resource based on the API.
 type apiResource struct {
-	api *platform.API
+	api    *platform.API
+	iacAPI *iac.API
 }
 
 // Configure sets up API access for the resource.
@@ -23,5 +25,6 @@ func (r *apiResource) Configure(_ context.Context, req resource.ConfigureRequest
 		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		r.api = pd.API
+		r.iacAPI = pd.IaCAPI
 	}
 }

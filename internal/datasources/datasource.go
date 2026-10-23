@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/iac"
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
@@ -14,7 +15,8 @@ import (
 
 // apiDataSource is a datasource based on the API.
 type apiDataSource struct {
-	api *platform.API
+	api    *platform.API
+	iacAPI *iac.API
 }
 
 // Configure sets up API access for the datasource.
@@ -23,5 +25,6 @@ func (d *apiDataSource) Configure(_ context.Context, req datasource.ConfigureReq
 		errors.AddDiagError(&resp.Diagnostics, err)
 	} else if pd != nil {
 		d.api = pd.API
+		d.iacAPI = pd.IaCAPI
 	}
 }

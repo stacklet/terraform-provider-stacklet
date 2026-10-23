@@ -5,8 +5,10 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"net/url"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/caarlos0/env/v11"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -17,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
+	"github.com/stacklet/terraform-provider-stacklet/internal/api/iac"
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/datasources"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -28,13 +31,15 @@ var _ provider.Provider = &stackletProvider{}
 
 // providerModel holds the terraform configuration for the provider.
 type providerModel struct {
-	Endpoint types.String `tfsdk:"endpoint"`
-	APIKey   types.String `tfsdk:"api_key"`
+	Endpoint    types.String `tfsdk:"endpoint"`
+	IaCEndpoint types.String `tfsdk:"iac_endpoint"`
+	APIKey      types.String `tfsdk:"api_key"`
 }
 
 // providerEnv holds environment variables supported by the provider.
 type providerEnv struct {
 	Endpoint           string `env:"STACKLET_ENDPOINT"`
+	IaCEndpoint        string `env:"STACKLET_IAC_ENDPOINT"`
 	APIKey             string `env:"STACKLET_API_KEY"`
 	PageSize           int    `env:"STACKLET_PAGE_SIZE" envDefault:"100"`
 	UnreleasedFeatures bool   `env:"STACKLET_UNRELEASED_FEATURES"`
@@ -72,18 +77,20 @@ It allows managing resources like accounts, account groups, policy collections, 
 		Attributes: map[string]schema.Attribute{
 			"api_key": schema.StringAttribute{
 				Description: `
-The API key for Stacklet authentication.
-
-May also be provided via STACKLET_API_KEY environment variable, or from the stacklet-admin CLI configuration.
+The API key for Stacklet authentication. May also be provided via STACKLET_API_KEY environment variable, or from the stacklet-admin CLI configuration.
 `,
 				Optional:  true,
 				Sensitive: true,
 			},
 			"endpoint": schema.StringAttribute{
 				Description: `
-The endpoint URL of the Stacklet GraphQL API.
-
- May also be provided via STACKLET_ENDPOINT environment variable, or from the stacklet-admin CLI configuration.
+The endpoint URL of the Stacklet GraphQL API. May also be provided via STACKLET_ENDPOINT environment variable, or from the stacklet-admin CLI configuration.
+`,
+				Optional: true,
+			},
+			"iac_endpoint": schema.StringAttribute{
+				Description: `
+The endpoint URL of the Stacklet IaC API. May also be provided via STACKLET_IAC_ENDPOINT environment variable. If not set, it's derived from the Stacklet API endpoint.
 `,
 				Optional: true,
 			},
@@ -120,6 +127,11 @@ func (p *stackletProvider) Configure(ctx context.Context, req provider.Configure
 			Version:  p.version,
 			PageSize: env.PageSize,
 		},
+		iac.ClientConfig{
+			Endpoint: creds.IaCEndpoint,
+			APIKey:   creds.APIKey,
+			Version:  p.version,
+		},
 	)
 	resp.ResourceData = providerData
 	resp.DataSourceData = providerData
@@ -142,8 +154,9 @@ func envConfig() (providerEnv, error) {
 }
 
 type credentials struct {
-	Endpoint string
-	APIKey   string
+	Endpoint    string
+	IaCEndpoint string
+	APIKey      string
 }
 
 func getCredentials(config providerModel, env providerEnv) (credentials, diag.Diagnostics) {
@@ -156,6 +169,14 @@ func getCredentials(config providerModel, env providerEnv) (credentials, diag.Di
 			"Unknown Stacklet API Endpoint",
 			"The provider cannot create the Stacklet API client as there is an unknown configuration value for the Stacklet API endpoint. "+
 				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_ENDPOINT environment variable.",
+		)
+	}
+	if config.IaCEndpoint.IsUnknown() {
+		diags.AddAttributeError(
+			tfpath.Root("iac_endpoint"),
+			"Unknown Stacklet IaC API Endpoint",
+			"The provider cannot create the Stacklet IaC API client as there is an unknown configuration value for the Stacklet IaC API endpoint. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the STACKLET_IAC_ENDPOINT environment variable.",
 		)
 	}
 	if config.APIKey.IsUnknown() {
@@ -172,11 +193,15 @@ func getCredentials(config providerModel, env providerEnv) (credentials, diag.Di
 
 	// lookup provider configuration (might return empty strings)
 	creds.Endpoint = config.Endpoint.ValueString()
+	creds.IaCEndpoint = config.IaCEndpoint.ValueString()
 	creds.APIKey = config.APIKey.ValueString()
 
 	// lookup environment variables
 	if creds.Endpoint == "" {
 		creds.Endpoint = env.Endpoint
+	}
+	if creds.IaCEndpoint == "" {
+		creds.IaCEndpoint = env.IaCEndpoint
 	}
 	if creds.APIKey == "" {
 		creds.APIKey = env.APIKey
@@ -204,12 +229,23 @@ func getCredentials(config providerModel, env providerEnv) (credentials, diag.Di
 		}
 	}
 
+	if creds.IaCEndpoint == "" {
+		creds.IaCEndpoint = iacEndpointFromAPIEndpoint(creds.Endpoint)
+	}
+
 	if creds.Endpoint == "" {
 		diags.AddAttributeError(
 			tfpath.Root("endpoint"),
 			"Missing Stacklet API Endpoint",
 			"The provider cannot create the Stacklet API client as there is a missing or empty value for the Stacklet API endpoint. "+
 				"Set the endpoint value in the configuration, in the STACKLET_ENDPOINT environment variable, or login via the stacklet-admin CLI first.",
+		)
+	} else if creds.IaCEndpoint == "" {
+		diags.AddAttributeError(
+			tfpath.Root("iac_endpoint"),
+			"Missing Stacklet IaC API Endpoint",
+			"The provider cannot create the Stacklet IaC API client as the endpoint can't be derived from the Stacklet API endpoint. "+
+				"Set the iac_endpoint value in the configuration, or the STACKLET_IAC_ENDPOINT environment variable.",
 		)
 	}
 	if creds.APIKey == "" {
@@ -221,4 +257,19 @@ func getCredentials(config providerModel, env providerEnv) (credentials, diag.Di
 		)
 	}
 	return creds, diags
+}
+
+// iacEndpointFromAPIEndpoint returns the IaC API endpoint derived from the
+// Stacklet API one, or an empty string if it can't be derived.
+func iacEndpointFromAPIEndpoint(endpoint string) string {
+	u, err := url.Parse(endpoint)
+	if err != nil || !strings.HasPrefix(u.Host, "api.") {
+		return ""
+	}
+	iacURL := url.URL{
+		Scheme: u.Scheme,
+		Host:   "api.sinistral." + strings.TrimPrefix(u.Host, "api."),
+		Path:   "/",
+	}
+	return iacURL.String()
 }
