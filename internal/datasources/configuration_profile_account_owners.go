@@ -16,7 +16,7 @@ import (
 var _ datasource.DataSource = &configurationProfileAccountOwnersDataSource{}
 
 type configurationProfileAccountOwnersDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *configurationProfileAccountOwnersDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

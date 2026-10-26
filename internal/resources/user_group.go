@@ -22,7 +22,7 @@ var (
 )
 
 type userGroupResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *userGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

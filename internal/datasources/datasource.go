@@ -13,18 +13,22 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
-// apiDataSource is a datasource based on the API.
-type apiDataSource struct {
-	api    *platform.API
-	iacAPI *iac.API
+// apiDataSource is a datasource based on an API client.
+type apiDataSource[T providerdata.APIClient] struct {
+	api T
 }
 
 // Configure sets up API access for the datasource.
-func (d *apiDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	if pd, err := providerdata.GetForDataSource(req); err != nil {
+func (d *apiDataSource[T]) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+	if api, err := providerdata.GetAPI[T]("datasource", req.ProviderData); err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		d.api = pd.API
-		d.iacAPI = pd.IaCAPI
+	} else {
+		d.api = api
 	}
 }
+
+// platformAPIDataSource is a datasource based on the platform API.
+type platformAPIDataSource = apiDataSource[*platform.API]
+
+// iacAPIDataSource is a datasource based on the IaC API.
+type iacAPIDataSource = apiDataSource[*iac.API] //nolint:unused

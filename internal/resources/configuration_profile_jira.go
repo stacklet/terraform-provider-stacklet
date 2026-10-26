@@ -27,7 +27,7 @@ var (
 )
 
 type configurationProfileJiraResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *configurationProfileJiraResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &bindingDataSource{}
 
 type bindingDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *bindingDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

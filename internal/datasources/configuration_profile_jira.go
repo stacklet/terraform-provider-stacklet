@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &configurationProfileJiraDataSource{}
 
 type configurationProfileJiraDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *configurationProfileJiraDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

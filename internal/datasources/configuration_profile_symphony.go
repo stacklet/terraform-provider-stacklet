@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &configurationProfileSymphonyDataSource{}
 
 type configurationProfileSymphonyDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *configurationProfileSymphonyDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

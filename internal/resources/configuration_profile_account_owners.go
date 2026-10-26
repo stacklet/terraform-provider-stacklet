@@ -29,7 +29,7 @@ var (
 )
 
 type configurationProfileAccountOwnersResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *configurationProfileAccountOwnersResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

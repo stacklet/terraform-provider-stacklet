@@ -13,18 +13,22 @@ import (
 	"github.com/stacklet/terraform-provider-stacklet/internal/providerdata"
 )
 
-// apiResource is a resource based on the API.
-type apiResource struct {
-	api    *platform.API
-	iacAPI *iac.API
+// apiResource is a resource based on an API client.
+type apiResource[T providerdata.APIClient] struct {
+	api T
 }
 
 // Configure sets up API access for the resource.
-func (r *apiResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	if pd, err := providerdata.GetForResource(req); err != nil {
+func (r *apiResource[T]) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	if api, err := providerdata.GetAPI[T]("resource", req.ProviderData); err != nil {
 		errors.AddDiagError(&resp.Diagnostics, err)
-	} else if pd != nil {
-		r.api = pd.API
-		r.iacAPI = pd.IaCAPI
+	} else {
+		r.api = api
 	}
 }
+
+// platformAPIResource is a resource based on the platform API.
+type platformAPIResource = apiResource[*platform.API]
+
+// iacAPIResource is a resource based on the IaC API.
+type iacAPIResource = apiResource[*iac.API] //nolint:unused

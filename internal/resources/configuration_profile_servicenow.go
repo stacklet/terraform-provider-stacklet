@@ -23,7 +23,7 @@ var (
 )
 
 type configurationProfileServiceNowResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *configurationProfileServiceNowResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

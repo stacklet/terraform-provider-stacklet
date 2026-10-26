@@ -15,7 +15,7 @@ import (
 var _ datasource.DataSource = &userGroupDataSource{}
 
 type userGroupDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *userGroupDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

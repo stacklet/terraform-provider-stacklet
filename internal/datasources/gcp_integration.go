@@ -16,7 +16,7 @@ import (
 var _ datasource.DataSource = &gcpIntegrationDataSource{}
 
 type gcpIntegrationDataSource struct {
-	apiDataSource
+	platformAPIDataSource
 }
 
 func (d *gcpIntegrationDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

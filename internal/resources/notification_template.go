@@ -23,7 +23,7 @@ var (
 )
 
 type notificationTemplateResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *notificationTemplateResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

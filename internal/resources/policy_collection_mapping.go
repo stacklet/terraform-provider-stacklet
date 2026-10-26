@@ -22,7 +22,7 @@ var (
 )
 
 type policyCollectionMappingResource struct {
-	apiResource
+	platformAPIResource
 }
 
 func (r *policyCollectionMappingResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
