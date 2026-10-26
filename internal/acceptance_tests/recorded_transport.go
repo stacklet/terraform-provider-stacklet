@@ -78,6 +78,14 @@ type recordedResponse struct {
 	// REST responses
 	StatusCode int             `json:"status_code,omitempty"`
 	Body       json.RawMessage `json:"body,omitempty"`
+	BodyText   string          `json:"body_text,omitempty"` // non-JSON body
+}
+
+func (r recordedResponse) RESTBody() []byte {
+	if r.BodyText != "" {
+		return []byte(r.BodyText)
+	}
+	return r.Body
 }
 
 // graphqlRequest is used to detect GraphQL requests.
@@ -242,11 +250,10 @@ func (rt *recordedTransport) processRecordRequest(req *http.Request, body []byte
 		recResp.Errors = gqlResp.Errors
 	} else {
 		recResp.StatusCode = resp.StatusCode
-		if len(respBody) > 0 {
-			if !json.Valid(respBody) {
-				return emptyResp, fmt.Errorf("response body is not valid JSON: %s", respBody)
-			}
+		if json.Valid(respBody) {
 			recResp.Body = respBody
+		} else {
+			recResp.BodyText = string(respBody)
 		}
 	}
 
@@ -277,7 +284,7 @@ func (rt *recordedTransport) processReplayRequest(recReq recordedRequest) (*http
 		return &http.Response{
 			StatusCode: statusCode,
 			Status:     fmt.Sprintf("%d %s", statusCode, http.StatusText(statusCode)),
-			Body:       io.NopCloser(bytes.NewReader(rec.Response.Body)),
+			Body:       io.NopCloser(bytes.NewReader(rec.Response.RESTBody())),
 			Header:     make(http.Header),
 		}, nil
 	}
