@@ -4,12 +4,13 @@ package iac
 
 // API provides access to the IaC REST API.
 type API struct {
-	c *client
+	PolicySource policySourceAPI
 }
 
 // New creates an API wrapper.
 func New(config ClientConfig) *API {
+	c := newClient(config)
 	return &API{
-		c: newClient(config),
+		PolicySource: policySourceAPI{c},
 	}
 }

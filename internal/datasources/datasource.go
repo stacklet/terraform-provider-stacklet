@@ -31,4 +31,4 @@ func (d *apiDataSource[T]) Configure(_ context.Context, req datasource.Configure
 type platformAPIDataSource = apiDataSource[*platform.API]
 
 // iacAPIDataSource is a datasource based on the IaC API.
-type iacAPIDataSource = apiDataSource[*iac.API] //nolint:unused
+type iacAPIDataSource = apiDataSource[*iac.API]

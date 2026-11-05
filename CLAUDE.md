@@ -38,7 +38,7 @@ All commands use the `just` task runner:
 ### Adding Resources
 
 1. Create model (`internal/models/`)
-2. Create API methods (`internal/api/platform/`)
+2. Create API methods (`internal/api/platform/`, or `internal/api/iac/` for IaC)
 3. Create resource (`internal/resources/`), register in `resources.go`
 4. Add examples and tests
 5. Run `just docs`

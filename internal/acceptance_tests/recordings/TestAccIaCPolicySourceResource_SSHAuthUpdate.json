@@ -1,0 +1,458 @@
+{
+  "DELETE /policy-sources/test-policy-source": [
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:46.757397Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    }
+  ],
+  "GET /policy-sources/test-policy-source": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:41.940559Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": {
+            "username": "git",
+            "ssh_key": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP\nKgAAAAtzc2gtZWQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1Gw\nAAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt\nktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==\n-----END OPENSSH PRIVATE KEY-----\n",
+            "ssh_passphrase": null
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:41.940559Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": {
+            "username": "git",
+            "ssh_key": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP\nKgAAAAtzc2gtZWQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1Gw\nAAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt\nktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==\n-----END OPENSSH PRIVATE KEY-----\n",
+            "ssh_passphrase": null
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:44.590561Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": {
+            "username": "git",
+            "ssh_key": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBo6Jwjw7\nwQYNZrr9iiO8JWAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDX\nXbfWxmbCKduClJweRKUxdqHnmUHXAAAAoDnrX1ai+rLAVjCJUW1nrcEVqb+JRZ0K5dIOnz\nysKDPFz6LdY4S6uzgZrE/WOcHX7/MgeXpjne8CQuIqej8KDM9XkLGHf010/cg7Fo60YMoG\nUTEPMNoh4wYqZ030I7a5iOjPSRMD2tN+xhb8NSm5gDnYdn9SDkhArS7WGQrWLDf0Eh5qB/\nLhPc79SMQGPhtv5Cwpb6686bmwIJU2/0l4g3M=\n-----END OPENSSH PRIVATE KEY-----\n",
+            "ssh_passphrase": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:44.590561Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": {
+            "username": "git",
+            "ssh_key": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBo6Jwjw7\nwQYNZrr9iiO8JWAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDX\nXbfWxmbCKduClJweRKUxdqHnmUHXAAAAoDnrX1ai+rLAVjCJUW1nrcEVqb+JRZ0K5dIOnz\nysKDPFz6LdY4S6uzgZrE/WOcHX7/MgeXpjne8CQuIqej8KDM9XkLGHf010/cg7Fo60YMoG\nUTEPMNoh4wYqZ030I7a5iOjPSRMD2tN+xhb8NSm5gDnYdn9SDkhArS7WGQrWLDf0Eh5qB/\nLhPc79SMQGPhtv5Cwpb6686bmwIJU2/0l4g3M=\n-----END OPENSSH PRIVATE KEY-----\n",
+            "ssh_passphrase": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:44.590561Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": {
+            "username": "git",
+            "ssh_key": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBo6Jwjw7\nwQYNZrr9iiO8JWAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDX\nXbfWxmbCKduClJweRKUxdqHnmUHXAAAAoDnrX1ai+rLAVjCJUW1nrcEVqb+JRZ0K5dIOnz\nysKDPFz6LdY4S6uzgZrE/WOcHX7/MgeXpjne8CQuIqej8KDM9XkLGHf010/cg7Fo60YMoG\nUTEPMNoh4wYqZ030I7a5iOjPSRMD2tN+xhb8NSm5gDnYdn9SDkhArS7WGQrWLDf0Eh5qB/\nLhPc79SMQGPhtv5Cwpb6686bmwIJU2/0l4g3M=\n-----END OPENSSH PRIVATE KEY-----\n",
+            "ssh_passphrase": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:46.757397Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:46.757397Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    }
+  ],
+  "PATCH /policy-sources/test-policy-source:{\"url\":\"https://github.com/stacklet/test-repo\",\"branch\":null,\"paths\":null,\"extensions\":[\".yaml\",\".yml\"],\"auto_scan\":false,\"auth\":{\"username\":\"bill\",\"token\":\"secret\"}}": [
+    {
+      "request": {
+        "method": "PATCH",
+        "path": "/policy-sources/test-policy-source",
+        "body": {
+          "url": "https://github.com/stacklet/test-repo",
+          "branch": null,
+          "paths": null,
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "auto_scan": false,
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          }
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:46.757397Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    }
+  ],
+  "PATCH /policy-sources/test-policy-source:{\"url\":\"ssh://git@github.com/stacklet/test-repo\",\"branch\":null,\"paths\":null,\"extensions\":[\".yaml\",\".yml\"],\"auto_scan\":false,\"auth\":{\"username\":\"git\",\"ssh_key\":\"-----BEGIN OPENSSH PRIVATE KEY-----\\nb3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBo6Jwjw7\\nwQYNZrr9iiO8JWAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDX\\nXbfWxmbCKduClJweRKUxdqHnmUHXAAAAoDnrX1ai+rLAVjCJUW1nrcEVqb+JRZ0K5dIOnz\\nysKDPFz6LdY4S6uzgZrE/WOcHX7/MgeXpjne8CQuIqej8KDM9XkLGHf010/cg7Fo60YMoG\\nUTEPMNoh4wYqZ030I7a5iOjPSRMD2tN+xhb8NSm5gDnYdn9SDkhArS7WGQrWLDf0Eh5qB/\\nLhPc79SMQGPhtv5Cwpb6686bmwIJU2/0l4g3M=\\n-----END OPENSSH PRIVATE KEY-----\\n\",\"ssh_passphrase\":\"secret\"}}": [
+    {
+      "request": {
+        "method": "PATCH",
+        "path": "/policy-sources/test-policy-source",
+        "body": {
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "branch": null,
+          "paths": null,
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "auto_scan": false,
+          "auth": {
+            "username": "git",
+            "ssh_key": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBo6Jwjw7\nwQYNZrr9iiO8JWAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDX\nXbfWxmbCKduClJweRKUxdqHnmUHXAAAAoDnrX1ai+rLAVjCJUW1nrcEVqb+JRZ0K5dIOnz\nysKDPFz6LdY4S6uzgZrE/WOcHX7/MgeXpjne8CQuIqej8KDM9XkLGHf010/cg7Fo60YMoG\nUTEPMNoh4wYqZ030I7a5iOjPSRMD2tN+xhb8NSm5gDnYdn9SDkhArS7WGQrWLDf0Eh5qB/\nLhPc79SMQGPhtv5Cwpb6686bmwIJU2/0l4g3M=\n-----END OPENSSH PRIVATE KEY-----\n",
+            "ssh_passphrase": "secret"
+          }
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:44.590561Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:42.141147Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    }
+  ],
+  "POST /policy-sources:{\"name\":\"test-policy-source\",\"url\":\"ssh://git@github.com/stacklet/test-repo\",\"extensions\":[\".yaml\",\".yml\"],\"auto_scan\":false,\"auth\":{\"username\":\"git\",\"ssh_key\":\"-----BEGIN OPENSSH PRIVATE KEY-----\\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\\nQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP\\nKgAAAAtzc2gtZWQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1Gw\\nAAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt\\nktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==\\n-----END OPENSSH PRIVATE KEY-----\\n\"}}": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/policy-sources",
+        "body": {
+          "name": "test-policy-source",
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "auto_scan": false,
+          "auth": {
+            "username": "git",
+            "ssh_key": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP\nKgAAAAtzc2gtZWQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1Gw\nAAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt\nktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==\n-----END OPENSSH PRIVATE KEY-----\n"
+          }
+        }
+      },
+      "response": {
+        "status_code": 201,
+        "body": {
+          "name": "test-policy-source",
+          "url": "ssh://git@github.com/stacklet/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:41.940550Z",
+          "updated_at": "2026-11-05T16:38:41.940559Z",
+          "source_scan": {
+            "status": "INITIATED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:41.940497Z",
+            "completed_at": null
+          },
+          "hook_id": "99d1e857-7957-4bb5-bd2e-fac9b6d9df39",
+          "auth": {
+            "username": "git",
+            "ssh_key": "**********",
+            "ssh_passphrase": null
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/99d1e857-7957-4bb5-bd2e-fac9b6d9df39"
+        }
+      }
+    }
+  ]
+}
