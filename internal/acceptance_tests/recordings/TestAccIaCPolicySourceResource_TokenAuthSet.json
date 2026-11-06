@@ -1,0 +1,705 @@
+{
+  "DELETE /policy-sources/test-policy-source": [
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:35.339137Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    }
+  ],
+  "GET /policy-sources/test-policy-source": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:27.252281Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:27.252281Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:29.314458Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:29.314458Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:29.314458Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:29.314458Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:29.314458Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:33.112474Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "ben",
+            "token": "different-secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:33.112474Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "ben",
+            "token": "different-secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:33.112474Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "ben",
+            "token": "different-secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:35.339137Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "ben",
+            "token": "new-secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:35.339137Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": {
+            "username": "ben",
+            "token": "new-secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    }
+  ],
+  "PATCH /policy-sources/test-policy-source:{\"url\":\"https://github.com/test-org/test-repo\",\"branch\":null,\"paths\":null,\"extensions\":[\".yaml\",\".yml\"],\"auto_scan\":false,\"auth\":{\"username\":\"ben\",\"token\":\"different-secret\"}}": [
+    {
+      "request": {
+        "method": "PATCH",
+        "path": "/policy-sources/test-policy-source",
+        "body": {
+          "url": "https://github.com/test-org/test-repo",
+          "branch": null,
+          "paths": null,
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "auto_scan": false,
+          "auth": {
+            "username": "ben",
+            "token": "different-secret"
+          }
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:33.112474Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    }
+  ],
+  "PATCH /policy-sources/test-policy-source:{\"url\":\"https://github.com/test-org/test-repo\",\"branch\":null,\"paths\":null,\"extensions\":[\".yaml\",\".yml\"],\"auto_scan\":false,\"auth\":{\"username\":\"ben\",\"token\":\"new-secret\"}}": [
+    {
+      "request": {
+        "method": "PATCH",
+        "path": "/policy-sources/test-policy-source",
+        "body": {
+          "url": "https://github.com/test-org/test-repo",
+          "branch": null,
+          "paths": null,
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "auto_scan": false,
+          "auth": {
+            "username": "ben",
+            "token": "new-secret"
+          }
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:35.339137Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    }
+  ],
+  "PATCH /policy-sources/test-policy-source:{\"url\":\"https://github.com/test-org/test-repo\",\"branch\":null,\"paths\":null,\"extensions\":[\".yaml\",\".yml\"],\"auto_scan\":false,\"auth\":{\"username\":\"bill\",\"token\":\"secret\"}}": [
+    {
+      "request": {
+        "method": "PATCH",
+        "path": "/policy-sources/test-policy-source",
+        "body": {
+          "url": "https://github.com/test-org/test-repo",
+          "branch": null,
+          "paths": null,
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "auto_scan": false,
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          }
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yml",
+            ".yaml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:29.314458Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "remote authentication required but no callback set"
+            },
+            "started_at": "2026-11-05T16:38:27.395591Z",
+            "completed_at": "2026-11-05T16:38:27.630126Z"
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    }
+  ],
+  "POST /policy-sources:{\"name\":\"test-policy-source\",\"url\":\"https://github.com/test-org/test-repo\",\"extensions\":[\".yaml\",\".yml\"],\"auto_scan\":false}": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/policy-sources",
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "auto_scan": false
+        }
+      },
+      "response": {
+        "status_code": 201,
+        "body": {
+          "name": "test-policy-source",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": null,
+          "branch": null,
+          "auto_scan": false,
+          "created_at": "2026-11-05T16:38:27.252273Z",
+          "updated_at": "2026-11-05T16:38:27.252281Z",
+          "source_scan": {
+            "status": "INITIATED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:27.252232Z",
+            "completed_at": null
+          },
+          "hook_id": "f7309996-4c7d-489a-983a-01403a21fb59",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source/webhooks/f7309996-4c7d-489a-983a-01403a21fb59"
+        }
+      }
+    }
+  ]
+}

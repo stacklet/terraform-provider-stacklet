@@ -64,12 +64,28 @@ func (c *client) Delete(ctx context.Context, path string, response any) error {
 	return c.do(ctx, http.MethodDelete, path, nil, nil, response)
 }
 
-func (c *client) do(ctx context.Context, method string, path string, query url.Values, payload any, response any) error {
-	reqURL, err := url.Parse(c.endpoint)
+// URL returns the full URL for an API path.
+func (c *client) URL(path string) (string, error) {
+	u, err := c.url(path)
 	if err != nil {
-		return api.NewAPIError(fmt.Errorf("invalid IaC API endpoint: %w", err))
+		return "", err
 	}
-	reqURL = reqURL.JoinPath(path)
+	return u.String(), nil
+}
+
+func (c *client) url(path string) (*url.URL, error) {
+	u, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, api.NewAPIError(fmt.Errorf("invalid IaC API endpoint: %w", err))
+	}
+	return u.JoinPath(path), nil
+}
+
+func (c *client) do(ctx context.Context, method string, path string, query url.Values, payload any, response any) error {
+	reqURL, err := c.url(path)
+	if err != nil {
+		return err
+	}
 	reqURL.RawQuery = query.Encode()
 
 	var body io.Reader

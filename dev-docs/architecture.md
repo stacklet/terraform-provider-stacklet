@@ -41,6 +41,7 @@
 - **REST Client**: The IaC client (`internal/api/iac/`) talks to the IaC (Sinistral) REST API, using the same API key as the platform one
   - `Get()`, `Post()`, `Put()`, `Patch()`, `Delete()` methods for JSON requests
   - `resourcePath()` builds request paths, escaping each component
+  - `API` struct with a field per resource type (e.g. `PolicySource`), like the platform one
   - Error responses are converted to `api.NotFound` (404) or `api.APIError`, reporting FastAPI `detail` messages (including validation errors)
 
 ## Resource Architecture
@@ -146,7 +147,8 @@ Models implement `Update(ctx, obj) diag.Diagnostics`. Resource models extend dat
 - One resource/data source per file
 - File names match resource type (e.g., `account.go` for `stacklet_account`)
 - Models in separate `models/` package
-- API methods in the `api/platform/` package
+- API methods in the `api/platform/` package, or `api/iac/` for the IaC API
+- IaC resources and data sources use the `iac_` type prefix (e.g. `stacklet_iac_policy_source`)
 
 ### Naming Conventions
 - Resource types: `xxxResource`, registered with `newFactory(&xxxResource{})`

@@ -31,4 +31,4 @@ func (r *apiResource[T]) Configure(_ context.Context, req resource.ConfigureRequ
 type platformAPIResource = apiResource[*platform.API]
 
 // iacAPIResource is a resource based on the IaC API.
-type iacAPIResource = apiResource[*iac.API] //nolint:unused
+type iacAPIResource = apiResource[*iac.API]

@@ -1,0 +1,258 @@
+{
+  "DELETE /policy-sources/test-policy-source-ds": [
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/policy-sources/test-policy-source-ds"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source-ds",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": [
+            "policies"
+          ],
+          "branch": "main",
+          "auto_scan": true,
+          "created_at": "2026-11-05T16:38:09.334312Z",
+          "updated_at": "2026-11-05T16:38:09.334324Z",
+          "source_scan": {
+            "status": "FAILED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": {
+              "message": "too many redirects or authentication replays"
+            },
+            "started_at": "2026-11-05T16:38:10.439307Z",
+            "completed_at": "2026-11-05T16:38:12.851764Z"
+          },
+          "hook_id": "b499a8d3-3429-4d73-9170-b2ecbdd018c2",
+          "auth": null,
+          "hook_path": "/policy-sources/test-policy-source-ds/webhooks/b499a8d3-3429-4d73-9170-b2ecbdd018c2"
+        }
+      }
+    }
+  ],
+  "GET /policy-sources/test-policy-source-ds": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source-ds"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source-ds",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": [
+            "policies"
+          ],
+          "branch": "main",
+          "auto_scan": true,
+          "created_at": "2026-11-05T16:38:09.334312Z",
+          "updated_at": "2026-11-05T16:38:09.334324Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:10.439307Z",
+            "completed_at": null
+          },
+          "hook_id": "b499a8d3-3429-4d73-9170-b2ecbdd018c2",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source-ds/webhooks/b499a8d3-3429-4d73-9170-b2ecbdd018c2"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source-ds"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source-ds",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": [
+            "policies"
+          ],
+          "branch": "main",
+          "auto_scan": true,
+          "created_at": "2026-11-05T16:38:09.334312Z",
+          "updated_at": "2026-11-05T16:38:09.334324Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:10.439307Z",
+            "completed_at": null
+          },
+          "hook_id": "b499a8d3-3429-4d73-9170-b2ecbdd018c2",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source-ds/webhooks/b499a8d3-3429-4d73-9170-b2ecbdd018c2"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source-ds"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source-ds",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": [
+            "policies"
+          ],
+          "branch": "main",
+          "auto_scan": true,
+          "created_at": "2026-11-05T16:38:09.334312Z",
+          "updated_at": "2026-11-05T16:38:09.334324Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:10.439307Z",
+            "completed_at": null
+          },
+          "hook_id": "b499a8d3-3429-4d73-9170-b2ecbdd018c2",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source-ds/webhooks/b499a8d3-3429-4d73-9170-b2ecbdd018c2"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-sources/test-policy-source-ds"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-source-ds",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": [
+            "policies"
+          ],
+          "branch": "main",
+          "auto_scan": true,
+          "created_at": "2026-11-05T16:38:09.334312Z",
+          "updated_at": "2026-11-05T16:38:09.334324Z",
+          "source_scan": {
+            "status": "STARTED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:10.439307Z",
+            "completed_at": null
+          },
+          "hook_id": "b499a8d3-3429-4d73-9170-b2ecbdd018c2",
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          },
+          "hook_path": "/policy-sources/test-policy-source-ds/webhooks/b499a8d3-3429-4d73-9170-b2ecbdd018c2"
+        }
+      }
+    }
+  ],
+  "POST /policy-sources:{\"name\":\"test-policy-source-ds\",\"url\":\"https://github.com/test-org/test-repo\",\"branch\":\"main\",\"paths\":[\"policies\"],\"extensions\":[\".yaml\",\".yml\"],\"auto_scan\":true,\"auth\":{\"username\":\"bill\",\"token\":\"secret\"}}": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/policy-sources",
+        "body": {
+          "name": "test-policy-source-ds",
+          "url": "https://github.com/test-org/test-repo",
+          "branch": "main",
+          "paths": [
+            "policies"
+          ],
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "auto_scan": true,
+          "auth": {
+            "username": "bill",
+            "token": "secret"
+          }
+        }
+      },
+      "response": {
+        "status_code": 201,
+        "body": {
+          "name": "test-policy-source-ds",
+          "url": "https://github.com/test-org/test-repo",
+          "extensions": [
+            ".yaml",
+            ".yml"
+          ],
+          "paths": [
+            "policies"
+          ],
+          "branch": "main",
+          "auto_scan": true,
+          "created_at": "2026-11-05T16:38:09.334312Z",
+          "updated_at": "2026-11-05T16:38:09.334324Z",
+          "source_scan": {
+            "status": "INITIATED",
+            "added": 0,
+            "updated": 0,
+            "removed": 0,
+            "error_info": null,
+            "started_at": "2026-11-05T16:38:09.334252Z",
+            "completed_at": null
+          },
+          "hook_id": "b499a8d3-3429-4d73-9170-b2ecbdd018c2",
+          "auth": {
+            "username": "bill",
+            "token": "**********"
+          },
+          "hook_path": "/policy-sources/test-policy-source-ds/webhooks/b499a8d3-3429-4d73-9170-b2ecbdd018c2"
+        }
+      }
+    }
+  ]
+}
