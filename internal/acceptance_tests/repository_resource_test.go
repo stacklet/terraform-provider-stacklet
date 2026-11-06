@@ -3,6 +3,7 @@
 package acceptance_tests
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -223,20 +224,12 @@ resource "stacklet_repository" "test" {
 	url = "ssh://git@github.com/stacklet/test-repo"
 	name = "{{.Prefix}}-repo"
 
-	ssh_private_key_wo = <<EOT
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-QyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP
-KgAAAAtzc2gtZWQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1Gw
-AAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt
-ktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==
------END OPENSSH PRIVATE KEY-----
-EOT
+	ssh_private_key_wo = file("{{ fixture_path "id_ed25519" }}")
 	ssh_private_key_wo_version = 1
 }
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINBIt1S68mWzaTbxsvJqUsKtktoEb85tBcGQQmXy8HUb"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", strings.TrimSpace(loadFixture(t, "id_ed25519.pub"))),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_ssh_private_key", "true"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_private_key_wo_version", "1"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_private_key_wo"),
@@ -271,23 +264,14 @@ resource "stacklet_repository" "test" {
 	url = "ssh://git@github.com/stacklet/test-repo"
 	name = "{{.Prefix}}-repo"
 
-	ssh_private_key_wo = <<EOT
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBo6Jwjw7
-wQYNZrr9iiO8JWAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDX
-XbfWxmbCKduClJweRKUxdqHnmUHXAAAAoDnrX1ai+rLAVjCJUW1nrcEVqb+JRZ0K5dIOnz
-ysKDPFz6LdY4S6uzgZrE/WOcHX7/MgeXpjne8CQuIqej8KDM9XkLGHf010/cg7Fo60YMoG
-UTEPMNoh4wYqZ030I7a5iOjPSRMD2tN+xhb8NSm5gDnYdn9SDkhArS7WGQrWLDf0Eh5qB/
-LhPc79SMQGPhtv5Cwpb6686bmwIJU2/0l4g3M=
------END OPENSSH PRIVATE KEY-----
-EOT
+	ssh_private_key_wo = file("{{ fixture_path "id_ed25519_passphrase" }}")
 	ssh_private_key_wo_version = 2
 	ssh_passphrase_wo = "secret"
 	ssh_passphrase_wo_version = 2
 }
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDXXbfWxmbCKduClJweRKUxdqHnmUHX"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", strings.TrimSpace(loadFixture(t, "id_ed25519_passphrase.pub"))),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_ssh_private_key", "true"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_private_key_wo_version", "2"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_private_key_wo"),
@@ -303,20 +287,12 @@ resource "stacklet_repository" "test" {
 	url = "ssh://git@github.com/stacklet/test-repo"
 	name = "{{.Prefix}}-repo"
 
-	ssh_private_key_wo = <<EOT
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-QyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP
-KgAAAAtzc2gtZWQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1Gw
-AAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt
-ktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==
------END OPENSSH PRIVATE KEY-----
-EOT
+	ssh_private_key_wo = file("{{ fixture_path "id_ed25519" }}")
 	ssh_private_key_wo_version = "something else"
 }
 				`,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINBIt1S68mWzaTbxsvJqUsKtktoEb85tBcGQQmXy8HUb"),
+				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", strings.TrimSpace(loadFixture(t, "id_ed25519.pub"))),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_ssh_private_key", "true"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_private_key_wo_version", "something else"),
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "ssh_private_key_wo"),

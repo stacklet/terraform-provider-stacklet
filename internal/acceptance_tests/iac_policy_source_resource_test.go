@@ -278,15 +278,7 @@ resource "stacklet_iac_policy_source" "test" {
 
 	ssh_auth = {
 		user = "git"
-		private_key_wo = <<EOT
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-QyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP
-KgAAAAtzc2gtZWQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1Gw
-AAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt
-ktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==
------END OPENSSH PRIVATE KEY-----
-EOT
+		private_key_wo = file("{{ fixture_path "id_ed25519" }}")
 		private_key_wo_version = 1
 	}
 }
@@ -309,16 +301,7 @@ resource "stacklet_iac_policy_source" "test" {
 
 	ssh_auth = {
 		user = "git"
-		private_key_wo = <<EOT
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBo6Jwjw7
-wQYNZrr9iiO8JWAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDX
-XbfWxmbCKduClJweRKUxdqHnmUHXAAAAoDnrX1ai+rLAVjCJUW1nrcEVqb+JRZ0K5dIOnz
-ysKDPFz6LdY4S6uzgZrE/WOcHX7/MgeXpjne8CQuIqej8KDM9XkLGHf010/cg7Fo60YMoG
-UTEPMNoh4wYqZ030I7a5iOjPSRMD2tN+xhb8NSm5gDnYdn9SDkhArS7WGQrWLDf0Eh5qB/
-LhPc79SMQGPhtv5Cwpb6686bmwIJU2/0l4g3M=
------END OPENSSH PRIVATE KEY-----
-EOT
+		private_key_wo = file("{{ fixture_path "id_ed25519_passphrase" }}")
 		private_key_wo_version = 2
 		passphrase_wo = "secret"
 		passphrase_wo_version = 1
