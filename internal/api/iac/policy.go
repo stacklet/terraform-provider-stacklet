@@ -15,16 +15,16 @@ import (
 type PolicyResources []string
 
 func (r *PolicyResources) UnmarshalJSON(data []byte) error {
-	var resource string
-	if err := json.Unmarshal(data, &resource); err == nil {
-		*r = PolicyResources{resource}
+	var resources []string
+	if err := json.Unmarshal(data, &resources); err == nil {
+		*r = resources
 		return nil
 	}
-	var resources []string
-	if err := json.Unmarshal(data, &resources); err != nil {
+	var resource string
+	if err := json.Unmarshal(data, &resource); err != nil {
 		return err
 	}
-	*r = resources
+	*r = PolicyResources{resource}
 	return nil
 }
 

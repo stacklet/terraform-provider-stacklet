@@ -87,6 +87,12 @@ func TestPolicyListNotFound(t *testing.T) {
 	assert.Equal(t, api.NotFound{Message: "Source not found"}, err)
 }
 
+func TestPolicyResourcesUnmarshalNull(t *testing.T) {
+	var r PolicyResources
+	require.NoError(t, r.UnmarshalJSON([]byte(`null`)))
+	assert.Nil(t, r)
+}
+
 func TestPolicyResourcesUnmarshalInvalid(t *testing.T) {
 	var r PolicyResources
 	assert.Error(t, r.UnmarshalJSON([]byte(`123`)))

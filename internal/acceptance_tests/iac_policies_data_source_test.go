@@ -28,6 +28,24 @@ data "stacklet_iac_policies" "test" {}
 			PlanOnly:    true,
 			ExpectError: regexp.MustCompile(`No attribute specified when one \(and only one\) of`),
 		},
+		{
+			Config: `
+data "stacklet_iac_policies" "test" {
+  source = ""
+}
+`,
+			PlanOnly:    true,
+			ExpectError: regexp.MustCompile(`string length must be at least 1`),
+		},
+		{
+			Config: `
+data "stacklet_iac_policies" "test" {
+  collection = ""
+}
+`,
+			PlanOnly:    true,
+			ExpectError: regexp.MustCompile(`string length must be at least 1`),
+		},
 	}
 	runRecordedAccTest(t, "TestAccIaCPoliciesDataSource_InvalidConfig", steps)
 }

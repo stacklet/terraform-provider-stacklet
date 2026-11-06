@@ -38,11 +38,15 @@ func (d *iacPoliciesDataSource) Schema(ctx context.Context, req datasource.Schem
 				Optional:    true,
 				Validators: []validator.String{
 					stringvalidator.ExactlyOneOf(path.MatchRoot("collection")),
+					stringvalidator.LengthAtLeast(1),
 				},
 			},
 			"collection": schema.StringAttribute{
 				Description: "The name of the policy collection to fetch policies from. Exactly one of `source` or `collection` must be set.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.LengthAtLeast(1),
+				},
 			},
 			"policies": schema.ListNestedAttribute{
 				Description: "The policies, sorted by name.",
