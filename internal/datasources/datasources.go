@@ -42,6 +42,7 @@ var DataSources = datasources{
 		newFactory(&iacPoliciesDataSource{}),
 		newFactory(&iacPolicyCollectionDataSource{}),
 		newFactory(&iacPolicySourceDataSource{}),
+		newFactory(&iacProjectDataSource{}),
 		newFactory(&msteamsIntegrationSurfaceDataSource{}),
 		newFactory(&notificationTemplateDataSource{}),
 		newFactory(&platformDataSource{}),
