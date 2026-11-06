@@ -14,22 +14,22 @@ func TestAccConfigurationProfileSlackResource(t *testing.T) {
 		// Create and Read testing - webhooks intentionally not in alphabetical order
 		{
 			Config: `
-				resource "stacklet_configuration_profile_slack" "test" {
-					user_fields = ["username", "email"]
+resource "stacklet_configuration_profile_slack" "test" {
+  user_fields = ["username", "email"]
 
-					webhook {
-						name = "foo"
-						url_wo = "https://example.com/webhooks/one"
-						url_wo_version = "1"
-					}
+  webhook {
+    name           = "foo"
+    url_wo         = "https://example.com/webhooks/one"
+    url_wo_version = "1"
+  }
 
-					webhook {
-						name = "bar"
-						url_wo = "https://example.com/webhooks/two"
-						url_wo_version = "1"
-					}
-				}
-			`,
+  webhook {
+    name           = "bar"
+    url_wo         = "https://example.com/webhooks/two"
+    url_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_slack.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_slack.test", "profile"),
@@ -61,20 +61,20 @@ func TestAccConfigurationProfileSlackResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_slack" "test" {
-					webhook {
-						name = "foo-new"
-						url_wo = "https://example.com/webhooks/one-new"
-						url_wo_version = "1"
-					}
+resource "stacklet_configuration_profile_slack" "test" {
+  webhook {
+    name           = "foo-new"
+    url_wo         = "https://example.com/webhooks/one-new"
+    url_wo_version = "1"
+  }
 
-					webhook {
-						name = "bar-new"
-						url_wo = "https://example.com/webhooks/two-new"
-						url_wo_version = "1"
-					}
-				}
-			`,
+  webhook {
+    name           = "bar-new"
+    url_wo         = "https://example.com/webhooks/two-new"
+    url_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_slack.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_slack.test", "profile"),
@@ -97,20 +97,20 @@ func TestAccConfigurationProfileSlackResource_URLChange(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-				resource "stacklet_configuration_profile_slack" "test" {
-					webhook {
-						name = "foo"
-						url_wo = "https://example.com/webhooks/one"
-						url_wo_version = "1"
-					}
+resource "stacklet_configuration_profile_slack" "test" {
+  webhook {
+    name           = "foo"
+    url_wo         = "https://example.com/webhooks/one"
+    url_wo_version = "1"
+  }
 
-					webhook {
-						name = "bar"
-						url_wo = "https://example.com/webhooks/two"
-						url_wo_version = "1"
-					}
-				}
-			`,
+  webhook {
+    name           = "bar"
+    url_wo         = "https://example.com/webhooks/two"
+    url_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_slack.test", "id"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "webhook.#", "2"),
@@ -133,20 +133,20 @@ func TestAccConfigurationProfileSlackResource_URLChange(t *testing.T) {
 		// Same version, URLs should remain the same
 		{
 			Config: `
-				resource "stacklet_configuration_profile_slack" "test" {
-					webhook {
-						name = "foo"
-						url_wo = "https://example.com/webhooks/one-new"
-						url_wo_version = "1"
-					}
+resource "stacklet_configuration_profile_slack" "test" {
+  webhook {
+    name           = "foo"
+    url_wo         = "https://example.com/webhooks/one-new"
+    url_wo_version = "1"
+  }
 
-					webhook {
-						name = "bar"
-						url_wo = "https://example.com/webhooks/two"
-						url_wo_version = "1"
-					}
-				}
-			`,
+  webhook {
+    name           = "bar"
+    url_wo         = "https://example.com/webhooks/two"
+    url_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "webhook.0.name", "foo"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "webhook.0.url_wo_version", "1"),
@@ -169,20 +169,20 @@ func TestAccConfigurationProfileSlackResource_URLChange(t *testing.T) {
 		// Version changed for first webhook, URL should change
 		{
 			Config: `
-				resource "stacklet_configuration_profile_slack" "test" {
-					webhook {
-						name = "foo"
-						url_wo = "https://example.com/webhooks/one-new"
-						url_wo_version = "2"
-					}
+resource "stacklet_configuration_profile_slack" "test" {
+  webhook {
+    name           = "foo"
+    url_wo         = "https://example.com/webhooks/one-new"
+    url_wo_version = "2"
+  }
 
-					webhook {
-						name = "bar"
-						url_wo = "https://example.com/webhooks/two"
-						url_wo_version = "1"
-					}
-				}
-			`,
+  webhook {
+    name           = "bar"
+    url_wo         = "https://example.com/webhooks/two"
+    url_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "webhook.0.name", "foo"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_slack.test", "webhook.0.url_wo_version", "2"),

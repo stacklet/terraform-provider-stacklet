@@ -10,30 +10,30 @@ import (
 
 func TestAccPolicyCollectionMappingResource(t *testing.T) {
 	baseline := `
-		data "stacklet_policy" "policy1" {
-			name = "cost-aws:aws-rds-instance-unused-inform"
-		}
+data "stacklet_policy" "policy1" {
+  name = "cost-aws:aws-rds-instance-unused-inform"
+}
 
-		data "stacklet_policy" "policy2" {
-			name = "cost-aws:aws-redshift-unused-inform"
-		}
+data "stacklet_policy" "policy2" {
+  name = "cost-aws:aws-redshift-unused-inform"
+}
 
-		resource "stacklet_policy_collection" "test" {
-			name = "{{.Prefix}}-collection-mapping"
-			description = "Test policy collection"
-			cloud_provider = "AWS"
-		}
-	`
+resource "stacklet_policy_collection" "test" {
+  name           = "{{.Prefix}}-collection-mapping"
+  description    = "Test policy collection"
+  cloud_provider = "AWS"
+}
+`
 	steps := []resource.TestStep{
 		// Create and Read testing
 		{
 			Config: baseline + `
-				resource "stacklet_policy_collection_mapping" "test" {
-					collection_uuid = stacklet_policy_collection.test.uuid
-					policy_uuid = data.stacklet_policy.policy1.uuid
-					policy_version = data.stacklet_policy.policy1.version
-				}
-			`,
+resource "stacklet_policy_collection_mapping" "test" {
+  collection_uuid = stacklet_policy_collection.test.uuid
+  policy_uuid     = data.stacklet_policy.policy1.uuid
+  policy_version  = data.stacklet_policy.policy1.version
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "collection_uuid"),
 				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "policy_uuid"),
@@ -53,12 +53,12 @@ func TestAccPolicyCollectionMappingResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: baseline + `
-				resource "stacklet_policy_collection_mapping" "test" {
-					collection_uuid = stacklet_policy_collection.test.uuid
-					policy_uuid = data.stacklet_policy.policy2.uuid
-					policy_version = data.stacklet_policy.policy2.version
-				}
-			`,
+resource "stacklet_policy_collection_mapping" "test" {
+  collection_uuid = stacklet_policy_collection.test.uuid
+  policy_uuid     = data.stacklet_policy.policy2.uuid
+  policy_version  = data.stacklet_policy.policy2.version
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "collection_uuid"),
 				resource.TestCheckResourceAttrSet("stacklet_policy_collection_mapping.test", "policy_uuid"),

@@ -13,12 +13,12 @@ func TestAccUserResource(t *testing.T) {
 		// Create and Read
 		{
 			Config: `
-				resource "stacklet_user" "test" {
-					name     = "{{.Prefix}}-user"
-					username = "test_user"
-					email    = "test@stacklet.io"
-				}
-			`,
+resource "stacklet_user" "test" {
+  name     = "{{.Prefix}}-user"
+  username = "test_user"
+  email    = "test@stacklet.io"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_user.test", "name", prefixName("user")),
 				resource.TestCheckResourceAttr("stacklet_user.test", "username", "test_user"),
@@ -40,13 +40,13 @@ func TestAccUserResource(t *testing.T) {
 		// Update
 		{
 			Config: `
-				resource "stacklet_user" "test" {
-					name         = "{{.Prefix}}-user-updated"
-					username     = "test_user"
-					email        = "test+updated@stacklet.io"
-					display_name = "Test User"
-				}
-			`,
+resource "stacklet_user" "test" {
+  name         = "{{.Prefix}}-user-updated"
+  username     = "test_user"
+  email        = "test+updated@stacklet.io"
+  display_name = "Test User"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_user.test", "name", prefixName("user-updated")),
 				resource.TestCheckResourceAttr("stacklet_user.test", "username", "test_user"),

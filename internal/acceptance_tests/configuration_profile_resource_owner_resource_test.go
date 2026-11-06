@@ -13,8 +13,8 @@ func TestAccConfigurationProfileResourceOwnerResource(t *testing.T) {
 		// Minimal configuration
 		{
 			Config: `
-				resource "stacklet_configuration_profile_resource_owner" "test" {}
-			`,
+resource "stacklet_configuration_profile_resource_owner" "test" {}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_resource_owner.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_resource_owner.test", "profile"),
@@ -27,13 +27,13 @@ func TestAccConfigurationProfileResourceOwnerResource(t *testing.T) {
 		// Full configuration
 		{
 			Config: `
-				resource "stacklet_configuration_profile_resource_owner" "test" {
-					default = ["owner1@example.com", "owner2@example.com"]
-					org_domain = "example.com"
-					org_domain_tag = "domain"
-					tags = ["owner", "team"]
-				}
-			`,
+resource "stacklet_configuration_profile_resource_owner" "test" {
+  default        = ["owner1@example.com", "owner2@example.com"]
+  org_domain     = "example.com"
+  org_domain_tag = "domain"
+  tags           = ["owner", "team"]
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_resource_owner.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_resource_owner.test", "profile"),
@@ -56,13 +56,13 @@ func TestAccConfigurationProfileResourceOwnerResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_resource_owner" "test" {
-					default = ["owner3@example.com", "owner4@example.com", "owner5@example.com"]
-					org_domain = "updated.com"
-					org_domain_tag = "domain_tag"
-					tags = ["updated_owner", "updated_team", "department"]
-				}
-			`,
+resource "stacklet_configuration_profile_resource_owner" "test" {
+  default        = ["owner3@example.com", "owner4@example.com", "owner5@example.com"]
+  org_domain     = "updated.com"
+  org_domain_tag = "domain_tag"
+  tags           = ["updated_owner", "updated_team", "department"]
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_resource_owner.test", "default.#", "3"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_resource_owner.test", "default.0", "owner3@example.com"),

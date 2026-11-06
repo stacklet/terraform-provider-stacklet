@@ -13,15 +13,15 @@ func TestAccConfigurationProfileServiceNowResource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-				resource "stacklet_configuration_profile_servicenow" "test" {
-					endpoint = "https://dev12345.service-now.com"
-					username = "test-user"
-					password_wo = "test-password"
-					password_wo_version = "1"
-					issue_type = "incident"
-					closed_state = "closed"
-				}
-			`,
+resource "stacklet_configuration_profile_servicenow" "test" {
+  endpoint            = "https://dev12345.service-now.com"
+  username            = "test-user"
+  password_wo         = "test-password"
+  password_wo_version = "1"
+  issue_type          = "incident"
+  closed_state        = "closed"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_servicenow.test", "id"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_servicenow.test", "profile", "servicenow"),
@@ -51,15 +51,15 @@ func TestAccConfigurationProfileServiceNowResource_PasswordChange(t *testing.T) 
 	steps := []resource.TestStep{
 		{
 			Config: `
-				resource "stacklet_configuration_profile_servicenow" "test" {
-					endpoint = "https://dev12345.service-now.com"
-					username = "test-user"
-					password_wo = "initial-password"
-					password_wo_version = "1"
-					issue_type = "incident"
-					closed_state = "closed"
-				}
-			`,
+resource "stacklet_configuration_profile_servicenow" "test" {
+  endpoint            = "https://dev12345.service-now.com"
+  username            = "test-user"
+  password_wo         = "initial-password"
+  password_wo_version = "1"
+  issue_type          = "incident"
+  closed_state        = "closed"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_servicenow.test", "id"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_servicenow.test", "endpoint", "https://dev12345.service-now.com"),
@@ -75,15 +75,15 @@ func TestAccConfigurationProfileServiceNowResource_PasswordChange(t *testing.T) 
 		// Same version, password should remain the same
 		{
 			Config: `
-				resource "stacklet_configuration_profile_servicenow" "test" {
-					endpoint = "https://dev12345.service-now.com"
-					username = "test-user"
-					password_wo = "new-password-content"
-					password_wo_version = "1"
-					issue_type = "incident"
-					closed_state = "closed"
-				}
-			`,
+resource "stacklet_configuration_profile_servicenow" "test" {
+  endpoint            = "https://dev12345.service-now.com"
+  username            = "test-user"
+  password_wo         = "new-password-content"
+  password_wo_version = "1"
+  issue_type          = "incident"
+  closed_state        = "closed"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_servicenow.test", "endpoint", "https://dev12345.service-now.com"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_servicenow.test", "username", "test-user"),
@@ -99,15 +99,15 @@ func TestAccConfigurationProfileServiceNowResource_PasswordChange(t *testing.T) 
 		// Version changed, password should change
 		{
 			Config: `
-				resource "stacklet_configuration_profile_servicenow" "test" {
-					endpoint = "https://dev12345.service-now.com"
-					username = "test-user"
-					password_wo = "new-password-content"
-					password_wo_version = "2"
-					issue_type = "incident"
-					closed_state = "closed"
-				}
-			`,
+resource "stacklet_configuration_profile_servicenow" "test" {
+  endpoint            = "https://dev12345.service-now.com"
+  username            = "test-user"
+  password_wo         = "new-password-content"
+  password_wo_version = "2"
+  issue_type          = "incident"
+  closed_state        = "closed"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_servicenow.test", "endpoint", "https://dev12345.service-now.com"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_servicenow.test", "username", "test-user"),

@@ -13,35 +13,35 @@ func TestAccGCPIntegrationResource(t *testing.T) {
 		// Create and Read
 		{
 			Config: `
-					resource "stacklet_gcp_integration" "test" {
-						key = "{{.Prefix}}-gcp-integration"
-						customer_config_input = {
-							infrastructure = {
-								project_id        = "{{.Prefix}}-stacklet-project"
-								resource_location = "us-central1"
-								resource_prefix   = "stacklet"
-							}
-							organizations = [
-								{
-									org_id      = "123456789"
-									folder_ids  = ["111111111"]
-									project_ids = ["my-project-1"]
-								}
-							]
-							cost_sources = [
-								{
-									billing_table = "my-billing-project.my_dataset.gcp_billing_export"
-								}
-							]
-							security_contexts = [
-								{
-									name        = "custom-ctx"
-									extra_roles = ["roles/MyRole"]
-								}
-							]
-						}
-					}
-				`,
+resource "stacklet_gcp_integration" "test" {
+  key = "{{.Prefix}}-gcp-integration"
+  customer_config_input = {
+    infrastructure = {
+      project_id        = "{{.Prefix}}-stacklet-project"
+      resource_location = "us-central1"
+      resource_prefix   = "stacklet"
+    }
+    organizations = [
+      {
+        org_id      = "123456789"
+        folder_ids  = ["111111111"]
+        project_ids = ["my-project-1"]
+      }
+    ]
+    cost_sources = [
+      {
+        billing_table = "my-billing-project.my_dataset.gcp_billing_export"
+      }
+    ]
+    security_contexts = [
+      {
+        name        = "custom-ctx"
+        extra_roles = ["roles/MyRole"]
+      }
+    ]
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_gcp_integration.test", "id"),
 				resource.TestCheckResourceAttr("stacklet_gcp_integration.test", "key", prefixName("gcp-integration")),
@@ -73,38 +73,38 @@ func TestAccGCPIntegrationResource(t *testing.T) {
 		// Update customer_config_input
 		{
 			Config: `
-					resource "stacklet_gcp_integration" "test" {
-						key = "{{.Prefix}}-gcp-integration"
-						customer_config_input = {
-							infrastructure = {
-								project_id        = "{{.Prefix}}-stacklet-project"
-								resource_location = "us-east1"
-								resource_prefix   = "stacklet"
-							}
-							organizations = [
-								{
-									org_id      = "123456789"
-									folder_ids  = ["111111111", "222222222"]
-									project_ids = ["my-project-1", "my-project-2"]
-								}
-							]
-							cost_sources = [
-								{
-									billing_table = "my-billing-project.my_dataset.gcp_billing_export"
-								},
-								{
-									billing_table = "my-billing-project.my_dataset.gcp_billing_export_v2"
-								}
-							]
-							security_contexts = [
-								{
-									name        = "custom-ctx"
-									extra_roles = ["roles/MyRole", "roles/MyOtherRole"]
-								}
-							]
-						}
-					}
-				`,
+resource "stacklet_gcp_integration" "test" {
+  key = "{{.Prefix}}-gcp-integration"
+  customer_config_input = {
+    infrastructure = {
+      project_id        = "{{.Prefix}}-stacklet-project"
+      resource_location = "us-east1"
+      resource_prefix   = "stacklet"
+    }
+    organizations = [
+      {
+        org_id      = "123456789"
+        folder_ids  = ["111111111", "222222222"]
+        project_ids = ["my-project-1", "my-project-2"]
+      }
+    ]
+    cost_sources = [
+      {
+        billing_table = "my-billing-project.my_dataset.gcp_billing_export"
+      },
+      {
+        billing_table = "my-billing-project.my_dataset.gcp_billing_export_v2"
+      }
+    ]
+    security_contexts = [
+      {
+        name        = "custom-ctx"
+        extra_roles = ["roles/MyRole", "roles/MyOtherRole"]
+      }
+    ]
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_gcp_integration.test", "customer_config.infrastructure.resource_location", "us-east1"),
 				resource.TestCheckResourceAttr("stacklet_gcp_integration.test", "customer_config.organizations.0.folder_ids.#", "2"),

@@ -43,6 +43,17 @@ Testing individual tests: `just test -run TestAccAccountResource`
 - `prefixName()` - Adds test prefixes via `TF_ACC_PREFIX`
 - `ConfigPlanChecks` with `plancheck.ExpectResourceAction()` - Validates plan actions
 - Template rendering for test configurations
+- `loadFixture()` - Returns the content of a file in `internal/acceptance_tests/fixtures/` (e.g. SSH keys). In config templates, use `file("{{ fixture_path "name" }}")` to read it from Terraform
+
+**Test Configurations**: Inline Terraform configs start at the first column and are formatted as by `terraform fmt`:
+
+```go
+Config: `
+resource "stacklet_account" "test" {
+  name = "{{.Prefix}}-account"
+}
+`,
+```
 
 **Unit Tests**: Table-driven tests with testify assertions (e.g., `internal/provider/provider_test.go`). Run with: `just test-unit`
 

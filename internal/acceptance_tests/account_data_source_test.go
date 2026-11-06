@@ -10,26 +10,26 @@ import (
 
 func TestAccAccountDataSource(t *testing.T) {
 	baseline := `
-		resource "stacklet_account" "test" {
-			name = "{{.Prefix}}-account-ds"
-			key = "999999999999"
-			cloud_provider = "AWS"
-			description = "Test AWS account"
-			short_name = "{{.Prefix}}-account-ds"
-			email = "test@example.com"
-			variables = jsonencode({
-				environment = "test"
-			})
-		}
-	`
+resource "stacklet_account" "test" {
+  name           = "{{.Prefix}}-account-ds"
+  key            = "999999999999"
+  cloud_provider = "AWS"
+  description    = "Test AWS account"
+  short_name     = "{{.Prefix}}-account-ds"
+  email          = "test@example.com"
+  variables = jsonencode({
+    environment = "test"
+  })
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				data "stacklet_account" "test" {
-					key = stacklet_account.test.key
-					cloud_provider = stacklet_account.test.cloud_provider
-				}
-			`,
+data "stacklet_account" "test" {
+  key            = stacklet_account.test.key
+  cloud_provider = stacklet_account.test.cloud_provider
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "name", prefixName("account-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_account.test", "key", "999999999999"),

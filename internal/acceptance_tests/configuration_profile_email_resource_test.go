@@ -14,21 +14,21 @@ func TestAccConfigurationProfileEmailResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_email" "test" {
-					from = "user@example.com"
-					ses_region = "us-east-1"
+resource "stacklet_configuration_profile_email" "test" {
+  from       = "user@example.com"
+  ses_region = "us-east-1"
 
-					smtp = {
-						server = "smtp.example.com"
-						port = "1234"
-						ssl = true
-						username = "user"
+  smtp = {
+    server   = "smtp.example.com"
+    port     = "1234"
+    ssl      = true
+    username = "user"
 
-						password_wo = "secret"
-						password_wo_version = "1"
-					}
-				}
-			`,
+    password_wo         = "secret"
+    password_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_email.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_email.test", "profile"),
@@ -54,21 +54,21 @@ func TestAccConfigurationProfileEmailResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_email" "test" {
-					from = "updated-user@example.com"
-					ses_region = "us-east-2"
+resource "stacklet_configuration_profile_email" "test" {
+  from       = "updated-user@example.com"
+  ses_region = "us-east-2"
 
-					smtp = {
-						server = "new-smtp.example.com"
-						port = "5678"
-						ssl = false
-						username = "new-user"
+  smtp = {
+    server   = "new-smtp.example.com"
+    port     = "5678"
+    ssl      = false
+    username = "new-user"
 
-						password_wo = "secret"
-						password_wo_version = "1"
-					}
-				}
-			`,
+    password_wo         = "secret"
+    password_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_email.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_email.test", "profile"),
@@ -90,21 +90,21 @@ func TestAccConfigurationProfileEmailResource_PasswordChange(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-				resource "stacklet_configuration_profile_email" "test" {
-					from = "user@example.com"
-					ses_region = "us-east-1"
+resource "stacklet_configuration_profile_email" "test" {
+  from       = "user@example.com"
+  ses_region = "us-east-1"
 
-					smtp = {
-						server = "smtp.example.com"
-						port = "1234"
-						ssl = true
-						username = "user"
+  smtp = {
+    server   = "smtp.example.com"
+    port     = "1234"
+    ssl      = true
+    username = "user"
 
-						password_wo = "secret"
-						password_wo_version = "1"
-					}
-				}
-			`,
+    password_wo         = "secret"
+    password_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_email.test", "smtp.password_wo_version", "1"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_email.test", "smtp.password"),
@@ -117,21 +117,21 @@ func TestAccConfigurationProfileEmailResource_PasswordChange(t *testing.T) {
 		// Same version, password should remain the same
 		{
 			Config: `
-				resource "stacklet_configuration_profile_email" "test" {
-					from = "user@example.com"
-					ses_region = "us-east-1"
+resource "stacklet_configuration_profile_email" "test" {
+  from       = "user@example.com"
+  ses_region = "us-east-1"
 
-					smtp = {
-						server = "smtp.example.com"
-						port = "1234"
-						ssl = true
-						username = "user"
+  smtp = {
+    server   = "smtp.example.com"
+    port     = "1234"
+    ssl      = true
+    username = "user"
 
-						password_wo = "new-secret"
-						password_wo_version = "1"
-					}
-				}
-			`,
+    password_wo         = "new-secret"
+    password_wo_version = "1"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_email.test", "smtp.password_wo_version", "1"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_email.test", "smtp.password"),
@@ -146,21 +146,21 @@ func TestAccConfigurationProfileEmailResource_PasswordChange(t *testing.T) {
 		// Version changed, password should change
 		{
 			Config: `
-				resource "stacklet_configuration_profile_email" "test" {
-					from = "user@example.com"
-					ses_region = "us-east-1"
+resource "stacklet_configuration_profile_email" "test" {
+  from       = "user@example.com"
+  ses_region = "us-east-1"
 
-					smtp = {
-						server = "smtp.example.com"
-						port = "1234"
-						ssl = true
-						username = "user"
+  smtp = {
+    server   = "smtp.example.com"
+    port     = "1234"
+    ssl      = true
+    username = "user"
 
-						password_wo = "new-secret"
-						password_wo_version = "2"
-					}
-				}
-			`,
+    password_wo         = "new-secret"
+    password_wo_version = "2"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_email.test", "smtp.password_wo_version", "2"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_email.test", "smtp.password"),

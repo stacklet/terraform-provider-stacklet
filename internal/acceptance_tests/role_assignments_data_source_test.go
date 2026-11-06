@@ -12,10 +12,10 @@ func TestAccRoleAssignmentsDataSource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-				data "stacklet_role_assignments" "system" {
-					target = "system:all"
-				}
-			`,
+data "stacklet_role_assignments" "system" {
+  target = "system:all"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				// Check that assignments list is present (may be empty)
 				resource.TestCheckResourceAttrSet("data.stacklet_role_assignments.system", "assignments.#"),

@@ -13,11 +13,11 @@ func TestAccUserGroupResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-				resource "stacklet_user_group" "test" {
-					name         = "{{.Prefix}}-user-group"
-					display_name = "Test User Group"
-				}
-			`,
+resource "stacklet_user_group" "test" {
+  name         = "{{.Prefix}}-user-group"
+  display_name = "Test User Group"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_user_group.test", "name", prefixName("user-group")),
 				resource.TestCheckResourceAttr("stacklet_user_group.test", "display_name", "Test User Group"),
@@ -37,11 +37,11 @@ func TestAccUserGroupResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_user_group" "test" {
-					name         = "{{.Prefix}}-user-group-updated"
-					display_name = "Updated User Group"
-				}
-			`,
+resource "stacklet_user_group" "test" {
+  name         = "{{.Prefix}}-user-group-updated"
+  display_name = "Updated User Group"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_user_group.test", "name", prefixName("user-group-updated")),
 				resource.TestCheckResourceAttr("stacklet_user_group.test", "display_name", "Updated User Group"),

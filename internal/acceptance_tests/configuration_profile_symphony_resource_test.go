@@ -14,13 +14,13 @@ func TestAccConfigurationProfileSymphonyResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_symphony" "test" {
-					agent_domain = "example.symphony.com"
-					service_account = "test-service-account"
-					private_key_wo = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7\n-----END PRIVATE KEY-----"
-					private_key_wo_version = "1"
-				}
-			`,
+resource "stacklet_configuration_profile_symphony" "test" {
+  agent_domain           = "example.symphony.com"
+  service_account        = "test-service-account"
+  private_key_wo         = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7\n-----END PRIVATE KEY-----"
+  private_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_symphony.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_symphony.test", "profile"),
@@ -42,13 +42,13 @@ func TestAccConfigurationProfileSymphonyResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_symphony" "test" {
-					agent_domain = "updated.symphony.com"
-					service_account = "updated-service-account"
-					private_key_wo = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7\n-----END PRIVATE KEY-----"
-					private_key_wo_version = "1"
-				}
-			`,
+resource "stacklet_configuration_profile_symphony" "test" {
+  agent_domain           = "updated.symphony.com"
+  service_account        = "updated-service-account"
+  private_key_wo         = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7\n-----END PRIVATE KEY-----"
+  private_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_symphony.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_symphony.test", "profile"),
@@ -68,13 +68,13 @@ func TestAccConfigurationProfileSymphonyResource_PrivateKeyChange(t *testing.T) 
 	steps := []resource.TestStep{
 		{
 			Config: `
-				resource "stacklet_configuration_profile_symphony" "test" {
-					agent_domain = "example.symphony.com"
-					service_account = "test-service-account"
-					private_key_wo = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7\n-----END PRIVATE KEY-----"
-					private_key_wo_version = "1"
-				}
-			`,
+resource "stacklet_configuration_profile_symphony" "test" {
+  agent_domain           = "example.symphony.com"
+  service_account        = "test-service-account"
+  private_key_wo         = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7\n-----END PRIVATE KEY-----"
+  private_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_symphony.test", "id"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_symphony.test", "agent_domain", "example.symphony.com"),
@@ -90,13 +90,13 @@ func TestAccConfigurationProfileSymphonyResource_PrivateKeyChange(t *testing.T) 
 		// Same version, private key should remain the same
 		{
 			Config: `
-				resource "stacklet_configuration_profile_symphony" "test" {
-					agent_domain = "example.symphony.com"
-					service_account = "test-service-account"
-					private_key_wo = "-----BEGIN PRIVATE KEY-----\nNEW_KEY_CONTENT_HERE\n-----END PRIVATE KEY-----"
-					private_key_wo_version = "1"
-				}
-			`,
+resource "stacklet_configuration_profile_symphony" "test" {
+  agent_domain           = "example.symphony.com"
+  service_account        = "test-service-account"
+  private_key_wo         = "-----BEGIN PRIVATE KEY-----\nNEW_KEY_CONTENT_HERE\n-----END PRIVATE KEY-----"
+  private_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_symphony.test", "agent_domain", "example.symphony.com"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_symphony.test", "service_account", "test-service-account"),
@@ -112,13 +112,13 @@ func TestAccConfigurationProfileSymphonyResource_PrivateKeyChange(t *testing.T) 
 		// Version changed, private key should change
 		{
 			Config: `
-				resource "stacklet_configuration_profile_symphony" "test" {
-					agent_domain = "example.symphony.com"
-					service_account = "test-service-account"
-					private_key_wo = "-----BEGIN PRIVATE KEY-----\nNEW_KEY_CONTENT_HERE\n-----END PRIVATE KEY-----"
-					private_key_wo_version = "2"
-				}
-			`,
+resource "stacklet_configuration_profile_symphony" "test" {
+  agent_domain           = "example.symphony.com"
+  service_account        = "test-service-account"
+  private_key_wo         = "-----BEGIN PRIVATE KEY-----\nNEW_KEY_CONTENT_HERE\n-----END PRIVATE KEY-----"
+  private_key_wo_version = "2"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_symphony.test", "agent_domain", "example.symphony.com"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_symphony.test", "service_account", "test-service-account"),

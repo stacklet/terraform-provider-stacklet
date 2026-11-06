@@ -12,24 +12,24 @@ func TestAccIaCPolicySourceDataSource(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-				resource "stacklet_iac_policy_source" "test" {
-					name = "{{.Prefix}}-policy-source-ds"
-					url = "https://github.com/test-org/test-repo"
-					branch = "main"
-					paths = ["policies"]
-					auto_scan = true
+resource "stacklet_iac_policy_source" "test" {
+  name      = "{{.Prefix}}-policy-source-ds"
+  url       = "https://github.com/test-org/test-repo"
+  branch    = "main"
+  paths     = ["policies"]
+  auto_scan = true
 
-					token_auth = {
-						user = "bill"
-						token_wo = "secret"
-						token_wo_version = 1
-					}
-				}
+  token_auth = {
+    user             = "bill"
+    token_wo         = "secret"
+    token_wo_version = 1
+  }
+}
 
-				data "stacklet_iac_policy_source" "test" {
-					name = stacklet_iac_policy_source.test.name
-				}
-			`,
+data "stacklet_iac_policy_source" "test" {
+  name = stacklet_iac_policy_source.test.name
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.stacklet_iac_policy_source.test", "name", prefixName("policy-source-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_iac_policy_source.test", "url", "https://github.com/test-org/test-repo"),

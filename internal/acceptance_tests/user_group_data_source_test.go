@@ -10,18 +10,18 @@ import (
 
 func TestAccUserGroupDataSource(t *testing.T) {
 	baseline := `
-		resource "stacklet_user_group" "test" {
-			name         = "{{.Prefix}}-user-group-ds"
-			display_name = "Test User Group DS"
-		}
-	`
+resource "stacklet_user_group" "test" {
+  name         = "{{.Prefix}}-user-group-ds"
+  display_name = "Test User Group DS"
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				data "stacklet_user_group" "test" {
-					name = stacklet_user_group.test.name
-				}
-			`,
+data "stacklet_user_group" "test" {
+  name = stacklet_user_group.test.name
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.stacklet_user_group.test", "name", prefixName("user-group-ds")),
 				resource.TestCheckResourceAttr("data.stacklet_user_group.test", "display_name", "Test User Group DS"),

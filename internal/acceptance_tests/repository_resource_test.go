@@ -14,12 +14,12 @@ func TestAccRepositoryResource_Attrs(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
-						description = "Test repository"
-					}
-				`,
+resource "stacklet_repository" "test" {
+  url         = "https://github.com/test-org/test-repo"
+  name        = "{{.Prefix}}-repo"
+  description = "Test repository"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_repository.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_repository.test", "uuid"),
@@ -55,12 +55,12 @@ func TestAccRepositoryResource_Update(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
-						description = "Test repository"
-					}
-				`,
+resource "stacklet_repository" "test" {
+  url         = "https://github.com/test-org/test-repo"
+  name        = "{{.Prefix}}-repo"
+  description = "Test repository"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("repo")),
@@ -69,12 +69,12 @@ func TestAccRepositoryResource_Update(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-real-repo"
-						description = "Real test repository"
-					}
-				`,
+resource "stacklet_repository" "test" {
+  url         = "https://github.com/test-org/test-repo"
+  name        = "{{.Prefix}}-real-repo"
+  description = "Real test repository"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "url", "https://github.com/test-org/test-repo"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("real-repo")),
@@ -83,12 +83,12 @@ func TestAccRepositoryResource_Update(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-real-repo"
-						name = "{{.Prefix}}-real-repo"
-						description = "Real test repository"
-					}
-				`,
+resource "stacklet_repository" "test" {
+  url         = "https://github.com/test-org/test-real-repo"
+  name        = "{{.Prefix}}-real-repo"
+  description = "Real test repository"
+}
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					plancheck.ExpectResourceAction("stacklet_repository.test", plancheck.ResourceActionReplace),
@@ -108,12 +108,12 @@ func TestAccRepositoryResource_HTTPAuthSet(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
+resource "stacklet_repository" "test" {
+  url  = "https://github.com/test-org/test-repo"
+  name = "{{.Prefix}}-repo"
 
-					}
-				`,
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "auth_user"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_auth_token", "false"),
@@ -123,13 +123,13 @@ func TestAccRepositoryResource_HTTPAuthSet(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
+resource "stacklet_repository" "test" {
+  url  = "https://github.com/test-org/test-repo"
+  name = "{{.Prefix}}-repo"
 
-						auth_token_wo = "secret"
-					}
-				`,
+  auth_token_wo = "secret"
+}
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					// auth_token_wo alone doesn't trigger a change
@@ -139,15 +139,15 @@ func TestAccRepositoryResource_HTTPAuthSet(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
+resource "stacklet_repository" "test" {
+  url  = "https://github.com/test-org/test-repo"
+  name = "{{.Prefix}}-repo"
 
-						auth_user = "bill"
-						auth_token_wo = "secret"
-						auth_token_wo_version = 1
-					}
-				`,
+  auth_user             = "bill"
+  auth_token_wo         = "secret"
+  auth_token_wo_version = 1
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "auth_user", "bill"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_auth_token", "true"),
@@ -163,15 +163,15 @@ func TestAccRepositoryResource_HTTPAuthClear(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
+resource "stacklet_repository" "test" {
+  url  = "https://github.com/test-org/test-repo"
+  name = "{{.Prefix}}-repo"
 
-						auth_user = "bill"
-						auth_token_wo = "secret"
-						auth_token_wo_version = 1
-					}
-				`,
+  auth_user             = "bill"
+  auth_token_wo         = "secret"
+  auth_token_wo_version = 1
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "auth_user", "bill"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_auth_token", "true"),
@@ -181,15 +181,15 @@ func TestAccRepositoryResource_HTTPAuthClear(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
+resource "stacklet_repository" "test" {
+  url  = "https://github.com/test-org/test-repo"
+  name = "{{.Prefix}}-repo"
 
-						auth_user = "bill"
-						auth_token_wo = "different-secret"
-						auth_token_wo_version = 1
-					}
-				`,
+  auth_user             = "bill"
+  auth_token_wo         = "different-secret"
+  auth_token_wo_version = 1
+}
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					// auth_token_wo alone doesn't trigger a change
@@ -199,11 +199,11 @@ func TestAccRepositoryResource_HTTPAuthClear(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_repository" "test" {
-						url = "https://github.com/test-org/test-repo"
-						name = "{{.Prefix}}-repo"
-					}
-				`,
+resource "stacklet_repository" "test" {
+  url  = "https://github.com/test-org/test-repo"
+  name = "{{.Prefix}}-repo"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckNoResourceAttr("stacklet_repository.test", "auth_user"),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_auth_token", "false"),
@@ -221,13 +221,13 @@ func TestAccRepositoryResource_SSHUpdate(t *testing.T) {
 			// Create with simple SSH config.
 			Config: `
 resource "stacklet_repository" "test" {
-	url = "ssh://git@github.com/stacklet/test-repo"
-	name = "{{.Prefix}}-repo"
+  url  = "ssh://git@github.com/stacklet/test-repo"
+  name = "{{.Prefix}}-repo"
 
-	ssh_private_key_wo = file("{{ fixture_path "id_ed25519" }}")
-	ssh_private_key_wo_version = 1
+  ssh_private_key_wo         = file("{{ fixture_path "id_ed25519" }}")
+  ssh_private_key_wo_version = 1
 }
-				`,
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", strings.TrimSpace(loadFixture(t, "id_ed25519.pub"))),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_ssh_private_key", "true"),
@@ -242,14 +242,14 @@ resource "stacklet_repository" "test" {
 			// Quick check for _wo/_wo_version behaviour.
 			Config: `
 resource "stacklet_repository" "test" {
-	url = "ssh://git@github.com/stacklet/test-repo"
-	name = "{{.Prefix}}-repo"
+  url  = "ssh://git@github.com/stacklet/test-repo"
+  name = "{{.Prefix}}-repo"
 
-	ssh_private_key_wo = "ignore-because-version-unchanged"
-	ssh_private_key_wo_version = 1
-	ssh_passphrase_wo = "ignore-because-version-unchanged"
+  ssh_private_key_wo         = "ignore-because-version-unchanged"
+  ssh_private_key_wo_version = 1
+  ssh_passphrase_wo          = "ignore-because-version-unchanged"
 }
-				`,
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					// _wo_version unchanged, nothing to do
@@ -261,15 +261,15 @@ resource "stacklet_repository" "test" {
 			// Set a new key with a passphrase.
 			Config: `
 resource "stacklet_repository" "test" {
-	url = "ssh://git@github.com/stacklet/test-repo"
-	name = "{{.Prefix}}-repo"
+  url  = "ssh://git@github.com/stacklet/test-repo"
+  name = "{{.Prefix}}-repo"
 
-	ssh_private_key_wo = file("{{ fixture_path "id_ed25519_passphrase" }}")
-	ssh_private_key_wo_version = 2
-	ssh_passphrase_wo = "secret"
-	ssh_passphrase_wo_version = 2
+  ssh_private_key_wo         = file("{{ fixture_path "id_ed25519_passphrase" }}")
+  ssh_private_key_wo_version = 2
+  ssh_passphrase_wo          = "secret"
+  ssh_passphrase_wo_version  = 2
 }
-				`,
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", strings.TrimSpace(loadFixture(t, "id_ed25519_passphrase.pub"))),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_ssh_private_key", "true"),
@@ -284,13 +284,13 @@ resource "stacklet_repository" "test" {
 			// Restore more-or-less the original config.
 			Config: `
 resource "stacklet_repository" "test" {
-	url = "ssh://git@github.com/stacklet/test-repo"
-	name = "{{.Prefix}}-repo"
+  url  = "ssh://git@github.com/stacklet/test-repo"
+  name = "{{.Prefix}}-repo"
 
-	ssh_private_key_wo = file("{{ fixture_path "id_ed25519" }}")
-	ssh_private_key_wo_version = "something else"
+  ssh_private_key_wo         = file("{{ fixture_path "id_ed25519" }}")
+  ssh_private_key_wo_version = "something else"
 }
-				`,
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_repository.test", "ssh_public_key", strings.TrimSpace(loadFixture(t, "id_ed25519.pub"))),
 				resource.TestCheckResourceAttr("stacklet_repository.test", "has_ssh_private_key", "true"),

@@ -13,9 +13,9 @@ func TestAccConfigurationProfileAccountOwnersResource(t *testing.T) {
 		// Minimal configuration
 		{
 			Config: `
-				resource "stacklet_configuration_profile_account_owners" "test" {
-				}
-			`,
+resource "stacklet_configuration_profile_account_owners" "test" {
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_account_owners.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_account_owners.test", "profile"),
@@ -28,18 +28,18 @@ func TestAccConfigurationProfileAccountOwnersResource(t *testing.T) {
 		// Full configuration
 		{
 			Config: `
-				resource "stacklet_configuration_profile_account_owners" "test" {
-					default = [
-						{
-							account = "123456789012"
-							owners = ["owner1@example.com", "owner2@example.com"]
-						}
-					]
-					org_domain = "example.com"
-					org_domain_tag = "domain"
-					tags = ["owner", "team"]
-				}
-			`,
+resource "stacklet_configuration_profile_account_owners" "test" {
+  default = [
+    {
+      account = "123456789012"
+      owners  = ["owner1@example.com", "owner2@example.com"]
+    }
+  ]
+  org_domain     = "example.com"
+  org_domain_tag = "domain"
+  tags           = ["owner", "team"]
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_account_owners.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_account_owners.test", "profile"),
@@ -64,22 +64,22 @@ func TestAccConfigurationProfileAccountOwnersResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_account_owners" "test" {
-					default = [
-						{
-							account = "123456789012"
-							owners = ["owner1@example.com"]
-						},
-						{
-							account = "210987654321"
-							owners = ["owner3@example.com", "owner4@example.com"]
-						}
-					]
-					org_domain = "updated.com"
-					org_domain_tag = "domain_tag"
-					tags = ["updated_owner", "updated_team", "department"]
-				}
-			`,
+resource "stacklet_configuration_profile_account_owners" "test" {
+  default = [
+    {
+      account = "123456789012"
+      owners  = ["owner1@example.com"]
+    },
+    {
+      account = "210987654321"
+      owners  = ["owner3@example.com", "owner4@example.com"]
+    }
+  ]
+  org_domain     = "updated.com"
+  org_domain_tag = "domain_tag"
+  tags           = ["updated_owner", "updated_team", "department"]
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_account_owners.test", "default.#", "2"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_account_owners.test", "default.0.account", "123456789012"),
