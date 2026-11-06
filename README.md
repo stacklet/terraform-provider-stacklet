@@ -201,3 +201,7 @@ from terraform.  To enable debug:
    the release on GitHub and builds packages.  Once it completes, the release
    will be published and the Terraform registry will pick up the new release
    automatically.
+
+## License
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE).

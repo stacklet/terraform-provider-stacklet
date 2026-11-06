@@ -1,4 +1,5 @@
 // Copyright Stacklet, Inc. 2025, 2026
+// SPDX-License-Identifier: Apache-2.0
 
 // package api provides functionality shared by the API clients.
 package api

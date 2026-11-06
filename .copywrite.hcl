@@ -1,7 +1,7 @@
 schema_version = 1
 
 project {
-  license          = ""
+  license          = "Apache-2.0"
   copyright_holder = "Stacklet, Inc."
 
   header_ignore = [
