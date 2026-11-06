@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/defaults"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -18,4 +19,9 @@ func EmptyListDefault(attrType attr.Type) defaults.List {
 // EmptyMapDefault returns an empty map default for a resource field.
 func EmptyMapDefault(elementType attr.Type) defaults.Map {
 	return mapdefault.StaticValue(types.MapValueMust(elementType, map[string]attr.Value{}))
+}
+
+// EmptySetDefault returns an empty set default for a resource field.
+func EmptySetDefault(elementType attr.Type) defaults.Set {
+	return setdefault.StaticValue(types.SetValueMust(elementType, []attr.Value{}))
 }

@@ -1,0 +1,257 @@
+{
+  "DELETE /policy-collections/test-other-policy-collection": [
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/policy-collections/test-other-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-other-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:53.156337Z",
+          "updated_at": "2026-11-06T12:00:53.156337Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "DELETE /policy-collections/test-policy-collection": [
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/policy-collections/test-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.745727Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "GET /policy-collections/test-other-policy-collection": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-other-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-other-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:53.156337Z",
+          "updated_at": "2026-11-06T12:00:53.156337Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "GET /policy-collections/test-policy-collection": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.007553Z",
+          "is_mirror": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.007553Z",
+          "is_mirror": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": true,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.391037Z",
+          "is_mirror": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": true,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.391037Z",
+          "is_mirror": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.745727Z",
+          "is_mirror": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-policy-collection"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.745727Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "PATCH /policy-collections/test-policy-collection:{\"policies\":[],\"is_default\":false}": [
+    {
+      "request": {
+        "method": "PATCH",
+        "path": "/policy-collections/test-policy-collection",
+        "body": {
+          "policies": [],
+          "is_default": false
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.745727Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "PATCH /policy-collections/test-policy-collection:{\"policies\":[],\"is_default\":true}": [
+    {
+      "request": {
+        "method": "PATCH",
+        "path": "/policy-collections/test-policy-collection",
+        "body": {
+          "policies": [],
+          "is_default": true
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": true,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.391037Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "POST /policy-collections:{\"name\":\"test-other-policy-collection\",\"policies\":[],\"is_default\":false}": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/policy-collections",
+        "body": {
+          "name": "test-other-policy-collection",
+          "policies": [],
+          "is_default": false
+        }
+      },
+      "response": {
+        "status_code": 201,
+        "body": {
+          "name": "test-other-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:53.156337Z",
+          "updated_at": "2026-11-06T12:00:53.156337Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "POST /policy-collections:{\"name\":\"test-policy-collection\",\"policies\":[],\"is_default\":false}": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/policy-collections",
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": false
+        }
+      },
+      "response": {
+        "status_code": 201,
+        "body": {
+          "name": "test-policy-collection",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-06T12:00:52.007553Z",
+          "updated_at": "2026-11-06T12:00:52.007553Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ]
+}

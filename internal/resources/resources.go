@@ -42,6 +42,7 @@ var Resources = resources{
 		newFactory(&configurationProfileSymphonyResource{}),
 		newFactory(&datadogIntegrationResource{}),
 		newFactory(&gcpIntegrationResource{}),
+		newFactory(&iacPolicyCollectionResource{}),
 		newFactory(&iacPolicySourceResource{}),
 		newFactory(&notificationTemplateResource{}),
 		newFactory(&policyCollectionMappingResource{}),
