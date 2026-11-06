@@ -10,27 +10,27 @@ import (
 
 func TestAccConfigurationProfileJiraDataSource(t *testing.T) {
 	baseline := `
-		resource "stacklet_configuration_profile_jira" "test" {
-			url = "https://example.atlassian.net"
-			user = "test@example.com"
-			api_key_wo = "test-api-key"
-			api_key_wo_version = "1"
+resource "stacklet_configuration_profile_jira" "test" {
+  url                = "https://example.atlassian.net"
+  user               = "test@example.com"
+  api_key_wo         = "test-api-key"
+  api_key_wo_version = "1"
 
-			project {
-				name = "Test Project"
-				project = "TEST"
-				issue_type = "Task"
-				closed_status = "Done"
-			}
-		}
-	`
+  project {
+    name          = "Test Project"
+    project       = "TEST"
+    issue_type    = "Task"
+    closed_status = "Done"
+  }
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				data "stacklet_configuration_profile_jira" "test" {
-					depends_on = [stacklet_configuration_profile_jira.test]
-				}
-			`,
+data "stacklet_configuration_profile_jira" "test" {
+  depends_on = [stacklet_configuration_profile_jira.test]
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrPair("stacklet_configuration_profile_jira.test", "id", "data.stacklet_configuration_profile_jira.test", "id"),
 				resource.TestCheckResourceAttrPair("stacklet_configuration_profile_jira.test", "profile", "data.stacklet_configuration_profile_jira.test", "profile"),

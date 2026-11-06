@@ -10,17 +10,17 @@ import (
 
 func TestAccSSOGroupDataSource(t *testing.T) {
 	baseline := `
-		resource "stacklet_sso_group" "test" {
-			name = "{{.Prefix}}-sso-group-ds"
-		}
-	`
+resource "stacklet_sso_group" "test" {
+  name = "{{.Prefix}}-sso-group-ds"
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				data "stacklet_sso_group" "test" {
-					name = stacklet_sso_group.test.name
-				}
-			`,
+data "stacklet_sso_group" "test" {
+  name = stacklet_sso_group.test.name
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.stacklet_sso_group.test", "name", prefixName("sso-group-ds")),
 				resource.TestCheckResourceAttrSet("data.stacklet_sso_group.test", "id"),

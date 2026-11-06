@@ -10,19 +10,19 @@ import (
 
 func TestAccUserDataSource(t *testing.T) {
 	baseline := `
-		resource "stacklet_user" "test" {
-			name     = "{{.Prefix}}-user-ds"
-			username = "test_user_ds"
-			email    = "test@stacklet.io"
-		}
-	`
+resource "stacklet_user" "test" {
+  name     = "{{.Prefix}}-user-ds"
+  username = "test_user_ds"
+  email    = "test@stacklet.io"
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				data "stacklet_user" "test" {
-					username = stacklet_user.test.username
-				}
-			`,
+data "stacklet_user" "test" {
+  username = stacklet_user.test.username
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.stacklet_user.test", "username", "test_user_ds"),
 				resource.TestCheckResourceAttr("data.stacklet_user.test", "name", prefixName("user-ds")),

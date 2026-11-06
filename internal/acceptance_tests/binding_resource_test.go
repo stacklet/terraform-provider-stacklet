@@ -13,32 +13,32 @@ func TestAccBindingResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-				resource "stacklet_account_group" "test" {
-					name = "{{.Prefix}}-binding-group"
-					description = "Test account group for binding"
-					cloud_provider = "AWS"
-					regions = ["us-east-1"]
-				}
+resource "stacklet_account_group" "test" {
+  name           = "{{.Prefix}}-binding-group"
+  description    = "Test account group for binding"
+  cloud_provider = "AWS"
+  regions        = ["us-east-1"]
+}
 
-				resource "stacklet_policy_collection" "test" {
-					name = "{{.Prefix}}-binding-collection"
-					description = "Test policy collection for binding"
-					cloud_provider = "AWS"
-				}
+resource "stacklet_policy_collection" "test" {
+  name           = "{{.Prefix}}-binding-collection"
+  description    = "Test policy collection for binding"
+  cloud_provider = "AWS"
+}
 
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding"
-					description = "Test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-					auto_deploy = true
-					schedule = "rate(1 hour)"
-					variables = jsonencode({
-						environment = "test"
-						region = "us-east-1"
-					})
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                   = "{{.Prefix}}-binding"
+  description            = "Test binding"
+  account_group_uuid     = stacklet_account_group.test.uuid
+  policy_collection_uuid = stacklet_policy_collection.test.uuid
+  auto_deploy            = true
+  schedule               = "rate(1 hour)"
+  variables = jsonencode({
+    environment = "test"
+    region      = "us-east-1"
+  })
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_binding.test", "name", prefixName("binding")),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Test binding"),
@@ -63,33 +63,33 @@ func TestAccBindingResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_account_group" "test" {
-					name = "{{.Prefix}}-binding-group"
-					description = "Test account group for binding"
-					cloud_provider = "AWS"
-					regions = ["us-east-1", "us-east-2"]
-				}
+resource "stacklet_account_group" "test" {
+  name           = "{{.Prefix}}-binding-group"
+  description    = "Test account group for binding"
+  cloud_provider = "AWS"
+  regions        = ["us-east-1", "us-east-2"]
+}
 
-				resource "stacklet_policy_collection" "test" {
-					name = "{{.Prefix}}-binding-collection"
-					description = "Test policy collection for binding"
-					cloud_provider = "AWS"
-				}
+resource "stacklet_policy_collection" "test" {
+  name           = "{{.Prefix}}-binding-collection"
+  description    = "Test policy collection for binding"
+  cloud_provider = "AWS"
+}
 
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding-updated"
-					description = "Updated test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-					auto_deploy = false
-					schedule = "rate(2 hours)"
-					dry_run = true
-					variables = jsonencode({
-						environment = "staging"
-						region = "us-west-2"
-					})
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                   = "{{.Prefix}}-binding-updated"
+  description            = "Updated test binding"
+  account_group_uuid     = stacklet_account_group.test.uuid
+  policy_collection_uuid = stacklet_policy_collection.test.uuid
+  auto_deploy            = false
+  schedule               = "rate(2 hours)"
+  dry_run                = true
+  variables = jsonencode({
+    environment = "staging"
+    region      = "us-west-2"
+  })
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_binding.test", "name", prefixName("binding-updated")),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "description", "Updated test binding"),
@@ -109,31 +109,31 @@ func TestAccBindingResource(t *testing.T) {
 
 func TestAccBindingResource_SecurityContext(t *testing.T) {
 	baseline := `
-		resource "stacklet_account_group" "test" {
-			name = "{{.Prefix}}-binding-group"
-			description = "Test account group for binding"
-			cloud_provider = "AWS"
-			regions = ["us-east-1"]
-		}
+resource "stacklet_account_group" "test" {
+  name           = "{{.Prefix}}-binding-group"
+  description    = "Test account group for binding"
+  cloud_provider = "AWS"
+  regions        = ["us-east-1"]
+}
 
-		resource "stacklet_policy_collection" "test" {
-			name = "{{.Prefix}}-binding-collection"
-			description = "Test policy collection for binding"
-			cloud_provider = "AWS"
-		}
-	`
+resource "stacklet_policy_collection" "test" {
+  name           = "{{.Prefix}}-binding-collection"
+  description    = "Test policy collection for binding"
+  cloud_provider = "AWS"
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding"
-					description = "Test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-					security_context_wo = "arn:aws:iam::123456789012:role/test-role"
-					security_context_wo_version = "1"
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                        = "{{.Prefix}}-binding"
+  description                 = "Test binding"
+  account_group_uuid          = stacklet_account_group.test.uuid
+  policy_collection_uuid      = stacklet_policy_collection.test.uuid
+  security_context_wo         = "arn:aws:iam::123456789012:role/test-role"
+  security_context_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckNoResourceAttr("stacklet_binding.test", "dry_run"),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "security_context", "arn:aws:iam::123456789012:role/test-role"),
@@ -143,16 +143,16 @@ func TestAccBindingResource_SecurityContext(t *testing.T) {
 		// No change in security context version, so value is not updated
 		{
 			Config: baseline + `
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding"
-					description = "Test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-					dry_run = true
-					security_context_wo = "arn:aws:iam::123456789012:role/new-role"
-					security_context_wo_version = "1"
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                        = "{{.Prefix}}-binding"
+  description                 = "Test binding"
+  account_group_uuid          = stacklet_account_group.test.uuid
+  policy_collection_uuid      = stacklet_policy_collection.test.uuid
+  dry_run                     = true
+  security_context_wo         = "arn:aws:iam::123456789012:role/new-role"
+  security_context_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_binding.test", "dry_run", "true"),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "security_context", "arn:aws:iam::123456789012:role/test-role"),
@@ -162,16 +162,16 @@ func TestAccBindingResource_SecurityContext(t *testing.T) {
 		// Version is updated, value is updated too
 		{
 			Config: baseline + `
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding"
-					description = "Test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-					dry_run = true
-					security_context_wo = "arn:aws:iam::123456789012:role/new-role"
-					security_context_wo_version = "2"
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                        = "{{.Prefix}}-binding"
+  description                 = "Test binding"
+  account_group_uuid          = stacklet_account_group.test.uuid
+  policy_collection_uuid      = stacklet_policy_collection.test.uuid
+  dry_run                     = true
+  security_context_wo         = "arn:aws:iam::123456789012:role/new-role"
+  security_context_wo_version = "2"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_binding.test", "dry_run", "true"),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "security_context", "arn:aws:iam::123456789012:role/new-role"),
@@ -184,27 +184,27 @@ func TestAccBindingResource_SecurityContext(t *testing.T) {
 
 func TestAccBindingResource_DryRunFalse(t *testing.T) {
 	dryRunFalseConfig := `
-		resource "stacklet_account_group" "test" {
-			name = "{{.Prefix}}-binding-dry-run-false-group"
-			description = "Test account group for binding"
-			cloud_provider = "AWS"
-			regions = ["us-east-1"]
-		}
+resource "stacklet_account_group" "test" {
+  name           = "{{.Prefix}}-binding-dry-run-false-group"
+  description    = "Test account group for binding"
+  cloud_provider = "AWS"
+  regions        = ["us-east-1"]
+}
 
-		resource "stacklet_policy_collection" "test" {
-			name = "{{.Prefix}}-binding-dry-run-false-collection"
-			description = "Test policy collection for binding"
-			cloud_provider = "AWS"
-		}
+resource "stacklet_policy_collection" "test" {
+  name           = "{{.Prefix}}-binding-dry-run-false-collection"
+  description    = "Test policy collection for binding"
+  cloud_provider = "AWS"
+}
 
-		resource "stacklet_binding" "test" {
-			name = "{{.Prefix}}-binding-dry-run-false"
-			description = "Test binding"
-			account_group_uuid = stacklet_account_group.test.uuid
-			policy_collection_uuid = stacklet_policy_collection.test.uuid
-			dry_run = false
-		}
-	`
+resource "stacklet_binding" "test" {
+  name                   = "{{.Prefix}}-binding-dry-run-false"
+  description            = "Test binding"
+  account_group_uuid     = stacklet_account_group.test.uuid
+  policy_collection_uuid = stacklet_policy_collection.test.uuid
+  dry_run                = false
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: dryRunFalseConfig,
@@ -226,47 +226,47 @@ func TestAccBindingResource_DryRunFalse(t *testing.T) {
 
 func TestAccBindingResource_ResourceLimits(t *testing.T) {
 	baseline := `
-		resource "stacklet_account_group" "test" {
-			name = "{{.Prefix}}-binding-group"
-			description = "Test account group for binding"
-			cloud_provider = "AWS"
-			regions = ["us-east-1"]
-		}
+resource "stacklet_account_group" "test" {
+  name           = "{{.Prefix}}-binding-group"
+  description    = "Test account group for binding"
+  cloud_provider = "AWS"
+  regions        = ["us-east-1"]
+}
 
-		resource "stacklet_policy_collection" "test" {
-			name = "{{.Prefix}}-binding-collection"
-			description = "Test policy collection for binding"
-			cloud_provider = "AWS"
-		}
-	`
+resource "stacklet_policy_collection" "test" {
+  name           = "{{.Prefix}}-binding-collection"
+  description    = "Test policy collection for binding"
+  cloud_provider = "AWS"
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding"
-					description = "Test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                   = "{{.Prefix}}-binding"
+  description            = "Test binding"
+  account_group_uuid     = stacklet_account_group.test.uuid
+  policy_collection_uuid = stacklet_policy_collection.test.uuid
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckNoResourceAttr("stacklet_binding.test", "resource_limits"),
 			),
 		},
 		{
 			Config: baseline + `
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding"
-					description = "Test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-					resource_limits = {
-						max_count = 100
-						max_percentage = 20.1
-						requires_both = true
-					}
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                   = "{{.Prefix}}-binding"
+  description            = "Test binding"
+  account_group_uuid     = stacklet_account_group.test.uuid
+  policy_collection_uuid = stacklet_policy_collection.test.uuid
+  resource_limits = {
+    max_count      = 100
+    max_percentage = 20.1
+    requires_both  = true
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_binding.test", "resource_limits.max_count", "100"),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "resource_limits.max_percentage", "20.1"),
@@ -279,48 +279,48 @@ func TestAccBindingResource_ResourceLimits(t *testing.T) {
 
 func TestAccBindingResource_PolicyResourceLimits(t *testing.T) {
 	baseline := `
-		resource "stacklet_account_group" "test" {
-			name = "{{.Prefix}}-binding-group"
-			description = "Test account group for binding"
-			cloud_provider = "AWS"
-			regions = ["us-east-1"]
-		}
+resource "stacklet_account_group" "test" {
+  name           = "{{.Prefix}}-binding-group"
+  description    = "Test account group for binding"
+  cloud_provider = "AWS"
+  regions        = ["us-east-1"]
+}
 
-		resource "stacklet_policy_collection" "test" {
-			name = "{{.Prefix}}-binding-collection"
-			description = "Test policy collection for binding"
-			cloud_provider = "AWS"
-		}
-	`
+resource "stacklet_policy_collection" "test" {
+  name           = "{{.Prefix}}-binding-collection"
+  description    = "Test policy collection for binding"
+  cloud_provider = "AWS"
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding"
-					description = "Test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                   = "{{.Prefix}}-binding"
+  description            = "Test binding"
+  account_group_uuid     = stacklet_account_group.test.uuid
+  policy_collection_uuid = stacklet_policy_collection.test.uuid
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_binding.test", "policy_resource_limit.#", "0"),
 			),
 		},
 		{
 			Config: baseline + `
-				resource "stacklet_binding" "test" {
-					name = "{{.Prefix}}-binding"
-					description = "Test binding"
-					account_group_uuid = stacklet_account_group.test.uuid
-					policy_collection_uuid = stacklet_policy_collection.test.uuid
-					policy_resource_limit {
-						policy_name = "policy"
-						max_count = 90
-						max_percentage = 50.0
-						requires_both = true
-					}
-				}
-			`,
+resource "stacklet_binding" "test" {
+  name                   = "{{.Prefix}}-binding"
+  description            = "Test binding"
+  account_group_uuid     = stacklet_account_group.test.uuid
+  policy_collection_uuid = stacklet_policy_collection.test.uuid
+  policy_resource_limit {
+    policy_name    = "policy"
+    max_count      = 90
+    max_percentage = 50.0
+    requires_both  = true
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_binding.test", "policy_resource_limit.#", "1"),
 				resource.TestCheckResourceAttr("stacklet_binding.test", "policy_resource_limit.0.policy_name", "policy"),

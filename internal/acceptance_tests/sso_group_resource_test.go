@@ -13,10 +13,10 @@ func TestAccSSOGroupResource(t *testing.T) {
 		// Create and Read
 		{
 			Config: `
-				resource "stacklet_sso_group" "test" {
-					name = "{{.Prefix}}-sso-group"
-				}
-			`,
+resource "stacklet_sso_group" "test" {
+  name = "{{.Prefix}}-sso-group"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_sso_group.test", "name", prefixName("sso-group")),
 				resource.TestCheckResourceAttrSet("stacklet_sso_group.test", "id"),
@@ -33,11 +33,11 @@ func TestAccSSOGroupResource(t *testing.T) {
 		// Update
 		{
 			Config: `
-				resource "stacklet_sso_group" "test" {
-					name         = "{{.Prefix}}-sso-group"
-					display_name = "Test SSO Group"
-				}
-			`,
+resource "stacklet_sso_group" "test" {
+  name         = "{{.Prefix}}-sso-group"
+  display_name = "Test SSO Group"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_sso_group.test", "name", prefixName("sso-group")),
 				resource.TestCheckResourceAttr("stacklet_sso_group.test", "display_name", "Test SSO Group"),

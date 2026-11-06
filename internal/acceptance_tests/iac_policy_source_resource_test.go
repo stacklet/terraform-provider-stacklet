@@ -14,15 +14,15 @@ func TestAccIaCPolicySourceResource_Attrs(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
-						branch = "main"
-						paths = ["policies", "more-policies"]
-						extensions = [".yaml"]
-						auto_scan = true
-					}
-				`,
+resource "stacklet_iac_policy_source" "test" {
+  name       = "{{.Prefix}}-policy-source"
+  url        = "https://github.com/test-org/test-repo"
+  branch     = "main"
+  paths      = ["policies", "more-policies"]
+  extensions = [".yaml"]
+  auto_scan  = true
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "name", prefixName("policy-source")),
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "url", "https://github.com/test-org/test-repo"),
@@ -53,11 +53,11 @@ func TestAccIaCPolicySourceResource_Update(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
-					}
-				`,
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "url", "https://github.com/test-org/test-repo"),
 				resource.TestCheckNoResourceAttr("stacklet_iac_policy_source.test", "branch"),
@@ -70,15 +70,15 @@ func TestAccIaCPolicySourceResource_Update(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-other-repo"
-						branch = "main"
-						paths = ["policies"]
-						extensions = [".yaml"]
-						auto_scan = true
-					}
-				`,
+resource "stacklet_iac_policy_source" "test" {
+  name       = "{{.Prefix}}-policy-source"
+  url        = "https://github.com/test-org/test-other-repo"
+  branch     = "main"
+  paths      = ["policies"]
+  extensions = [".yaml"]
+  auto_scan  = true
+}
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					plancheck.ExpectResourceAction("stacklet_iac_policy_source.test", plancheck.ResourceActionUpdate),
@@ -96,11 +96,11 @@ func TestAccIaCPolicySourceResource_Update(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-other-repo"
-					}
-				`,
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-other-repo"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckNoResourceAttr("stacklet_iac_policy_source.test", "branch"),
 				resource.TestCheckNoResourceAttr("stacklet_iac_policy_source.test", "paths"),
@@ -110,11 +110,11 @@ func TestAccIaCPolicySourceResource_Update(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-other-policy-source"
-						url = "https://github.com/test-org/test-other-repo"
-					}
-				`,
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-other-policy-source"
+  url  = "https://github.com/test-org/test-other-repo"
+}
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					plancheck.ExpectResourceAction("stacklet_iac_policy_source.test", plancheck.ResourceActionReplace),
@@ -132,28 +132,28 @@ func TestAccIaCPolicySourceResource_TokenAuthSet(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
-					}
-				`,
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckNoResourceAttr("stacklet_iac_policy_source.test", "token_auth.user"),
 			),
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
 
-						token_auth = {
-							user = "bill"
-							token_wo = "secret"
-							token_wo_version = 1
-						}
-					}
-				`,
+  token_auth = {
+    user             = "bill"
+    token_wo         = "secret"
+    token_wo_version = 1
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "token_auth.user", "bill"),
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "token_auth.token_wo_version", "1"),
@@ -163,17 +163,17 @@ func TestAccIaCPolicySourceResource_TokenAuthSet(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
 
-						token_auth = {
-							user = "bill"
-							token_wo = "different-secret"
-							token_wo_version = 1
-						}
-					}
-				`,
+  token_auth = {
+    user             = "bill"
+    token_wo         = "different-secret"
+    token_wo_version = 1
+  }
+}
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					// token_wo alone doesn't trigger a change
@@ -183,17 +183,17 @@ func TestAccIaCPolicySourceResource_TokenAuthSet(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
 
-						token_auth = {
-							user = "ben"
-							token_wo = "different-secret"
-							token_wo_version = 1
-						}
-					}
-				`,
+  token_auth = {
+    user             = "ben"
+    token_wo         = "different-secret"
+    token_wo_version = 1
+  }
+}
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					plancheck.ExpectResourceAction("stacklet_iac_policy_source.test", plancheck.ResourceActionUpdate),
@@ -206,17 +206,17 @@ func TestAccIaCPolicySourceResource_TokenAuthSet(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
 
-						token_auth = {
-							user = "ben"
-							token_wo = "new-secret"
-							token_wo_version = 2
-						}
-					}
-				`,
+  token_auth = {
+    user             = "ben"
+    token_wo         = "new-secret"
+    token_wo_version = 2
+  }
+}
+`,
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PreApply: []plancheck.PlanCheck{
 					plancheck.ExpectResourceAction("stacklet_iac_policy_source.test", plancheck.ResourceActionUpdate),
@@ -235,17 +235,17 @@ func TestAccIaCPolicySourceResource_TokenAuthClear(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
 
-						token_auth = {
-							user = "bill"
-							token_wo = "secret"
-							token_wo_version = 1
-						}
-					}
-				`,
+  token_auth = {
+    user             = "bill"
+    token_wo         = "secret"
+    token_wo_version = 1
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "token_auth.user", "bill"),
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "token_auth.token_wo_version", "1"),
@@ -253,11 +253,11 @@ func TestAccIaCPolicySourceResource_TokenAuthClear(t *testing.T) {
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
-					}
-				`,
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckNoResourceAttr("stacklet_iac_policy_source.test", "token_auth.user"),
 				resource.TestCheckNoResourceAttr("stacklet_iac_policy_source.test", "token_auth.token_wo_version"),
@@ -273,24 +273,16 @@ func TestAccIaCPolicySourceResource_SSHAuthUpdate(t *testing.T) {
 			// Create with simple SSH config.
 			Config: `
 resource "stacklet_iac_policy_source" "test" {
-	name = "{{.Prefix}}-policy-source"
-	url = "ssh://git@github.com/stacklet/test-repo"
+  name = "{{.Prefix}}-policy-source"
+  url  = "ssh://git@github.com/stacklet/test-repo"
 
-	ssh_auth = {
-		user = "git"
-		private_key_wo = <<EOT
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-QyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1GwAAAJjX7M8q1+zP
-KgAAAAtzc2gtZWQyNTUxOQAAACDQSLdUuvJls2k28bLyalLCrZLaBG/ObQXBkEJl8vB1Gw
-AAAEC/dsi/DISHYy8HxIrX5JWLWhYKv2XFBlL15NLRzIlA5tBIt1S68mWzaTbxsvJqUsKt
-ktoEb85tBcGQQmXy8HUbAAAADnJlcG8tdGVzdC1yYXcKAQIDBAUGBw==
------END OPENSSH PRIVATE KEY-----
-EOT
-		private_key_wo_version = 1
-	}
+  ssh_auth = {
+    user                   = "git"
+    private_key_wo         = file("{{ fixture_path "id_ed25519" }}")
+    private_key_wo_version = 1
+  }
 }
-				`,
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "ssh_auth.user", "git"),
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "ssh_auth.private_key_wo_version", "1"),
@@ -304,27 +296,18 @@ EOT
 			// Set a new key with a passphrase.
 			Config: `
 resource "stacklet_iac_policy_source" "test" {
-	name = "{{.Prefix}}-policy-source"
-	url = "ssh://git@github.com/stacklet/test-repo"
+  name = "{{.Prefix}}-policy-source"
+  url  = "ssh://git@github.com/stacklet/test-repo"
 
-	ssh_auth = {
-		user = "git"
-		private_key_wo = <<EOT
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBo6Jwjw7
-wQYNZrr9iiO8JWAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIKqKHdGkr5bDRMDX
-XbfWxmbCKduClJweRKUxdqHnmUHXAAAAoDnrX1ai+rLAVjCJUW1nrcEVqb+JRZ0K5dIOnz
-ysKDPFz6LdY4S6uzgZrE/WOcHX7/MgeXpjne8CQuIqej8KDM9XkLGHf010/cg7Fo60YMoG
-UTEPMNoh4wYqZ030I7a5iOjPSRMD2tN+xhb8NSm5gDnYdn9SDkhArS7WGQrWLDf0Eh5qB/
-LhPc79SMQGPhtv5Cwpb6686bmwIJU2/0l4g3M=
------END OPENSSH PRIVATE KEY-----
-EOT
-		private_key_wo_version = 2
-		passphrase_wo = "secret"
-		passphrase_wo_version = 1
-	}
+  ssh_auth = {
+    user                   = "git"
+    private_key_wo         = file("{{ fixture_path "id_ed25519_passphrase" }}")
+    private_key_wo_version = 2
+    passphrase_wo          = "secret"
+    passphrase_wo_version  = 1
+  }
 }
-				`,
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "ssh_auth.private_key_wo_version", "2"),
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "ssh_auth.passphrase_wo_version", "1"),
@@ -335,16 +318,16 @@ EOT
 			// Switch to token authentication.
 			Config: `
 resource "stacklet_iac_policy_source" "test" {
-	name = "{{.Prefix}}-policy-source"
-	url = "https://github.com/stacklet/test-repo"
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/stacklet/test-repo"
 
-	token_auth = {
-		user = "bill"
-		token_wo = "secret"
-		token_wo_version = 1
-	}
+  token_auth = {
+    user             = "bill"
+    token_wo         = "secret"
+    token_wo_version = 1
+  }
 }
-				`,
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "token_auth.user", "bill"),
 				resource.TestCheckResourceAttr("stacklet_iac_policy_source.test", "token_auth.token_wo_version", "1"),
@@ -359,65 +342,65 @@ func TestAccIaCPolicySourceResource_InvalidConfig(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
 
-						token_auth = {
-							user = "bill"
-							token_wo = "secret"
-							token_wo_version = 1
-						}
-						ssh_auth = {
-							user = "git"
-							private_key_wo = "key"
-							private_key_wo_version = 1
-						}
-					}
-				`,
+  token_auth = {
+    user             = "bill"
+    token_wo         = "secret"
+    token_wo_version = 1
+  }
+  ssh_auth = {
+    user                   = "git"
+    private_key_wo         = "key"
+    private_key_wo_version = 1
+  }
+}
+`,
 			PlanOnly:    true,
 			ExpectError: regexp.MustCompile(`cannot be specified when`),
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "https://github.com/test-org/test-repo"
 
-						token_auth = {
-							user = "bill"
-							token_wo = "secret"
-						}
-					}
-				`,
+  token_auth = {
+    user     = "bill"
+    token_wo = "secret"
+  }
+}
+`,
 			PlanOnly:    true,
 			ExpectError: regexp.MustCompile(`attribute "token_wo_version"\s+is required`),
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "ssh://git@github.com/stacklet/test-repo"
+resource "stacklet_iac_policy_source" "test" {
+  name = "{{.Prefix}}-policy-source"
+  url  = "ssh://git@github.com/stacklet/test-repo"
 
-						ssh_auth = {
-							user = "git"
-							private_key_wo = "key"
-							private_key_wo_version = 1
-							passphrase_wo = "secret"
-						}
-					}
-				`,
+  ssh_auth = {
+    user                   = "git"
+    private_key_wo         = "key"
+    private_key_wo_version = 1
+    passphrase_wo          = "secret"
+  }
+}
+`,
 			PlanOnly:    true,
 			ExpectError: regexp.MustCompile(`passphrase_wo_version" must be specified`),
 		},
 		{
 			Config: `
-					resource "stacklet_iac_policy_source" "test" {
-						name = "{{.Prefix}}-policy-source"
-						url = "https://github.com/test-org/test-repo"
-						extensions = ["yaml"]
-					}
-				`,
+resource "stacklet_iac_policy_source" "test" {
+  name       = "{{.Prefix}}-policy-source"
+  url        = "https://github.com/test-org/test-repo"
+  extensions = ["yaml"]
+}
+`,
 			PlanOnly:    true,
 			ExpectError: regexp.MustCompile(`must start with a dot`),
 		},

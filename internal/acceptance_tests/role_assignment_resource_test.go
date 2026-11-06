@@ -12,29 +12,29 @@ import (
 
 func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
 	baseline := `
-		resource "stacklet_user" "test" {
-			name     = "{{.Prefix}}-role-user"
-			username = "{{.Prefix}}_role_user"
-			email    = "test@stacklet.io"
-		}
+resource "stacklet_user" "test" {
+  name     = "{{.Prefix}}-role-user"
+  username = "{{.Prefix}}_role_user"
+  email    = "test@stacklet.io"
+}
 
-		resource "stacklet_account_group" "test" {
-			name           = "{{.Prefix}}-role-assignment-test"
-			description    = "Test account group for role assignment"
-			cloud_provider = "AWS"
-			regions        = ["us-east-1"]
-		}
-	`
+resource "stacklet_account_group" "test" {
+  name           = "{{.Prefix}}-role-assignment-test"
+  description    = "Test account group for role assignment"
+  cloud_provider = "AWS"
+  regions        = ["us-east-1"]
+}
+`
 	steps := []resource.TestStep{
 		// Create and Read testing - role assignment on account group
 		{
 			Config: baseline + `
-				resource "stacklet_role_assignment" "test" {
-					role_name = "viewer"
-					principal = stacklet_user.test.role_assignment_principal
-					target    = stacklet_account_group.test.role_assignment_target
-				}
-			`,
+resource "stacklet_role_assignment" "test" {
+  role_name = "viewer"
+  principal = stacklet_user.test.role_assignment_principal
+  target    = stacklet_account_group.test.role_assignment_target
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_role_assignment.test", "role_name", "viewer"),
 				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "id"),
@@ -58,12 +58,12 @@ func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
 		// Test replacement with different role
 		{
 			Config: baseline + `
-				resource "stacklet_role_assignment" "test" {
-					role_name = "editor"
-					principal = stacklet_user.test.role_assignment_principal
-					target    = stacklet_account_group.test.role_assignment_target
-				}
-			`,
+resource "stacklet_role_assignment" "test" {
+  role_name = "editor"
+  principal = stacklet_user.test.role_assignment_principal
+  target    = stacklet_account_group.test.role_assignment_target
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_role_assignment.test", "role_name", "editor"),
 				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "id"),
@@ -77,19 +77,19 @@ func TestAccRoleAssignmentResource_AccountGroup(t *testing.T) {
 
 func TestAccRoleAssignmentResource_SSOGroup(t *testing.T) {
 	baseline := `
-		resource "stacklet_sso_group" "test" {
-			name = "{{.Prefix}}-sso-role-group"
-		}
-	`
+resource "stacklet_sso_group" "test" {
+  name = "{{.Prefix}}-sso-role-group"
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				resource "stacklet_role_assignment" "test" {
-					role_name = "viewer"
-					principal = stacklet_sso_group.test.role_assignment_principal
-					target    = "system:all"
-				}
-			`,
+resource "stacklet_role_assignment" "test" {
+  role_name = "viewer"
+  principal = stacklet_sso_group.test.role_assignment_principal
+  target    = "system:all"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_role_assignment.test", "role_name", "viewer"),
 				resource.TestCheckResourceAttrSet("stacklet_role_assignment.test", "id"),

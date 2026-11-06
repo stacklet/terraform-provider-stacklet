@@ -14,13 +14,13 @@ func TestAccDatadogIntegrationResource(t *testing.T) {
 		// Create and Read testing, leaving the site to its default.
 		{
 			Config: `
-				resource "stacklet_datadog_integration" "test" {
-					api_key_wo         = "api-key-one"
-					api_key_wo_version = "1"
-					app_key_wo         = "app-key-one"
-					app_key_wo_version = "1"
-				}
-			`,
+resource "stacklet_datadog_integration" "test" {
+  api_key_wo         = "api-key-one"
+  api_key_wo_version = "1"
+  app_key_wo         = "app-key-one"
+  app_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "id", "datadog"),
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "enabled", "true"),
@@ -55,15 +55,15 @@ func TestAccDatadogIntegrationResource(t *testing.T) {
 		// Switching the integration off keeps the stored credentials.
 		{
 			Config: `
-				resource "stacklet_datadog_integration" "test" {
-					enabled = false
+resource "stacklet_datadog_integration" "test" {
+  enabled = false
 
-					api_key_wo         = "api-key-one"
-					api_key_wo_version = "1"
-					app_key_wo         = "app-key-one"
-					app_key_wo_version = "1"
-				}
-			`,
+  api_key_wo         = "api-key-one"
+  api_key_wo_version = "1"
+  app_key_wo         = "app-key-one"
+  app_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "enabled", "false"),
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "configured", "true"),
@@ -85,15 +85,15 @@ func TestAccDatadogIntegrationResource_KeyRotation(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-				resource "stacklet_datadog_integration" "test" {
-					site = "datadoghq.com"
+resource "stacklet_datadog_integration" "test" {
+  site = "datadoghq.com"
 
-					api_key_wo         = "api-key-one"
-					api_key_wo_version = "1"
-					app_key_wo         = "app-key-one"
-					app_key_wo_version = "1"
-				}
-			`,
+  api_key_wo         = "api-key-one"
+  api_key_wo_version = "1"
+  app_key_wo         = "app-key-one"
+  app_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "site", "datadoghq.com"),
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "configured", "true"),
@@ -104,15 +104,15 @@ func TestAccDatadogIntegrationResource_KeyRotation(t *testing.T) {
 		// against the new site.
 		{
 			Config: `
-				resource "stacklet_datadog_integration" "test" {
-					site = "datadoghq.eu"
+resource "stacklet_datadog_integration" "test" {
+  site = "datadoghq.eu"
 
-					api_key_wo         = "api-key-two"
-					api_key_wo_version = "1"
-					app_key_wo         = "app-key-two"
-					app_key_wo_version = "1"
-				}
-			`,
+  api_key_wo         = "api-key-two"
+  api_key_wo_version = "1"
+  app_key_wo         = "app-key-two"
+  app_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "site", "datadoghq.eu"),
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "configured", "true"),
@@ -121,15 +121,15 @@ func TestAccDatadogIntegrationResource_KeyRotation(t *testing.T) {
 		// Bumping only the API key version rotates that key on its own.
 		{
 			Config: `
-				resource "stacklet_datadog_integration" "test" {
-					site = "datadoghq.eu"
+resource "stacklet_datadog_integration" "test" {
+  site = "datadoghq.eu"
 
-					api_key_wo         = "api-key-two"
-					api_key_wo_version = "2"
-					app_key_wo         = "app-key-two"
-					app_key_wo_version = "1"
-				}
-			`,
+  api_key_wo         = "api-key-two"
+  api_key_wo_version = "2"
+  app_key_wo         = "app-key-two"
+  app_key_wo_version = "1"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "api_key_wo_version", "2"),
 				resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "app_key_wo_version", "1"),
@@ -148,24 +148,24 @@ func TestAccDatadogIntegrationResource_VersionWithoutKey(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			Config: `
-				resource "stacklet_datadog_integration" "test" {
-					api_key_wo         = "api-key-one"
-					api_key_wo_version = "1"
-					app_key_wo         = "app-key-one"
-					app_key_wo_version = "1"
-				}
-			`,
+resource "stacklet_datadog_integration" "test" {
+  api_key_wo         = "api-key-one"
+  api_key_wo_version = "1"
+  app_key_wo         = "app-key-one"
+  app_key_wo_version = "1"
+}
+`,
 			Check: resource.TestCheckResourceAttr("stacklet_datadog_integration.test", "configured", "true"),
 		},
 		// The version asks for a new API key, but the key itself is gone.
 		{
 			Config: `
-				resource "stacklet_datadog_integration" "test" {
-					api_key_wo_version = "2"
-					app_key_wo         = "app-key-one"
-					app_key_wo_version = "1"
-				}
-			`,
+resource "stacklet_datadog_integration" "test" {
+  api_key_wo_version = "2"
+  app_key_wo         = "app-key-one"
+  app_key_wo_version = "1"
+}
+`,
 			ExpectError: regexp.MustCompile(`Missing api_key_wo`),
 		},
 	}

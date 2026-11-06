@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"slices"
 	"strings"
 	"testing"
@@ -136,8 +137,13 @@ func renderConfigs(t *testing.T, testSteps []resource.TestStep) {
 	}
 }
 
+// configFuncs are the functions available in config templates.
+var configFuncs = template.FuncMap{
+	"fixture_path": fixturePath,
+}
+
 func renderConfig(config string, data configData) (string, error) {
-	t, err := template.New("config").Parse(config)
+	t, err := template.New("config").Funcs(configFuncs).Parse(config)
 	if err != nil {
 		return "", err
 	}
@@ -151,4 +157,32 @@ func renderConfig(config string, data configData) (string, error) {
 
 func prefixName(name string) string {
 	return fmt.Sprintf("%s-%s", getConfigData().Prefix, name)
+}
+
+// fixturesDir is the directory containing test fixture files.
+const fixturesDir = "fixtures"
+
+// fixturePath returns the absolute path of a file in the fixtures directory,
+// for use with file() in configs. The path must be absolute since configs
+// are run from a temporary directory.
+func fixturePath(name string) (string, error) {
+	path, err := filepath.Abs(filepath.Join(fixturesDir, name))
+	if err != nil {
+		return "", err
+	}
+	if _, err := os.Stat(path); err != nil {
+		return "", fmt.Errorf("fixture not found: %w", err)
+	}
+	return filepath.ToSlash(path), nil
+}
+
+// loadFixture returns the content of a file from the fixtures directory,
+// failing the test if it can't be read.
+func loadFixture(t *testing.T, name string) string {
+	t.Helper()
+	content, err := os.ReadFile(filepath.Join(fixturesDir, name))
+	if err != nil {
+		t.Fatalf("failed to read fixture: %v", err)
+	}
+	return string(content)
 }

@@ -14,27 +14,27 @@ func TestAccConfigurationProfileJiraResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_jira" "test" {
-					url = "https://example.atlassian.net"
-					user = "test@example.com"
-					api_key_wo = "initial-api-key"
-					api_key_wo_version = "1"
+resource "stacklet_configuration_profile_jira" "test" {
+  url                = "https://example.atlassian.net"
+  user               = "test@example.com"
+  api_key_wo         = "initial-api-key"
+  api_key_wo_version = "1"
 
-					project {
-						name = "foo"
-						project = "FOO"
-						issue_type = "Task"
-						closed_status = "Done"
-					}
+  project {
+    name          = "foo"
+    project       = "FOO"
+    issue_type    = "Task"
+    closed_status = "Done"
+  }
 
-					project {
-						name = "bar"
-						project = "BAR"
-						issue_type = "Bug"
-						closed_status = "Fixed"
-					}
-				}
-			`,
+  project {
+    name          = "bar"
+    project       = "BAR"
+    issue_type    = "Bug"
+    closed_status = "Fixed"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_jira.test", "id"),
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_jira.test", "profile"),
@@ -69,20 +69,20 @@ func TestAccConfigurationProfileJiraResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_configuration_profile_jira" "test" {
-					url = "https://updated.atlassian.net"
-					user = "updated@example.com"
-					api_key_wo = "updated-api-key"
-					api_key_wo_version = "1"
+resource "stacklet_configuration_profile_jira" "test" {
+  url                = "https://updated.atlassian.net"
+  user               = "updated@example.com"
+  api_key_wo         = "updated-api-key"
+  api_key_wo_version = "1"
 
-					project {
-						name = "Updated Project"
-						project = "UPD"
-						issue_type = "Bug"
-						closed_status = "Closed"
-					}
-				}
-			`,
+  project {
+    name          = "Updated Project"
+    project       = "UPD"
+    issue_type    = "Bug"
+    closed_status = "Closed"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "url", "https://updated.atlassian.net"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "user", "updated@example.com"),
@@ -105,20 +105,20 @@ func TestAccConfigurationProfileJiraResource_APIKeyChange(t *testing.T) {
 		// Initial API key setup
 		{
 			Config: `
-				resource "stacklet_configuration_profile_jira" "test" {
-					url = "https://example.atlassian.net"
-					user = "test@example.com"
-					api_key_wo = "initial-api-key"
-					api_key_wo_version = "1"
+resource "stacklet_configuration_profile_jira" "test" {
+  url                = "https://example.atlassian.net"
+  user               = "test@example.com"
+  api_key_wo         = "initial-api-key"
+  api_key_wo_version = "1"
 
-					project {
-						name = "Test Project"
-						project = "TEST"
-						issue_type = "Task"
-						closed_status = "Done"
-					}
-				}
-			`,
+  project {
+    name          = "Test Project"
+    project       = "TEST"
+    issue_type    = "Task"
+    closed_status = "Done"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet("stacklet_configuration_profile_jira.test", "id"),
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "api_key_wo_version", "1"),
@@ -132,20 +132,20 @@ func TestAccConfigurationProfileJiraResource_APIKeyChange(t *testing.T) {
 		// Same version, API key should remain the same
 		{
 			Config: `
-				resource "stacklet_configuration_profile_jira" "test" {
-					url = "https://example.atlassian.net"
-					user = "test@example.com"
-					api_key_wo = "changed-api-key-but-same-version"
-					api_key_wo_version = "1"
+resource "stacklet_configuration_profile_jira" "test" {
+  url                = "https://example.atlassian.net"
+  user               = "test@example.com"
+  api_key_wo         = "changed-api-key-but-same-version"
+  api_key_wo_version = "1"
 
-					project {
-						name = "Test Project"
-						project = "TEST"
-						issue_type = "Task"
-						closed_status = "Done"
-					}
-				}
-			`,
+  project {
+    name          = "Test Project"
+    project       = "TEST"
+    issue_type    = "Task"
+    closed_status = "Done"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "api_key_wo_version", "1"),
 				resource.TestCheckResourceAttrWith("stacklet_configuration_profile_jira.test", "api_key", func(value string) error {
@@ -160,20 +160,20 @@ func TestAccConfigurationProfileJiraResource_APIKeyChange(t *testing.T) {
 		// Version changed, API key should change
 		{
 			Config: `
-				resource "stacklet_configuration_profile_jira" "test" {
-					url = "https://example.atlassian.net"
-					user = "test@example.com"
-					api_key_wo = "updated-api-key"
-					api_key_wo_version = "2"
+resource "stacklet_configuration_profile_jira" "test" {
+  url                = "https://example.atlassian.net"
+  user               = "test@example.com"
+  api_key_wo         = "updated-api-key"
+  api_key_wo_version = "2"
 
-					project {
-						name = "Test Project"
-						project = "TEST"
-						issue_type = "Task"
-						closed_status = "Done"
-					}
-				}
-			`,
+  project {
+    name          = "Test Project"
+    project       = "TEST"
+    issue_type    = "Task"
+    closed_status = "Done"
+  }
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_configuration_profile_jira.test", "api_key_wo_version", "2"),
 				resource.TestCheckResourceAttrWith("stacklet_configuration_profile_jira.test", "api_key", func(value string) error {

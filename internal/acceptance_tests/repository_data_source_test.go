@@ -11,23 +11,23 @@ import (
 
 func TestAccRepositoryDataSource(t *testing.T) {
 	baseline := `
-		resource "stacklet_repository" "test" {
-			name = "{{.Prefix}}-repo-ds"
-			url = "https://github.com/test-org/test-repo"
-			description = "Test repository"
-		}
-	`
+resource "stacklet_repository" "test" {
+  name        = "{{.Prefix}}-repo-ds"
+  url         = "https://github.com/test-org/test-repo"
+  description = "Test repository"
+}
+`
 	steps := []resource.TestStep{
 		{
 			Config: baseline + `
-				data "stacklet_repository" "test_uuid" {
-					uuid = stacklet_repository.test.uuid
-				}
+data "stacklet_repository" "test_uuid" {
+  uuid = stacklet_repository.test.uuid
+}
 
-				data "stacklet_repository" "test_url" {
-					url = stacklet_repository.test.url
-				}
-			`,
+data "stacklet_repository" "test_url" {
+  url = stacklet_repository.test.url
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				// Check resource attributes
 				resource.TestCheckResourceAttr("stacklet_repository.test", "name", prefixName("repo-ds")),

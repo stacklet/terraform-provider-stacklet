@@ -13,12 +13,12 @@ func TestAccSAMLProviderResource(t *testing.T) {
 		// Create and Read testing
 		{
 			Config: `
-				resource "stacklet_saml_provider" "test" {
-					name         = "{{.Prefix}}-saml-provider"
-					display_name = "Test SAML Provider"
-					metadata_url = "https://example.com/saml/metadata"
-				}
-			`,
+resource "stacklet_saml_provider" "test" {
+  name         = "{{.Prefix}}-saml-provider"
+  display_name = "Test SAML Provider"
+  metadata_url = "https://example.com/saml/metadata"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_saml_provider.test", "name", prefixName("saml-provider")),
 				resource.TestCheckResourceAttr("stacklet_saml_provider.test", "display_name", "Test SAML Provider"),
@@ -39,14 +39,14 @@ func TestAccSAMLProviderResource(t *testing.T) {
 		// Update and Read testing
 		{
 			Config: `
-				resource "stacklet_saml_provider" "test" {
-					name           = "{{.Prefix}}-saml-provider"
-					display_name   = "Updated SAML Provider"
-					metadata_url   = "https://example.com/saml/metadata-updated"
-					enable_signout = true
-					idp_alias      = "{{.Prefix}}-alias"
-				}
-			`,
+resource "stacklet_saml_provider" "test" {
+  name           = "{{.Prefix}}-saml-provider"
+  display_name   = "Updated SAML Provider"
+  metadata_url   = "https://example.com/saml/metadata-updated"
+  enable_signout = true
+  idp_alias      = "{{.Prefix}}-alias"
+}
+`,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("stacklet_saml_provider.test", "name", prefixName("saml-provider")),
 				resource.TestCheckResourceAttr("stacklet_saml_provider.test", "display_name", "Updated SAML Provider"),
