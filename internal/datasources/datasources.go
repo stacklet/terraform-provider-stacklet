@@ -39,6 +39,7 @@ var DataSources = datasources{
 		newFactory(&datadogIntegrationDataSource{}),
 		newFactory(&gcpIntegrationDataSource{}),
 		newFactory(&gcpIntegrationSurfaceDataSource{}),
+		newFactory(&iacPolicyCollectionDataSource{}),
 		newFactory(&iacPolicySourceDataSource{}),
 		newFactory(&msteamsIntegrationSurfaceDataSource{}),
 		newFactory(&notificationTemplateDataSource{}),
