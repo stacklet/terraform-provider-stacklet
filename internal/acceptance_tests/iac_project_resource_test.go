@@ -3,6 +3,7 @@
 package acceptance_tests
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -61,4 +62,19 @@ resource "stacklet_iac_project" "test" {
 		},
 	}
 	runRecordedAccTest(t, "TestAccIaCProjectResource", steps)
+}
+
+func TestAccIaCProjectResource_InvalidConfig(t *testing.T) {
+	steps := []resource.TestStep{
+		{
+			Config: `
+resource "stacklet_iac_project" "test" {
+  name = ""
+}
+`,
+			PlanOnly:    true,
+			ExpectError: regexp.MustCompile(`string length must be at least 1`),
+		},
+	}
+	runRecordedAccTest(t, "TestAccIaCProjectResource_InvalidConfig", steps)
 }

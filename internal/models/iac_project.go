@@ -75,7 +75,12 @@ func nonNil(s []string) []string {
 // non-nil so that they're sent to the API as an empty list.
 func sortedStrings(ctx context.Context, s types.Set) ([]string, diag.Diagnostics) {
 	values := []string{}
-	if s.IsNull() || s.IsUnknown() {
+	if s.IsUnknown() {
+		var diags diag.Diagnostics
+		diags.AddError("Unknown value", "The set value is not known yet.")
+		return nil, diags
+	}
+	if s.IsNull() {
 		return values, nil
 	}
 	diags := s.ElementsAs(ctx, &values, false)
