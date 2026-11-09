@@ -5,12 +5,14 @@ package resources
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -84,16 +86,21 @@ The profile is global, adding multiple resources of this kind will cause them to
 						Description: "Authentication password (encrypted), returned by the API.",
 						Computed:    true,
 					},
-					// XXX wgrant 2026-10-22: password_wo should require password_wo_version (ENG-9371).
 					"password_wo": schema.StringAttribute{
 						Description: "Input value for authentication password.",
 						Optional:    true,
 						Sensitive:   true,
 						WriteOnly:   true,
+						Validators: []validator.String{
+							stringvalidator.AlsoRequires(path.MatchRelative().AtParent().AtName("password_wo_version")),
+						},
 					},
 					"password_wo_version": schema.StringAttribute{
 						Description: "The version for the authentication password. Must be changed to update password_wo.",
 						Optional:    true,
+						Validators: []validator.String{
+							stringvalidator.AlsoRequires(path.MatchRelative().AtParent().AtName("password_wo")),
+						},
 					},
 				},
 			},

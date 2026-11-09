@@ -5,6 +5,7 @@ package resources
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -121,16 +122,21 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "The binding execution security context.",
 				Computed:    true,
 			},
-			// XXX wgrant 2026-10-22: security_context_wo should require security_context_wo_version (ENG-9371).
 			"security_context_wo": schema.StringAttribute{
 				Description: "The input value for the security context for the execution configuration.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("security_context_wo_version")),
+				},
 			},
 			"security_context_wo_version": schema.StringAttribute{
 				Description: "The version for the security context. Must be changed to update security_context_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("security_context_wo")),
+				},
 			},
 			"variables": schema.StringAttribute{
 				Description: "JSON-encoded dictionary of values used for policy templating.",

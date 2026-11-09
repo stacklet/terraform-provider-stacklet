@@ -5,12 +5,14 @@ package resources
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
 	"github.com/stacklet/terraform-provider-stacklet/internal/errors"
@@ -105,38 +107,53 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 			},
 			// After this, write-only secrets and associated trigger attrs.
-			// XXX wgrant 2026-10-22: auth_token_wo should require auth_token_wo_version (ENG-9371).
 			"auth_token_wo": schema.StringAttribute{
 				Description: "User password/token, or IAM role, to access the remote repository.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("auth_token_wo_version")),
+				},
 			},
 			"auth_token_wo_version": schema.StringAttribute{
 				Description: "Change value to update auth_token_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("auth_token_wo")),
+				},
 			},
-			// XXX wgrant 2026-10-22: ssh_private_key_wo should require ssh_private_key_wo_version (ENG-9371).
 			"ssh_private_key_wo": schema.StringAttribute{
 				Description: "SSH private key for remote repository authentication.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("ssh_private_key_wo_version")),
+				},
 			},
 			"ssh_private_key_wo_version": schema.StringAttribute{
 				Description: "Change value to update ssh_private_key_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("ssh_private_key_wo")),
+				},
 			},
-			// XXX wgrant 2026-10-22: ssh_passphrase_wo should require ssh_passphrase_wo_version (ENG-9371).
 			"ssh_passphrase_wo": schema.StringAttribute{
 				Description: "Passphrase for the SSH private key.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("ssh_passphrase_wo_version")),
+				},
 			},
 			"ssh_passphrase_wo_version": schema.StringAttribute{
 				Description: "Change value to update ssh_passphrase_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("ssh_passphrase_wo")),
+				},
 			},
 			"role_assignment_target": schema.StringAttribute{
 				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",

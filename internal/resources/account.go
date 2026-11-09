@@ -5,6 +5,8 @@ package resources
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -80,16 +82,21 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				Description: "The email contact address for the account.",
 				Optional:    true,
 			},
-			// XXX wgrant 2026-10-22: security_context_wo should require security_context_wo_version (ENG-9371).
 			"security_context_wo": schema.StringAttribute{
 				Description: "The input value for the security context for the account.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("security_context_wo_version")),
+				},
 			},
 			"security_context_wo_version": schema.StringAttribute{
 				Description: "The version for the security context. Must be changed to update security_context_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("security_context_wo")),
+				},
 			},
 			"security_context": schema.StringAttribute{
 				Description: "The security context for the account, as returned by the API.",
