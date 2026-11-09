@@ -44,6 +44,7 @@ var Resources = resources{
 		newFactory(&gcpIntegrationResource{}),
 		newFactory(&iacPolicyCollectionResource{}),
 		newFactory(&iacPolicySourceResource{}),
+		newFactory(&iacProjectResource{}),
 		newFactory(&notificationTemplateResource{}),
 		newFactory(&policyCollectionMappingResource{}),
 		newFactory(&policyCollectionResource{}),
