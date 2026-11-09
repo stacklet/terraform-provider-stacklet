@@ -1,7 +1,0 @@
-golang        1.25
-golangci-lint 2.8.0
-goreleaser    2.15.4
-just          1.50.0
-prek          0.5.6
-terraform     1.13.5
-gofumpt       0.10.0

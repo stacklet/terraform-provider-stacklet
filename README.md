@@ -122,7 +122,8 @@ data "stacklet_binding" "binding" {
 ## Local development
 
 For local development, make sure you have the tools declared in the
-[`.tool-versions`](./.tool-versions) file installed.
+[`mise.toml`](./mise.toml) file installed. Install [mise](https://mise.jdx.dev/getting-started.html)
+and run `mise install` to get them.
 
 ### Building the provider
 
