@@ -35,6 +35,13 @@ repos:
         files: ^examples/
         pass_filenames: false
 
+      - id: test-recordings-check
+        name: Check acceptance test recordings
+        entry: just test-recordings-check
+        language: system
+        files: ^internal/acceptance_tests/
+        pass_filenames: false
+
       - id: tfplugindocs-validate
         name: Validate provider documentation
         entry: env -C tools go generate -run=validate-docs

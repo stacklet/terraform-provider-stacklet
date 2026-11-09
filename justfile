@@ -20,6 +20,28 @@ test-live *args:
 test-record testname:
     TF_ACC_MODE=record just test -count=1 -run {{ testname }}
 
+# Check that all acceptance tests have recordings and there are no leftover ones
+test-recordings-check:
+    #!/usr/bin/env bash
+    set -eo pipefail
+
+    dir=internal/acceptance_tests
+    used=$(go test "./$dir" -list '^TestAcc' | grep '^TestAcc' | sort)
+    existing=$(find "$dir/recordings" -name '*.json' -exec basename {} .json \; | sort)
+
+    missing=$(comm -23 <(echo "$used") <(echo "$existing"))
+    leftover=$(comm -13 <(echo "$used") <(echo "$existing"))
+
+    if [[ -n "$missing" ]]; then
+      echo "Missing recordings:"
+      sed 's/^/  /' <<< "$missing"
+    fi
+    if [[ -n "$leftover" ]]; then
+      echo "Leftover recordings:"
+      sed 's/^/  /' <<< "$leftover"
+    fi
+    [[ -z "$missing" && -z "$leftover" ]]
+
 # Run only unit tests (no acceptance)
 test-unit *args:
     go test {{ package }} {{ args }}
