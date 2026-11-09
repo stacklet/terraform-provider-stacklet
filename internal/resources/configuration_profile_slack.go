@@ -86,6 +86,9 @@ The profile is global, adding multiple resources of this kind will cause them to
 			"token_wo_version": schema.StringAttribute{
 				Description: "The version for token. Must be changed to update token_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("token_wo")),
+				},
 			},
 		},
 		Blocks: map[string]schema.Block{
@@ -200,7 +203,7 @@ func (r *configurationProfileSlackResource) Update(ctx context.Context, req reso
 	if state.TokenWOVersion == plan.TokenWOVersion {
 		token = state.Token.ValueStringPointer() // send back the previous encrypted value (if set)
 	} else {
-		token = config.Token.ValueStringPointer() // send the new value from the config
+		token = config.TokenWO.ValueStringPointer() // send the new value from the config
 	}
 
 	input := platform.SlackConfiguration{

@@ -134,6 +134,9 @@ func (r *bindingResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"security_context_wo_version": schema.StringAttribute{
 				Description: "The version for the security context. Must be changed to update security_context_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("security_context_wo")),
+				},
 			},
 			"variables": schema.StringAttribute{
 				Description: "JSON-encoded dictionary of values used for policy templating.",

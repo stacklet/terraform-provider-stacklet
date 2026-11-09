@@ -119,6 +119,9 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"auth_token_wo_version": schema.StringAttribute{
 				Description: "Change value to update auth_token_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("auth_token_wo")),
+				},
 			},
 			"ssh_private_key_wo": schema.StringAttribute{
 				Description: "SSH private key for remote repository authentication.",
@@ -132,6 +135,9 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"ssh_private_key_wo_version": schema.StringAttribute{
 				Description: "Change value to update ssh_private_key_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("ssh_private_key_wo")),
+				},
 			},
 			"ssh_passphrase_wo": schema.StringAttribute{
 				Description: "Passphrase for the SSH private key.",
@@ -145,6 +151,9 @@ func (r *repositoryResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"ssh_passphrase_wo_version": schema.StringAttribute{
 				Description: "Change value to update ssh_passphrase_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("ssh_passphrase_wo")),
+				},
 			},
 			"role_assignment_target": schema.StringAttribute{
 				Description: "An opaque identifier for role assignments. Use this value when assigning roles to this resource.",

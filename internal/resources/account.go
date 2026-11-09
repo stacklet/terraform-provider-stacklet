@@ -94,6 +94,9 @@ func (r *accountResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"security_context_wo_version": schema.StringAttribute{
 				Description: "The version for the security context. Must be changed to update security_context_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("security_context_wo")),
+				},
 			},
 			"security_context": schema.StringAttribute{
 				Description: "The security context for the account, as returned by the API.",

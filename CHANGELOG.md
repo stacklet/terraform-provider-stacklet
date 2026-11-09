@@ -1,8 +1,9 @@
 ## Next
 
-- **Breaking**: write-only credentials now require their `*_wo_version` attribute
-  to be set, so that the credential is reliably sent. Configs setting one of
-  the following attributes without the matching version fail at plan time:
+- **Breaking**: write-only credentials and their `*_wo_version` attribute must
+  now be set together, so that the credential is reliably sent. Configs setting
+  one of the following attributes without the matching version, or the version
+  without the attribute, fail at plan time:
   - `stacklet_account`: `security_context_wo`
   - `stacklet_binding`: `security_context_wo`
   - `stacklet_configuration_profile_email`: `smtp.password_wo`
@@ -19,6 +20,8 @@
   - `stacklet_iac_policies`
   - `stacklet_iac_project`
 - Fix: mask write-only credentials in debug logs
+- Fix: `stacklet_configuration_profile_slack` not sending the new `token_wo`
+  value on update
 
 
 ## 0.9.0 - 2026-09-22

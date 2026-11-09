@@ -89,6 +89,9 @@ func (r *datadogIntegrationResource) Schema(_ context.Context, _ resource.Schema
 			"api_key_wo_version": schema.StringAttribute{
 				Description: "Change value to update api_key_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("api_key_wo")),
+				},
 			},
 			"app_key_wo": schema.StringAttribute{
 				Description: "The Datadog application key, which carries the scopes authorizing the metrics query. Datadog only shows an application key when it is created, so keep it somewhere it can be read from, such as a secrets manager.",
@@ -102,6 +105,9 @@ func (r *datadogIntegrationResource) Schema(_ context.Context, _ resource.Schema
 			"app_key_wo_version": schema.StringAttribute{
 				Description: "Change value to update app_key_wo.",
 				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("app_key_wo")),
+				},
 			},
 		},
 	}

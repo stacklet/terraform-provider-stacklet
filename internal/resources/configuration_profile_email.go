@@ -98,6 +98,9 @@ The profile is global, adding multiple resources of this kind will cause them to
 					"password_wo_version": schema.StringAttribute{
 						Description: "The version for the authentication password. Must be changed to update password_wo.",
 						Optional:    true,
+						Validators: []validator.String{
+							stringvalidator.AlsoRequires(path.MatchRelative().AtParent().AtName("password_wo")),
+						},
 					},
 				},
 			},
