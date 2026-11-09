@@ -1,0 +1,274 @@
+{
+  "DELETE /policy-collections/test-collection-one": [
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/policy-collections/test-collection-one"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-collection-one",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-09T07:28:57.312957Z",
+          "updated_at": "2026-11-09T07:28:57.312972Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "DELETE /policy-collections/test-collection-two": [
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/policy-collections/test-collection-two"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-collection-two",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-09T07:28:57.288031Z",
+          "updated_at": "2026-11-09T07:28:57.288046Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "DELETE /projects/test-project": [
+    {
+      "request": {
+        "method": "DELETE",
+        "path": "/projects/test-project"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-project",
+          "collections": [
+            "test-collection-one",
+            "test-collection-two"
+          ],
+          "groups": {
+            "read": []
+          },
+          "client_id": null,
+          "created_at": "2026-11-09T07:28:57.834698Z",
+          "updated_at": "2026-11-09T07:28:57.834708Z"
+        }
+      }
+    }
+  ],
+  "GET /policy-collections/test-collection-one": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-collection-one"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-collection-one",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-09T07:28:57.312957Z",
+          "updated_at": "2026-11-09T07:28:57.312972Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "GET /policy-collections/test-collection-two": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/policy-collections/test-collection-two"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-collection-two",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-09T07:28:57.288031Z",
+          "updated_at": "2026-11-09T07:28:57.288046Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "GET /projects/test-project": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/projects/test-project"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-project",
+          "collections": [
+            "test-collection-one",
+            "test-collection-two"
+          ],
+          "groups": {
+            "read": []
+          },
+          "client_id": null,
+          "created_at": "2026-11-09T07:28:57.834698Z",
+          "updated_at": "2026-11-09T07:28:57.834708Z"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/projects/test-project"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-project",
+          "collections": [
+            "test-collection-one",
+            "test-collection-two"
+          ],
+          "groups": {
+            "read": []
+          },
+          "client_id": null,
+          "created_at": "2026-11-09T07:28:57.834698Z",
+          "updated_at": "2026-11-09T07:28:57.834708Z"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/projects/test-project"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-project",
+          "collections": [
+            "test-collection-one",
+            "test-collection-two"
+          ],
+          "groups": {
+            "read": []
+          },
+          "client_id": null,
+          "created_at": "2026-11-09T07:28:57.834698Z",
+          "updated_at": "2026-11-09T07:28:57.834708Z"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/projects/test-project"
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "name": "test-project",
+          "collections": [
+            "test-collection-one",
+            "test-collection-two"
+          ],
+          "groups": {
+            "read": []
+          },
+          "client_id": null,
+          "created_at": "2026-11-09T07:28:57.834698Z",
+          "updated_at": "2026-11-09T07:28:57.834708Z"
+        }
+      }
+    }
+  ],
+  "POST /policy-collections:{\"name\":\"test-collection-one\",\"policies\":[],\"is_default\":false}": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/policy-collections",
+        "body": {
+          "name": "test-collection-one",
+          "policies": [],
+          "is_default": false
+        }
+      },
+      "response": {
+        "status_code": 201,
+        "body": {
+          "name": "test-collection-one",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-09T07:28:57.312957Z",
+          "updated_at": "2026-11-09T07:28:57.312972Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "POST /policy-collections:{\"name\":\"test-collection-two\",\"policies\":[],\"is_default\":false}": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/policy-collections",
+        "body": {
+          "name": "test-collection-two",
+          "policies": [],
+          "is_default": false
+        }
+      },
+      "response": {
+        "status_code": 201,
+        "body": {
+          "name": "test-collection-two",
+          "policies": [],
+          "is_default": false,
+          "created_at": "2026-11-09T07:28:57.288031Z",
+          "updated_at": "2026-11-09T07:28:57.288046Z",
+          "is_mirror": false
+        }
+      }
+    }
+  ],
+  "POST /projects:{\"name\":\"test-project\",\"collections\":[\"test-collection-one\",\"test-collection-two\"],\"groups\":{\"read\":[]}}": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/projects",
+        "body": {
+          "name": "test-project",
+          "collections": [
+            "test-collection-one",
+            "test-collection-two"
+          ],
+          "groups": {
+            "read": []
+          }
+        }
+      },
+      "response": {
+        "status_code": 201,
+        "body": {
+          "name": "test-project",
+          "collections": [
+            "test-collection-one",
+            "test-collection-two"
+          ],
+          "groups": {
+            "read": []
+          },
+          "client_id": null,
+          "created_at": "2026-11-09T07:28:57.834698Z",
+          "updated_at": "2026-11-09T07:28:57.834708Z"
+        }
+      }
+    }
+  ]
+}

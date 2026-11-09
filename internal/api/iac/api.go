@@ -7,6 +7,7 @@ type API struct {
 	Policy           policyAPI
 	PolicyCollection policyCollectionAPI
 	PolicySource     policySourceAPI
+	Project          projectAPI
 }
 
 // New creates an API wrapper.
@@ -16,5 +17,6 @@ func New(config ClientConfig) *API {
 		Policy:           policyAPI{c},
 		PolicyCollection: policyCollectionAPI{c},
 		PolicySource:     policySourceAPI{c},
+		Project:          projectAPI{c},
 	}
 }
