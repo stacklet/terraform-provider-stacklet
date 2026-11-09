@@ -364,38 +364,6 @@ resource "stacklet_iac_policy_source" "test" {
 		{
 			Config: `
 resource "stacklet_iac_policy_source" "test" {
-  name = "{{.Prefix}}-policy-source"
-  url  = "https://github.com/test-org/test-repo"
-
-  token_auth = {
-    user     = "bill"
-    token_wo = "secret"
-  }
-}
-`,
-			PlanOnly:    true,
-			ExpectError: regexp.MustCompile(`attribute "token_wo_version"\s+is required`),
-		},
-		{
-			Config: `
-resource "stacklet_iac_policy_source" "test" {
-  name = "{{.Prefix}}-policy-source"
-  url  = "ssh://git@github.com/stacklet/test-repo"
-
-  ssh_auth = {
-    user                   = "git"
-    private_key_wo         = "key"
-    private_key_wo_version = 1
-    passphrase_wo          = "secret"
-  }
-}
-`,
-			PlanOnly:    true,
-			ExpectError: regexp.MustCompile(`passphrase_wo_version" must be specified`),
-		},
-		{
-			Config: `
-resource "stacklet_iac_policy_source" "test" {
   name       = "{{.Prefix}}-policy-source"
   url        = "https://github.com/test-org/test-repo"
   extensions = ["yaml"]

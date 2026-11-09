@@ -127,22 +127,6 @@ resource "stacklet_repository" "test" {
   url  = "https://github.com/test-org/test-repo"
   name = "{{.Prefix}}-repo"
 
-  auth_token_wo = "secret"
-}
-`,
-			ConfigPlanChecks: resource.ConfigPlanChecks{
-				PreApply: []plancheck.PlanCheck{
-					// auth_token_wo alone doesn't trigger a change
-					plancheck.ExpectResourceAction("stacklet_repository.test", plancheck.ResourceActionNoop),
-				},
-			},
-		},
-		{
-			Config: `
-resource "stacklet_repository" "test" {
-  url  = "https://github.com/test-org/test-repo"
-  name = "{{.Prefix}}-repo"
-
   auth_user             = "bill"
   auth_token_wo         = "secret"
   auth_token_wo_version = 1
@@ -247,7 +231,6 @@ resource "stacklet_repository" "test" {
 
   ssh_private_key_wo         = "ignore-because-version-unchanged"
   ssh_private_key_wo_version = 1
-  ssh_passphrase_wo          = "ignore-because-version-unchanged"
 }
 `,
 			ConfigPlanChecks: resource.ConfigPlanChecks{

@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -14,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/stacklet/terraform-provider-stacklet/internal/api/platform"
@@ -75,23 +77,27 @@ func (r *datadogIntegrationResource) Schema(_ context.Context, _ resource.Schema
 				"What the entry describes: `<region>-secret`, e.g. `us-east-1-secret`, is whether Secrets Manager holds the credentials in that region, which it replicates on its own schedule; `<region>-execution` is whether the region has recorded where to find them, so a policy running there can use them. Every region the configuration is meant to reach has both from the moment that is decided, so the list doesn't grow as propagation lands.",
 			),
 			// After this, write-only secrets and associated trigger attrs.
-			// XXX wgrant 2026-10-22: api_key_wo should require api_key_wo_version (ENG-9371).
 			"api_key_wo": schema.StringAttribute{
 				Description: "The Datadog API key, which identifies the organization. Must be supplied together with `app_key_wo` the first time, since the metrics query the filter runs needs both.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("api_key_wo_version")),
+				},
 			},
 			"api_key_wo_version": schema.StringAttribute{
 				Description: "Change value to update api_key_wo.",
 				Optional:    true,
 			},
-			// XXX wgrant 2026-10-22: app_key_wo should require app_key_wo_version (ENG-9371).
 			"app_key_wo": schema.StringAttribute{
 				Description: "The Datadog application key, which carries the scopes authorizing the metrics query. Datadog only shows an application key when it is created, so keep it somewhere it can be read from, such as a secrets manager.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("app_key_wo_version")),
+				},
 			},
 			"app_key_wo_version": schema.StringAttribute{
 				Description: "Change value to update app_key_wo.",

@@ -1,3 +1,26 @@
+## Next
+
+- **Breaking**: write-only credentials now require their `*_wo_version` attribute
+  to be set, so that the credential is reliably sent. Configs setting one of
+  the following attributes without the matching version fail at plan time:
+  - `stacklet_account`: `security_context_wo`
+  - `stacklet_binding`: `security_context_wo`
+  - `stacklet_configuration_profile_email`: `smtp.password_wo`
+  - `stacklet_configuration_profile_slack`: `token_wo`
+  - `stacklet_datadog_integration`: `api_key_wo`, `app_key_wo`
+  - `stacklet_repository`: `auth_token_wo`, `ssh_private_key_wo`, `ssh_passphrase_wo`
+- Add: support for the following resource types
+  - `stacklet_iac_policy_source`
+  - `stacklet_iac_policy_collection`
+  - `stacklet_iac_project`
+- Add: support for the following datasource types
+  - `stacklet_iac_policy_source`
+  - `stacklet_iac_policy_collection`
+  - `stacklet_iac_policies`
+  - `stacklet_iac_project`
+- Fix: mask write-only credentials in debug logs
+
+
 ## 0.9.0 - 2026-09-22
 
 - Add: support for the following resource types

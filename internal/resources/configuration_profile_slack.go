@@ -6,6 +6,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -73,12 +74,14 @@ The profile is global, adding multiple resources of this kind will cause them to
 				Description: "The encrypted value for the token, returned by the API.",
 				Computed:    true,
 			},
-			// XXX wgrant 2026-10-22: token_wo should require token_wo_version (ENG-9371).
 			"token_wo": schema.StringAttribute{
 				Description: "The input value for the token.",
 				Optional:    true,
 				Sensitive:   true,
 				WriteOnly:   true,
+				Validators: []validator.String{
+					stringvalidator.AlsoRequires(path.MatchRoot("token_wo_version")),
+				},
 			},
 			"token_wo_version": schema.StringAttribute{
 				Description: "The version for token. Must be changed to update token_wo.",
