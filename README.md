@@ -122,7 +122,7 @@ data "stacklet_binding" "binding" {
 ## Local development
 
 For local development, make sure you have the tools declared in the
-[`.tool-versions`](./.tool-versions) file installed.
+[`mise.toml`](./mise.toml) file installed (run `mise install`).
 
 ### Building the provider
 

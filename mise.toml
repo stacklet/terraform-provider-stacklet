@@ -1,0 +1,12 @@
+[tools]
+go = "1.25"
+golangci-lint = "2.8.0"
+goreleaser = "2.15.4"
+gofumpt = "0.10.0"
+just = "1.50.0"
+prek = "0.5.6"
+terraform = "1.13.5"
+
+[settings]
+lockfile = true
+lockfile_platforms = ["linux-x64", "linux-arm64", "macos-x64", "macos-arm64"]

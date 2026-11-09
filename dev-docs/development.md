@@ -70,7 +70,7 @@ The IaC API endpoint (`iac_endpoint`) is resolved from the provider block, then 
 
 ## Development Tools
 
-Required tools are defined in `.tool-versions`.
+Required tools are defined in `mise.toml`, and can be installed with `mise install`.
 Additional tools are defined in `tools/go.mod`.
 
 ## Documentation
