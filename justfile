@@ -1,3 +1,5 @@
+set script-interpreter := ['bash', '-euo', 'pipefail']
+
 package := "./internal/..."
 
 # Build the provider
@@ -21,10 +23,8 @@ test-record testname:
     TF_ACC_MODE=record just test -count=1 -run {{ testname }}
 
 # Check that all acceptance tests have recordings and there are no leftover ones
+[script]
 test-recordings-check:
-    #!/usr/bin/env bash
-    set -euo pipefail
-
     dir=internal/acceptance_tests
     used=$(go test "./$dir" -list '^TestAcc' | grep '^TestAcc' | sort)
     existing=$(find "$dir/recordings" -name '*.json' -exec basename {} .json \; | sort)
@@ -58,10 +58,8 @@ update-deps-go:
     env -C tools go mod tidy
 
 # validate terraform example files
+[script]
 tf-examples-validate: build
-    #!/usr/bin/env bash
-    set -euo pipefail
-
     validate() {
       local dir="$1"
 
@@ -82,10 +80,8 @@ tf-examples-validate: build
     done
 
 # check that all resources and datasources have the required example files
+[script]
 tf-examples-check: build
-    #!/usr/bin/env bash
-    set -euo pipefail
-
     module="$(mktemp -d)"
     trap "rm -rf $module" EXIT
     just _declare_provider "$module"
@@ -131,10 +127,8 @@ provider_installation {
 
 # run terraform with the local provider configured. Ensure calling targets
 # depend on "build" to use the current code
+[script]
 _tf *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-
     terraformrc="$(mktemp)"
     trap "rm -rf $terraformrc" EXIT
     cat > "$terraformrc" <<EOF
@@ -153,10 +147,8 @@ terraform {
 }
 '''
 
+[script]
 _declare_provider module_path:
-    #!/usr/bin/env bash
-    set -euo pipefail
-
     cat > "{{module_path}}/provider.tf" <<EOF
     {{ tf_provider_config }}
     EOF
