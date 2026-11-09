@@ -23,7 +23,7 @@ test-record testname:
 # Check that all acceptance tests have recordings and there are no leftover ones
 test-recordings-check:
     #!/usr/bin/env bash
-    set -eo pipefail
+    set -euo pipefail
 
     dir=internal/acceptance_tests
     used=$(go test "./$dir" -list '^TestAcc' | grep '^TestAcc' | sort)
@@ -60,7 +60,7 @@ update-deps-go:
 # validate terraform example files
 tf-examples-validate: build
     #!/usr/bin/env bash
-    set -e
+    set -euo pipefail
 
     validate() {
       local dir="$1"
@@ -84,7 +84,7 @@ tf-examples-validate: build
 # check that all resources and datasources have the required example files
 tf-examples-check: build
     #!/usr/bin/env bash
-    set -e
+    set -euo pipefail
 
     module="$(mktemp -d)"
     trap "rm -rf $module" EXIT
@@ -133,7 +133,7 @@ provider_installation {
 # depend on "build" to use the current code
 _tf *args:
     #!/usr/bin/env bash
-    set -e
+    set -euo pipefail
 
     terraformrc="$(mktemp)"
     trap "rm -rf $terraformrc" EXIT
@@ -155,7 +155,7 @@ terraform {
 
 _declare_provider module_path:
     #!/usr/bin/env bash
-    set -e
+    set -euo pipefail
 
     cat > "{{module_path}}/provider.tf" <<EOF
     {{ tf_provider_config }}
