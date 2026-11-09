@@ -215,7 +215,7 @@ resource "stacklet_repository" "test" {
 	runRecordedAccTest(t, "TestAccRepositoryResource_HTTPAuthClear", steps)
 }
 
-func TestAccRepositoryResource_SSHUpdate(t *testing.T) {
+func TestAccRepositoryResource_SSHAuthUpdate(t *testing.T) {
 	steps := []resource.TestStep{
 		{
 			// Create with simple SSH config.

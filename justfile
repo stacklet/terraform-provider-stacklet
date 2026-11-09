@@ -1,3 +1,5 @@
+set script-interpreter := ['bash', '-euo', 'pipefail']
+
 package := "./internal/..."
 
 # Build the provider
@@ -20,6 +22,26 @@ test-live *args:
 test-record testname:
     TF_ACC_MODE=record just test -count=1 -run {{ testname }}
 
+# Check that all acceptance tests have recordings and there are no leftover ones
+[script]
+test-recordings-check:
+    dir=internal/acceptance_tests
+    used=$(go test "./$dir" -list '^TestAcc' | grep '^TestAcc' | sort)
+    existing=$(find "$dir/recordings" -name '*.json' -exec basename {} .json \; | sort)
+
+    missing=$(comm -23 <(echo "$used") <(echo "$existing"))
+    leftover=$(comm -13 <(echo "$used") <(echo "$existing"))
+
+    if [[ -n "$missing" ]]; then
+      echo "Missing recordings:"
+      sed 's/^/  /' <<< "$missing"
+    fi
+    if [[ -n "$leftover" ]]; then
+      echo "Leftover recordings:"
+      sed 's/^/  /' <<< "$leftover"
+    fi
+    [[ -z "$missing" && -z "$leftover" ]]
+
 # Run only unit tests (no acceptance)
 test-unit *args:
     go test {{ package }} {{ args }}
@@ -36,10 +58,8 @@ update-deps-go:
     env -C tools go mod tidy
 
 # validate terraform example files
+[script]
 tf-examples-validate: build
-    #!/usr/bin/env bash
-    set -e
-
     validate() {
       local dir="$1"
 
@@ -60,10 +80,8 @@ tf-examples-validate: build
     done
 
 # check that all resources and datasources have the required example files
+[script]
 tf-examples-check: build
-    #!/usr/bin/env bash
-    set -e
-
     module="$(mktemp -d)"
     trap "rm -rf $module" EXIT
     just _declare_provider "$module"
@@ -109,10 +127,8 @@ provider_installation {
 
 # run terraform with the local provider configured. Ensure calling targets
 # depend on "build" to use the current code
+[script]
 _tf *args:
-    #!/usr/bin/env bash
-    set -e
-
     terraformrc="$(mktemp)"
     trap "rm -rf $terraformrc" EXIT
     cat > "$terraformrc" <<EOF
@@ -131,10 +147,8 @@ terraform {
 }
 '''
 
+[script]
 _declare_provider module_path:
-    #!/usr/bin/env bash
-    set -e
-
     cat > "{{module_path}}/provider.tf" <<EOF
     {{ tf_provider_config }}
     EOF
