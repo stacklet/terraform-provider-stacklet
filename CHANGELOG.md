@@ -1,4 +1,4 @@
-## Next
+## 0.10.0 - 2026-11-10
 
 - **Breaking**: write-only credentials and their `*_wo_version` attribute must
   now be set together, so that the credential is reliably sent. Configs setting
@@ -10,6 +10,8 @@
   - `stacklet_configuration_profile_slack`: `token_wo`
   - `stacklet_datadog_integration`: `api_key_wo`, `app_key_wo`
   - `stacklet_repository`: `auth_token_wo`, `ssh_private_key_wo`, `ssh_passphrase_wo`
+- Add: `iac_endpoint` provider attribute (or `STACKLET_IAC_ENDPOINT` environment
+  variable) to set the IaC API endpoint, derived from `endpoint` by default
 - Add: support for the following resource types
   - `stacklet_iac_policy_source`
   - `stacklet_iac_policy_collection`
